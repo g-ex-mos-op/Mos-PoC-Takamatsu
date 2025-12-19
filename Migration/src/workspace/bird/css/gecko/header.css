@@ -1,0 +1,104 @@
+/* レイアウト ヘッダ部の設定 */
+table.title{
+  width					: 100%;
+  height				: 50px;
+  background-color	: #C0E0F0;
+  padding				: 0px;
+  border-spacing		: 0px;
+  border-width			: 0px;
+}
+table.title tr th, table.title tr td{
+  padding:0px;
+}
+.title tr th a{
+  font-weight           :bold;
+  text-decoration       :none;
+}
+table.titleline{
+  width					: 100%;
+  height				: 20px;
+  background-color	: #48D1CC;
+  padding				: 0px;
+  border-spacing		: 0px;
+  border-width			: 0px;
+}
+/* ヘッダ部 ロゴの設定 */
+td.title_logo{
+  text-align			: left;
+  vertical-align		: middle;
+  color					: white;
+  font-size			: 40px;
+}
+
+/* ヘッダ部 ステータスの設定 */
+td.title_status{
+  text-align			: right;
+  vertical-align		: bottom;
+  color					: white;
+  font-size			: 10;
+}
+
+/* ヘッダ部 ログイン情報の設定 */
+font.title_status_info{
+  color					: yellow;
+  font-size			: 10;
+}
+
+/* メニューバー部の設定 */
+table.menu{
+  width					: 100%;
+  height				: 100%;
+  padding				: 0px;
+  border-spacing		: 0px;
+  border-width			: 0px;
+}
+/* メニューバー部 プルダウンの設定 */
+table.menu_pulldown, table.regist_menu_pulldown{
+  width					: 660px;
+  height				: 60px;
+  padding            : 0px;
+  border-color       : #FFFFFF;
+  border-style       : dashed;
+  border-width       : 2px;
+  text-align         : center;
+  margin             : 2px;
+}
+/* メニューバー部 プルダウンレイヤーの設定 */
+table.menu_pulldown_layer{
+  white-space         : nowrap;
+  background-color	 : #FFFFCC;
+  border              : 1px outset #FFFFCC;
+}
+
+/* メニューバー部 プルダウン リンクの設定 */
+table.menu_pulldown tr th, table.regist_menu_pulldown tr th {
+  width              : 130px;
+  height             : 25px;
+  padding            : 0px;
+  text-decoration    : none;
+  font-weight        : bold;
+  border             : 1px solid #dcdcdc;
+  border-top: 1px solid #dcdcdc;
+  border-right:1px solid #dcdcdc;
+  border-bottom: 0px solid #dcdcdc;
+  border-left: 0px solid #dcdcdc;
+}
+/* メニューバー部 プルダウンレイヤー リンクの設定 */
+table.menu_pulldown_layer tr td{
+  border-width          : 0px;
+  color                 : #483D8B;
+  text-decoration       : none;
+}
+
+/* メニューバー部 表示切替の設定 */
+.menu_switch_display a{
+  color					: white;
+  text-decoration       : none;
+  font-weight           : bold;
+}
+
+.menu_switch_link{
+  color                 : white;
+  text-decoration       : none;
+  font-weight           : bold;
+}
