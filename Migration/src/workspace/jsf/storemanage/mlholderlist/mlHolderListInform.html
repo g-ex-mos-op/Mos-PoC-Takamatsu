@@ -1,0 +1,229 @@
+<html xmlns:m="http://www.seasar.org/maya" m:extends="/jsf/layout/layoutNoNavi.html" m:action="#{mlHolderListAction.initialize}">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Windows-31j" />
+<title>マスターライセンス保持者店舗別一覧</title>
+</head>
+<body>
+<span m:inject="f:param" m:name="layoutTitle" m:value="マスターライセンス保持者店舗別一覧"/>
+<span m:inject="s:insert" m:name="bodyTitleName">■マスターライセンス保持者店舗別一覧</span>
+<span m:inject="f:param" m:name="onLoadName" m:value="init();"/>
+<span m:inject="s:insert" m:name="body">
+<STYLE type="text/css">
+<!--
+.scroll_area01 {
+	height:	  	405px;
+}
+/**
+ * ユーザタイプコード=02(オーナーユーザ）ののスクロール値
+ */
+.scroll_area02,  .scroll_area03{
+	height:	  	438px;
+}
+@media print {
+	.scroll_area01 , .scroll_area02, .scroll_area03 {
+		height					: auto;
+	}
+}
+//-->
+</STYLE>
+<SCRIPT LANGUAGE="javascript">
+<!--
+function init(){
+    loadScroll("mlHolderListInfo");
+	usrTypeCode = document.forms['mlHolderListInform'].elements['mlHolderListInform:usertypeCd'].value;
+	if(usrTypeCode == '01') {
+		offOn2();
+		var meta = document.forms['mlHolderListInform'].elements['mlHolderListInform:selectH'].value;
+		if(meta=='0'){
+			document.forms['mlHolderListInform'].elements['mlHolderListInform:sitenS'].focus();
+		}else if(meta=='1'){
+			document.forms['mlHolderListInform'].elements['mlHolderListInform:onerT'].focus();
+		}else if(meta=='2'){
+			document.forms['mlHolderListInform'].elements['mlHolderListInform:miseT'].focus();
+		}
+	}
+}
+function offButtonJen(){
+	document.forms['mlHolderListInform'].elements['mlHolderListInform:onerB'].disabled = true;
+	document.forms['mlHolderListInform'].elements['mlHolderListInform:miseB'].disabled = true;
+}
+function offOn(para){
+	offButtonJen();
+	if(para=='0'){
+		document.forms['mlHolderListInform'].elements['mlHolderListInform:sitenR'].checked = true;
+	}else if(para=='1'){
+		document.forms['mlHolderListInform'].elements['mlHolderListInform:onerR'].checked = true;
+		document.forms['mlHolderListInform'].elements['mlHolderListInform:onerB'].disabled = false;
+	}else if(para=='2'){
+		document.forms['mlHolderListInform'].elements['mlHolderListInform:miseR'].checked = true;
+		document.forms['mlHolderListInform'].elements['mlHolderListInform:miseB'].disabled = false;
+	}
+}
+function offOn2(){
+	offButtonJen();
+	var meta = document.forms['mlHolderListInform'].elements['mlHolderListInform:selectH'].value;
+	offOn(meta);
+}
+
+function search(){
+	onButtonJen();
+	if(document.mlHolderListInform.elements['mlHolderListInform:allDownload'] != null) {
+		document.mlHolderListInform.elements['mlHolderListInform:allDownload'].value = false;
+	}
+    document.forms['mlHolderListInform'].elements['mlHolderListInform:__link_clicked__'].value='mlHolderListInform:search';
+    document.forms['mlHolderListInform'].submit();
+}
+
+function onerSearch(){
+	onButtonJen();
+    document.forms['mlHolderListInform'].elements['mlHolderListInform:__link_clicked__'].value='mlHolderListInform:onerSearch';
+    document.forms['mlHolderListInform'].submit();
+}
+
+function miseSearch(){
+	onButtonJen();
+    document.forms['mlHolderListInform'].elements['mlHolderListInform:__link_clicked__'].value='mlHolderListInform:miseSearch';
+    document.forms['mlHolderListInform'].submit();
+}
+
+function onButtonJen(){
+	document.forms['mlHolderListInform'].elements['mlHolderListInform:sitenS'].disabled = false;
+	document.forms['mlHolderListInform'].elements['mlHolderListInform:onerB'].disabled = false;
+	document.forms['mlHolderListInform'].elements['mlHolderListInform:onerT'].disabled = false;
+	document.forms['mlHolderListInform'].elements['mlHolderListInform:miseB'].disabled = false;
+	document.forms['mlHolderListInform'].elements['mlHolderListInform:miseT'].disabled = false;
+}
+
+//-->
+</SCRIPT>
+<form m:id="mlHolderListInform" onkeydown="return setDefaultSubmitButton('mlHolderListInform', 'btnExcute');">
+	<input type="hidden" m:id="initMenuId" m:value="#{menuAction.initMenuId}"/>
+	<input type="hidden" m:id="initSubMenuId" m:value="#{menuAction.initSubMenuId}"/>
+	<span m:inject="f:param" m:name="viewIdValue" m:value="BSM005V01"/>
+	<input type="hidden" m:id="viewId" m:value="#{viewIdValue}"/>
+	<input type="hidden" m:id="usertypeCd" m:value="#{mlHolderListDto.usertypeCd}"/>
+	<span m:rendered="#{mlHolderListDto.usertypeCd == '01'}">
+		<input m:id="selectH" type="hidden" m:value="#{mlHolderListDto.selectFlg}"/>
+		<table class="hiddenBody">
+			<tr>
+				<td>
+				<span m:inject="s:selectOneRadio2" m:value="#{mlHolderListDto.selectFlg}">
+				<table class="body_table">
+					<tr>
+						<th>会社</th>
+						<td>
+							<select size=1 style="width:150;" m:value="#{mlHolderListDto.companyCd}">
+								<option value="00">モスフードサービス</option>
+							</select>
+						</td>
+						<th>支部</th>
+						<td style="border-right-width:0px;">
+						<div class="radio_center_set">
+							<input m:id="sitenR" type="radio"  name="selectFlg" m:value="0" onclick="offOn('0');"/>
+						</div>
+						</td>
+				        <td style="border-left-width:0px;">
+				          <div class="hideArea">
+							<select m:id="sitenS"
+									m:value="#{mlHolderListDto.sitenCd}"
+									m:items="#{mlHolderListDto.sibuList}"
+									m:itemValue="sibuCd"
+									m:itemLabel="sibuName"
+									onFocus="offOn('0')">
+									<option>東京支部</option>
+							</select>
+						  </div>
+						</td>
+						<th>オーナー&nbsp;<input m:name="mlHolderListInform:onerB" type="button" value="検索"  m:onclick="onerSearch();"/></th>
+						<td style="border-right-width:0px;">
+						<div class="radio_center_set">
+							<input m:id="onerR" type="radio" name="selectFlg" m:value="1" onclick="offOn('1');"/>
+						</div>
+						</td>
+						<td style="border-left-width:0px;">
+							<input m:id="onerT" class="imenotuse" type="text" m:maxlength="5" size="10" m:value="#{mlHolderListDto.onerCd}" m:converter="#{codeConverterOwner}" onFocus="offOn('1')"/>
+							<a m:id="onerSearch" m:action="#{mlHolderListAction.onerSearch}"/>
+						</td>
+						<th>店舗&nbsp;<input m:name="mlHolderListInform:miseB" type="button" value="検索"  m:onclick="miseSearch();"/></th>
+						<td style="border-right-width:0px;">
+						<div class="radio_center_set">
+							<input m:id="miseR" type="radio" name="selectFlg" m:value="2" onclick="offOn('2');"/>
+						</div>
+						</td>
+						<td style="border-left-width:0px;">
+							<input m:id="miseT" class="imenotuse" type="text" m:maxlength="5" size="10" m:value="#{mlHolderListDto.miseCd}" m:converter="#{codeConverterMise}" onFocus="offOn('2')"/>
+							<a m:id="miseSearch" m:action="#{mlHolderListAction.miseSrearch}"/>
+						</td>
+					</tr>
+				</table>
+				</span>
+
+				</td>
+				<td valign="middle">
+					&nbsp;<input m:name="mlHolderListInform:btnExcute" type="button" value="実行" m:onclick="search();"/>
+					<a m:id="search" m:action="#{mlHolderListAction.result}"/>
+				</td>
+				<td m:rendered="#{mlHolderListDto.mha}" valign="middle">
+					&nbsp;<input type="button" value="一括ダウンロード" m:action="#{mlHolderListAction.downloadCsv}" onDblClick="return false" onClick="document.mlHolderListInform.elements['mlHolderListInform:allDownload'].value = true;"/>
+					<input type="hidden" id="allDownload" m:value="#{mlHolderListDto.allDownload}"/>
+				</td>
+			</tr>
+		</table>
+	</span>
+	<span m:rendered="#{mlHolderListDto.resultListSize != 0}">
+		<input style="margin-top:#{mlHolderListDto.usertypeCd == '01'?'4':'0'}px;" type="button" value="ダウンロード"  onClick="#{mlHolderListDto.mha == true? 'document.mlHolderListInform.elements[\'mlHolderListInform:allDownload\'].value = false;':''}" m:action="#{mlHolderListAction.downloadCsv}" onDblClick="return false"/>
+		<div class="scroll_padding_head">
+		<div class="scroll_hidden margin_bottom_4">
+		<table width="98%" class="body_table2" style="margin-top:5px;">
+			<tr>
+				<th width="*" style="text-align:center;">店舗名</th>
+				<th width="180px" style="text-align:center;">氏名</th>
+				<th width="50px" style="text-align:center;">種別</th>
+				<th width="130px" style="text-align:center;">ライセンス番号</th>
+				<th width="90px" style="text-align:center;">取得年月</th>
+				<th width="90px" style="text-align:center;">更新研修</th>
+				<th width="90px" style="text-align:center;">活動状況</th>
+			</tr>
+		</table>
+		</div>
+		</div>
+		<div class="scroll_padding_data">
+		<div class="scroll_standby scroll_area#{mlHolderListDto.usertypeCd}" id="mlHolderListInfo">
+			<table class="body_table2" width="98%" style="border-top-width : 0px;" border="1">
+				<span m:inject="s:forEach" m:items="#{mlHolderListDto.resultList}" m:var="e" m:varindex="i">
+				<tr style="font-size:11pt;" class="non_top_border">
+					<td width="*"><!-- 店舗名 -->
+						<span m:converter="#{characterEncodingConverter}" m:value="#{e.miseNameKj}"/>
+					</td>
+					<td width="180px"><!-- 氏名 -->
+						<span m:value = "#{e.staffLNameKj}"/> <span m:value = "#{e.staffFNameKj}"/>
+					</td>
+					<td width="50px"><!-- 種別 -->
+						<span m:rendered = "#{e.licenseKbn == '01'}">一般</span>
+						<span m:rendered = "#{e.licenseKbn == '02'}">上級</span>
+					</td>
+					<td width="130px"><!-- ライセンス番号 -->
+						<span m:value = "#{e.licenseNo}"/>
+					</td>
+					<td width="90px"><!-- 取得年月 -->
+						<span m:value = "#{e.licenseDt}"/>
+					</td>
+					<td width="90px"><!-- 更新研修１ -->
+						<span m:value = "#{e.renew1StatusMoji}"/>
+					</td>
+					<td width="90px"><!-- 活動状況 -->
+						<span m:value = "#{e.situationKbnMoji}"/>
+					</td>
+
+				</tr>
+				</span>
+			</table>
+		</div>
+		</div>
+	</span>
+	<input type="text" m:id="dummyEnter" style="display:none"/>
+</form>
+</span>
+</body>
+</html>
+

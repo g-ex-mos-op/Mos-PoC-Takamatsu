@@ -1,0 +1,178 @@
+<html xmlns:m="http://www.seasar.org/maya" m:extends="/jsf/layout/layoutNoNavi.html" m:action="#{staffRegistEditAction.initialize}">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Windows-31j" />
+<title>スタッフ情報登録・変更</title>
+</head>
+<body>
+<span m:inject="f:param" m:name="layoutTitle" m:value="スタッフ情報登録・変更"/>
+<span m:inject="s:insert" m:name="bodyTitleName">■スタッフ情報登録・変更</span>
+<span m:inject="f:param" m:name="onLoadName" m:value="load();"/>
+<span m:inject="f:param" m:name="viewIdValue" m:value="BSM004V02"/>
+<span m:inject="s:insert" m:name="body">
+<SCRIPT LANGUAGE="javascript">
+<!--
+/**
+ * 画面表示後処理
+ */
+function load() {
+	setRadioValue(true);
+	if(document.staffRegistEdit.duplicateNameAuthMsg != null) {
+		//同姓同名了承確認アラート出力
+		if(confirm(document.staffRegistEdit.duplicateNameAuthMsg.value)) {
+			//了承の場合
+			//同姓同名確認アラート出力判断値へ'OFF'(了承済み)を設定します。
+			document.staffRegistEdit.elements['staffRegistEdit:duplicateNameAlert'].value="OFF";
+			//登録ボタンをクリックします。
+			document.staffRegistEdit.elements['staffRegistEdit:btnExecute'].click();
+		}
+		else {
+			//了承しない場合
+			//何もしない
+		}
+	}
+}
+function setRadioValue(flg) {
+    var form = document.staffRegistEdit;
+    if (form.elements['staffRegistEdit:isEdit'].value == 'false') {
+	    form.elements['staffRegistEdit:sex'][0].disabled = flg;
+	    form.elements['staffRegistEdit:sex'][1].disabled = flg;
+	    form.elements['staffRegistEdit:birthdayEra'][0].disabled = flg;
+	    form.elements['staffRegistEdit:birthdayEra'][1].disabled = flg;
+	}
+}
+-->
+</SCRIPT>
+<form m:id="staffRegistEdit" onkeydown="return setDefaultSubmitButton('staffRegistEdit', 'btnExecute');">
+	<input type="hidden" m:id="initMenuId" m:value="#{menuAction.initMenuId}"/>
+	<input type="hidden" m:id="initSubMenuId" m:value="#{menuAction.initSubMenuId}"/>
+	<input type="hidden" m:id="viewId" m:value="#{viewIdValue}"/>
+	<input type="button" value="戻る" m:action="#{staffRegistEditAction.back}" m:onclick="setRadioValue(false);"/>&nbsp;
+	<input type="button" value="登録" m:id="btnExecute" m:action="#{staffRegistEditAction.regist}" m:onclick="setRadioValue(false);"/>
+	<input type="hidden" m:value="#{staffRegistDto.specificItemEdit}" m:id="isEdit"/>
+	<input type="hidden" id="duplicateNameAlert" m:value="#{staffRegistDto.duplicateNameAlert}"/>
+	<span m:rendered="#{staffRegistDto.duplicateNameAlert=='ON'}">
+	<input type="hidden" name="duplicateNameAuthMsg" value="同姓同名のスタッフが既に登録されています。登録してもよろしいですか？" m:passthrough="true"/>
+	</span>
+	<table cellspacing="0" cellpadding="0">
+	  <tr style="height:5px;"><td align="right"></td></tr>
+	</table>
+<table class="body_table2">
+	<col width="150px"/>
+	<col width="300px"/>
+	<col width="150px"/>
+	<col width="300px"/>
+	<tr>
+		<th>氏名*</th>
+		<td>
+			<input m:id="staffLNameKj" class="imeon width_90" m:maxlength="10" type="text" size=15 m:value="#{staffRegistDto.mstStaff.staffLNameKj}" m:disabled="#{!staffRegistDto.specificItemEdit}"/>(氏)
+			<input m:id="staffFNameKj" class="imeon width_90" m:maxlength="10" type="text" size=15 m:value="#{staffRegistDto.mstStaff.staffFNameKj}" m:disabled="#{!staffRegistDto.specificItemEdit}"/>(名)
+		</td>
+		<th>性別*</th>
+		<td>
+			<span m:inject="s:selectOneRadio2" m:value="#{staffRegistDto.mstStaff.sex}" m:id="sex" >
+			<input type="radio" m:value="0" />男
+			<input type="radio" m:value="1" />女
+			</span>
+		</td>
+	</tr>
+	<tr>
+		<th>フリガナ*</th>
+		<td>
+			<input m:id="staffLNameKna" class="imeon width_90" m:maxlength="10" type="text" size=15 m:value="#{staffRegistDto.mstStaff.staffLNameKna}" m:disabled="#{!staffRegistDto.specificItemEdit}"/>(氏)
+			<input m:id="staffFNameKna" class="imeon width_90" m:maxlength="10" type="text" size=15 m:value="#{staffRegistDto.mstStaff.staffFNameKna}" m:disabled="#{!staffRegistDto.specificItemEdit}"/>(名)
+		</td>
+		<th>生年月日* </th>
+		<td>
+			西暦&nbsp;<input m:id="birthdayYear" class="imenotuse width_30" m:maxlength="4" type="text" size=5 m:value="#{staffRegistDto.mstStaff.birthdayYear}" m:disabled="#{!staffRegistDto.specificItemEdit}"/>年
+			<input m:id="birthdayMonth" class="imenotuse width_30" m:maxlength="2" type="text" size=3 m:value="#{staffRegistDto.mstStaff.birthdayMonth}" m:disabled="#{!staffRegistDto.specificItemEdit}"/>月
+			<input m:id="birthdayDay" class="imenotuse width_30" m:maxlength="2" type="text" size=3 m:value="#{staffRegistDto.mstStaff.birthdayDay}" m:disabled="#{!staffRegistDto.specificItemEdit}"/>日
+		</td>
+	</tr>
+	<tr>
+		<th>店舗*</th>
+		<td>
+        	<div class="hideArea">
+			<select class="condition_field"
+					m:id="miseCd1"
+                    m:value="#{staffRegistDto.mstStaff.miseCd1}"
+                    m:items="#{staffRegistDto.mstStaffMiseList}"
+                    m:itemValue="mise_cd"
+                    m:itemLabel="miseNameKjWithClose">
+                <option value="">店名称</option>
+        	</select>
+        	</div>
+		</td>
+		<th>異動日 </th>
+		<td>
+			西暦&nbsp;<input m:id="moveDtYear" class="imenotuse width_30" m:maxlength="4" type="text" size=5 m:value="#{staffRegistDto.mstStaff.moveDtYear}" />年
+			<input m:id="moveDtMonth" class="imenotuse width_30" m:maxlength="2" type="text" size=3 m:value="#{staffRegistDto.mstStaff.moveDtMonth}" />月
+			<input m:id="moveDtDay" class="imenotuse width_30" m:maxlength="2" type="text" size=3 m:value="#{staffRegistDto.mstStaff.moveDtDay}" />日
+		</td>
+	</tr>
+	<tr>
+		<th>活動状況*</th>
+		<td m:rendered="#{staffRegistDto.mstStaff.situationKbn != '1' || staffRegistDto.leaveReturnFlg}">
+			<div class="hideArea">
+	        <select m:id="situationKbn" m:value="#{staffRegistDto.mstStaff.situationKbn}"
+	                m:items="#{staffRegistDto.situationKbnList}">
+	            <option value="">活動中</option>
+	        </select>
+	        </div>
+		</td>
+		<td m:rendered="#{staffRegistDto.mstStaff.situationKbn == '1' && !staffRegistDto.leaveReturnFlg}">
+			休職中
+		</td>
+		<th>退職日</th>
+		<td>
+			西暦&nbsp;<input m:id="retireDtYear" class="imenotuse width_30" m:maxlength="4" type="text" size=5 m:value="#{staffRegistDto.mstStaff.retireDtYear}" m:disabled="#{staffRegistDto.mstStaff.situationKbn == '1' && !staffRegistDto.leaveReturnFlg}"/>年
+			<input m:id="retireDtMonth" class="imenotuse width_30" m:maxlength="2" type="text" size=3 m:value="#{staffRegistDto.mstStaff.retireDtMonth}" m:disabled="#{staffRegistDto.mstStaff.situationKbn == '1' && !staffRegistDto.leaveReturnFlg}"/>月
+			<input m:id="retireDtDay" class="imenotuse width_30" m:maxlength="2" type="text" size=3 m:value="#{staffRegistDto.mstStaff.retireDtDay}" m:disabled="#{staffRegistDto.mstStaff.situationKbn == '1' && !staffRegistDto.leaveReturnFlg}"/>日
+		</td>
+	</tr>
+	<tr>
+		<th>備考</th>
+		<td colspan="3">
+		<!--IE9対応のためsizeを150→130（IE9は文字が大きいためテキストエリアが肥大し、レイアウトが崩れる）-->
+			<input class="width_680" m:id="note" m:maxlength="20" type="text" size="130" m:value="#{staffRegistDto.mstStaff.note}" m:converter="#{mlEntryCharacterEncodingConverter}"/>
+		</td>
+	</tr>
+	<tr>
+		<th>休職日</th>
+		<td>
+			西暦&nbsp;<input m:id="leaveDtYear"  class="imenotuse width_30" m:maxlength="4" type="text" size=5 m:value="#{staffRegistDto.mstStaff.leaveDtYear}" m:disabled="#{!staffRegistDto.leaveReturnFlg}"/>年
+			<input m:id="leaveDtMonth" class="imenotuse width_30" m:maxlength="2" type="text" size=3 m:value="#{staffRegistDto.mstStaff.leaveDtMonth}" m:disabled="#{!staffRegistDto.leaveReturnFlg}"/>月
+			<input m:id="leaveDtDay"   class="imenotuse width_30" m:maxlength="2" type="text" size=3 m:value="#{staffRegistDto.mstStaff.leaveDtDay}" m:disabled="#{!staffRegistDto.leaveReturnFlg}"/>日
+		</td>
+		<th>復職日</th>
+		<td>
+			西暦&nbsp;<input m:id="returnDtYear"  class="imenotuse width_30" m:maxlength="4" type="text" size=5 m:value="#{staffRegistDto.mstStaff.returnDtYear}" m:disabled="#{!staffRegistDto.leaveReturnFlg}"/>年
+			<input m:id="returnDtMonth" class="imenotuse width_30" m:maxlength="2" type="text" size=3 m:value="#{staffRegistDto.mstStaff.returnDtMonth}" m:disabled="#{!staffRegistDto.leaveReturnFlg}"/>月
+			<input m:id="returnDtDay"   class="imenotuse width_30" m:maxlength="2" type="text" size=3 m:value="#{staffRegistDto.mstStaff.returnDtDay}" m:disabled="#{!staffRegistDto.leaveReturnFlg}"/>日
+		</td>
+	</tr>
+	<span m:rendered="#{!staffRegistDto.leaveReturnFlg}">
+		<table>
+			<tr>
+				<td>
+				・休職中スタッフの活動状況が変わる場合は本部にご連絡下さい。
+				</td>
+			</tr>
+			<tr>
+				<td>
+				・一度ご登録いただいた・氏名・フリガナ・性別・生年月日の4項目については、修正を画面で行うことはできません。<br>
+				　教育グループ（03-5487-7420）までお電話でご連絡ください。
+				</td>
+			</tr>
+		</table>
+	</span>
+</table>
+<script type="text/javascript">
+<!--
+	setFocusToFirstTextElementCustom('staffRegistEdit');
+//-->
+</script>
+</form>
+</span>
+
+</body>
+</html>

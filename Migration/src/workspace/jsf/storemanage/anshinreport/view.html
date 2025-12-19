@@ -1,0 +1,319 @@
+<html xmlns:m="http://www.seasar.org/maya" m:action="#{AnshinReportAction.initialize}" m:extends="/jsf/layout/layoutNoNavi.html">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=Windows-31j" />
+    <title>あんしん点検結果報告</title>
+  </head>
+  <body>
+    <span m:inject="f:param" m:name="layoutTitle" m:value="あんしん点検結果報告"/>
+    <span m:inject="s:insert" m:name="bodyTitleName">あんしん点検結果報告</span>
+    <span m:inject="f:param" m:name="onLoadName" m:value="init();"/>
+    <span m:inject="f:param" m:name="viewIdValue" m:value="BSM018V01"/>
+    <span m:inject="s:insert" m:name="body">
+	<style type="text/css" media="screen">
+    <!--
+    .scroll_area {
+    	overflow:auto;
+    	width:820px;
+    	height:400px;
+    }
+    -->
+    </style>
+      <SCRIPT LANGUAGE="javascript">
+<!--
+function init(){
+	userTypeCode = document.forms['anshinReportSelect'].elements['anshinReportSelect:usertypeCd'].value;
+	if(userTypeCode == '01') {
+		var objectTaishoJoken = document.anshinReportSelect.elements['anshinReportSelect:taishoJokenSelect'];
+ 		var taishoJoken = objectTaishoJoken.value;
+
+	    if(taishoJoken == 'ONER'){
+		    document.forms['anshinReportSelect'].elements['anshinReportSelect:targetOnerCd'].focus();
+		}else{
+		    document.forms['anshinReportSelect'].elements['anshinReportSelect:targetMiseCd'].focus();
+		}
+	}
+}
+
+function search(){
+    if(document.forms['anshinReportSelect'].elements['anshinReportSelect:usertypeCd'].value == '01'){
+  	  onButtonJen();
+    }
+  	document.forms['anshinReportSelect'].elements['anshinReportSelect:__link_clicked__'].value='anshinReportSelect:search';
+    document.forms['anshinReportSelect'].submit();
+}
+
+function onerSearch(){
+	onButtonJen();
+    document.forms['anshinReportSelect'].elements['anshinReportSelect:__link_clicked__'].value='anshinReportSelect:onerSearch';
+    document.forms['anshinReportSelect'].submit();
+}
+
+function miseSearch(){
+	onButtonJen();
+    document.forms['anshinReportSelect'].elements['anshinReportSelect:__link_clicked__'].value='anshinReportSelect:miseSearch';
+    document.forms['anshinReportSelect'].submit();
+}
+
+function onButtonJen(){
+	document.forms['anshinReportSelect'].elements['anshinReportSelect:miseSearchBt'].disabled = false;
+	document.forms['anshinReportSelect'].elements['anshinReportSelect:targetMiseCd'].disabled = false;
+	document.forms['anshinReportSelect'].elements['anshinReportSelect:onerSearchBt'].disabled = false;
+	document.forms['anshinReportSelect'].elements['anshinReportSelect:targetOnerCd'].disabled = false;
+}
+
+function downLoad(resultIndex,fileIndex) {
+	document.anshinReportSelect.elements["anshinReportSelect:listIndex"].value=fileIndex;
+	document.anshinReportSelect.elements["anshinReportSelect:resultIndex"].value=resultIndex;
+	document.anshinReportSelect.elements['anshinReportSelect:__link_clicked__'].value='anshinReportSelect:download';
+	document.anshinReportSelect.submit();
+}
+
+function doAction(){
+        var objectTaishoJoken = document.anshinReportSelect.elements['anshinReportSelect:miseSelect'];
+        var miseIndex = objectTaishoJoken.selectedIndex;
+
+        if (miseIndex == '0') {
+            document.forms['anshinReportSelect'].elements['anshinReportSelect:taishoJoken'].value = 'ONER';
+        } else {
+            document.forms['anshinReportSelect'].elements['anshinReportSelect:taishoJoken'].value = 'MISE';
+        }
+}
+
+function changeCompanyCd(){
+        userTypeCode = document.forms['anshinReportSelect'].elements['anshinReportSelect:usertypeCd'].value;
+        if(userTypeCode == '02'){
+			document.anshinReportSelect.elements['anshinReportSelect:__link_clicked__'].value='anshinReportSelect:changeCompanyCd';
+			document.anshinReportSelect.submit();
+	    	return false;
+	    }
+}
+
+function changeTaishoJeken(){
+	//コードエリア表示・非表示
+	var objectTaishoJoken = document.anshinReportSelect.elements['anshinReportSelect:taishoJokenSelect'];
+ 	var taishoJoken = objectTaishoJoken.value;
+ 	document.forms['anshinReportSelect'].elements['anshinReportSelect:taishoJoken'].value = taishoJoken;
+ 	//表示対象：オーナーコードエリア
+ 	var div_oner = document.getElementById('anshinReportSelect:div_oner');
+ 	var th_oner =document.getElementById('anshinReportSelect:th_oner');
+ 	var td_oner =document.getElementById('anshinReportSelect:td_oner');
+ 	//表示対象：店舗コードエリア
+ 	var div_mise = document.getElementById('anshinReportSelect:div_mise');
+ 	var th_mise =document.getElementById('anshinReportSelect:th_mise');
+ 	var td_mise =document.getElementById('anshinReportSelect:td_mise');
+
+	//初めに全て非表示にする。
+	div_oner.style.display="none";
+ 	th_oner.style.display="none";
+	td_oner.style.display="none";
+
+	div_mise.style.display="none";
+ 	th_mise.style.display="none";
+	td_mise.style.display="none";
+
+	if(taishoJoken == 'ONER') {
+	    //オーナー選択時
+		div_oner.style.display="";
+	 	th_oner.style.display="";
+		td_oner.style.display="";
+		document.anshinReportSelect.elements['anshinReportSelect:onerSearchBt'].focus();
+		document.anshinReportSelect.elements['anshinReportSelect:targetOnerCd'].focus();
+	}else if(taishoJoken == 'MISE') {
+	    //店舗コード選択時
+		div_mise.style.display="";
+	 	th_mise.style.display="";
+		td_mise.style.display="";
+		document.anshinReportSelect.elements['anshinReportSelect:miseSearchBt'].focus();
+		document.anshinReportSelect.elements['anshinReportSelect:targetMiseCd'].focus();
+	}
+}
+//-->
+      </SCRIPT>
+	 <form m:id="anshinReportSelect" onKeyDown="return setDefaultSubmitButton('anshinReportSelect','execute');" style="float:left">
+		<input type="hidden" m:id="initMenuId" m:value="#{menuAction.initMenuId}"/>
+		<input type="hidden" m:id="initSubMenuId" m:value="#{menuAction.initSubMenuId}"/>
+     	<input type="hidden" m:id="viewId" m:value="#{viewIdValue}"/>
+     	<input type="hidden" m:id="usertypeCd" m:value="#{anshinReportDto.usertypeCd}"/>
+		<input type="hidden" m:id="resultIndex" m:value="#{anshinReportDto.resultIndex}"/>
+		<input type="hidden" m:id="listIndex" m:value="#{anshinReportDto.listIndex}"/>
+		<input type="hidden" m:id="taishoJoken" m:value="#{anshinReportDto.taishoJoken}"/>
+		<a id="download" m:action="#{anshinReportDownloadAction.download}"/>
+		<a id="changeCompanyCd" m:action="#{AnshinReportAction.changeCompany}"/>
+		<table class="hiddenBody">
+			<tr>
+				<td>
+				<table class="body_table">
+					<tr>
+					    <!-- 店舗ユーザ以外の場合、会社リスト -->
+						<span m:rendered="#{anshinReportDto.usertypeCd != 03}">
+							<th nowrap=" nowrap">会社</th>
+							<td>
+						        <div class="hideArea">
+									<select class="condition_field"
+											m:id="companyCd"
+											m:value="#{anshinReportDto.companyCd}"
+											m:items="#{anshinReportDto.companyList}"
+											m:itemValue="companyCd"
+											m:itemLabel="companyName"
+		    								m:onChange="changeCompanyCd()">
+		    							<option value="00">モスフードサービス</option>
+										<option value="01">トモス</option>
+										<option value="02">四季菜</option>
+									</select>
+							  	</div>
+							</td>
+						</span>
+						<!-- 本部の時、対象条件 -->
+						<span m:rendered="#{anshinReportDto.usertypeCd == 01}">
+
+							<th>対象条件</th>
+					    	<td>
+					   			<div class="hideArea">
+							    <select m:id="taishoJokenSelect"
+							    		m:value="#{anshinReportDto.taishoJoken}"
+							    		m:items="#{anshinReportDto.taishoJokenList}"
+							    		m:itemValue="code"
+							    		m:itemLabel="name"
+							    		m:onchange="changeTaishoJeken()"/>
+							    </div>
+					   		</td>
+							<div id="div_mise" m:style="#{(anshinReportDto.taishoJoken) == 'MISE' ? '' : 'display:none;'}">
+								<th m:id="th_mise" m:style="#{(anshinReportDto.taishoJoken) == 'MISE' ? '' : 'display:none;'}">
+									対象店舗&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="button" m:id="miseSearchBt" value="検索" m:action="#{AnshinReportAction.miseSrearch}"/>
+								</th>
+						    	<td m:id="td_mise" m:style="#{(anshinReportDto.taishoJoken) == 'MISE' ? '' : 'display:none;'}">
+									<input type="text" m:id="targetMiseCd" size="10" maxlength="5" m:value="#{anshinReportDto.miseCd}" style="ime-mode:disabled" m:converter="#{codeConverterMise}"/>
+								</td>
+					   		</div>
+							<div id="div_oner" m:style="#{(anshinReportDto.taishoJoken) == 'ONER' ? '' : 'display:none;'}">
+								<th m:id="th_oner" m:style="#{(anshinReportDto.taishoJoken) == 'ONER' ? '' : 'display:none;'}">
+									対象オーナー&nbsp;<input type="button" value="検索" m:id="onerSearchBt" m:action="#{AnshinReportAction.onerSearch}"/>
+								</th>
+						    	<td m:id="td_oner" m:style="#{(anshinReportDto.taishoJoken) == 'ONER' ? '' : 'display:none;'}">
+									<input type="text" m:id="targetOnerCd" size="10" maxlength="5" m:value="#{anshinReportDto.onerCd}" style="ime-mode:disabled" m:converter="#{codeConerterOwner}"/>
+								</td>
+					   		</div>
+
+						</span>
+						<!-- オーナーユーザの時、対象店舗 -->
+						<span m:rendered="#{anshinReportDto.usertypeCd == 02}">
+							<th>対象店舗</th>
+							<td>
+		    					<div class="hideArea">
+			                      	<select class="condition_field" style="width:250px;"
+			                      	    m:id="miseSelect"
+			                      	    m:value="#{anshinReportDto.miseCd}"
+										m:items="#{anshinReportDto.miseList}"
+										m:itemValue="hyojitaishoCd"
+										m:itemLabel="hyojitaishoNameAddClose"
+										m:onchange="doAction();">
+										<option value="">MOS</option>
+									</select>
+								</div>
+							</td>
+						</span>
+						<!-- 店舗ユーザの時、対象店舗 -->
+						<span m:rendered="#{anshinReportDto.usertypeCd == 03}">
+							<th nowrap=" nowrap">会社</th>
+							<td>
+								<span m:converter="#{characterEncodingConverter}" m:value="#{anshinReportDto.companyName}"/>
+							</td>
+							<th nowrap=" nowrap">対象店舗</th>
+							<td>
+								<span m:converter="#{characterEncodingConverter}" m:value="#{anshinReportDto.miseCd} #{anshinReportDto.miseName}"/>
+								<input type="hidden" m:value="#{anshinReportDto.miseCd}"/>
+								<input type="hidden" m:value="#{anshinReportDto.miseName}"/>
+							</td>
+						</span>
+						<th nowrap=" nowrap">実施年度</th>
+						<td nowrap=" nowrap">
+							<div class="hideArea">
+								<select m:value="#{anshinReportDto.jissiNendo}"
+									m:items="#{anshinReportDto.taishoNendo}"
+									m:itemValue="#{anshinReportDto.taishoNendo}"
+									m:itemLabel="#{anshinReportDto.taishoNendo}">
+									<option value=""></option>
+								</select>
+							</div>
+						</td>
+					</tr>
+			    </table>
+			</td>
+			<td>&nbsp;<input m:name="anshinReportSelect:execute" type="button"
+			              value="#{anshinReportDto.reExecuteFlg != 1?'実行':'再検索'}"
+			              m:onclick="search();"/>
+			  <a m:id="search" m:action="#{AnshinReportAction.execute}"/>
+			</td>
+			</tr>
+	   		<tr style="height:5px;"><td colspan="*"/></tr>
+		</table>
+	</form>
+	<br/>
+	<div style="clear:both"/>
+	<span m:rendered="#{anshinReportDto.resultList != null}">
+	 <form m:id="viewForm">
+		<input type="hidden" m:id="initMenuId" m:value="#{menuAction.initMenuId}"/>
+		<input type="hidden" m:id="initSubMenuId" m:value="#{menuAction.initSubMenuId}"/>
+
+		<!-- 結果ヘッダー -->
+		<span m:rendered="#{(anshinReportDto.taishoJoken) == 'ONER'}">
+	    	<table class="body_table2" width="500px;">
+				<tr>
+					<th width="110px">対象オーナー</th>
+					<td width="*">
+						<span m:rendered="#{anshinReportDto.onerName != null}">
+							<span m:converter="#{characterEncodingConverter}" m:value="#{anshinReportDto.onerCd}"/>&nbsp;<span m:converter="#{characterEncodingConverter}" m:value="#{anshinReportDto.onerName}"/>
+						</span>
+					</td>
+				</tr>
+
+			</table>
+		</span>
+
+		<table cellspacing="0" cellpadding="0">
+		<tr style="height:10px;" ><td/></tr>
+		</table>
+
+		<div class="scroll_area">
+		<table cellspacing="0" cellpadding="0">
+			<!-- 結果データ -->
+			<div m:inject="s:forEach" m:items="#{anshinReportDto.resultList}" m:var="result" m:varindex="i">
+			<tr><td>
+				<table class="body_table" width="500px;" style="border-bottom:none;">
+					<tr>
+						<th width="110px" style="border-bottom-width:0px;">対象店舗</th>
+						<td width="*" style="border-bottom-width:0px;">
+							<span m:rendered="#{result.miseName != null}">
+								<span m:converter="#{characterEncodingConverter}" m:value="#{result.miseCd}"/>&nbsp;<span m:converter="#{characterEncodingConverter}" m:value="#{result.miseName}"/>
+							</span>
+						</td>
+					</tr>
+				</table>
+			</td></tr>
+			<tr><td>
+		    	<table class="body_table2" width="800px;">
+					<tr>
+						<th width="800px;">対象ファイル</th>
+					</tr>
+				</table>
+		        <table class="body_table2" width="800px;" style="border-top-width:0px;">
+					<div m:inject="s:forEach" m:items="#{result.fileList}" m:var="e" m:varindex="s">
+						<tr class="non_top_border">
+							<td width="800px;" style="word-break:break-all">
+								<a href="javascript:void(0);"  onClick="downLoad(#{i},#{s});return false;" title="#{e.fileName}"><span m:converter="#{characterEncodingConverter}" m:value="#{e.fileName}"/></a>
+							</td>
+						</tr>
+		        	</div>
+		    	</table>
+			</td></tr>
+			<tr style="height:20px;"><td/></tr>
+		    </div>
+		</table>
+        </div>
+	<input type="text" m:id="dummyEnter" style="display:none"/>
+	</form>
+    </span>
+
+	</span>
+  </body>
+</html>

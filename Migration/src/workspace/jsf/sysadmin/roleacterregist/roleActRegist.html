@@ -1,0 +1,421 @@
+<html xmlns:m="http://www.seasar.org/maya" m:action="#{roleActRegistAction.initialize}" m:extends="/jsf/layout/layoutNoNavi.html">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=Windows-31j" />
+  <title></title>
+</head>
+
+<body>
+<span m:inject="f:param" m:name="layoutTitle" m:value="ロール別アクセス権限設定"/>
+<span m:inject="s:insert" m:name="bodyTitleName">■ロール別アクセス権限設定</span>
+<span m:inject="f:param"  m:name="onLoadName" m:value="bodyLoad();"/>
+<span m:inject="f:param" m:name="viewIdValue" m:value="BSA007V02"/>
+<span m:inject="s:insert" m:name="body">
+
+<span m:value="#{roleActRegistDto.viewFlg1}" m:id="flg1" style="display:none;"/>
+<span m:value="#{roleActRegistDto.viewFlg2}" m:id="flg2" style="display:none;"/>
+<span m:value="#{roleActRegistDto.viewFlg3}" m:id="flg3" style="display:none;"/>
+<span m:value="#{roleActRegistDto.viewFlg4}" m:id="flg4" style="display:none;"/>
+<span m:value="#{roleActRegistDto.viewFlg5}" m:id="flg5" style="display:none;"/>
+
+<SCRIPT LANGUAGE="javascript">
+<!--
+
+var shokiChkBox = new Array();
+var jogenChkBox = new Array();
+
+/**
+ * 画面ロード時の初期処理
+ */
+function bodyLoad(){
+
+	//チェックボックス初期化
+	//initCheckBox();
+
+	//チェックボックスのみのオブジェクトを作成
+	var allCheckBox = new Array();
+	var cnt = 0;
+	for(i=0; i<document.roleActCondition.elements.length; i++){
+		var tmp = document.roleActCondition.elements[i];
+		if(tmp != null && tmp.type == "checkbox"){
+			allCheckBox[cnt] = new Object();
+			allCheckBox[cnt] = tmp;
+			cnt++;
+		}
+	}
+
+	//「初期チェックボックス(配列)」と「上限チェックボックス(配列)」の
+	//　オブジェクトを作成し、グローバル変数で保持する。
+	var shokiFlg = true;
+	var tmpCnt   = 0;
+	for(i=0; i<allCheckBox.length; i++){
+		if(shokiFlg == true){
+			shokiChkBox[tmpCnt] = new Object();
+			shokiChkBox[tmpCnt] = allCheckBox[i];
+			shokiFlg = false;
+		}else{
+			jogenChkBox[tmpCnt] = new Object();
+			jogenChkBox[tmpCnt] = allCheckBox[i];
+			shokiFlg = true;
+			tmpCnt++;
+		}
+	}
+}
+
+/**
+ * 画面ロード時のチェックボックス初期処理
+ */
+function initCheckBox() {
+	for(i=0; i<document.roleActCondition.elements.length; i++){
+		var obj1 = document.roleActCondition.elements[i];
+
+		if(obj1 != null && obj1.type == "checkbox"){
+
+			var obj2 = document.roleActCondition.elements[i+1];
+
+			if(obj2 != null && obj2.type == "checkbox" && obj2.checked == false){
+				obj1.disabled = true;
+			}
+			if(i+1 < document.roleActCondition.elements.length){
+				i++;
+			}
+		}
+	}
+}
+
+/**
+ * X座標とY座標から、INDEX番号を取得する。
+ * (Xは0～、Yは1～)
+ */
+function calcNo(x,y) {
+
+	var flg1 = document.getElementById("flg1").innerText;
+	var flg2 = document.getElementById("flg2").innerText;
+	var flg3 = document.getElementById("flg3").innerText;
+	var flg4 = document.getElementById("flg4").innerText;
+	var flg5 = document.getElementById("flg5").innerText;
+
+	var maxX = 0;
+	if(flg5 == "true"){
+		maxX = 5;
+	}else if(flg4 == "true"){
+		maxX = 4;
+	}else if(flg3 == "true"){
+		maxX = 3;
+	}else if(flg2 == "true"){
+		maxX = 2;
+	}else if(flg1 == "true"){
+		maxX = 1;
+	}
+
+	//数値化する
+	maxX = maxX - 0;
+	var intX = x - 0;
+	var intY = y - 0;
+
+	//計算
+	return ((intY - 1) * maxX) + intX - 1;
+}
+
+/**
+ * 「初期CHKBOX｣がクリックされた時の処理
+ *  チェックされた場合は上限CHKBOXもONにする
+ */
+function changeShoki(x,y) {
+	y = y + 1;
+	var index = calcNo(x,y);
+
+	if(shokiChkBox[index].checked == true){
+		jogenChkBox[index].checked = true;
+	}
+}
+
+/**
+ * 「上限CHKBOX｣がクリックされた時の処理
+ *  チェックがはずされた場合は初期CHKBOXもOFFにする
+ */
+function changeJogen(x,y) {
+	y = y + 1;
+	var index = calcNo(x,y);
+
+	if(jogenChkBox[index].checked == false){
+		shokiChkBox[index].checked = false;
+	}
+}
+
+/**
+ * すべてのCHKBOXをOFFにする
+ */
+function clearForm(formobj) {
+    for (i = 0; i < formobj.elements.length; i++) {
+        if (formobj.elements[i].type == "text") {
+            formobj.elements[i].value = "";
+        } else if (formobj.elements[i].type == "textarea") {
+            formobj.elements[i].value = "";
+        } else if (formobj.elements[i].type == "file") {
+            formobj.elements[i].value = "";
+        } else if (formobj.elements[i].type == "password") {
+            formobj.elements[i].value = "";
+        } else if (formobj.elements[i].type == "checkbox") {
+            formobj.elements[i].checked = formobj.elements[i].defaultChecked;
+            formobj.elements[i].checked = false;
+        } else if (formobj.elements[i].type == "radio") {
+            formobj.elements[i].checked = formobj.elements[i].defaultChecked;
+        } else if (formobj.elements[i].type == "select-one") {
+            for (j = 0; j < formobj.elements[i].options.length; j++) {
+                formobj.elements[i].options[j].selected = formobj.elements[i].options[j].defaultSelected;
+            }
+            formobj.elements[i].selectedIndex = -1;
+            formobj.elements[i].selectedIndex = 0;
+        }
+    }
+}
+
+/**
+ * すべてのCHKBOXをONにする
+ */
+function checkForm(formobj) {
+    for (i = 0; i < formobj.elements.length; i++) {
+        if (formobj.elements[i].type == "text") {
+            formobj.elements[i].value = "";
+        } else if (formobj.elements[i].type == "textarea") {
+            formobj.elements[i].value = "";
+        } else if (formobj.elements[i].type == "file") {
+            formobj.elements[i].value = "";
+        } else if (formobj.elements[i].type == "password") {
+            formobj.elements[i].value = "";
+        } else if (formobj.elements[i].type == "checkbox") {
+            formobj.elements[i].checked = formobj.elements[i].defaultChecked;
+            formobj.elements[i].checked = true;
+        } else if (formobj.elements[i].type == "radio") {
+            formobj.elements[i].checked = formobj.elements[i].defaultChecked;
+        } else if (formobj.elements[i].type == "select-one") {
+            for (j = 0; j < formobj.elements[i].options.length; j++) {
+                formobj.elements[i].options[j].selected = formobj.elements[i].options[j].defaultSelected;
+            }
+            formobj.elements[i].selectedIndex = -1;
+            formobj.elements[i].selectedIndex = 0;
+        }
+    }
+}
+//-->
+</SCRIPT>
+<STYLE type="text/css">
+<!--
+/* テーブルヘッダデフォルト設定 パターン２*/
+/* テーブルヘッダのセンタリング用 */
+table.body_table2 tr th{
+  text-align            : center;
+}
+.list_tab_area {
+    width               : 960px;
+    margin-top:4px;
+    display:block;
+}
+.check_area {
+	text-align          : center;
+    width               : 70px;
+}
+
+	/**
+	 * 機能用スクロール
+	 */
+	.scroll_area0{
+		width:	  979px;
+		height:	  323px;
+		overflow: auto;
+	}
+	/**
+	 * ロール用スクロール
+	 */
+	.scroll_area1 {
+		width:	  979px;
+		height:	  254px;
+		overflow: auto;
+	}
+@media print {
+	/* 機能用スクロールバー用の設定 */
+	.scroll_area0 {
+		overflow				: visible;
+		height					: auto;
+	}
+	/* ロール用スクロールバー用の設定 */
+	.scroll_area1 {
+		overflow				: visible;
+		height					: auto;
+	}
+}
+
+-->
+</STYLE>
+<form m:id="roleActCondition">
+	<input type="hidden" m:id="initMenuId" m:value="#{menuAction.initMenuId}"/>
+	<input type="hidden" m:id="initSubMenuId" m:value="#{menuAction.initSubMenuId}"/>
+	<input type="hidden" m:id="viewId" m:value="#{viewIdValue}"/>
+	<input type="button" value="戻る" m:action="#{roleActRegistAction.back}"/>&nbsp;
+	<input type="button" value="登録" m:action="#{roleActRegistAction.update}"/>&nbsp;&nbsp;
+	<input type="button" value="すべてON" onclick="checkForm(this.form);"/>&nbsp;
+	<input type="button" value="すべてOFF" onclick="clearForm(this.form);"/>
+	<!-- タブ部 -->
+    <ul class="list_tab_area">
+	  <!-- タブ部分(機能の場合) -->
+      <div m:rendered="#{roleActConditionDto.selectPullId == '0'}" m:inject="s:forEach" m:items="#{roleActRegistDto.uIRoleBunrui}" m:var="e" m:varindex="i">
+        <li class="body_#{e.bunruiCd == roleActRegistDto.bunruiStr?'':'non_'}active_cell"
+          style="width:140px;">
+              <a m:action="#{roleActRegistAction.changeTab}">
+                <span m:converter="#{characterEncodingConverter}" m:value="#{e.bunruiName}"/>
+                <span m:inject="f:param" m:name="bunruiStr" m:value="#{e.bunruiCd}"/>
+              </a>
+        </li>
+      </div>
+	  <!-- タブ部分(ロールの場合) -->
+      <div m:rendered="#{roleActConditionDto.selectPullId == '1'}" m:inject="s:forEach" m:items="#{roleActRegistDto.uIBirdMenu}" m:var="e" m:varindex="i">
+        <li class="body_#{e.subMenuId == roleActRegistDto.menuStr?'':'non_'}active_cell"
+          style="width:145px;">
+              <a m:action="#{roleActRegistAction.changeTab}">
+                <span m:converter="#{characterEncodingConverter}" m:value="#{e.subMenuName}"/>
+                <span m:inject="f:param" m:name="menuStr" m:value="#{e.subMenuId}"/>
+              </a>
+        </li>
+      </div>
+    </ul>
+	<!-- タブ共通帯部 -->
+	<table class="body_caption" style="clear:both;" width ="960px" cellspacing="0" cellpadding="0">
+	  <tr style="height:5px;"><td></td></tr>
+	</table>
+	<!--ヘッダー部-->
+	<table class="body_table2" width="960px">
+	  <!-- ヘッダー１行目 -->
+	    <tr>
+	      <th width="*"/>
+	  		<!-- ヘッダー部 -->
+	  		  <span m:inject="s:forEach"
+		     		m:rendered="#{roleActConditionDto.selectPullId == '0'}"
+		     		m:items="#{roleActRegistDto.uIBirdMenu}"
+		     		m:var="e">
+		        <th width="140px" colspan="2">
+		            <span m:converter="#{characterEncodingConverter}" m:value="#{e.menuName}"/>
+		        </th>
+		      </span>
+		      <span m:inject="s:forEach"
+		      		m:rendered="#{roleActConditionDto.selectPullId != '0'}"
+		     		m:items="#{roleActRegistDto.uIRole}"
+		     		m:var="e">
+		        <th width="140px" colspan="2">
+		            <span m:converter="#{characterEncodingConverter}" m:value="#{e.bunruiName}"/>
+		        </th>
+		      </span>
+              <th m:rendered="#{roleActRegistDto.viewFlg2==false}" colspan="2">&nbsp;</th>
+		      <th m:rendered="#{roleActRegistDto.viewFlg3==false}" colspan="2">&nbsp;</th>
+		      <th m:rendered="#{roleActRegistDto.viewFlg4==false}" colspan="2">&nbsp;</th>
+		      <th m:rendered="#{roleActRegistDto.viewFlg5==false}" colspan="2">&nbsp;</th>
+	    </tr>
+
+	  <!-- ヘッダー２行目 -->
+	    <tr>
+	      <th/>
+	      <span m:inject="s:forEach" m:rendered="#{roleActConditionDto.selectPullId == '0'}" m:items="#{roleActRegistDto.uIBirdMenu}" m:var="e">
+	        <th width="140px" colspan="2">
+	            <span m:converter="#{characterEncodingConverter}" m:value="#{e.subMenuName}"/>
+	        </th>
+	      </span>
+	      <span m:inject="s:forEach" m:rendered="#{roleActConditionDto.selectPullId != '0'}" m:items="#{roleActRegistDto.uIRole}" m:var="e">
+	        <th width="140px" colspan="2">
+	            <span m:converter="#{characterEncodingConverter}" m:value="#{e.roleName}"/>
+	        </th>
+	      </span>
+	        <th m:rendered="#{roleActRegistDto.viewFlg2==false}" colspan="2">&nbsp;</th>
+	        <th m:rendered="#{roleActRegistDto.viewFlg3==false}" colspan="2">&nbsp;</th>
+	        <th m:rendered="#{roleActRegistDto.viewFlg4==false}" colspan="2">&nbsp;</th>
+	        <th m:rendered="#{roleActRegistDto.viewFlg5==false}" colspan="2">&nbsp;</th>
+	    </tr>
+	  <!-- ヘッダー３行目 -->
+	    <tr>
+	      <th><span m:value="#{roleActConditionDto.selectPullId == '0'?'ロール':'機能'}"/>名</th>
+	      <th class="check_area">初期</th>
+	      <th class="check_area">上限</th>
+	      <th class="check_area"><span m:value="#{roleActRegistDto.viewFlg2?'初期':''}"/></th>
+	      <th class="check_area"><span m:value="#{roleActRegistDto.viewFlg2?'上限':''}"/></th>
+	      <th class="check_area"><span m:value="#{roleActRegistDto.viewFlg3?'初期':''}"/></th>
+	      <th class="check_area"><span m:value="#{roleActRegistDto.viewFlg3?'上限':''}"/></th>
+	      <th class="check_area"><span m:value="#{roleActRegistDto.viewFlg4?'初期':''}"/></th>
+	      <th class="check_area"><span m:value="#{roleActRegistDto.viewFlg4?'上限':''}"/></th>
+	      <th class="check_area"><span m:value="#{roleActRegistDto.viewFlg5?'初期':''}"/></th>
+	      <th class="check_area"><span m:value="#{roleActRegistDto.viewFlg5?'上限':''}"/></th>
+	    </tr>
+	</table>
+
+	<!-- データ部 -->
+	<div class="scroll_area#{roleActConditionDto.selectPullId}">
+    <table class="body_table2" style="border-top-width : 0px;" width="960px">
+      <span m:inject="s:forEach" m:items="#{roleActRegistDto.uIViewList}" m:var="e" m:varindex="i">
+        <tr class="#{i==0?'non_top_border':''}">
+          <!-- 名 -->
+          <td width="*">
+            <span m:converter="#{characterEncodingConverter}" m:value="#{roleActConditionDto.selectPullId == '0'?e.roleName:e.subMenuName}"/>
+          </td>
+
+          <!-- (1)のチェックボックス -->
+          <td class="check_area">
+              <input type="checkbox" m:value="#{e.checkFlg1}" onclick="changeShoki('1',#{i})"/>
+          </td>
+          <td class="check_area">
+              <input type="checkbox" m:value="#{e.checkFlg1Limit}" onclick="changeJogen('1',#{i})"/>
+          </td>
+
+          <!-- (2)のチェックボックス -->
+          <td class="check_area">
+          	<span m:rendered="#{roleActRegistDto.viewFlg2}">
+              	<input type="checkbox" m:value="#{e.checkFlg2}" onclick="changeShoki('2',#{i})"/>
+            </span>
+          </td>
+          <td class="check_area">
+          	<span  m:rendered="#{roleActRegistDto.viewFlg2}">
+              	<input m:rendered="#{roleActRegistDto.viewFlg2}" type="checkbox" m:value="#{e.checkFlg2Limit}" onclick="changeJogen('2',#{i})"/>
+            </span>
+          </td>
+
+          <!-- (3)のチェックボックス -->
+          <td class="check_area">
+          <span m:rendered="#{roleActRegistDto.viewFlg3}">
+              <input type="checkbox" m:value="#{e.checkFlg3}" onclick="changeShoki('3',#{i})" />
+          </span>
+          </td>
+          <td class="check_area">
+          <span m:rendered="#{roleActRegistDto.viewFlg3}">
+              <input type="checkbox" m:value="#{e.checkFlg3Limit}" onclick="changeJogen('3',#{i})"/>
+          </span>
+          </td>
+
+          <!-- (4)のチェックボックス -->
+          <td class="check_area">
+          <span m:rendered="#{roleActRegistDto.viewFlg4}">
+              <input type="checkbox" m:value="#{e.checkFlg4}" onclick="changeShoki('4',#{i})" />
+          </span>
+          </td>
+          <td class="check_area">
+          <span m:rendered="#{roleActRegistDto.viewFlg4}">
+              <input type="checkbox" m:value="#{e.checkFlg4Limit}" onclick="changeJogen('4',#{i})"/>
+          </span>
+          </td>
+
+          <!-- (5)のチェックボックス -->
+          <td class="check_area">
+          <span m:rendered="#{roleActRegistDto.viewFlg5}">
+              <input type="checkbox" m:value="#{e.checkFlg5}" onclick="changeShoki('5',#{i})" />
+          </span>
+          </td>
+          <td class="check_area">
+          <span m:rendered="#{roleActRegistDto.viewFlg5}">
+              <input type="checkbox" m:value="#{e.checkFlg5Limit}" onclick="changeJogen('5',#{i})"/>
+          </span>
+          </td>
+
+        </tr>
+      </span>
+    </table>
+	</div>
+	<input type="text" m:id="dummyEnter" style="display:none"/>
+</form>
+</span>
+</body>
+</html>

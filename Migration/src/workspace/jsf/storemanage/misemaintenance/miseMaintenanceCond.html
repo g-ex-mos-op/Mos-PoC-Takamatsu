@@ -1,0 +1,64 @@
+<html xmlns:m="http://www.seasar.org/maya" m:action="#{miseMaintenanceCondAction.initialize}" m:extends="/jsf/layout/layoutNoNavi.html">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Windows-31j" />
+<title>個店情報メンテナンス</title>
+</head>
+<body>
+<span m:inject="f:param" m:name="layoutTitle" m:value="個店情報メンテナンス"/>
+<span m:inject="f:param" m:name="onLoadName" m:value="load()"/>
+<span m:inject="s:insert" m:name="bodyTitleName">■個店情報メンテナンス</span>
+<span m:inject="f:param" m:name="viewIdValue" m:value="BSM001V1"/>
+<span m:inject="s:insert" m:name="body">
+<script type="text/javascript">
+<!--
+function load(){
+	focusElement('miseMaintenance');
+}
+//-->
+</script>
+
+<form m:id="miseMaintenance" onKeyDown="return setDefaultSubmitButton('miseMaintenance','execution');">
+	<input type="hidden" m:id="initMenuId" m:value="#{menuAction.initMenuId}"/>
+	<input type="hidden" m:id="initSubMenuId" m:value="#{menuAction.initSubMenuId}"/>
+	<input type="hidden" m:id="viewId" m:value="#{viewIdValue}"/>
+
+<div class="search_condition">
+<!-- 検索条件 -->
+<table class="hiddenBody">
+	<tr>
+		<td>
+			<table class="body_table">
+				<tr>
+					<th>会社</th>
+					<td>
+						<div class="hideArea">
+						<select class="condition_field" 
+								m:id="condCompanyCd"
+								m:value="#{miseMaintenanceDto.condCompanyCd}"
+								m:items="#{miseMaintenanceDto.listCompany}"
+								m:itemValue="companyCd"
+								m:itemLabel="companyName">
+							<option value="">モスフードサービス</option>
+							<option value="">トモス</option>
+							<option value="">四季菜</option>
+						</select>
+						</div>
+					</td>
+					<th style="border-right-width:0px;">店コード</th>
+					<th style="border-left-width:0px;">
+						<input type="button" value="検索" m:action="#{miseMaintenanceCondAction.callMiseForm}"/></th>
+					<td>
+						<input class="imenotuse" type="text" m:id="condMiseCd" m:value="#{miseMaintenanceDto.condMiseCd}" m:maxlength="5" m:size="10"/>				
+					</td>
+				</tr>
+			</table>
+	    </td>
+		<td style="padding-left:3px;"><input m:id="execution" type="button" value="実行" m:action="#{miseMaintenanceCondAction.execute}"/></td>
+	</tr>
+</table>		
+</div>
+</form>
+</span>
+
+</body>
+</html>

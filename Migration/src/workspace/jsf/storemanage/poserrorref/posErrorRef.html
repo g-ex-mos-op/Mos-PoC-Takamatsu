@@ -1,0 +1,129 @@
+<html xmlns:m="http://www.seasar.org/maya" m:action="#{posErrorRefAction.initialize}" m:extends="/jsf/layout/layoutNoNavi.html">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Windows-31j"/>
+<meta http-equiv="Content-Style-Type" content="text/css"/>
+<title>POS集信エラー店舗</title>
+</head>
+<body>
+<span m:inject="f:param" m:name="layoutTitle" m:value="POS集信エラー店舗"/>
+<span m:inject="s:insert" m:name="bodyTitleName">■POS集信エラー店舗</span>
+<span m:inject="f:param" m:name="onLoadName" m:value="load()"/>
+<span m:inject="f:param" m:name="onLoadName" m:value="bodyLoad()"/>
+<span m:inject="f:param" m:name="viewIdValue" m:value="BSM015V01"/>
+<span m:inject="s:insert" m:name="body">
+<style type="text/css">
+</style>
+<script type="text/javascript">
+<!--
+function load(){
+
+    loadScroll("scrollpos",400);
+    }
+
+function bodyLoad() {
+	focusElement('posErrorRef');
+}
+
+function executeAction(formName, actionName) {
+	document.forms[formName].elements[formName + ':__link_clicked__'].value = formName + ':' + actionName;
+	document.forms[formName].submit();
+	return false;
+}
+-->
+</script>
+<form m:id="posErrorRef">
+<input type="hidden" m:id="initMenuId" m:value="#{menuAction.initMenuId}"/>
+<input type="hidden" m:id="initSubMenuId" m:value="#{menuAction.initSubMenuId}"/>
+<input type="hidden" m:id="viewId" m:value="#{viewIdValue}"/>
+<input type="hidden" m:id="windowId" m:value="#{posErrorRefReqDto.windowId}"/>
+
+<a id="execute" m:action="#{posErrorRefAction.execute}"/>
+<!-- 条件 -->
+	<table class="body_table" style="float:left">
+		<tr>
+			<th>会社</th>
+			<td>
+				<div class="hideArea">
+				<select m:value="#{posErrorRefReqDto.selectedCompanyCd}"
+			    		m:items="#{posErrorRefDto.companyList}"
+						m:itemValue="companyCd"
+						m:itemLabel="companyName"
+						m:id="companyList">
+		    	</select>
+				</div>
+			</td>
+			<th>集信日</th>
+			<td>
+				<div class="hideArea">
+				<select m:value="#{posErrorRefReqDto.shuDt}"
+			    		m:items="#{posErrorRefDto.shuDtList}"
+			    		m:converter="#{posErrorRefDateConverter}"
+						m:id="shuDtList">
+		    	</select>
+				</div>
+			</td>
+		</tr>
+	</table>
+&nbsp;<input type="button" value="#{posErrorRefReqDto.btnNameFlg?'再検索':'実行'}" onclick="executeAction('posErrorRef', 'execute')"/>
+	<input type="button" value="売上精算状況表ダウンロード" m:action="#{posErrorRefAction.csvDownload}"/>
+	<!-- 結果 -->
+	<div style="clear:both;"></div>
+	<div m:rendered="#{posErrorRefReqDto.shushinErrorInfo != null}">
+		<table cellspacing="0" cellpadding="0">
+			<tr style="height:5px;"><td></td></tr>
+		</table>
+		<table class="body_table">
+			<tr>
+				<th>会社</th>
+				<td><span m:converter="#{characterEncodingConverter}" m:value="#{posErrorRefReqDto.companyName}"/>&nbsp;</td>
+				<th>集信日</th>
+				<td><span m:value="#{posErrorRefReqDto.dispShuDt}" m:converter="#{posErrorRefDateConverter}"/></td>
+			</tr>
+		</table>
+		<table cellspacing="0" cellpadding="0">
+			<tr style="height:4px;"><td></td></tr>
+		</table>
+	<div class="scroll_padding_head">
+	<div class="scroll_hidden margin_bottom_8">
+		<table class="body_table2 campnipo_sibu" width="98%">
+			<tr>
+				<th style="text-align:center;" width="100">集信</th>
+				<th style="text-align:center;" width="300">店舗</th>
+				<th style="text-align:center;" width="300">摘要</th>
+				<th style="text-align:center;" width="100">休業</th>
+			</tr>
+		</table>
+	</div>
+	</div>
+	<div class="scroll_padding_data">
+		<div id="scrollpos" class="scroll_hidden">
+			<table class="body_table2" style="width:98%; border-top-width : 0px;">
+				<div m:inject="s:forEach" m:items="#{posErrorRefReqDto.shushinErrorInfo}" m:var="e" m:varindex="i">
+				<tr class="non_top_border">
+					<td style="width:100px">
+						<span m:rendered="#{e.shuKbn == '1'}">1次集信</span>
+						<span m:rendered="#{e.shuKbn == '2'}">2次集信</span>
+					</td>
+					<td style="width:300px">
+						<span m:value="#{e.miseCd}" m:converter="#{posErrorRefCdConverter}"/>
+						<span m:converter="#{characterEncodingConverter}" m:value="#{e.miseNameKj}"/>
+						<span m:rendered="#{birdDateInfo.sysDate >= e.closeDt}">(CLOSE)
+						</span>
+					</td>
+					<td style="width:300px">
+						<span m:converter="#{characterEncodingConverter}" m:value="#{e.tekiyou}"/>
+					</td>
+					<td style="width:100px">
+						<span m:rendered="#{e.holKbn == '1'}">休業</span>
+					</td>
+				</tr>
+				</div>
+			</table>
+		</div>
+	</div>
+	<input type="text" m:id="dummyEnter" style="display:none"/>
+
+</form>
+</span>
+</body>
+</html>

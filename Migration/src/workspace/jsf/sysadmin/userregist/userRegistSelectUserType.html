@@ -1,0 +1,44 @@
+<html xmlns:m="http://www.seasar.org/maya" m:action="#{userRegistSelectUserTypeAction.initialize}" m:extends="/jsf/layout/layoutNoNavi.html">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Windows-31j" />
+<title>ユーザー登録</title>
+</head>
+<body>
+<span m:inject="f:param" m:name="layoutTitle" m:value="ユーザー登録"/>
+<span m:inject="s:insert" m:name="bodyTitleName">■ユーザー登録</span>
+<span m:inject="f:param" m:name="onLoadName" m:value=""/>
+<span m:inject="f:param" m:name="viewIdValue" m:value="BSA006V01"/>
+<span m:inject="s:insert" m:name="body">
+<SCRIPT LANGUAGE="javascript">
+<!--
+//-->
+</SCRIPT>
+<form m:id="informSearch">
+	<input type="hidden" m:id="viewId" m:value="#{viewIdValue}"/>
+	<input type="hidden" m:id="initMenuId" m:value="#{menuAction.initMenuId}"/>
+	<input type="hidden" m:id="initSubMenuId" m:value="#{menuAction.initSubMenuId}"/>
+	<table class="hiddenBody">
+		<tr>
+			<td><input type="submit" value="新規登録" m:action="#{userRegistSelectUserTypeAction.regist}"/></td>
+			<td style="font-weight:bold;padding-top:3px;" valign="middle">&nbsp;※本部ユーザーの新規登録は統合ユーザー管理システムで行って下さい。</td>
+		</tr>
+	</table>
+	<table class="body_table" style="margin-top:4px;">
+	  <tr>
+	    <th>ユーザータイプ</th>
+	    <td>
+	      <div class="hideArea">
+	        <select m:value="#{userRegistDto.userType}"
+	                m:items="#{userRegistDto.userTypeList}"
+	                m:itemValue="code"
+	                m:itemLabel="name">
+	            <option value="">MOS</option>
+	        </select>
+	      </div>
+	    </td>
+	  </tr>
+	</table>
+</form>
+</span>
+</body>
+</html>

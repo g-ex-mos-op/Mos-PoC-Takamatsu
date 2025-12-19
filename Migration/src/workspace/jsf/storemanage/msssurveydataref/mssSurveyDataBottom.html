@@ -1,0 +1,98 @@
+<html xmlns:m="http://www.seasar.org/maya" m:action="#{mssSurveyDataRefAction.executeStatus}">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=Windows-31j" />
+		<title>サーベイデータ登録</title>
+	</head>
+	<body onLoad="init();">
+		<span m:inject="f:param" m:name="onLoadName" m:value="init();"/>
+		<span m:inject="f:param" m:name="viewIdValue" m:value="BSM012V02"/>
+		<span m:inject="s:insert" m:name="body">
+		<SCRIPT LANGUAGE="javascript">
+		<!--
+			function init(){
+				 timerID = setInterval('restart()',5000);
+				 document.mssReflesh.TIMER.value = timerID;
+			}
+			/**
+			 * 
+			 */
+			function restart(){
+			    window.location.reload(true);
+			}
+			function clearErr(){
+			  clearInterval(timerID);
+	  		  window.parent.document.forms['mssSurvey'].elements['mssSurvey:__link_clicked__'].value='mssSurvey:clearErr';
+  	          window.parent.document.forms['mssSurvey'].submit();
+			}
+
+
+		//-->
+		</SCRIPT>
+			<form m:id="mssReflesh">
+			<input type="hidden" m:id="initMenuId" m:value="#{menuAction.initMenuId}"/>
+			<input type="hidden" m:id="initSubMenuId" m:value="#{menuAction.initSubMenuId}"/>
+	        <input type="hidden" m:id="viewId" m:value="#{viewIdValue}"/>
+	        <INPUT TYPE="HIDDEN" NAME="TIMER"  VALUE="">
+			  <DIV align="center">
+               <a m:id="dummyAction" m:action="#{mssSurveyDataRefAction.executeStatus}"/>
+				<TABLE>
+					<span m:rendered="#{mssSuerveyBatchDto.shoriFlg == '0'}">
+						<tr>
+							<th>ステータス:</th>
+							<td>
+								<table border="1" bgcolor="#cccccc" width="150px">
+									<tr>
+										<th><font size="4" color="#00CCFF">処理可能</font></th>
+									</tr>
+								</table>
+							</td>
+						</tr>
+					</span>
+					<span m:rendered="#{mssSuerveyBatchDto.shoriFlg == '9'}">
+						<tr>
+							<td colspan="2"><input m:name="mssSurveyUpload:clear" type="button" value="エラー解除" onclick="clearErr();" ondblclick="return false;"/></td>
+						</tr>         
+						<tr>
+							<th>ステータス:</th>
+							<td>
+								<table border="1" bgcolor="#cccccc" width="200px">
+									<tr>
+										<th><font size="4" color="#FFFF00">&nbsp;<span m:converter="#{characterEncodingConverter}" m:value="#{mssSuerveyBatchDto.errTitle}"/>&nbsp;</font></th>
+									</tr>
+								</table>
+							</td>
+						</tr>
+						<tr>
+							<th>メッセージ</th>
+							<td><span m:converter="#{characterEncodingConverter}" m:value="#{mssSuerveyBatchDto.errMsg}"/></td>
+						</tr>
+						<tr>
+							<td colspan="2" align="center"><font color="#FF0000">※必ずエラーは解除してください。</font></td> 
+						</tr>
+					</span>
+					<span m:rendered="#{mssSuerveyBatchDto.shoriFlg == '1'}">
+						<tr>
+							<th>ステータス:</th>
+							<td>
+								<table border="1" bgcolor="#cccccc" width="150px">
+									<tr>
+										<th><font size="4" color="#FF0000">処理中</font></th>
+									</tr>
+								</table>
+							</td>
+						</tr>
+						<tr>
+                 			<span m:rendered="#{mssSuerveyBatchDto.batchDur == '0'}">
+							<td colspan="2">「取込み」処理中です。しばらくお待ちください</td>
+							</span>
+                 			<span m:rendered="#{mssSuerveyBatchDto.batchDur == '1'}">
+							<td colspan="2">「支部洗い替え」処理中です。しばらくお待ちください</td>
+							</span>
+						</tr>
+					</span>
+				</TABLE>
+			  </DIV>
+			</form>
+		</span> 
+	</body>
+</html>

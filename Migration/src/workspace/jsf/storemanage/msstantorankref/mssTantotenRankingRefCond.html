@@ -1,0 +1,343 @@
+<html xmlns:m="http://www.seasar.org/maya" m:action="#{mssTantotenRankingAction.initialize}" m:extends="/jsf/layout/layoutNoNavi.html">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Windows-31j" />
+<title>店舗別ランキング</title>
+<span m:inject="f:param" m:name="layoutTitle" m:value="店舗別ランキング"/>
+<span m:inject="s:insert" m:name="bodyTitleName">■店舗別ランキング</span>
+<span m:inject="f:param" m:name="viewIdValue" m:value="BSM010V01"/>
+<span m:inject="f:param" m:name="userTypeCd" m:value="#{mssTantotenRankingRefDto.usertypeCd}"/>
+<span m:inject="f:param" m:name="onLoadName" m:value="load()"/>
+</head>
+<body>
+<span m:inject="s:insert" m:name="body" >
+<STYLE type="text/css" media="screen">
+<!--
+/* テーブルヘッダデフォルト設定 パターン２*/
+/* テーブルヘッダのセンタリング用 */
+table.body_table2 tr th{
+  text-align            : center;
+  border                : 1px solid;
+}
+/* テーブル枠の設定 */
+table.tab_table{
+  border-style          : solid;
+  border-width          : 2px;
+  border-collapse       : collapse;
+}
+table.data_table{
+  border-style          : solid;
+  border-width          : 2px;
+  border-collapse       : collapse;
+}
+/* テーブルヘッダデフォルト設定 パターン１*/
+table.data_table tr.defaultTR{
+  background-color      : #FFFFCC;
+}
+table.data_table tr th{
+  border                : 1px solid;
+  text-align            : center;
+}
+table.data_table tr td{
+  border                : 1px solid;
+  text-align            : right;
+}
+table.data_table tr td.centerWd{
+  border                : 1px solid;
+  text-align            : center;
+}
+table.data_table tr th a{
+  color            : blue;
+}
+/* 表：比率項目表示 */
+.hiritu_red{
+  background-color      : #C0FFC0;
+  color                 : red;
+}
+.hiritu{
+  background-color      : #C0FFC0;
+}
+/* 表：合計欄表示（タイプ１） */
+.body_sum1, table tr.body_sum1 td{
+  background-color      : #FFD2E9;
+}
+/* 表：合計欄表示（タイプ５） */
+.body_sum5, table tr.body_sum5 td{
+  background-color      : #FFC0A0;
+}
+
+//-->
+</STYLE>
+<script type="text/javascript">
+<!--
+var userTypeHONBU = "01";
+var userTypeONER = "02";
+var userTypeMISE = "03";
+
+function load(){
+	var elmNendo = document.conditionForm.elements['conditionForm:nendo'];
+	var elmKai = document.conditionForm.elements['conditionForm:kai'];
+	document.conditionForm.elements['conditionForm:loadingFlg'].value = "";
+	if(elmNendo != null && elmKai != null) {
+	    if(isUserType(userTypeHONBU)){
+			document.conditionForm.svsearchbt.disabled = false;
+			document.conditionForm.onersearchbt.disabled = false;
+			document.conditionForm.misesearchbt.disabled = false;
+		}
+		document.conditionForm.elements['conditionForm:executeBt'].disabled = false;
+	}
+}
+/**
+ * 会社プルダウンリスト変更時処理
+ *
+ * 会社プルダウンの値毎に
+ * 対象条件プルダウンの内容を変更し、
+ * 対象条件プルダウンが変更されることにより表示対象オブジェクトも変更される。
+ */
+function changeCompanyCd(){
+}
+/**
+ * 支部プルダウンリスト変更時処理
+ *
+ */
+function changeSibuCd(){
+	document.conditionForm.elements['conditionForm:searchType'][0].click();
+}
+/**
+ * SVテキストフィールド変更時処理
+ */
+function changeSvCd(){
+	document.conditionForm.elements['conditionForm:searchType'][0].click();
+}
+/**
+ * オーナーテキストフィールド変更時処理
+ */
+function changeOnerCd(){
+	document.conditionForm.elements['conditionForm:searchType'][1].click();
+}
+/**
+ * オーナーテキストフィールド変更時処理
+ */
+function changeMiseCd(){
+	document.conditionForm.elements['conditionForm:searchType'][2].click();
+}
+/**
+ * ウィンドウロードステータス取得処理
+ *
+ */
+function returnLoadingStatus(){
+	if(isLoadingFlgOFF()) {
+		setLoadingFlg();
+		return true;
+	}
+	return false;
+}
+/**
+ * ウィンドウロードステータス取得処理
+ *
+ */
+function isLoadingFlgOFF(){
+	return (document.conditionForm.elements['conditionForm:loadingFlg'].value != "ON");
+}
+/**
+ * 実行ボタン押下時処理
+ *
+ */
+function execSearch(){
+	setJokenData();
+	document.conditionForm.elements['conditionForm:__link_clicked__'].value='conditionForm:execSearch';
+	document.conditionForm.submit();
+}
+/**
+ * SV検索ボタン押下時処理
+ *
+ */
+function searchSv(){
+	if(returnLoadingStatus()){
+		document.conditionForm.elements['conditionForm:__link_clicked__'].value='conditionForm:searchSv';
+		document.conditionForm.submit();
+	}
+}
+/**
+ * オーナー検索ボタン押下時処理
+ *
+ */
+function searchOner(){
+	if(returnLoadingStatus()){
+		document.conditionForm.elements['conditionForm:__link_clicked__'].value='conditionForm:searchOner';
+		document.conditionForm.submit();
+	}
+}
+/**
+ * 店検索ボタン押下時処理
+ *
+ */
+function searchMise(){
+	if(returnLoadingStatus()){
+		document.conditionForm.elements['conditionForm:__link_clicked__'].value='conditionForm:searchMise';
+		document.conditionForm.submit();
+	}
+}
+
+
+/**
+ * ウィンドウロードフラグ設定処理
+ *
+ *
+ */
+function setLoadingFlg() {
+	document.conditionForm.elements['conditionForm:loadingFlg'].value = "ON";
+}
+function setJokenData(){
+	var companyCd = "";
+	var svCd = "";
+	var onerCd = "";
+	var miseCd = "";
+	if(isUserType(userTypeHONBU)){
+		//本部用
+		svCd = document.conditionForm.elements['conditionForm:honbuSvCd'].value;
+		onerCd = document.conditionForm.elements['conditionForm:honbuOnerCd'].value;
+		miseCd = document.conditionForm.elements['conditionForm:honbuMiseCd'].value;
+		
+	}else if(isUserType(userTypeONER)){
+		//オーナー用
+	}
+	document.conditionForm.elements['conditionForm:svCd'].value   =svCd;
+	document.conditionForm.elements['conditionForm:onerCd'].value =onerCd;
+	document.conditionForm.elements['conditionForm:miseCd'].value =miseCd;
+}
+function isUserType(code){
+	var userType = document.conditionForm.elements['conditionForm:usertypeCd'].value;
+	return (code == userType);
+}
+//-->
+</script>
+
+<form m:id="conditionForm" onKeyDown="return setDefaultSubmitButton('conditionForm','executeBt');">
+	<input type="hidden" m:id="initMenuId" m:value="#{menuAction.initMenuId}"/>
+	<input type="hidden" m:id="initSubMenuId" m:value="#{menuAction.initSubMenuId}"/>
+	<input type="hidden" m:id="viewId" m:value="#{viewIdValue}"/>
+	<input type="hidden" m:id="usertypeCd" m:value="#{userTypeCd}"/>
+	<input type="hidden" m:id="svCd" m:value="#{mssTantotenRankingRefDto.svCd}"/>
+	<input type="hidden" m:id="onerCd" m:value="#{mssTantotenRankingRefDto.onerCd}"/>
+	<input type="hidden" m:id="miseCd" m:value="#{mssTantotenRankingRefDto.miseCd}"/>
+	<input type="hidden" id="loadingFlg" value=""/>
+	<div class="search_condition">
+		<a id="searchSv" m:action="#{mssTantotenRankingAction.callSvForm}"/>
+		<a id="searchOner" m:action="#{mssTantotenRankingAction.callOnerForm}"/>
+		<a id="searchMise" m:action="#{mssTantotenRankingAction.callMiseForm}"/>
+		<a id="execSearch" m:action="#{mssTantotenRankingAction.execute}"/>
+<span m:converter="#{characterEncodingConverter}" m:inject="s:selectOneRadio2" m:id="searchType" m:value="#{mssTantotenRankingRefDto.searchType}">
+<table>
+	<tr>
+	<td>
+	<table class="body_table" style="table-layout:fixed;">
+		<tr>
+			<th nowrap="nowrap" width="70px">会社</th>
+			<td width="115px">
+		        <div class="hideArea">
+					<select class="condition_field" 
+							m:id="companyCd"
+							m:value="#{mssTantotenRankingRefDto.companyCd}"
+							m:items="#{mssTantotenRankingRefDto.companyList}"
+							m:itemValue="companyCd"
+							m:itemLabel="companyName"
+							m:onchange="changeCompanyCd()">
+						<option value="00">モスフードサービス</option>
+						<option value="01">トモス</option>
+						<option value="02">四季菜</option>
+					</select>
+			  </div>
+			</td>
+		<div m:rendered="#{userTypeCd == '01'}">
+			<th nowrap="nowrap" style="border-right-width:0px;width:20px;" valign="middle">
+			  <input type="radio" name="searchType" m:value="SV" checked="checked"/>
+			</th>
+			<th nowrap="nowrap" style="border-left-width:0px;border-right-width:0px;width:35px;" valign="middle">
+			  &nbsp;ＳＶ
+			</th>
+			<th nowrap="nowrap" style="border-left-width:0px;width:39px;" valign="middle">
+			  <input type="button" name="svsearchbt" onClick="searchSv();" value="検索" onDblClick="return false;" disabled=" disabled"/>
+			</th>
+			<td width="66px">
+			  <input type="text" m:id="honbuSvCd" m:value="#{mssTantotenRankingRefDto.svCd}" maxlength="8" size="10" class="imenotuse" onFocus="changeSvCd();" m:converter="#{mssTantotenRankingRefCodeConverterSv}"/>
+			</td>
+			<th nowrap="nowrap" style="border-right-width:0px;width:20px;" valign="middle">
+			  <input type="radio" name="searchType" m:value="ONER"/>
+			</th>
+			<th nowrap="nowrap" style="border-left-width:0px;border-right-width:0px;width:72px;" valign="middle">
+			  &nbsp;オーナー
+			</th>
+			<th nowrap="nowrap" style="border-left-width:0px;width:39px;" valign="middle">
+			  <input type="button" name="onersearchbt" value="検索" onClick="searchOner();" onDblClick="return false;" disabled=" disabled"/>
+			</th>
+			<td width="66px">
+				<input type="text" m:id="honbuOnerCd" m:value="#{mssTantotenRankingRefDto.onerCd}" maxlength="5" size="10" class="imenotuse" onFocus="changeOnerCd();"/>
+			</td>
+			<th nowrap="nowrap" style="border-right-width:0px;width:20px;" valign="middle">			
+              <input type="radio" name="searchType" m:value="MISE"/>
+            </th>  
+            <th nowrap="nowrap" style="border-left-width:0px;border-right-width:0px;width:45px;" valign="middle">
+              &nbsp;個店
+            </th>
+  			<th nowrap="nowrap" style="border-left-width:0px;width:39px;" valign="middle">
+              <input name="misesearchbt" type="button" value="検索" onClick="searchMise();" onDblClick="return false;"  disabled=" disabled"/>
+            </th>
+			<td width="66px">
+				<input type="text" m:id="honbuMiseCd" m:value="#{mssTantotenRankingRefDto.miseCd}" maxlength="5" size="10" class="imenotuse" onFocus="changeMiseCd();"/>
+			</td>
+		</div>
+		<div m:rendered="#{userTypeCd != '01'}">
+			<td colspan="2" width="149px">&nbsp;</td>
+		</div>
+		</tr>
+		<tr>
+			<th nowrap="nowrap">実施年度</th>
+			<td nowrap="nowrap">
+	        	<span m:rendered="#{mssTantotenRankingRefDto.nendoListSize > 0}">      	
+					<div class="hideArea">
+					<select class="condition_field" 
+							m:id="nendo"
+							m:value="#{mssTantotenRankingRefDto.nendo}"
+							m:items="#{mssTantotenRankingRefDto.nendoList}"
+							m:itemValue="nendo"
+							m:itemLabel="nendoName"
+							>
+							<option value="2006">2006</option>
+							<option value="2005">2005</option>
+							<option value="2004">2004</option>
+						</select>年度
+					</div>
+				</span>
+			</td>
+			<th nowrap="nowrap" colspan="#{userTypeCd == '01'?'3':''}">実施回数</th>
+			<td colspan="#{userTypeCd == '01'?'9':''}">
+	        	<span m:rendered="#{mssTantotenRankingRefDto.kaiListSize > 0}">      	
+					<div class="hideArea">
+					第<select class="condition_field" 
+							m:id="kai"
+							m:value="#{mssTantotenRankingRefDto.kai}"
+							m:items="#{mssTantotenRankingRefDto.kaiList}"
+							m:itemValue="kai"
+							m:itemLabel="kaiName"
+							>
+							<option value="2006">2006</option>
+							<option value="2005">2005</option>
+							<option value="2004">2004</option>
+						</select>回
+					</div>
+				</span>
+			</td>
+		</tr>
+	</table>
+	</td>
+	<td align="right" valign="bottom">
+		<input type="button" name="conditionForm:executeBt" class="operation_button" value="実行" onClick="execSearch();" onDblClick="return false" disabled=" disabled"/>
+	</td>
+	</tr>
+</table>
+</span>
+</div>
+</form>
+</span>
+</body>
+</html>

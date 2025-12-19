@@ -1,0 +1,139 @@
+<html xmlns:m="http://www.seasar.org/maya" m:action="#{mlResultRegistInterviewConfirmAction.initialize}" m:extends="/jsf/layout/layoutNoNavi.html">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Windows-31j"/>
+<meta http-equiv="Content-Style-Type" content="text/css"/>
+<title>マスターライセンス結果登録</title>
+</head>
+<body>
+<span m:inject="f:param" m:name="layoutTitle" m:value="マスターライセンス結果登録"/>
+<span m:inject="s:insert" m:name="bodyTitleName">■マスターライセンス結果登録</span>
+<span m:inject="f:param" m:name="onLoadName" m:value="load()"/>
+<span m:inject="f:param" m:name="onLoadName" m:value="bodyLoad();"/>
+<span m:inject="f:param" m:name="viewIdValue" m:value="BSM008V06"/>
+<div m:inject="s:insert" m:name="body">
+<script language="JavaScript">
+<!--
+
+function load(){
+
+  loadScroll("intconfscroll", 395);
+
+ }
+function bodyLoad() {
+}
+-->
+</script>
+<style type="text/css">
+<!--
+/* テーブルヘッダデフォルト設定 パターン２*/
+/* テーブルヘッダのセンタリング用 */
+table.body_table2{
+  width   : 98%;
+}
+/* テーブルヘッダデフォルト設定 パターン２*/
+/* テーブルヘッダのセンタリング用 */
+table.body_table2 tr th{
+  text-align            : center;
+  border-style              : solid;
+  border-color          : #808080;
+}
+.scroll_area {
+    width:100%;
+	height:	  400px;
+	overflow: auto;
+}
+-->
+</style>
+
+<form m:id="mlResultRegistAbilityCheck">
+	<input type="hidden" m:id="initMenuId" m:value="#{menuAction.initMenuId}"/>
+	<input type="hidden" m:id="initSubMenuId" m:value="#{menuAction.initSubMenuId}"/>
+	<input type="hidden" m:id="viewId" m:value="#{viewIdValue}" />
+
+	<input type="submit" value="戻る" m:action="#{mlResultRegistInterviewConfirmAction.back}"/>
+	<input type="submit" value="登録" m:action="#{mlResultRegistInterviewConfirmAction.regist}"/>
+    <div class="scroll_padding_head">
+    <div class="scroll_hidden margin_bottom_hidden">
+	<table class="body_table2" style="margin-top:5px;">
+	    <caption class="body_caption" style="text-align:left; padding:2px 0px;">面接</caption>
+	    <col style="width:40px;"/>
+	    <col style="width:*px;"/>
+	    <col style="width:220px;"/>
+	    <div m:inject="s:forEach" m:items="#{mlResultRegistDto.listMstInterview}" m:var="e" m:varindex="i">
+	      <col style="width:60px;"/>
+	    </div>
+	    <col style="width:120px;"/>
+	    <col style="width:100px;"/>
+	    <tr>
+	        <th style="width:40px;" rowspan="2">受験<br/>番号</th>
+	        <th style="width:*px;" >支部名</th>
+	        <th style="width:220px;">オーナー名</th>
+	        <div m:inject="s:forEach" m:items="#{mlResultRegistDto.listMstInterview}" m:var="e" m:varindex="i">
+	          <th  style="width:60px;" rowspan="2"><span m:converter="#{characterEncodingConverter}" m:value="#{e.interviewName}"/></th>
+	        </div>
+	        <th style="width:120px;">面接日</th>
+	        <th  style="width:100px;" rowspan="2">判定</th>
+	    </tr>
+	    <tr>
+	        <th style="width:*px;">店舗名</th>
+	        <th  style="width:120px;">受験者氏名</th>
+	        <th  style="width:100px;">面接官</th>
+	    </tr>
+	</table>
+    </div>
+    </div>
+    <div class="scroll_padding_data">
+	<div id="intconfscroll" class="scroll_hidden">
+		<table style="border-top-width:0px" class="body_table2">
+		    <col style="width:40px;"/>
+		    <col style="width:*px;"/>
+		    <col style="width:220px;"/>
+		    <div m:inject="s:forEach" m:items="#{mlResultRegistDto.listMstInterview}" m:var="e" m:varindex="i">
+		      <col style="width:60px;"/>
+		    </div>
+		    <col style="width:120px;"/>
+		    <col style="width:100px;"/>
+		    <div m:inject="s:forEach" m:items="#{mlResultRegistDto.listInterviewResult}" m:var="e" m:varindex="i">
+		    <tr class="non_top_border">
+		      <td style="width:40px;" rowspan="2"><span m:value="#{e.examNo}" m:converter="#{mlresultStatusRefMiseConverter}"/></td>
+		      <td style="width:*px;line-height:20px;"><span m:converter="#{characterEncodingConverter}" m:value="#{e.sibuName}"/></td>
+		      <td style="width:220px;line-height:20px;"><span m:converter="#{characterEncodingConverter}" m:value="#{e.onerNameKj}"/></td>
+		      <div m:inject="s:forEach" m:items="#{mlResultRegistDto.listMstInterview}" m:var="f" m:varindex="j">
+		        <td style="width:60px; text-align:center;" rowspan="2">
+		        <span  m:rendered="#{e.hantei == '9'}" >
+		        </span>
+		        <span  m:rendered="#{e.hantei != '9'}">
+		          <span m:value="#{e.sub2Chk1ResultForChkbox}" m:converter="#{mlrrGohiConverter}" m:rendered="#{j == 0}"/>
+		          <span m:value="#{e.sub2Chk2ResultForChkbox}" m:converter="#{mlrrGohiConverter}" m:rendered="#{j == 1}"/>
+		          <span m:value="#{e.sub2Chk3ResultForChkbox}" m:converter="#{mlrrGohiConverter}" m:rendered="#{j == 2}"/>
+		          <span m:value="#{e.sub2Chk4ResultForChkbox}" m:converter="#{mlrrGohiConverter}" m:rendered="#{j == 3}"/>
+		          <span m:value="#{e.sub2Chk5ResultForChkbox}" m:converter="#{mlrrGohiConverter}" m:rendered="#{j == 4}"/>
+		          <span m:value="#{e.sub2Chk6ResultForChkbox}" m:converter="#{mlrrGohiConverter}" m:rendered="#{j == 5}"/>
+		          <span m:value="#{e.sub2Chk7ResultForChkbox}" m:converter="#{mlrrGohiConverter}" m:rendered="#{j == 6}"/>
+		          <span m:value="#{e.sub2Chk8ResultForChkbox}" m:converter="#{mlrrGohiConverter}" m:rendered="#{j == 7}"/>
+		          <span m:value="#{e.sub2Chk9ResultForChkbox}" m:converter="#{mlrrGohiConverter}" m:rendered="#{j == 8}"/>
+		          <span m:value="#{e.sub2Chk10ResultForChkbox}" m:converter="#{mlrrGohiConverter}" m:rendered="#{j == 9}"/>
+		        </span>
+		        </td>
+		      </div>
+		      <td style="width:120px;line-height:20px;">
+		        <span m:value="#{e.interviewDt}" m:converter="#{mlrrDateConverterYMDSlash}"/>
+		      </td>
+		      <td rowspan="2" style="width:100px; font-size:large;font-weight:bold;text-align:center;"><span m:value="#{e.hantei}" m:converter="#{mlrrGohiInterviewHanteiConverter}"/></td>
+		    </tr>
+		    <tr>
+		      <td style="width:*px;line-height:20px;"><span m:converter="#{characterEncodingConverter}" m:value="#{e.miseNameKj}"/></td>
+		      <td style="width:220px;line-height:20px;"><span m:converter="#{characterEncodingConverter}" m:value="#{e.staffLNameKj}"/> <span m:converter="#{characterEncodingConverter}" m:value="#{e.staffFNameKj}"/></td>
+		      <td style="width:120px;line-height:20px;"><span m:converter="#{characterEncodingConverter}" m:value="#{e.assesser}"/></td>
+		    </tr>
+		    </div>
+		</table>
+	</div>
+	</div>
+
+<input type="text" m:id="dummyEnter" style="display:none"/>
+</form>
+
+</div>
+</body>
+</html>

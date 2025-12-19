@@ -1,0 +1,52 @@
+<html xmlns:m="http://www.seasar.org/maya" m:action="#{gamenRoleAction.initialize}" m:extends="/jsf/layout/layoutNoNavi.html">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Windows-31j" />
+<title>ユーザーロール設定</title>
+</head>
+<body>
+<span m:inject="f:param" m:name="layoutTitle" m:value="ユーザーロール設定"/>
+<span m:inject="s:insert" m:name="bodyTitleName">■ユーザーロール設定</span>
+<span m:inject="f:param" m:name="viewIdValue" m:value="BSA011V01"/>
+<span m:inject="s:insert" m:name="body">
+
+<form m:id="userRoleCondition">
+	<input type="hidden" m:id="viewId" m:value="#{viewIdValue}"/>
+	<input type="hidden" m:id="initMenuId" m:value="#{menuAction.initMenuId}"/>
+	<input type="hidden" m:id="initSubMenuId" m:value="#{menuAction.initSubMenuId}"/>
+	<input type="submit" value="設定" m:action="#{getBirdUserAction.viewUserRole}"/>
+	<table cellspacing="0" cellpadding="0">
+	  <tr style="height:5px;"><td align="right"></td></tr>
+	</table>
+<table class="body_table">
+  <tr>
+    <th class="body_header1">
+      ユーザーID<input type="submit" value="検索" style="margin-left:3px;"
+                       m:action="#{gamenRoleAction.selectUser}"/>
+    </th>
+    <td class="body_field">
+      <div m:rendered="#{seteiKubunDto.seteiKubun == '01'}">
+        <input type="text" size=15 maxlength="8" m:value="#{seteiKubunDto.userId}"  class="imenotuse"/>
+      </div>
+
+      <div m:rendered="#{seteiKubunDto.seteiKubun == '02'}">
+        <select class="condition_field"
+            m:value="#{userRoleRegistDto.userId}"
+            m:items="#{birdUserListDto.userList}"
+            m:itemValue="userId"
+            m:itemLabel="userIdNameKana">
+            <option value="">ユーザID ユーザNameKana</option>
+        </select>
+      </div>
+    </td>
+  </tr>
+</table>
+<input type="text" m:id="dummyEnter" style="display:none"/>
+<script type="text/javascript">
+<!--
+	focusElement("userRoleCondition");
+//-->
+</script>
+</form>
+</span>
+</body>
+</html>
