@@ -1,0 +1,304 @@
+<html xmlns:m="http://www.seasar.org/maya" m:extends="/jsf/layout/layoutNoNavi.html" m:action="#{nationalViewListConfirmAction.initialize}">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Windows-31j" />
+<title></title>
+</head>
+<body>
+<span m:inject="f:param" m:name="layoutTitle" m:value="全国大会申込状況確認"/>
+<span m:inject="s:insert" m:name="bodyTitleName">■全国大会申込状況確認</span>
+<span m:inject="f:param" m:name="onLoadName" m:value="init();"/>
+<span m:inject="f:param" m:name="viewIdValue" m:value="BEN016V02"/>
+<span m:inject="s:insert" m:name="body">
+<style type="text/css">
+<!--
+.scroll_area {
+	height				: 350px;
+	width				: 100%;
+}
+
+@media print {
+	.scroll_area {
+		width			: 750px;
+	}
+	table.mine_table{
+	  width				: 731px;
+	}
+}
+-->
+</style>
+<script type="text/javascript">
+
+<!--
+/**
+ * 初期化処理
+ */
+
+
+function init() {
+	//対象条件エレメント
+	loadScroll("nationalViewscroll",290);
+	var objectTaishoJoken = document.conditionForm.elements['conditionForm:targetTaishoJoken'];
+	var taishoJokenIndex = objectTaishoJoken.selectedIndex;
+ 	var taishoJoken = objectTaishoJoken.value;
+ 	if(taishoJokenIndex == '2') {
+		focusElement('conditionForm');
+	}
+}
+/**
+ * 対象条件変更処理
+ *
+ *
+ */
+function changeTaishoJeken(){
+	//支部リスト表示・非表示
+	var objectTaishoJoken = document.conditionForm.elements['conditionForm:targetTaishoJoken'];
+	var taishoJokenIndex = objectTaishoJoken.selectedIndex;
+ 	var taishoJoken = objectTaishoJoken.value;
+ 	//表示対象：支部エリア
+	var div_sibu = document.getElementById('conditionForm:div_sibu');
+ 	var th_sibu =document.getElementById('conditionForm:th_sibu');
+ 	var td_sibu =document.getElementById('conditionForm:td_sibu');
+ 	//表示対象：ＳＶコードエリア
+ 	var div_sv = document.getElementById('conditionForm:div_sv');
+ 	var th_sv =document.getElementById('conditionForm:th_sv');
+ 	var td_sv =document.getElementById('conditionForm:td_sv');
+
+	//初めに全て非表示にする。
+ 	div_sibu.style.display="none";
+	th_sibu.style.display="none";
+ 	td_sibu.style.display="none";
+
+	div_sv.style.display="none";
+ 	th_sv.style.display="none";
+	td_sv.style.display="none";
+
+	if(taishoJokenIndex == '1') {
+	    //支部選択時
+		div_sibu.style.display="";
+	 	th_sibu.style.display="";
+		td_sibu.style.display="";
+	}else if(taishoJokenIndex == '2') {
+	    //ＳＶコード選択時
+		div_sv.style.display="";
+	 	th_sv.style.display="";
+		td_sv.style.display="";
+	}
+}
+/**
+ * 実行ボタン押下処理
+ *
+ */
+function exec(){
+	var elementKbn = document.conditionForm.elements['conditionForm:kbn'];
+	var targetKbn = elementKbn.options[elementKbn.selectedIndex].value;
+	document.conditionForm.elements['conditionForm:targetKbn'].value = targetKbn;
+	document.conditionForm.elements['conditionForm:__link_clicked__'].value='conditionForm:search';
+	document.conditionForm.submit();
+}
+/**
+ * ダウロードボタン押下処理
+ *
+ */
+function execDownload(){
+	var elementKbn = document.conditionForm.elements['conditionForm:kbn'];
+	var targetKbn = elementKbn.options[elementKbn.selectedIndex].value;
+	document.conditionForm.elements['conditionForm:targetKbn'].value = targetKbn;
+	//アクションの値を設定する。
+	document.conditionForm.elements['conditionForm:__link_clicked__'].value='conditionForm:downloadCsv';
+	document.conditionForm.submit();
+}
+
+/**
+ * 共通「SV選択」を呼び出す
+ *
+ */
+function callSvForm(){
+	//アクションの値を設定する。
+	document.conditionForm.elements['conditionForm:__link_clicked__'].value='conditionForm:callSvForm';
+	document.conditionForm.submit();
+}
+function returnBack(){
+	document.conditionForm.elements['conditionForm:__link_clicked__'].value='conditionForm:returnBack';
+	document.conditionForm.submit();
+}
+-->
+
+</SCRIPT>
+
+<form m:id="conditionForm" onKeyDown="return setDefaultSubmitButton('conditionForm','executeBt');">
+	<input type="hidden" m:id="viewId" m:value="#{viewIdValue}"/>
+	<input type="hidden" m:id="initMenuId" m:value="#{menuAction.initMenuId}"/>
+	<input type="hidden" m:id="initSubMenuId" m:value="#{menuAction.initSubMenuId}"/>
+	<input type="hidden" m:id="windowId" m:value="#{nationalViewListReqDto.windowId}"/>
+	<input type="hidden" m:id="targetKbn" m:value="#{nationalViewListReqDto.targetKbn}"/>
+	<a id="search" m:action="#{nationalViewListConfirmAction.search}"/>
+	<a id="downloadCsv" m:action="#{nationalViewListCsvOutputAction.downloadCsv}"/>
+	<a id="callSvForm" m:action="#{nationalViewListConfirmAction.callSvForm}"/>
+	<a id="returnBack" m:action="#{nationalViewListConfirmAction.back}"/>
+	<input type="button" value="戻る" m:onclick="returnBack();return false;"/>
+	<table class="entry_table" style="margin-bottom:4px;">
+    	<tr>
+			<th rowspan="2" width="250px">開催日</th>
+	    	<th rowspan="2" width="*">イベント名称</th>
+	    	<th width="150px">本部&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;：申込開始</th>
+	    	<th width="150px">本部&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;：申込終了</th>
+	    	<th rowspan="2" width="60px">参加</th>
+	    	<th rowspan="2" width="60px">不参加</th>
+    	</tr>
+
+    	<tr>
+	    	<th width="150px">オーナー：申込開始</th>
+	    	<th width="150px">オーナー：申込終了</th>
+    	</tr>
+
+    	<tr class="font_size_13">
+			<td rowspan="2" width="250px">
+				<span m:value="#{nationalViewListReqDto.entityStatusInfo.kaisaiFromDt}" m:converter="#{projectPlanStatusInfoConverter1}"/>
+				～
+				<span m:value="#{nationalViewListReqDto.entityStatusInfo.kaisaiToDt}" m:converter="#{projectPlanStatusInfoConverter1}"/>
+			</td>
+	    	<td rowspan="2" width="*"><span m:converter="#{characterEncodingConverter}" m:value="#{nationalViewListReqDto.entityStatusInfo.entryTitle}"/></td>
+	    	<td width="150px"><span m:value="#{nationalViewListReqDto.entityStatusInfo.honbuFromDt}" m:converter="#{projectPlanStatusInfoConverter2}"/></td>
+	    	<td width="150px"><span m:value="#{nationalViewListReqDto.entityStatusInfo.honbuToDt}" m:converter="#{projectPlanStatusInfoConverter2}"/></td>
+	    	<td rowspan="2" width="60px" align="right"><span m:value="#{nationalViewListReqDto.entityStatusInfo.onerAttendCnt}"/></td>
+	    	<td rowspan="2" width="60px" align="right"><span m:value="#{nationalViewListReqDto.entityStatusInfo.onerAbsentCnt}"/></td>
+    	</tr>
+
+    	<tr class="font_size_13">
+	    	<td width="150px"><span m:value="#{nationalViewListReqDto.entityStatusInfo.onerFromDt}" m:converter="#{projectPlanStatusInfoConverter2}"/></td>
+	    	<td width="150px"><span m:value="#{nationalViewListReqDto.entityStatusInfo.onerToDt}" m:converter="#{projectPlanStatusInfoConverter2}"/></td>
+    	</tr>
+	</table>
+
+	<table class="body_table" style="float:left;">
+		<tr>
+			<th>対象条件</th>
+	    	<td>
+	   			<div class="hideArea">
+			    <select m:id="targetTaishoJoken"
+			    		m:value="#{nationalViewListReqDto.targetTaishoJoken}"
+			    		m:items="#{nationalViewListDto.listTaishoJoken}"
+			    		m:itemValue="code"
+			    		m:itemLabel="name"
+			    		m:onchange="changeTaishoJeken()"/>
+			    </div>
+	   		</td>
+	   		<div id="div_sibu" m:style="#{(nationalViewListReqDto.taishoJokenSibu) == true ? '' : 'display:none;'}">
+				<th m:id="th_sibu" m:style="#{(nationalViewListReqDto.taishoJokenSibu) == true ? '' : 'display:none;'}">支部</th>
+		    	<td m:id="td_sibu" m:style="#{(nationalViewListReqDto.taishoJokenSibu) == true ? '' : 'display:none;'}">
+					<div class="hideArea">
+	    			<select
+	    				m:id="targetSibuCd"
+	    				m:value="#{nationalViewListReqDto.targetSibuCd}"
+						m:items="#{nationalViewListDto.listSibuCd}"
+						m:itemValue="sibuCd"
+	    				m:itemLabel="sibuName"/>
+	    			</div>
+				</td>
+			</div>
+			<div id="div_sv" m:style="#{(nationalViewListReqDto.taishoJokenSv) == true ? '' : 'display:none;'}">
+				<th m:id="th_sv" m:style="#{(nationalViewListReqDto.taishoJokenSv) == true ? '' : 'display:none;'}">
+					SVコード<input type="button" value="検索" class="button_in_table"
+					               onClick="callSvForm();return false;"/></th>
+		    	<td m:id="td_sv" m:style="#{(nationalViewListReqDto.taishoJokenSv) == true ? '' : 'display:none;'}">
+					<input type="text" m:id="targetSvCd"
+					       size="10"  maxlength="8"
+					       m:value="#{nationalViewListReqDto.targetSvCd}"
+					       class="imenotuse height_11" m:converter="#{nationalViewListCodeCnvtSv}"/></td>
+	   		</div>
+
+    	</tr>
+    </table>
+
+		<input type="button" value="再検索"  name="conditionForm:executeBt"
+		       onClick="exec(); return false;" onDblClick="return false;"
+		       m:disabled="#{nationalViewListReqDto.emptyEntityStatusInfo}"
+		       style="margin-left:3px; margin-top:3px; float:left;"/>
+
+    <table class="body_table" style="margin-left:2em;float:left;">
+    	<tr>
+			<th>区分</th>
+	    	<td>
+	    		<div class="hideArea">
+	    		<select m:id="kbn"
+					m:value="#{nationalViewListReqDto.targetKbn}"
+					m:items="#{nationalViewListDto.listKbn}"
+	 	 	  		m:itemValue="code"
+				    m:itemLabel="value"
+				    />
+				</div>
+	   		</td>
+	   	</tr>
+   	</table>
+
+		<input type="button" value="ダウンロード" onClick="execDownload(); return false;" onDblClick="return false" style="margin-left:3px; margin-top:3px; float:left;"/>
+
+	<!--IE6&7共通スペース対応↓-->
+	<div style="clear:both;"/>
+
+	<span m:rendered="#{nationalViewListReqDto.listSearchData != null}">
+		<table class="body_table2" style="margin-top:4px;">
+			<tr>
+				<th width="110px">参加オーナー</th>
+				<td width="60px" align="right">
+					<span m:value="#{nationalViewListReqDto.entityAttendAbsentInfo.onerAttendCnt}" m:converter="#{nationalViewListNumericConverter}"/>
+				</td>
+				<th width="110px">参加人数</th>
+				<td width="60px" align="right">
+					<span m:value="#{nationalViewListReqDto.entityAttendAbsentInfo.attendCnt}" m:converter="#{nationalViewListNumericConverter}"/>
+				</td>
+				<th>不参加オーナー</th>
+				<td width="60px" align="right">
+					<span m:value="#{nationalViewListReqDto.entityAttendAbsentInfo.onerAbsentCnt}" m:converter="#{nationalViewListNumericConverter}"/>
+				</td>
+				<th>未登録オーナー</th>
+				<td width="60px" align="right">
+					<span m:value="#{nationalViewListReqDto.entityAttendAbsentInfo.onerNoregistCnt}" m:converter="#{nationalViewListNumericConverter}"/>
+				</td>
+			</tr>
+		</table>
+		<div class="scroll_padding_head">
+        <div class="scroll_hidden">
+		<table class="mine_table" style="width:98%;margin-top:4px;border-bottom:0px;">
+			<tr>
+				<th width="35px">No.</th>
+				<th width="200px">支部</th>
+				<th width="*">オーナー</th>
+				<th width="50px">参加</th>
+				<th width="120px">参加人数</th>
+			</tr>
+		</table>
+	    </div>
+	    </div>
+	    <div class="scroll_padding_data">
+		<div id="nationalViewscroll" class="scroll_hidden">
+			<table class="mine_table" style="width:98%;border-top:0px">
+				<span m:inject="s:forEach" m:items="#{nationalViewListReqDto.listSearchData}" m:var="e" m:varindex="i">
+					<tr>
+						<td width="35px" align="right">
+			      	 	  <span m:value="#{i+1}"/>
+						</td>
+						<td width="200px">
+							<span m:converter="#{characterEncodingConverter}" m:value="#{e.sibuName}"/>
+						</td>
+						<td width="*">
+							<span m:value="#{e.onerCd}"/>
+							<span m:converter="#{characterEncodingConverter}" m:value="#{e.onerNameKj}"/>
+						</td>
+						<td width="50px" align="center">
+							<span m:converter="#{characterEncodingConverter}" m:value="#{e.entryFlgMark}"/>
+						</td>
+						<td width="120px" align="right">
+							<span m:value="#{e.attendCnt}"/>
+						</td>
+					</tr>
+				</span>
+			</table>
+		</div>
+		</div>
+	</span>
+	<input type="text" m:id="dummyEnter" style="display:none"/>
+</form>
+</span>
+</body>
+</html>

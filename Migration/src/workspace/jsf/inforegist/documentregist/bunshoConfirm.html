@@ -1,0 +1,175 @@
+<html xmlns:m="http://www.seasar.org/maya" m:action="#{documentRegistConfirmAction.initialize}" m:extends="/jsf/layout/layoutNoNavi.html">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Windows-31j"/>
+<title>情報共有（文書登録）（確認画面）</title>
+</head>
+<body>
+<span m:inject="f:param" m:name="layoutTitle" m:value="情報共有（文書登録）（確認画面）"/>
+<span m:inject="f:param" m:name="onLoadName" m:value="load();"/>
+<span m:inject="s:insert" m:name="bodyTitleName">■情報共有（文書登録）（確認画面）</span>
+<span m:inject="f:param" m:name="viewIdValue" m:value="BIF003V03"/>
+<span m:inject="s:insert" m:name="body">
+<SCRIPT LANGUAGE="javascript">
+<!--
+function onChangeCate() {
+	document.forms['docRegist'].submit();
+	return false;
+}
+function load(){
+}
+function downloadKanren(index) {
+	document.docRegist.elements["docRegist:downloadKanrenIndex"].value=index;
+}
+//-->
+</SCRIPT>
+<STYLE type="text/css">
+    <!--
+.col_1 {
+	width:160px;
+}
+    -->
+</STYLE>
+
+<form m:id="docRegist" enctype="multipart/form-data">
+<input type="hidden" m:id="viewId" m:value="#{viewIdValue}"/>
+<input type="hidden" m:id="initMenuId" m:value="#{menuAction.initMenuId}"/>
+<input type="hidden" m:id="initSubMenuId" m:value="#{menuAction.initSubMenuId}"/>
+<input type="hidden" m:id="downloadKanrenIndex" m:value="#{documentRegistRegistFormDto.downloadKanrenIndex}"/>
+<input type="button" value="戻る" class="operation_button" m:action="#{documentRegistConfirmAction.cancel}"/>&nbsp;
+<input type="button" value="登録" class="operation_button" m:action="#{documentRegistConfirmAction.regist}"/>&nbsp;
+
+<span m:rendered="#{documentRegistConditionDto.listKanrenSakiSize > 0}">
+<br/>
+<br/>
+以下の情報からリンクが登録されていますが、削除して宜しいですか？
+<br/>
+	<div m:inject="s:forEach" m:items="#{documentRegistConditionDto.listKanrenSaki}" m:var="e" m:varindex="i">
+		<span m:value="#{e.infoShuName}"/>　登録日：<span m:value="#{e.regDate}" m:converter="#{dateConverter}"/>　タイトル：<span m:value="#{e.title}"/><br/>
+	</div>
+<br/>
+</span>
+
+<!-- 文書内容 -->
+<table class="body_table2" style="width:830px;margin-top:4px;">
+	<tr>
+		<th colspan="2" class="col_1">登録モード</th>
+		<td width="*" colspan="5"><span m:converter="#{characterEncodingConverter}" m:value="#{documentRegistConditionDto.regModeName}"/></td>
+	</tr>
+	<tr>
+		<th colspan="2" class="col_1">カテゴリー</th>
+		<td colspan="2"><span m:converter="#{characterEncodingConverter}" m:value="#{uiBunshoInfo.cateName}"/></td>
+		<th class="width_119_s">サブカテゴリー</th>
+		<td colspan="2" width="*"><span m:converter="#{characterEncodingConverter}" m:value="#{uiBunshoInfo.subCateName}"/></td>
+	</tr>
+	<tr>
+		<th colspan="2" class="col_1">タイトル</th>
+		<td colspan="5">
+			<span m:converter="#{characterEncodingConverter}" m:value="#{uiBunshoInfo.title}"/>
+		</td>
+	</tr>
+	<tr>
+		<th colspan="2">説明</th>
+		<td colspan="5">
+			<span m:value="#{uiBunshoInfo.discription}" m:converter="#{changeLineRefConverter}" m:escape="false"/>
+		</td>
+	</tr>
+	<tr>
+		<th colspan="2">文書ファイル登録</th>
+		<td colspan="5"><span m:converter="#{characterEncodingConverter}" m:value="#{uiBunshoInfo.fileName}"/></td>
+	</tr>
+	<tr>
+		<th colspan="2" rowspan="#{documentRegistRegistFormDto.listKanrenBunshoSize+1}">既存文書にリンク</th>
+		<th colspan="5">タイトル</th>
+	</tr>
+	<div m:inject="s:forEach" m:items="#{documentRegistRegistFormDto.listKanrenBunsho}" m:var="e" m:varindex="i">
+		<tr>
+			<td class="body_field" colspan="5">
+				<span m:converter="#{characterEncodingConverter}" m:value="#{e.title}"/>
+			</td>
+		</tr>
+	</div>
+	<tr>
+		<th colspan="2" class="col_1" rowspan="4" nowrap="true">添付ファイル登録</th>
+		<th width="310px" colspan="3">タイトル</th>
+		<td width="*" colspan="2"></td>
+	</tr>
+	<tr>
+		<td colspan="3"><span m:converter="#{characterEncodingConverter}" m:value="#{uiBunshoInfo.attachName1}"/></td>
+		<td colspan="2"><span m:converter="#{characterEncodingConverter}" m:value="#{uiBunshoInfo.attachFl1}"/>&nbsp;</td>
+	</tr>
+	<tr>
+		<td colspan="3"><span m:converter="#{characterEncodingConverter}" m:value="#{uiBunshoInfo.attachName2}"/></td>
+		<td colspan="2"><span m:converter="#{characterEncodingConverter}" m:value="#{uiBunshoInfo.attachFl2}"/>&nbsp;</td>
+	</tr>
+	<tr>
+		<td colspan="3"><span m:converter="#{characterEncodingConverter}" m:value="#{uiBunshoInfo.attachName3}"/></td>
+		<td colspan="2"><span m:converter="#{characterEncodingConverter}" m:value="#{uiBunshoInfo.attachFl3}"/>&nbsp;</td>
+	</tr>
+	<tr class="non_top_border">
+		<th width="140px" colspan="2">掲載期間FROM</th>
+		<td width="97px">
+			<span m:value="#{uiBunshoInfo.pubDateFrom}" m:converter="#{dateConverter}"/>
+		</td>
+		<th width="100px">掲載期間TO</th>
+		<td width="109px">
+			<span m:value="#{uiBunshoInfo.pubDateTo}" m:converter="#{dateConverter}"/>
+		</td>
+		<th width="109px">登録者</th>
+		<td width="*"><span m:converter="#{characterEncodingConverter}" m:value="#{uiBunshoInfo.userNameKj}"/></td>
+
+	</tr>
+	<tr class="non_top_border">
+		<th rowspan="5" style="width:70px;">公開対象</th>
+		<th width="87px">会社</th>
+		<td width="200px" colspan="3">
+		    <div m:inject="s:forEach" m:items="#{publicTargetDto.listTrnControlCompany}" m:var="e" m:varindex="i">
+		    	<span m:converter="#{characterEncodingConverter}" m:value="#{e.companyName}"/><br/>
+		    </div>
+		</td>
+		<td rowspan="5">
+			<input type="button" m:value="公開対象参照"
+			       m:action="#{documentRegistConfirmAction.callForm}" m:immediate="true"/>
+		</td>
+		<td rowspan="5"></td>
+	</tr>
+	<tr>
+		<th>所属</th>
+		<td colspan="3">
+		    <div m:inject="s:forEach" m:items="#{publicTargetDto.listTrnControlShozoku}" m:var="e" m:varindex="i">
+		    	<span m:converter="#{characterEncodingConverter}" m:value="#{e.shozokuName}"/><br/>
+		    </div>
+		</td>
+	</tr>
+	<tr>
+		<th>業態</th>
+		<td colspan="3">
+		    <div m:inject="s:forEach" m:items="#{publicTargetDto.listTrnControlGyotai}" m:var="e" m:varindex="i">
+		    	<span m:converter="#{characterEncodingConverter}" m:value="#{e.gyotaiKbnName}"/><br/>
+		    </div>
+		</td>
+	</tr>
+	<tr>
+		<th>業態別設定</th>
+		<td colspan="3">
+			<div m:rendered="#{publicTargetDto.listTrnControlGyotaiKobetuSize > 0}">有</div>
+			<div m:rendered="#{publicTargetDto.listTrnControlGyotaiKobetuSize <= 0}">無</div>
+		</td>
+	</tr>
+	<tr>
+		<th>個店別設定</th>
+		<td colspan="3">
+            <div m:rendered="#{publicTargetDto.listTrnControlGyotaiTenpoSize > 0}">
+                <span style="float:left;">有</span>
+                <span style="float:right;"><input type="button"  m:value="指定店舗ダウンロード" m:action="#{documentregistCsvAction.download}"/></span>
+                <span style="clear:both;"/>
+            </div>
+			<div m:rendered="#{publicTargetDto.listTrnControlGyotaiTenpoSize <= 0}">無</div>
+		</td>
+	</tr>
+
+</table>
+
+</form>
+</span>
+</body>
+</html>

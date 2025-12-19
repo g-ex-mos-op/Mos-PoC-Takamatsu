@@ -1,0 +1,643 @@
+<html xmlns:m="http://www.seasar.org/maya" m:action="#{natiEntryEditAction.initialize}" m:extends="/jsf/layout/layoutNoNavi.html">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Windows-31j"/>
+<meta http-equiv="Content-Style-Type" content="text/css"/>
+<link href="./css/main.css" rel="stylesheet" type="text/css"/>
+<link href="./css/header.css" rel="stylesheet" type="text/css"/>
+<link href="./css/navi.css" rel="stylesheet" type="text/css"/>
+<link href="./css/body.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="./js/bird.js"></script>
+<title>全国大会申込（編集画面）</title>
+</head>
+<body>
+  <span m:inject="f:param" m:name="layoutTitle" m:value="全国大会申込（編集画面）"/>
+  <span m:inject="f:param" m:name="onLoadName" m:value="bodyLoad();"/>
+  <span m:inject="s:insert" m:name="bodyTitleName">■全国大会申込（編集画面）</span>
+  <span m:inject="f:param" m:name="viewIdValue" m:value="BEN015V01"/>
+  <span m:inject="s:insert" m:name="body">
+<STYLE type="text/css">
+<!--
+/* 入力フィールドの右詰入力へ指定するためのスタイルシート */
+.ratio_style {
+  text-align       : right;
+  background-color : #FFFFFF;
+  color            : black;
+  ime-mode    : disabled;
+}
+.ratio_style_gray {
+  text-align       : right;
+  background-color : #E0E0E0;
+  color            : black;
+  ime-mode    : disabled;
+}
+    /**
+     * スクロール
+     * 作成日：2010/10/28
+     */
+	.scroll_area {
+		width:	  970px;
+		height:	  440px;
+		overflow: auto;
+	}
+	.body_table2 {
+		width:950px;
+	}
+	.koumoku_label {
+		width:160px;
+	}
+	.font_color {
+        color  : #3F3F3F;
+        font-size: 13px;
+}
+//-->
+</STYLE>
+  <script type="text/javascript">
+  <!--
+    function bodyLoad() {
+	  if(document.nationalentry.elements['nationalentry:errFlg'].value == '1') {
+	      focusElement("nationalentry");
+	  } else {
+	      if(document.nationalentry.elements['nationalentry:initFlg'].value == '0') {
+	        document.nationalentry.elements['nationalentry:prmDutyName'].focus();
+	      } else {
+	         if(document.nationalentry.elements['nationalentry:btnKbn'].value == '0') {
+	          if(document.nationalentry.elements['nationalentry:prmInputAppendFlg'].value != '1') {
+//             var objAppendBtn = document.getElementById("nationalentry:appendBt");
+//	           objAppendBtn.focus();
+               focusPosition();
+	          }
+	         } else {
+	            if(document.nationalentry.elements['nationalentry:prmFormNonViewFlg'].value == '0') {
+  	              var seqNo= document.nationalentry.elements['nationalentry:prmSeqNo'].value;
+		          document.nationalentry.elements['nationalentry:join_'+ (seqNo - 1) + ':lNameKj'].focus();
+		        }
+		     }
+		  }
+	   }
+    }
+
+	function callStaffForm(seqNo) {
+		var f=document.forms['nationalentry'];
+		f.elements['nationalentry:__link_clicked__'].value='nationalentry:callStaffForm';
+		f.elements['nationalentry:prmSeqNo'].value = seqNo;
+		f.submit();
+		return false;
+	}
+
+	function backMove(confirmMsg){
+		var f=document.forms['nationalentry'];
+        if(confirm(confirmMsg)){
+		  f.elements['nationalentry:__link_clicked__'].value='nationalentry:backMoveAction';
+		  f.submit();
+		}
+		return false;
+	}
+
+	function registEntry(){
+		var f=document.forms['nationalentry'];
+		f.elements['nationalentry:__link_clicked__'].value='nationalentry:registEntryAction';
+		f.submit();
+		return false;
+	}
+
+    function cancelEntry(seqNo, formobj){
+      var sexObj = formobj.elements['nationalentry:join_' + seqNo + ':sex'];
+      for (var i = 0; i < sexObj.length; i++) {
+        sexObj[i].checked = false;
+      }
+
+      var proposeKbnObj = formobj.elements['nationalentry:join_' + seqNo + ':proposeKbn'];
+      for (var i = 0; i < proposeKbnObj.length; i++) {
+        proposeKbnObj[i].checked = false;
+      }
+
+      for (var i = 0; i < formobj.elements.length; i++) {
+        if (formobj.elements[i].name.indexOf('nationalentry:join_' + seqNo + ':optionalstay') >= 0) {
+          formobj.elements[i].checked = false;
+        }
+        if (formobj.elements[i].name.indexOf('nationalentry:join_' + seqNo + ':optionaltour') >= 0) {
+          formobj.elements[i].checked = false;
+        }
+      }
+      formobj.elements['nationalentry:join_' + seqNo + ':miseCd'].value = '';
+      formobj.elements['nationalentry:join_' + seqNo + ':jobType'].value = '';
+      formobj.elements['nationalentry:join_' + seqNo + ':lNameKj'].value = '';
+      formobj.elements['nationalentry:join_' + seqNo + ':fNameKj'].value = '';
+      formobj.elements['nationalentry:join_' + seqNo + ':lNameKna'].value = '';
+      formobj.elements['nationalentry:join_' + seqNo + ':fNameKna'].value = '';
+      formobj.elements['nationalentry:join_' + seqNo + ':birthdayYear'].value = '';
+      formobj.elements['nationalentry:join_' + seqNo + ':birthdayMonth'].value = '';
+      formobj.elements['nationalentry:join_' + seqNo + ':birthdayDay'].value = '';
+      formobj.elements['nationalentry:join_' + seqNo + ':age'].value = '';
+      formobj.elements['nationalentry:join_' + seqNo + ':note1'].value = '';
+      formobj.elements['nationalentry:join_' + seqNo + ':note'].value = '';
+	}
+
+	function addInputArea(seqNo){
+		var f=document.forms['nationalentry'];
+		f.elements['nationalentry:__link_clicked__'].value='nationalentry:addInputAreaAction';
+		f.elements['nationalentry:prmSeqNo'].value = seqNo;
+		//現在のSEQ(申請者件数)を保持
+        f.elements['nationalentry:nowSeqNo'].value = seqNo;
+
+		f.submit();
+		return false;
+	}
+
+	function changeState(state){
+	  var f=document.forms['nationalentry'];
+	  var objAppendBtn = document.getElementById("nationalentry:appendBt");
+	   if(state == '1') {
+	     objAppendBtn.disabled = false;
+	     document.getElementById('nationalentry:div_joins').style.display="inline";
+	     document.getElementById('nationalentry:font_date').style.display="inline";
+	     f.elements['nationalentry:prmInputAppendFlg'].value = '0';
+	     f.elements['nationalentry:prmFormNonViewFlg'].value = '0';
+	   } else {
+	     objAppendBtn.disabled = true;
+	     document.getElementById('nationalentry:div_joins').style.display="none";
+	     document.getElementById('nationalentry:font_date').style.display="none";
+	     f.elements['nationalentry:prmInputAppendFlg'].value = '1';
+	     f.elements['nationalentry:prmFormNonViewFlg'].value = '1';
+	   }
+	}
+
+	function setNowEntryCount() {
+	    var f = document.forms['nationalentry'];
+	    var nowCount = f.elements['nationalentry:nowSeqNo'].value;
+        f.elements['nationalentry:nowSeqNo'].value = nowCount;
+	}
+
+	function focusPosition() {
+    var tagetForm = document.forms['nationalentry'];
+    var oldSeq = document.forms['nationalentry'].elements['nationalentry:nowSeqNo'].value;
+    var afterSeqNo = tagetForm.elements['nationalentry:prmSeqNo'].value;
+
+    if (oldSeq != "0" && oldSeq != afterSeqNo) {
+            var freamHeight  = document.getElementById("nationalentry:fream");
+            freamHeight.scrollTop = freamHeight.scrollHeight;
+
+            var miseCd = targetElementName('nationalentry','miseCd',oldSeq);
+            document.nationalentry.elements[miseCd].focus();
+
+    }
+
+    tagetForm.elements['nationalentry:nowSeqNo'].value = "0";
+
+
+}
+
+	function computeAge(seqNo) {
+
+		var f = document.forms['nationalentry'];
+		var year  = f.elements['nationalentry:join_'+ (seqNo) + ':birthdayYear'].value;
+		var month = f.elements['nationalentry:join_'+ (seqNo) + ':birthdayMonth'].value;
+		var day   = f.elements['nationalentry:join_'+ (seqNo) + ':birthdayDay'].value;
+		var sysDate = f.elements['nationalentry:sysDate'].value;
+
+		if (isNaN(year)){
+			f.elements['nationalentry:join_'+ (seqNo) + ':birthdayYear'].value = "";
+			f.elements['nationalentry:join_'+ (seqNo) + ':birthdayYear'].focus();
+
+			var str = "入力エラー。参加者" + (seqNo+1) + "：生年月日－年に登録できない文字が使用されています";
+			f.elements['nationalentry:join_'+ (seqNo) + ':age'].value = "";
+			alert(toHTML.un(str));
+			return false;
+		}
+
+		if (isNaN(month)){
+			f.elements['nationalentry:join_'+ (seqNo) + ':birthdayMonth'].value = "";
+			f.elements['nationalentry:join_'+ (seqNo) + ':birthdayMonth'].focus();
+
+			var str = "入力エラー。参加者" + (seqNo+1) + "：生年月日－月に登録できない文字が使用されています";
+			f.elements['nationalentry:join_'+ (seqNo) + ':age'].value = "";
+			alert(toHTML.un(str));
+			return false;
+		}
+
+		if (isNaN(day)){
+			f.elements['nationalentry:join_'+ (seqNo) + ':birthdayDay'].value = "";
+			f.elements['nationalentry:join_'+ (seqNo) + ':birthdayDay'].focus();
+
+			var str = "入力エラー。参加者" + (seqNo+1) + "：生年月日－日に登録できない文字が使用されています";
+			f.elements['nationalentry:join_'+ (seqNo) + ':age'].value = "";
+			alert(toHTML.un(str));
+			return false;
+		}
+
+		if ( year && month && day){
+			year = Number(year);
+			month = Number(month);
+			day = Number(day);
+			if (year < 1900) {
+				f.elements['nationalentry:join_'+ (seqNo) + ':birthdayYear'].value = "";
+				f.elements['nationalentry:join_'+ (seqNo) + ':birthdayYear'].focus();
+				var str = "入力エラー。参加者" + (seqNo+1) + "：生年月日－年がただしく入力しません。";
+				f.elements['nationalentry:join_'+ (seqNo) + ':age'].value = "";
+				alert(toHTML.un(str));
+				return false;
+			}
+			if (validationYmd(year,month,day,seqNo)){
+				month = month - 1;
+					var age = chgToAgeFrDate(year,month,day,sysDate);
+					if (age <= 0){
+						f.elements['nationalentry:join_'+ (seqNo) + ':birthdayYear'].value = "";
+						f.elements['nationalentry:join_'+ (seqNo) + ':birthdayYear'].focus();
+						var str = "入力エラー。参加者" + (seqNo+1) + "：生年月日－年がただしく入力しません。";
+						f.elements['nationalentry:join_'+ (seqNo) + ':age'].value = "";
+						alert(toHTML.un(str));
+						return false;
+					}
+
+					f.elements['nationalentry:join_'+ (seqNo) + ':age'].value = age;
+			}
+		}else{
+			f.elements['nationalentry:join_'+ (seqNo) + ':age'].value = "";
+		}
+
+	}
+
+    //計算年齢
+    function chgToAgeFrDate(year,month,day,sysDate){
+    	var age = 0;
+
+		var sysYear = Number(sysDate.substr(0,4));
+		var sysMonth = Number(sysDate.substr(4,2));
+		var sysDay = Number(sysDate.substr(6,2));
+
+		age = sysYear - year;
+		if (sysMonth < month) {
+			age = age -1;
+		}else
+			if(sysMonth == month){
+				if (sysDay < day) {
+					age = age -1;
+				}
+			}
+    	return age;
+    }
+
+       //閏年判断
+    function isLeapYear(year){
+    	 var flg = false;
+    	 if((year%4==0 && year%100!=0)||(year%100==0 && year%400==0)){
+    	 	flg = true;
+    	 }
+    	 return flg;
+    }
+
+    //年月日合理性判断
+    function validationYmd(year,month,day,seqNo){
+
+    	var str = "";
+    	if (month < 1 || month > 12) {
+    		document.forms['nationalentry'].elements['nationalentry:join_'+ (seqNo) + ':birthdayMonth'].value = "";
+    		document.forms['nationalentry'].elements['nationalentry:join_'+ (seqNo) + ':age'].value = "";
+			document.forms['nationalentry'].elements['nationalentry:join_'+ (seqNo) + ':birthdayMonth'].focus();
+    		str = "入力エラー。参加者" + (seqNo+1) + "：生年月日－月がただしく入力しません。"
+    		alert(toHTML.un(str));
+    		return false;
+    	}
+    	if (isLeapYear(year)){
+    		if (month == 2) {
+    			if (day < 1 || day > 29) {
+    				document.forms['nationalentry'].elements['nationalentry:join_'+ (seqNo) + ':birthdayDay'].value = "";
+					document.forms['nationalentry'].elements['nationalentry:join_'+ (seqNo) + ':age'].value = "";
+					document.forms['nationalentry'].elements['nationalentry:join_'+ (seqNo) + ':birthdayDay'].focus();
+    				str = "入力エラー。参加者" + (seqNo+1) + "：生年月日－日がただしく入力しません。"
+    				alert(toHTML.un(str));
+    				return false;
+    			}
+    		}
+    	}else{
+    		if (month == 2) {
+    			if (day < 1 || day > 28) {
+    				document.forms['nationalentry'].elements['nationalentry:join_'+ (seqNo) + ':birthdayDay'].value = "";
+					document.forms['nationalentry'].elements['nationalentry:join_'+ (seqNo) + ':age'].value = "";
+					document.forms['nationalentry'].elements['nationalentry:join_'+ (seqNo) + ':birthdayDay'].focus();
+    				str = "入力エラー。参加者" + (seqNo+1) + "：生年月日－日がただしく入力しません。"
+    				alert(toHTML.un(str));
+    				return false;
+    			}
+    		}
+    	}
+
+    	if (month != 2) {
+    		if (month < 8){
+    			if (month % 2 == 1){
+    				if (day < 0 || day > 31){
+    					document.forms['nationalentry'].elements['nationalentry:join_'+ (seqNo) + ':birthdayDay'].value = "";
+					    document.forms['nationalentry'].elements['nationalentry:join_'+ (seqNo) + ':age'].value = "";
+						document.forms['nationalentry'].elements['nationalentry:join_'+ (seqNo) + ':birthdayDay'].focus();
+    					str = "入力エラー。参加者" + (seqNo+1) + "：生年月日－日がただしく入力しません。"
+    					alert(toHTML.un(str));
+    					return false;
+    				}
+    			}else{
+    				if (day < 0 || day > 30){
+    					document.forms['nationalentry'].elements['nationalentry:join_'+ (seqNo) + ':birthdayDay'].value = "";
+						document.forms['nationalentry'].elements['nationalentry:join_'+ (seqNo) + ':age'].value = "";
+						document.forms['nationalentry'].elements['nationalentry:join_'+ (seqNo) + ':birthdayDay'].focus();
+    					str = "入力エラー。参加者" + (seqNo+1) + "：生年月日－日がただしく入力しません。"
+    					alert(toHTML.un(str));
+    					return false;
+    				}
+    			}
+    		}else{
+    			if (month % 2 == 0){
+    				if (day < 0 || day > 31){
+    					document.forms['nationalentry'].elements['nationalentry:join_'+ (seqNo) + ':birthdayDay'].value = "";
+						document.forms['nationalentry'].elements['nationalentry:join_'+ (seqNo) + ':age'].value = "";
+						document.forms['nationalentry'].elements['nationalentry:join_'+ (seqNo) + ':birthdayDay'].focus();
+    					str = "入力エラー。参加者" + (seqNo+1) + "：生年月日－日がただしく入力しません。"
+    					alert(toHTML.un(str));
+    					return false;
+    				}
+    			}else{
+    				if (day < 0 || day > 30){
+    					document.forms['nationalentry'].elements['nationalentry:join_'+ (seqNo) + ':birthdayDay'].value = "";
+						document.forms['nationalentry'].elements['nationalentry:join_'+ (seqNo) + ':age'].value = "";
+						document.forms['nationalentry'].elements['nationalentry:join_'+ (seqNo) + ':birthdayDay'].focus();
+    					str = "入力エラー。参加者" + (seqNo+1) + "：生年月日－日がただしく入力しません。"
+    					alert(toHTML.un(str));
+    					return false;
+    				}
+    			}
+    		}
+    	}
+    	return true;
+
+    }
+
+
+    var toHTML = {
+    un: function(str) {
+        return str.replace(/&#(x)?([^&]{1,5});?/g,
+				        function(a, b, c) {
+				            return String.fromCharCode(parseInt(c, b ? 16 : 10))
+				        })
+    }
+};
+  //-->
+  </script>
+  <form m:id="nationalentry">
+	<input type="hidden" m:id="viewId" m:value="#{viewIdValue}"/>
+	<input type="hidden" m:id="initMenuId" m:value="#{menuAction.initMenuId}"/>
+	<input type="hidden" m:id="initSubMenuId" m:value="#{menuAction.initSubMenuId}"/>
+	<input type="hidden" m:id="windowId" m:value="#{nationalEntryDto.windowId}"/>
+	<input type="hidden" m:id="errFlg" m:value="#{nationalEntryDto.errFlg}"/>
+	<input type="hidden" m:id="initFlg" m:value="#{nationalEntryDto.initFlg}"/>
+	<input type="hidden" m:id="prmSeqNo" m:value="#{nationalEntryDto.prmSeqNo}"/>
+	<input type="hidden" m:id="editKbn" m:value="#{nationalEntryDto.editKbn}"/>
+	<input type="hidden" m:id="btnKbn" m:value="#{nationalEntryDto.btnKbn}"/>
+	<input type="hidden" m:id="nowSeqNo" m:value="#{nationalEntryDto.nowSeqNo}"/>
+	<input type="hidden" m:id="prmInputAppendFlg" m:value="#{nationalEntryDto.prmInputAppendFlg}"/>
+	<input type="hidden" m:id="prmFormNonViewFlg" m:value="#{nationalEntryDto.prmFormNonViewFlg}"/>
+	<input type="hidden" m:id="sysDate" m:value="#{nationalEntryDto.sysDate}"/>
+	<a m:id="backMoveAction" m:action="#{natiEntryEditAction.backMove}"/>
+	<a m:id="callStaffForm" m:action="#{natiEntryEditAction.callStaffForm}"/>
+	<a m:id="registEntryAction" m:action="#{natiEntryEditAction.registEntry}"/>
+	<a m:id="addInputAreaAction" m:action="#{natiEntryEditAction.addInputArea}"/>
+	<table width="980" border="0" cellspacing="0" cellpadding="0" style="margin-bottom:4px;">
+	    <tr>
+	      <td >
+	      <input type="button" value="戻る" class="operation_button" m:onclick="return backMove('編集中の内容がある場合は破棄されます。よろしいですか？');"  onDblClick="return false"/>
+	      <span m:rendered = "#{nationalEntryDto.miseListSize > 0}">
+	      &nbsp;
+	      <input type="button" value="入力欄追加" id="appendBt"m:onclick="addInputArea('#{nationalEntryDto.prmSeqNo}');"  onDblClick="return false" m:disabled="#{nationalEntryDto.prmInputAppendFlg == '1'}"/>
+	      &nbsp;
+	      <input type="button" value="登録・終了" class="operation_button" m:onclick="registEntry();"  onDblClick="return false" />
+	      </span>
+	      </td>
+        </tr>
+	</table>
+	<div style="margin-top:9px;">
+	<font color="red">*</font>は必須項目です。
+	</div>
+	<!--スクロール開始-->
+	<div class="scroll_area" m:id="fream">
+		<!--申込責任者-->
+	    <table style="clear:both; margin-bottom: 4px;" cellspacing="0" cellpadding="0">
+	      <caption class="body_caption" style="line-height:21px;">■申込責任者</caption>
+	      <tr>
+	        <td>
+	          <table class="body_table2">
+	            <tr>
+	              <th class="koumoku_label">会社名</th>
+	              <td style="width:336px;"><span m:converter="#{characterEncodingConverter}" m:value="#{nationalEntryDto.prmDutyOnerName}"/></td>
+	              <th class="koumoku_label">参加<font color="red">*</font></th>
+	              <span m:converter="#{characterEncodingConverter}" m:inject="s:selectOneRadio2" m:value="#{nationalEntryDto.prmDutyEntryState}">
+		            <td colspan="4" style="width:280px;">
+		                <input type="radio" name="prmDutyEntryState" value="1" m:onclick="changeState('1')"/>参加&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		                <input type="radio" name="prmDutyEntryState" value="0" m:onclick="changeState('0')"/>不参加
+		            </td>
+	             </span>
+		        </tr>
+		        <tr>
+		          <th>申込責任者<font color="red">*</font><font m:class="font_color">(全角)</font></th>
+		          <td><input m:id="prmDutyName" class="imeon width_262" type="text" m:maxlength="20" size="50" m:value="#{nationalEntryDto.prmDutyName}"/></td>
+		          <th>電話番号<font color="red">*</font><br/><font m:class="font_color">(半角数字・ハイフン)</font></th>
+		          <td colspan="4"><input m:id="prmDutyTel" class="imenotuse width_162" type="text" m:maxlength="15" size="30" m:value="#{nationalEntryDto.prmDutyTel}"/></td>
+		        </tr>
+		        <tr>
+		          <th>申込担当者<font color="red">*</font><font m:class="font_color">(全角)</font></th>
+		          <td><input m:id="prmDutySoufuName" class="imeon width_262" type="text" m:maxlength="20" size="50" m:value="#{nationalEntryDto.prmDutySoufuName}"/></td>
+		          <th>役職<font color="#3F3F3F" size="2px">(全角)</font></th>
+		          <td colspan="4"><input m:id="prmDutyJobType"  class="imeon width_162" type="text" m:maxlength="10" size="30" m:value="#{nationalEntryDto.prmDutyJobType}"/></td>
+		        </tr>
+	          </table>
+	        </td>
+	      </tr>
+	      </table>
+	    <div style="margin-top:6px;">
+	      <font id="font_date" m:style="#{(nationalEntryDto.prmFormNonViewFlg == '0') ? 'display:inline;' : 'display:none;'} ;margin-top:px;">
+	        ※参加者を入力してください（申込責任者参加の場合も要・入力）。
+          </font>
+	    </div>
+		<div id="div_joins" m:style="#{(nationalEntryDto.prmFormNonViewFlg == '0') ? 'display:inline;' : 'display:none;'}">
+	      <div m:rendered = "#{nationalEntryDto.miseListSize > 0}">
+			<!--　申込参加者1....３０ -->
+			  <div  m:id="join" m:inject="s:forEach" m:items="#{nationalEntryDto.prmJoinList}" m:var="joinPers" m:varindex="i">
+				  <table  cellspacing="0" cellpadding="0" style="margin-top:#{i==0?'1':'22'}px;">
+				    <tr style="line-height:22px;">
+				      <td class="body_caption">■参加者<span m:converter="#{characterEncodingConverter}" m:value="#{joinPers.seqNo}"/></td>
+				      <td  class="body_caption"><input type="button" style="float:right;" value="入力クリア" class="operation_button" m:onclick="cancelEntry(#{i}, this.form);"  onDblClick="return false"/></td>
+				    </tr>
+				    <tr>
+				      <td colspan="2">
+				        <table class="body_table2">
+				          <tr>
+					        <th class="koumoku_label">店舗<font color="red">*</font></th>
+					        <td colspan="2" style="width:336px;">
+							  <div m:rendered="#{nationalEntryDto.miseListSize > 0}">
+							    <div class="hideArea">
+				                    <select m:id="miseCd" class="font_size_11_5"
+				                          m:value="#{joinPers.miseCd}"
+						                  m:items="#{nationalEntryDto.condListMise}"
+						                  m:itemValue="miseCd"
+						                  m:itemlabel="miseNameKj">
+						            </select>
+							    </div>
+							  </div>
+					        </td>
+					        <th class="koumoku_label">職位<font m:class="font_color">(全角)</font></th>
+					        <td style="width:279px;">
+							    <div class="hideArea">
+				                    <select m:id="jobType"
+				                          m:value="#{joinPers.jobTypeCd}"
+						                  m:items="#{nationalEntryDto.condListSyokui}"
+						                  m:itemValue="syokuiCd"
+						                  m:itemlabel="syokuiName">
+						            </select>
+							    </div>
+							 </td>
+					      </tr>
+					      <tr>
+					        <th class="koumoku_label">氏名<font color="red">*</font><font m:class="font_color">(全角)</font><br/>
+					        	<input type="button" value="スタッフ選択" m:onclick="callStaffForm('#{joinPers.seqNo}');" /></th>
+					        <td style="width:165px;"><input m:id="lNameKj"  class="imeon width_95" type="text" m:maxlength="10" size="18" m:value="#{joinPers.lNameKj}"/>&nbsp;（氏）</td>
+					        <td style="width:165px;"><input m:id="fNameKj"  class="imeon width_95" type="text" m:maxlength="10" size="18" m:value="#{joinPers.fNameKj}"/>&nbsp;（名）</td>
+					        <th class="koumoku_label">性別<font color="red">*</font></th>
+					        <td style="width:279px;">
+							  <span m:converter="#{characterEncodingConverter}" m:inject="s:selectOneRadio2" m:id="sex" m:value="#{joinPers.sex}">
+								  <input type="radio" m:value="0"/>男&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+								  <input type="radio" m:value="1"/>女
+							  </span>
+					        </td>
+					      </tr>
+					      <tr>
+					        <th>フリガナ<font color="red">*</font><br/><font m:class="font_color">(全角カタカナ)</font></th>
+					        <td><input m:id="lNameKna" class="imeon width_95" type="text" m:maxlength="10" size="18" m:value="#{joinPers.lNameKna}"/>&nbsp;（氏）</td>
+					        <td><input m:id="fNameKna" class="imeon width_95" type="text" m:maxlength="10" size="18" m:value="#{joinPers.fNameKna}"/>&nbsp;（名）</td>
+					        <td colspan="2"></td>
+					      </tr>
+					      <tr>
+					      	<th>生年月日<font color="red">*</font></th>
+					      	<td colspan="4">
+								西暦&nbsp;<input m:id="birthdayYear"  m:class="ratio_style width_30" type="text" m:maxlength="4" size="5" m:value="#{joinPers.birthday_Year}" style="ime-mode:disabled" onblur = "computeAge(#{i});"/>年&nbsp;
+								<input m:id="birthdayMonth" m:class="ratio_style width_30" type="text" m:maxlength="2" size="3" m:value="#{joinPers.birthday_Month}" style="ime-mode:disabled" onblur = "computeAge(#{i});"/>月&nbsp;
+								<input m:id="birthdayDay"   m:class="ratio_style width_30" type="text" m:maxlength="2" size="3" m:value="#{joinPers.birthday_Day}" style="ime-mode:disabled" onblur = "computeAge(#{i});"/>日&nbsp;&nbsp;&nbsp;&nbsp;
+								<input m:id="age" m:class="ratio_style_gray width_42" type="text" m:maxlength="3" size="6" m:value="#{joinPers.age}" readonly="true" tabindex="-1"/>&nbsp;歳
+							</td>
+					      </tr>
+				          <tr>
+				            <th class="koumoku_label">申込区分<font color="red">*</font></th>
+				            <td colspan="4" width="781px"><span m:converter="#{characterEncodingConverter}" m:inject="s:selectOneRadio2" m:id="proposeKbn" m:value="#{joinPers.proposeKbn}">
+				            <span m:inject="s:forEach" m:items="#{nationalEntryDto.selectionEntryKbn}" m:var="ek" m:varindex="fk">
+				            	<div m:rendered="#{ek.disabled==false}" style="width:255px; float:left; text-align:left;line-height:22px;">
+				            	<input type="radio" m:value="#{ek.selectionIndex}" m:rendered="#{ek.emptySelection==false}"/><span m:converter="#{characterEncodingConverter}" m:value="#{ek.selectionName}"/>&nbsp;
+				            	</div></span></span></td>
+					      </tr>
+				          <tr>
+					        <th class="koumoku_label">オプショナル<br/>(宿泊関連)</th>
+					        <td colspan="4" width="781px">
+					          <div style="margin-bottom:5px ;margin-top:5px;">
+                                <span m:rendered="#{nationalEntryDto.emptyOptionalStay==false}" size="2px">
+					              <div style="margin-bottom:5px" >
+        					          <font size="2px">1泊2日（大会＋懇親会＋宿泊）をお申込みの方は以下からお部屋を選択してください</font><BR>
+        					          <font size="2px">※金額　・シングルユース:２１,０００円/１人　・ツインユース:１８,０００円/１人（金額は参加費込の料金、</font>
+        					          <font size="2px" color="red">お部屋は全室ツインルーム（禁煙）です</font>
+        					          <font size="2px">)</font><BR>
+        					          <font size="2px">※ツインユースお申込みの方は備考1に同室希望者の店名とお名前を入力してください</font>
+                                  </div>
+					            </span>
+			                    <span m:id="optionalstay" m:inject="s:forEach" m:items="#{nationalEntryDto.selectionOptionInfo}" m:var="eo" m:varindex="fo">
+				                  <div m:rendered="#{(fo < 4 ||(fo>=10 && fo<16))&& eo.disabled==false}" style="width:255px; float:left; text-align:left;line-height:22px;">
+			                        <input type="checkbox" m:value="#{joinPers.optional1Check}" m:rendered="#{fo == 0 && eo.emptySelection==false}"/>
+			                        <input type="checkbox" m:value="#{joinPers.optional2Check}" m:rendered="#{fo == 1 && eo.emptySelection==false}"/>
+			                        <input type="checkbox" m:value="#{joinPers.optional3Check}" m:rendered="#{fo == 2 && eo.emptySelection==false}"/>
+			                        <input type="checkbox" m:value="#{joinPers.optional4Check}" m:rendered="#{fo == 3 && eo.emptySelection==false}"/>
+			                        <input type="checkbox" m:value="#{joinPers.optional11Check}" m:rendered="#{fo == 10 && eo.emptySelection==false}"/>
+			                        <input type="checkbox" m:value="#{joinPers.optional12Check}" m:rendered="#{fo == 11 && eo.emptySelection==false}"/>
+			                        <input type="checkbox" m:value="#{joinPers.optional13Check}" m:rendered="#{fo == 12 && eo.emptySelection==false}"/>
+			                        <input type="checkbox" m:value="#{joinPers.optional14Check}" m:rendered="#{fo == 13 && eo.emptySelection==false}"/>
+			                        <input type="checkbox" m:value="#{joinPers.optional15Check}" m:rendered="#{fo == 14 && eo.emptySelection==false}"/>
+			                        <input type="checkbox" m:value="#{joinPers.optional16Check}" m:rendered="#{fo == 15 && eo.emptySelection==false}"/>
+				  				    <span m:converter="#{characterEncodingConverter}" m:value="#{eo.selectionName}"/>&nbsp;
+				  				  </div>
+				  			    </span>
+				  			  </div>
+				  			</td>
+					      </tr>
+				          <tr>
+					        <th class="koumoku_label">オプショナル<br/>(ツアー関連)</th>
+					        <td colspan="4" width="781px">
+					        <div style="margin-bottom:5px ;margin-top:5px;">
+			                  <span m:id="optionaltour" m:inject="s:forEach" m:items="#{nationalEntryDto.selectionOptionInfo}" m:var="eo" m:varindex="fo">
+				                <div m:rendered="#{(fo >= 4 && fo <10) && eo.disabled==false}" style="width:255px; float:left; text-align:left;line-height:22px;">
+			                      <input type="checkbox" m:value="#{joinPers.optional5Check}" m:rendered="#{fo == 4 && eo.emptySelection==false}"/>
+			                      <input type="checkbox" m:value="#{joinPers.optional6Check}" m:rendered="#{fo == 5 && eo.emptySelection==false}"/>
+			                      <input type="checkbox" m:value="#{joinPers.optional7Check}" m:rendered="#{fo == 6 && eo.emptySelection==false}"/>
+			                      <input type="checkbox" m:value="#{joinPers.optional8Check}" m:rendered="#{fo == 7 && eo.emptySelection==false}"/>
+			                      <input type="checkbox" m:value="#{joinPers.optional9Check}" m:rendered="#{fo == 8 && eo.emptySelection==false}"/>
+			                      <input type="checkbox" m:value="#{joinPers.optional10Check}" m:rendered="#{fo == 9 && eo.emptySelection==false}"/>
+				  				  <span m:converter="#{characterEncodingConverter}" m:value="#{eo.selectionName}"/>&nbsp;
+				  				</div>
+				  			  </span>
+				  			</div>
+				  			</td>
+					      </tr>
+
+					       <tr>
+					        <th class="koumoku_label">オプショナル<br/>(その他)</th>
+					        <td colspan="4" width="781px">
+					        <div style="margin-bottom:5px ;margin-top:5px;">
+			                  <span m:id="optionother" m:inject="s:forEach" m:items="#{nationalEntryDto.selectionOptionInfo}" m:var="eo" m:varindex="fo">
+				                <div m:rendered="#{fo >=20 && eo.disabled==false}" style="width:781px; float:left; text-align:left;line-height:22px;">
+			                      <input type="checkbox" m:value="#{joinPers.optional21Check}" m:rendered="#{fo == 20 && eo.emptySelection==false}"/>
+			                      <input type="checkbox" m:value="#{joinPers.optional22Check}" m:rendered="#{fo == 21 && eo.emptySelection==false}"/>
+  			                      <input type="checkbox" m:value="#{joinPers.optional23Check}" m:rendered="#{fo == 22 && eo.emptySelection==false}"/>
+			                      <input type="checkbox" m:value="#{joinPers.optional24Check}" m:rendered="#{fo == 23 && eo.emptySelection==false}"/>
+			                      <input type="checkbox" m:value="#{joinPers.optional25Check}" m:rendered="#{fo == 24 && eo.emptySelection==false}"/>
+			                      <input type="checkbox" m:value="#{joinPers.optional26Check}" m:rendered="#{fo == 25 && eo.emptySelection==false}"/>
+			                      <input type="checkbox" m:value="#{joinPers.optional27Check}" m:rendered="#{fo == 26 && eo.emptySelection==false}"/>
+			                      <input type="checkbox" m:value="#{joinPers.optional28Check}" m:rendered="#{fo == 27 && eo.emptySelection==false}"/>
+			                      <input type="checkbox" m:value="#{joinPers.optional29Check}" m:rendered="#{fo == 28 && eo.emptySelection==false}"/>
+			                      <input type="checkbox" m:value="#{joinPers.optional30Check}" m:rendered="#{fo == 29 && eo.emptySelection==false}"/>
+				  				  <span m:converter="#{characterEncodingConverter}" m:value="#{eo.selectionName}"/>
+				  				  <span m:rendered="#{fo == 20 && eo.emptySelection==false}" >
+				  				     &nbsp;<font size="1px">※対象になる場合、必ずチェックを入れてください</font>
+			                      </span>
+			                      <span m:rendered="#{fo == 23 && eo.emptySelection==false}" >
+								     &nbsp;<font size="1px">※ご希望の場合、チェックを入れ、お預けになるお子様の情報を備考２へ記載してください</font>
+			                      </span>
+
+				  				</div>
+				  			  </span>
+				  			</div>
+				  			</td>
+					      </tr>
+
+				          <tr>
+				            <th>備考1<br/><font m:class="font_color">(全角５０文字以内)</font></th>
+				            <td colspan="4">
+				                <div style="margin-bottom:7px ;margin-top:5px;">
+				                	<font size="2px">※ツインルーム同室希望者（店名、氏名）、その他宿泊の特記事項</font><br/>
+				                	<input m:id="note1" class="imeon width_730" type="text" m:maxlength="50" size="130" m:value="#{joinPers.note1}"/>
+				                </div>
+				            </td>
+					      </tr>
+					      <tr>
+				            <th>備考2<br/><font m:class="font_color">(全角５０文字以内)</font></th>
+				            <td colspan="4">
+				                <div style="margin-bottom:7px ;margin-top:5px;">
+				                	<font size="2px">※託児所お子様情報（お名前、ふりがな、年齢、注意事項）　例）毛須太郎　もすたろう　５才</font><br/>
+				                	<font size="2px">※その他のご連絡もこちらへ</font><br/>
+				                	<input m:id="note" class="imeon width_730" type="text" m:maxlength="50" size="130" m:value="#{joinPers.note}"/>
+				                </div>
+				            </td>
+					      </tr>
+				        </table>
+				     </td>
+				   </tr>
+			     </table>
+		      </div>
+		    </div>
+	    </div>
+    <!-- 申込参加者1....３０ -->
+	</div>
+	<input type="text" m:id="dummyEnter" style="display:none"/>
+  </form>
+  </span>
+</body>
+</html>

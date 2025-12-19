@@ -1,0 +1,233 @@
+<html xmlns:m="http://www.seasar.org/maya" m:action="#{documentRegistConditionAction.initialize}" m:extends="/jsf/layout/layoutNoNavi.html">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Windows-31j" />
+<title>情報共有（文書登録）</title>
+</head>
+<body>
+<span m:inject="f:param" m:name="layoutTitle" m:value="情報共有（文書登録）"/>
+<span m:inject="f:param" m:name="onLoadName" m:value="load()"/>
+<span m:inject="s:insert" m:name="bodyTitleName">■情報共有（文書登録）</span>
+<span m:inject="f:param" m:name="viewIdValue" m:value="BIF003V01"/>
+<span m:inject="s:insert" m:name="body">
+<script type="text/javascript">
+<!--
+var maxScrollHeight = 395;
+function load(){
+    var f = document.forms['docRegist'];
+	if(f.tabrowcnt.value>1) {
+		maxScrollHeight = maxScrollHeight-(20*f.tabrowcnt.value);
+	}
+	loadScroll("bunshoScroll", maxScrollHeight);
+    var ops = f.elements['docRegist:selectedListIndex'];
+    if (ops != null) {
+	    for (var i = 0; i < ops.length; i++) {
+	        if (ops[i].checked) {
+	            ops[i].focus();
+	        }
+	    }
+	}
+}
+
+function downLoad(index) {
+	document.docRegist.elements["docRegist:downloadIndex"].value=index;
+}
+
+function tabChange(subCateId) {
+    if (document.getElementById("docRegist:searchBtn").disabled) {
+        return false;
+    }
+    document.docRegist.elements["selectedSubCateId"].value = subCateId;
+    document.docRegist.elements['docRegist:__link_clicked__'].value='docRegist:changeTab';
+    document.docRegist.submit();
+    return true;
+}
+//-->
+</script>
+<STYLE type="text/css">
+    <!--
+/** 選択ラジオボタン幅 */
+.col_select {
+	width				: 25px;
+	text-align			: center;
+}
+/** タイトル幅 */
+.col_title {
+	width				: *;
+}
+/** 発信元幅 */
+.col_puborgname {
+	width				: 170px;
+}
+/** 掲載期間幅 */
+.col_pubdate {
+	width				: 120px;
+}
+table.body_table2{
+  width				: 98%;
+}
+    -->
+</STYLE>
+
+<form m:id="docRegist">
+	<input type="hidden" m:id="viewId" m:value="#{viewIdValue}"/>
+	<input type="hidden" m:id="initMenuId" m:value="#{menuAction.initMenuId}"/>
+	<input type="hidden" m:id="initSubMenuId" m:value="#{menuAction.initSubMenuId}"/>
+	<input type="hidden" m:id="downloadIndex" m:value="#{documentRegistConditionDto.downloadIndex}"/>
+	<input type="hidden" name="tabrowcnt" m:value="#{documentRegistConditionDto.subCateRowCnt}" m:passthrough="true"/>
+
+	<a m:action="#{documentRegistConditionAction.changeTab}" m:id="changeTab">
+		<span m:inject="f:param" m:name="selectedSubCateId" m:value="#{e.subCateId}"/>
+	</a>
+
+	<table class="hiddenBody" style="width:98%;">
+		<tr>
+	    <td >
+	        <input type="button" width="100px" value="新規登録" class="operation_button" m:action="#{documentRegistConditionAction.goInsert}"/>&nbsp;
+	    </td>
+		<td width="300px" m:rendered="#{documentRegistConditionDto.listSubCategorySize != 0}">
+			<input type="button" value="編集" class="operation_button" m:action="#{documentRegistConditionAction.goRegist}" m:disabled="#{documentRegistConditionDto.listBunshoSize > 0 ? false : true}"/>
+			<input type="button" value="削除" class="operation_button" m:action="#{documentRegistConditionAction.goDelete}" m:disabled="#{documentRegistConditionDto.listBunshoSize > 0 ? false : true}"/>&nbsp;
+			<input type="button" value="順位設定" class="operation_button" m:action="#{documentRegistConditionAction.registRank}"/>
+		</td>
+		<td align="right" m:rendered="#{documentRegistConditionDto.listSubCategorySize != 0}">
+		<input type="submit" value="最初へ" m:action="#{documentRegistConditionAction.changePage}" m:disabled="#{documentRegistConditionDto.firstPage}">
+			<span m:inject="f:param" m:name="selectPageNumber" m:value="#{documentRegistConditionDto.firstPageNumber}"/>
+		</input>
+		<input type="submit" value="前へ" m:action="#{documentRegistConditionAction.changePage}" m:disabled="#{!documentRegistConditionDto.existPreviousPage}">
+			<span m:inject="f:param" m:name="selectPageNumber" m:value="#{documentRegistConditionDto.previousPageNumber}"/>
+		</input>
+		<input type="submit" value="次へ" m:action="#{documentRegistConditionAction.changePage}" m:disabled="#{!documentRegistConditionDto.existNextPage}">
+			<span m:inject="f:param" m:name="selectPageNumber" m:value="#{documentRegistConditionDto.nextPageNumber}"/>
+		</input>
+		<input type="submit" value="最後へ" m:action="#{documentRegistConditionAction.changePage}" m:disabled="#{documentRegistConditionDto.lastPage}">
+			<span m:inject="f:param" m:name="selectPageNumber" m:value="#{documentRegistConditionDto.lastPageNumber}"/>
+		</input>
+		&nbsp;&nbsp;
+		<span m:value="#{documentRegistConditionDto.currentPageNumber}"/> / <span m:value="#{documentRegistConditionDto.lastPageNumber}"/>&nbsp;ページ
+		</td>
+		</tr>
+	</table>
+	<table class="hiddenBody" style="margin-top:4px;margin-bottom:4px;">
+		<tr>
+			<td>
+				<table class="body_table" style="float:left;">
+					<tr>
+						<th>カテゴリー選択</th>
+						<td>
+							<div class="hideArea">
+								<select m:value="#{documentRegistConditionDto.cateId}"
+										m:items="#{documentRegistConditionDto.listCategory}"
+										m:itemValue="cateId"
+										m:itemLabel="cateName">
+									<option value="">選択</option>
+									<option value="">情報システムＧ</option>
+									<option value="">人事グループ</option>
+								</select>
+							</div>
+						</td>
+					</tr>
+				</table>
+			</td>
+			<td>
+			<input type="button" value="検索" m:id="searchBtn"
+			       m:action="#{documentRegistConditionAction.search}"
+			       style="margin-left:3px;" /></td>
+		</tr>
+	</table>
+
+<div class="search_result" m:rendered="#{documentRegistConditionDto.listSubCategorySize != 0}">
+
+<!-- サブカテゴリ タブ -->
+<div class="scroll_padding_head">
+<div class="scroll_hidden margin_bottom_hidden">
+<table width="98%" cellpadding="0" cellspacing="0">
+<div m:inject="s:forEach" m:items="#{documentRegistConditionDto.listTabSubCate}"
+     m:var="istSubCategory" m:varindex="i">
+	<tr>
+	<div m:inject="s:forEach" m:items="#{istSubCategory}" m:var="e" m:varindex="i">
+		<th m:rendered="#{e!=null}" style="width:20%;"
+		    class="body_#{e.subCateId == documentRegistConditionDto.selectedSubCateId ? '':'non_'}active_cell"
+		    onClick="#{e.subCateId != documentRegistConditionDto.selectedSubCateId ? 'return tabChange(\'':''}#{e.subCateId != documentRegistConditionDto.selectedSubCateId?e.subCateId:''}#{e.subCateId != documentRegistConditionDto.selectedSubCateId?'\');':''}"
+		    onMouseOver="this.style.cursor='pointer';"><span m:converter="#{characterEncodingConverter}" m:value="#{e.subCateName}"/></th>
+		<th m:rendered="#{e==null}" width="20%"/>
+	</div>
+		<th width="5%"/>
+	</tr>
+</div>
+	<!--タブ帯-->
+	<tr class="body_caption" style="height:5px;"><td colspan="6"/></tr>
+</table>
+<!-- 文書一覧 -->
+<table class="body_table2">
+	<colgroup>
+		<col class="col_select"/>
+		<col class="col_title"/>
+		<col class="col_puborgname"/>
+		<col class="col_pubdate"/>
+		<col class="col_pubdate"/>
+	</colgroup>
+	<tr class="header_row">
+		<th>&nbsp;</th>
+		<th>タイトル</th>
+		<th>発信元</th>
+		<th>掲載期間FROM</th>
+		<th>掲載期間TO</th>
+	</tr>
+</table>
+</div>
+</div>
+<div class="scroll_padding_data">
+<div class="scroll_standby" id="bunshoScroll">
+	<table class="body_table2" style="border-top-width:0px;">
+	<colgroup>
+		<col class="col_select"/>
+		<col class="col_title"/>
+		<col class="col_puborgname"/>
+		<col class="col_pubdate"/>
+		<col class="col_pubdate"/>
+	</colgroup>
+		<div class="search_result" m:rendered="#{documentRegistConditionDto.listBunshoSize != 0}">
+			<div m:inject="s:selectOneRadio2" m:id="selectedListIndex" m:value="#{documentRegistConditionDto.selectedListIndex}" m:required="true">
+				<div m:inject="s:forEach" m:items="#{documentRegistConditionDto.listBunsho}" m:var="e" m:varindex="i">
+					<tr class="non_top_border" style="#{e.listAttachFileSize != 0?'line-height:24px;':''}">
+						<td align="center"><input type="radio" m:value="#{i}"/></td>
+						<td>
+							<a m:action="#{documentRegistDownloadAction.download}" title="#{e.fileName}" onClick="downLoad(#{i})">
+								<span m:converter="#{characterEncodingConverter}" m:value="#{e.title}"/>
+							</a>
+							<div m:rendered="#{e.listAttachFileSize != 0}">
+								<div class="hideArea" style="display:inline;">
+								<select m:value="#{e.downloadAttachIndex}"
+										m:items="#{e.listAttachFile}"
+										m:itemValue="value"
+										m:itemLabel="label"
+										m:nullLabel="">
+									<option value="">添付ファイル１</option>
+									<option value="">添付ファイル２</option>
+									<option value="">添付ファイル３</option>
+								</select>
+								</div>
+								<input type="button" value="ダウンロード" class="operation_button" m:onclick="downLoad(#{i})" m:action="#{documentRegistDownloadActionTenpu.download}"/>
+							</div>
+						</td>
+						<td><span m:converter="#{characterEncodingConverter}" m:value="#{e.bumonName}"/></td>
+						<td align="center"><span m:value="#{e.pubDateFrom}" m:converter="#{dateConverter}"/></td>
+						<td align="center"><span m:value="#{e.pubDateTo}"  m:converter="#{dateConverter}"/></td>
+					</tr>
+				</div>
+			</div>
+		</div>
+	</table>
+</div>
+</div>
+<script type="text/javascript">
+<!--
+	focusElement("docRegist");
+-->
+</script>
+<input type="text" m:id="dummyEnter" style="display:none"/>
+
+</form>
+</span>
+</body>
+</html>

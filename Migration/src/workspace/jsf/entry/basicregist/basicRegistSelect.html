@@ -1,0 +1,130 @@
+<html xmlns:m="http://www.seasar.org/maya" m:action="#{basicRegistSelectAction.initialize}" m:extends="/jsf/layout/layoutNoNavi.html">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Windows-31j"/>
+<meta http-equiv="Content-Style-Type" content="text/css"/>
+<title>ベーシック研修マスタ登録</title>
+</head>
+<body>
+<span m:inject="f:param" m:name="layoutTitle" m:value="ベーシック研修マスタ登録"/>
+<span m:inject="s:insert" m:name="bodyTitleName">■ベーシック研修マスタ登録</span>
+<span m:inject="f:param" m:name="onLoadName" m:value=""/>
+<span m:inject="f:param" m:name="viewIdValue" m:value="BEN001V01"/>
+<div m:inject="s:insert" m:name="body">
+<style type="text/css">
+<!--
+.scroll_area {
+	height				: 394px;
+	width				: 975px;
+}
+table.body_table2 {
+	width				: 955px;
+}
+.col_select {
+	width				: 30px;
+	text-align			: center;
+}
+.col_course {
+	width				: 250px;
+}
+.col_date {
+	width				: 90px;
+}
+.col_limit {
+	width				: 40px;
+}
+-->
+</style>
+
+<form m:id="basicRegistSelect">
+<input type="hidden" m:id="viewId" m:value="#{viewIdValue}" />
+<input type="hidden" m:id="initMenuId" m:value="#{menuAction.initMenuId}"/>
+<input type="hidden" m:id="initSubMenuId" m:value="#{menuAction.initSubMenuId}"/>
+
+<input type="submit" value="新規" m:action="#{basicRegistSelectAction.insert}"/>&nbsp;&nbsp;
+<input type="submit" value="編集" m:action="#{basicRegistSelectAction.update}" m:disabled="#{basicRegistDto.emptyBasicEntryList}"/>&nbsp;&nbsp;
+<input type="submit" value="削除" m:action="#{basicRegistSelectAction.delete}" m:disabled="#{basicRegistDto.emptyBasicEntryList}"/>
+
+<div m:rendered="#{!basicRegistDto.emptyBasicEntryList}" style="margin-top:1px;">
+<table class="hiddenBody" style="width:955px;">
+	<tr>
+		<td width="50%" style="font-weight:bold;padding-top:3px;">※日付はオーナーの設定期間です。</td>
+		<td width="*" align="right">
+			<input type="submit" value="最初へ" m:action="#{basicRegistSelectAction.changePage}" m:disabled="#{basicRegistDto.firstPage}">
+				<span m:inject="f:param" m:name="selectPageNumber" m:value="#{basicRegistDto.firstPageNumber}"/>
+			</input>
+			<input type="submit" value="前へ" m:action="#{basicRegistSelectAction.changePage}" m:disabled="#{!basicRegistDto.existPreviousPage}">
+				<span m:inject="f:param" m:name="selectPageNumber" m:value="#{basicRegistDto.previousPageNumber}"/>
+			</input>
+			<input type="submit" value="次へ" m:action="#{basicRegistSelectAction.changePage}" m:disabled="#{!basicRegistDto.existNextPage}">
+				<span m:inject="f:param" m:name="selectPageNumber" m:value="#{basicRegistDto.nextPageNumber}"/>
+			</input>
+			<input type="submit" value="最後へ" m:action="#{basicRegistSelectAction.changePage}" m:disabled="#{basicRegistDto.lastPage}">
+				<span m:inject="f:param" m:name="selectPageNumber" m:value="#{basicRegistDto.lastPageNumber}"/>
+			</input>
+			<span class="page_operation_number"><span m:value="#{basicRegistDto.currentPageNumber}"/>／<span m:value="#{basicRegistDto.lastPageNumber}"/>ページ</span>
+		</td>
+	</tr>
+</table>
+<table class="body_table2" style="margin-top:4px;">
+	<col class="col_select"/>
+	<colgroup span="2" class="col_course"/>
+	<colgroup span="4" class="col_date"/>
+	<col class="col_limit"/>
+	<tr class="header_row">
+		<th rowspan="2"/>
+		<th>ベーシック研修</th>
+		<th>臨店実習コース</th>
+		<th>申込開始</th>
+		<th>申込終了</th>
+		<th>表示開始</th>
+		<th>表示終了</th>
+		<th>定員</th>
+	</tr>
+	<tr class="header_row">
+		<th colspan="2">タイトル</th>
+		<th colspan="5">備考</th>
+	</tr>
+</table>
+
+<div class="scroll_area">
+<div m:inject="s:selectOneRadio2" m:value="#{basicRegistDto.selectIndex}" m:required="true">
+<table class="body_table2" style="border-top-width:0px;">
+	<col class="col_select"/>
+	<colgroup span="2" class="col_course"/>
+	<colgroup span="4" class="col_date"/>
+	<col class="col_limit"/>
+	<div m:inject="s:forEach" m:items="#{basicRegistDto.basicEntryList}" m:var="e" m:varindex="i">
+	<tr class="non_top_border font_size_14">
+		<td rowspan="2" style="text-align:center;"><input type="radio" m:value="#{i}"></td>
+		<td>
+			<span m:value="#{e.basicFromDt}" m:converter="#{basicRegistDateConverter1}"/>(<span m:value="#{e.basicFromDt}" m:converter="#{basicRegistDateConverter2}"/>)
+			～
+			<span m:value="#{e.basicToDt}" m:converter="#{basicRegistDateConverter1}"/>(<span m:value="#{e.basicToDt}" m:converter="#{basicRegistDateConverter2}"/>)
+		</td>
+		<td>
+			<span m:value="#{e.visitFromDt}" m:converter="#{basicRegistDateConverter1}"/>(<span m:value="#{e.visitFromDt}" m:converter="#{basicRegistDateConverter2}"/>)
+			～
+			<span m:value="#{e.visitToDt}" m:converter="#{basicRegistDateConverter1}"/>(<span m:value="#{e.visitToDt}" m:converter="#{basicRegistDateConverter2}"/>)
+		</td>
+		<td><span m:value="#{e.applyOnerFromDt}" m:converter="#{basicRegistDateConverter1}"/></td>
+		<td><span m:value="#{e.applyOnerToDt}" m:converter="#{basicRegistDateConverter1}"/></td>
+		<td><span m:value="#{e.displayOnerFromDt}" m:converter="#{basicRegistDateConverter1}"/></td>
+		<td><span m:value="#{e.displayOnerToDt}" m:converter="#{basicRegistDateConverter1}"/></td>
+		<td style="text-align:right;"><span m:converter="#{characterEncodingConverter}" m:value="#{e.numberLimit}"/></td>
+	</tr>
+	<tr>
+		<td colspan="2"><span m:converter="#{characterEncodingConverter}" m:value="#{e.entryTitle}"/>&nbsp;</td>
+		<td colspan="5"><span m:converter="#{characterEncodingConverter}" m:value="#{e.note}"/></td>
+	</tr>
+	</div>
+</table>
+</div>
+</div>
+
+</div>
+
+</form>
+
+</div>
+</body>
+</html>

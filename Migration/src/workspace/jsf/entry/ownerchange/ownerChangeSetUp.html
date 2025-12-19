@@ -1,0 +1,100 @@
+<html xmlns:m="http://www.seasar.org/maya" m:action="#{ownerChangeSetUpAction.initialize}" m:extends="/jsf/layout/layoutNoNavi.html">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Windows-31j" />
+<title>オーナー間異動登録</title>
+</head>
+<body>
+<span m:inject="f:param" m:name="layoutTitle" m:value="オーナー間異動登録"/>
+<span m:inject="s:insert" m:name="bodyTitleName">■オーナー間異動登録（対象者設定画面）</span>
+<span m:inject="f:param" m:name="onLoadName" m:value="bodyLoad()"/>
+<span m:inject="f:param" m:name="viewIdValue" m:value="BEN023V02"/>
+<span m:inject="s:insert" m:name="body">
+<style type="text/css">
+<!--
+.scroll_area {
+	height		: 410px;
+}
+.worker {
+	color		: #FF0000;
+}
+.body_table2.
+-->
+</style>
+<script type="text/javascript">
+<!--
+function bodyLoad() {
+	focusElement("ownerChangeSetUp");
+}
+function executeAction(formName, actionName) {
+	document.forms[formName].elements[formName + ':__link_clicked__'].value = formName + ':' + actionName;
+	document.forms[formName].submit();
+	return false;
+}
+function select(index) {
+	document.forms['ownerChangeSetUp'].elements['ownerChangeSetUp:index'].value = index;
+	executeAction('ownerChangeSetUp', 'select');
+}
+//-->
+</script>
+<form m:id="ownerChangeSetUp">
+<input type="hidden" m:id="viewId" m:value="#{viewIdValue}"/>
+<input type="hidden" m:id="initMenuId" m:value="#{menuAction.initMenuId}"/>
+<input type="hidden" m:id="initSubMenuId" m:value="#{menuAction.initSubMenuId}"/>
+<input type="hidden" m:value="#{ownerChangeDto.windowId}"/>
+
+<a id="back" m:action="#{ownerChangeSetUpAction.back}"/>
+<a id="select" m:action="#{ownerChangeSetUpAction.select}"/>
+<input type="hidden" m:id="index" m:value="#{ownerChangeSetUpAction.index}"/>
+
+<input type="button" value="戻る" onclick="executeAction('ownerChangeSetUp', 'back')"/>
+<table class="body_table" style="margin-top:4px;">
+	<tr>
+		<th width="40px">会社</th>
+		<td width="150px"><span m:converter="#{characterEncodingConverter}" m:value="#{ownerChangeDto.companyName}"/>&nbsp;</td>
+		<th width="65px">オーナー</th>
+		<td>
+	        <span m:value="#{ownerChangeDto.dispOnerCd}"/>&nbsp;&nbsp;
+	        <span m:converter="#{characterEncodingConverter}" m:value="#{ownerChangeDto.onerNameKj}"/>&nbsp;</td>
+	</tr>	
+</table>
+
+<table class="body_table2" style="width:750px;margin-top:4px;">
+	<tr class="header_row">
+		<th style="width:*">店舗</th>
+		<th style="width:200px">対象者</th>
+		<th style="width:164px">ライセンス番号</th>
+		<th style="width:100px">活動状況</th>
+	</tr>
+</table>
+<div class="scroll_area"style="width:767px">
+<table class="body_table2" style="width:750px;border-top-width:0px;">
+	<div m:inject="s:forEach" m:items="#{ownerChangeDto.staffInfoList}" m:var="e" m:varindex="i">
+	<tr class="non_top_border">
+		<td style="width:*">
+			<span m:value="#{e.miseCd1}"/>
+			<span m:converter="#{characterEncodingConverter}" m:value="#{e.miseNameKj}"/>
+			<span m:rendered="#{birdDateInfo.sysDate >= e.closeDt}">(CLOSE)
+			</span>
+		</td>
+		<td style="width:200px">
+			<a href="#" onclick="select('#{i}')">
+				<span m:converter="#{characterEncodingConverter}" m:value="#{e.staffLNameKj}"/>
+				<span m:converter="#{characterEncodingConverter}" m:value="#{e.staffFNameKj}"/>
+			</a>
+		</td>
+		<td style="width:164px">
+			<span m:value="#{e.licenseNo}"/>
+		</td>
+		<td style="width:100px">
+			<span class="worker" m:rendered="#{e.situationKbn == '0'}">活動中</span>
+			<span m:rendered="#{e.situationKbn == '1'}">休職中</span>
+			<span m:rendered="#{e.situationKbn == '2'}">退職</span>
+		</td>
+	</tr>
+	</div>
+</table>
+</div>
+</form>
+</span>
+</body>
+</html>

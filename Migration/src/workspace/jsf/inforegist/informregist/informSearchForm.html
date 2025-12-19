@@ -1,0 +1,137 @@
+<html xmlns:m="http://www.seasar.org/maya" m:action="#{informSearchAction.initialize}" m:extends="/jsf/layout/layoutNoNavi.html">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Windows-31j" />
+<title>インフォメーション登録</title>
+</head>
+<body>
+<span m:inject="f:param" m:name="layoutTitle" m:value="インフォメーション登録"/>
+<span m:inject="s:insert" m:name="bodyTitleName">■インフォメーション登録</span>
+<span m:inject="f:param" m:name="onLoadName" m:value="load();"/>
+<span m:inject="f:param" m:name="viewIdValue" m:value="BIF004V01"/>
+<span m:inject="s:insert" m:name="body">
+<STYLE type="text/css">
+<!--
+/* テーブルヘッダデフォルト設定 パターン１*/
+table.body_table tr.sakujoArea td{
+  background-color      : #C0C0C0;
+}
+-->
+</STYLE>
+<SCRIPT LANGUAGE="javascript">
+<!--
+function load() {
+	loadScroll("infosearchScroll", 410);
+}
+function download(index) {
+	document.informSearch.elements["informSearch:downloadIndex"].value=index;
+}
+//-->
+</SCRIPT>
+<form m:id="informSearch">
+<input type="hidden" m:id="viewId" m:value="#{viewIdValue}"/>
+<input type="hidden" m:id="initMenuId" m:value="#{menuAction.initMenuId}"/>
+<input type="hidden" m:id="initSubMenuId" m:value="#{menuAction.initSubMenuId}"/>
+<input type="hidden" m:id="downloadIndex" m:value="#{informRegistDto.downloadIndex}"/>
+<input type="submit" value="新規登録" m:action="#{informSearchAction.regist}"/>&nbsp;&nbsp;
+  <span m:rendered="#{informRegistDto.existRegistData}">
+  <input type="submit" value="編集" m:action="#{informSearchAction.edit}"/>&nbsp;
+  <input type="submit" value="削除" m:action="#{informSearchAction.delete}"/>&nbsp;&nbsp;
+  </span>
+
+<table class="hiddenBody" style="margin-top:4px;margin-bottom:4px;">
+<tr>
+	<td>
+		<table class="body_table">
+		  <tr>
+		    <th>対象年月</th>
+		    <td>
+		      <div class="hideArea">
+		        <select m:value="#{informRegistDto.targetYM}"
+		                m:items="#{informRegistDto.targetYMList}"
+		                m:itemValue="value"
+		                m:itemLabel="label">
+		            <option value="">MOS</option>
+		        </select>
+		      </div>
+		    </td>
+		  </tr>
+		</table>
+	</td>
+	<td>
+		&nbsp;<input type="submit" value="検索" m:action="#{informSearchAction.search}"/>&nbsp;&nbsp;
+	</td>
+</tr>
+</table>
+<span m:rendered="#{informRegistDto.searchResultListSize != 0}">
+<div class="scroll_padding_head">
+  <div class="scroll_hidden">
+  <table class="body_table2" width="98%">
+    <tr class="header_row">
+      <th width="3%"></th>
+      <th width="*">タイトル</th>
+      <th width="18%">発信元</th>
+      <th width="13%">公開期間FROM</th>
+      <th width="13%">公開期間TO</th>
+      <th width="7%">ｽﾃｰﾀｽ</th>
+    </tr>
+  </table>
+  </div>
+  </div>
+  <div class="scroll_padding_data">
+  <div class="scroll_standby" id="infosearchScroll">
+    <table class="body_table2" style="border-top-width : 0px;" width="98%">
+      <span m:converter="#{characterEncodingConverter}" m:inject="s:selectOneRadio2" id="index" m:value="#{index}">
+        <div m:inject="s:forEach" m:items="#{informRegistDto.searchResultList}" m:var="e" m:varindex="i">
+          <tr class="#{e.sakujoFlg=='1'?'sakujoArea':''} non_top_border">
+            <td width="3%" align="center">
+              <input m:rendered="#{e.sakujoFlg=='0'}" type="radio" m:value="#{i}"/>
+            </td>
+            <td width="*">
+              <a m:action="#{informSearchAction.view}"><span m:value="#{e.title}" m:converter="#{characterEncodingConverter}"/><span m:inject="f:param" m:name="index" m:value="#{i}"/></a>
+				<div m:rendered="#{e.listAttachFileSize != 0}">
+					<select class="condition_field"
+							m:value="#{e.downloadAttachIndex}"
+							m:items="#{e.listAttachFile}"
+							m:itemValue="value"
+							m:itemLabel="label"
+							m:nullLabel="">
+						<option value="">添付ファイル１</option>
+						<option value="">添付ファイル２</option>
+						<option value="">添付ファイル３</option>
+					</select>
+					<input type="button" value="ダウンロード" class="operation_button" m:onclick="download(#{i})" m:action="#{informRegistDownloadTenpuAction.download}"/>
+				</div>
+            </td>
+            <td width="18%">
+              <span m:value="#{e.pubOrgName}" m:converter="#{characterEncodingConverter}"/>
+            </td>
+            <td width="13%">
+              <span m:value="#{e.pubDateFrom}" m:converter="#{dateConverter}"/>
+            </td>
+            <td width="13%">
+              <span m:rendered="#{'99991231'!=e.pubDateTo}" m:value="#{e.pubDateTo}" m:converter="#{dateConverter}"/>
+            </td>
+            <td width="7%">
+              <span m:value="#{e.sakujoFlg=='1'?'削除':''}"/>
+            </td>
+          </tr>
+        </div>
+      </span>
+    </table>
+  </div>
+  </div>
+<script type="text/javascript">
+<!--
+	var objRadio = targetElement("informSearch","index",0);
+	if(objRadio != null) {
+		objRadio.click();
+	}
+	focusElement("informSearch");
+-->
+</script>
+</span>
+
+</form>
+</span>
+</body>
+</html>

@@ -1,0 +1,100 @@
+<html xmlns:m="http://www.seasar.org/maya" m:action="#{longserviceRegistSelectAction.initialize}" m:extends="/jsf/layout/layoutNoNavi.html">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Windows-31j" />
+<title></title>
+</head>
+<body>
+<span m:inject="f:param" m:name="layoutTitle" m:value="永年勤続マスタ登録 "/>
+<span m:inject="s:insert" m:name="bodyTitleName">■永年勤続マスタ登録</span>
+<span m:inject="f:param" m:name="onLoadName" m:value="bodyLoad()"/>
+<span m:inject="f:param" m:name="viewIdValue" m:value="BEN017V01"/>
+<div m:inject="s:insert" m:name="body">
+<style type="text/css">
+<!--
+/** スクロール */
+.scroll_area {
+	overflow	:auto;
+	height		:395px;
+	width		:971px;
+}
+/**  */
+.openEnty, table tr.openEnty td {
+	background-color:#CCCCCC;
+}
+.col_radio {
+	width				: 30px;
+	text-align			: center;
+}
+.col_title {
+	width		: 520px;
+}
+.col_date {
+	width		: 85px;
+}
+-->
+</style>
+<script type="text/javascript">
+<!--
+function bodyLoad() {
+	// フォーカス設定
+	focusElement("longserviceRegistEditForm");
+}
+//-->
+</script>
+<form m:id="longserviceRegistSelectFrom" onKeyDown="return setDefaultSubmitButton('longserviceRegistSelectFrom','btnExecute');">
+<input type="hidden" m:id="viewId" m:value="#{viewIdValue}"/>
+<input type="hidden" m:id="initMenuId" m:value="#{menuAction.initMenuId}"/>
+<input type="hidden" m:id="initSubMenuId" m:value="#{menuAction.initSubMenuId}"/>
+<input type="hidden" m:id="windowId" m:value="#{longserviceRegistDto.windowId}"/>
+<input type="hidden" m:id="sessionKey" m:value="#{longserviceRegistDto.sessionKey}"/>
+<!-- 画面操作エリア -->
+<input type="button" m:id="btnExecute" value="新規" m:action="#{longserviceRegistSelectAction.insert}"/>&nbsp;&nbsp;
+<!-- 編集・削除データが存在する場合、表示-->
+<span m:rendered="#{longserviceRegistDto.buttonFlg == 'true'}">
+	<input type="button" value="編集" m:action="#{longserviceRegistSelectAction.update}"/>&nbsp;&nbsp;
+	<input type="button" value="削除" m:action="#{longserviceRegistSelectAction.delete}"/>
+</span>
+<!-- 永年勤続マスタ情報リストが存在する場合、表示-->
+<span m:rendered="#{longserviceRegistDto.emptyMstInfoList == 'true'}">
+<font style="display:block;font-weight:bold;margin-top:4px;">
+※日付はオーナーの設定期間です。<br/>
+※申込が開始されている場合は削除することができません。<br/>
+</font>
+<table class="body_table2" style="margin-top:4px;" width="954px">
+	<tr class="header_row">
+		<th class="col_radio"/>
+		<th class="col_title">イベント名称</th>
+		<th class="col_date">申込開始</th>
+		<th class="col_date">申込終了</th>
+		<th class="col_date">表示開始</th>
+		<th class="col_date">表示終了</th>
+	</tr>
+</table>
+<!--縦スクロールを設定-->
+<div class="scroll_area">
+<!--ラジオボタンの設定-->
+<span m:converter="#{characterEncodingConverter}" m:inject="s:selectOneRadio2" m:value="#{longserviceRegistDto.selectIndex}">
+<!--一覧テーブルの設定-->
+<table class="body_table2" width="954px" style="border-top-width:0px;">
+	<div m:inject="s:forEach" m:items="#{longserviceRegistDto.mstInfoList}" m:var="e" m:varindex="i">
+		<tr m:class="#{(e.entryYear >= longserviceRegistDto.sysNendo) == true ? '' : 'openEnty'} non_top_border font_size_14">
+			<td class="col_radio">
+				<div m:rendered="#{e.entryYear >= longserviceRegistDto.sysNendo}">
+					<input type="radio" m:value="#{i}"/>
+				</div>
+			</td>
+			<td class="col_title"><span m:converter="#{characterEncodingConverter}" m:value="#{e.entryTitle}"/></td>
+			<td class="col_date"><span m:value="#{e.onerEntryFrom}" m:converter="#{dateConverter}"/></td>
+			<td class="col_date"><span m:value="#{e.onerEntryTo}" m:converter="#{dateConverter}"/></td>
+			<td class="col_date"><span m:value="#{e.onerDispFrom}" m:converter="#{dateConverter}"/></td>
+			<td class="col_date"><span m:value="#{e.onerDispTo}" m:converter="#{dateConverter}"/></td>
+		</tr>
+	</div>
+</table>
+</span>
+</div>
+</span>
+</form>
+</div>
+</body>
+</html>

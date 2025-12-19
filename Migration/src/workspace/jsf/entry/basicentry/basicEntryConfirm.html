@@ -1,0 +1,240 @@
+<html xmlns:m="http://www.seasar.org/maya" m:action="#{basicEntryConfirmAction.initialize}" m:extends="/jsf/layout/layoutNoNavi.html">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Windows-31j" />
+<title></title>
+</head>
+<body>
+<span m:inject="f:param" m:name="layoutTitle" m:value="ベーシック研修参加申込"/>
+<span m:inject="s:insert" m:name="bodyTitleName">■ベーシック研修参加申込</span>
+<span m:inject="f:param" m:name="onLoadName" m:value="onLoadFunction()"/>
+<span m:inject="f:param" m:name="viewIdValue" m:value="BEN002V03"/>
+<span m:inject="s:insert" m:name="body">
+<style type="text/css">
+<!--
+
+.scroll_area {
+		width:	  920px;
+		height:	  350px;
+		overflow: auto;
+	}
+
+-->
+</style>
+<SCRIPT LANGUAGE="javascript">
+<!--
+function onLoadFunction() {
+}
+//-->
+</SCRIPT>
+
+<div align="center" m:rendered="#{basicEntryDto.selectEntryMst.editFlg == '1'}">
+<div align="center">
+  <table border="1" width="270" style="margin-bottom:2px";>
+    <tr class="font_size_14">
+      <td style="text-align:center;">以下の内容で登録が完了しました。<BR>誤りがある場合は戻るボタンを押して、<BR>前の画面に戻ってください。</TD>
+    </tr>
+  </table>
+</div>
+</div>
+
+<form m:id="basicEntryConfirm" m:onkeydown="return setDefaultSubmitButton('basicEntryConfirm','btnExecute');">
+<input type="hidden" m:id="viewId" m:value="#{viewIdValue}"/>
+<input type="hidden" m:id="initMenuId" m:value="#{menuAction.initMenuId}"/>
+<input type="hidden" m:id="initSubMenuId" m:value="#{menuAction.initSubMenuId}"/>
+
+<input type="button" value="戻る" class="operation_button"
+       m:action="#{basicEntryConfirmAction.cancel}"
+       m:rendered="#{basicEntryDto.selectEntryMst.editFlg == '1'}"/>
+<input type="button" value="終了" class="operation_button" m:action="#{basicEntryConfirmAction.regist}"/>
+
+<table class="body_table2" width="650"  style="margin-top: 4px; margin-bottom:4px">
+  <tr>
+    <th class="width_213_safari" style="text-align:center;" width="200">開催日</th>
+    <th style="text-align:center;" width="300">開催名</th>
+    <th style="text-align:center;" width="150">申込日</th>
+  </tr>
+  <tr>
+    <td>
+      <span m:value="#{basicEntryDto.selectEntryMst.kaisaiDtFrom}" m:converter="#{basicEntryDateConverter3}"/>～<span m:value="#{basicEntryDto.selectEntryMst.kaisaiDtTo}" m:converter="#{basicEntryDateConverter3}"/>
+    </td>
+    <td>
+      <span m:value="#{basicEntryDto.selectEntryMst.entryTitle}" m:converter="#{basicEntryCharacterEncodingConverter}"/>
+    </td>
+    <td>
+      <span m:value="#{basicEntryDto.sysDate}" m:converter="#{basicEntryDateConverter2}"/>
+    </td>
+  </tr>
+</table>
+	<div class="scroll_area" m:id="fream">
+<table width="800" class="body_table2"  style="margin-bottom:4px;">
+   <col width="100"/>
+  <col width="50"/>
+  <col width="100"/>
+  <col width="200"/>
+  <col width="100"/>
+  <col width="250"/>
+  <tr>
+    <th class="body_header4" colspan="2" m:style="text-align:left;border-right-style:none;">■申込責任者</th>
+    <th class="body_header4" m:style="border-left-style:none;border-right-style:none;"></th>
+    <th class="body_header4" m:style="border-left-style:none;border-right-style:none;"></th>
+    <th class="body_header4" m:style="border-left-style:none;border-right-style:none;"></th>
+    <th class="body_header4" m:style="border-left-style:none;"></th>
+  </tr>
+  <tr>
+    <th colspan="2">会社名</th>
+    <td colspan="4"><span m:value="#{basicEntryDto.uiEntryOnerMosikomiSekinin.onerNameKj}" m:converter="#{basicEntryCharacterEncodingConverter}"/></td>
+  </tr>
+  <tr>
+    <th colspan="2">申込責任者</th>
+    <td colspan="2"><span m:value="#{basicEntryDto.uiEntryOnerMosikomiSekinin.name}" m:converter="#{basicEntryCharacterEncodingConverter}"/></td>
+    <th>職位</th>
+    <td><span m:value="#{basicEntryDto.uiEntryOnerMosikomiSekinin.jobType}" m:converter="#{basicEntryCharacterEncodingConverter}"/></td>
+  </tr>
+  <tr>
+    <th rowspan="4">結果送付先</th>
+    <th>氏名</th>
+    <td colspan="4"><span m:value="#{basicEntryDto.uiEntryOnerMosikomiSekinin.soufuName}" m:converter="#{basicEntryCharacterEncodingConverter}"/></td>
+  </tr>
+  <tr>
+    <th rowspan="3">住所</th>
+    <td>〒<span m:value="#{basicEntryDto.uiEntryOnerMosikomiSekinin.zip}" m:converter="#{basicEntryZipConverter}"/></td>
+    <td colspan="3">
+      <span m:value="#{basicEntryDto.uiEntryOnerMosikomiSekinin.address1}" m:converter="#{basicEntryCharacterEncodingConverter}"/>
+    </td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+    <td colspan="3">
+      <span m:value="#{basicEntryDto.uiEntryOnerMosikomiSekinin.address2}" m:converter="#{basicEntryCharacterEncodingConverter}"/>
+    </td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+    <td colspan="3">
+      <span m:value="#{basicEntryDto.uiEntryOnerMosikomiSekinin.address3}" m:converter="#{basicEntryCharacterEncodingConverter}"/>
+    </td>
+  </tr>
+</table>
+
+<div m:inject="s:forEach" m:items="#{basicEntryDto.listEntryState}" m:var="e" m:varIndex="i" m:rendered="#{basicEntryDto.insupEntryStateNum != 0}">
+  <table width="900" class="body_table2" m:rendered="#{e.staffId != null && e.staffId != ''}" style="margin-top:4px;margin-bottom:4px;">
+      <col width="30"/>
+    <col width="100"/>
+    <col width="125"/>
+    <col width="125"/>
+    <col width="50"/>
+    <col width="170"/>
+    <col width="100"/>
+    <col width="200"/>
+    <tr>
+      <th class="body_header4" colspan="8" m:style="text-align:center;"><span m:converter="#{characterEncodingConverter}" m:value="#{i + 1}"/></th>
+    </tr>
+    <tr>
+      <th colspan="2">臨店実習</th>
+      <td colspan="3">
+        <span m:value="#{e.otherFlg1 == '1' ? '要' : '不要'}"/>
+      </td>
+      <th>臨店期間</th>
+      <td colspan="2">
+
+      </td>
+    </tr>
+    <tr>
+      <th colspan="2">研修中宿泊</th>
+      <td colspan="6">
+        <span m:value="#{e.otherFlg2 == '1' ? '研修寮' : e.otherFlg2 == '2' ? '自宅' : '宿泊施設'}"/>
+      </td>
+    </tr>
+    <tr>
+      <th rowspan="7">研<br/>修<br/>生</th>
+      <th>氏名</th>
+      <td colspan="6">
+        <span m:converter="#{characterEncodingConverter}" m:value="#{e.staffName}"/>
+      </td>
+    </tr>
+    <tr>
+      <th>フリガナ</th>
+      <td colspan="2"><span m:converter="#{characterEncodingConverter}" m:value="#{e.nameKnaInput}"/></td>
+      <th>性別</th>
+      <td>
+        <span m:value="#{e.sex == '0' ? '男' : '女'}"/>
+      </td>
+      <th>職位</th>
+      <td><span m:converter="#{characterEncodingConverter}" m:value="#{e.job}"/></td>
+    </tr>
+    <tr>
+      <th>店舗経験</th>
+      <td colspan="6">
+        <span m:rendered="#{e.empExpYear != '' && e.empExpMonth != ''}">
+        社員歴：<span m:value="#{e.empExpYear}"/>年<span m:value="#{e.empExpMonth}"/>月
+        　&nbsp;&nbsp;
+        </span>
+        <span m:rendered="#{e.paExpYear != '' && e.paExpMonth != ''}">
+        パート・アルバイト歴：<span m:value="#{e.paExpYear}"/>年<span m:value="#{e.paExpMonth}"/>月
+        </span>
+      </td>
+    </tr>
+    <tr m:rendered="#{basicEntryDto.entryCd != '30'}">
+      <th rowspan="4">受講案内<br>送付先</th>
+      <td colspan="2">
+        <span m:converter="#{characterEncodingConverter}" m:value="#{e.guideKbnName}"/>
+      </td>
+      <td colspan="4">
+        その他の送付先：<span m:value="#{e.guideNameInput}" m:readonly="true" m:converter="#{basicEntryCharacterEncodingConverter}"/>
+      </td>
+    </tr>
+    <tr m:rendered="#{basicEntryDto.entryCd != '30'}">
+      <td>
+        〒<span m:value="#{e.guideZip}" m:converter="#{basicEntryZipConverter}"/>
+      </td>
+      <td colspan="5">
+        <span m:value="#{e.guideAdrs1}" m:converter="#{basicEntryCharacterEncodingConverter}"/>
+      </td>
+    </tr>
+    <tr m:rendered="#{basicEntryDto.entryCd != '30'}">
+      <td>&nbsp;</td>
+      <td colspan="5">
+        <span m:value="#{e.guideAdrs2}" m:converter="#{basicEntryCharacterEncodingConverter}"/>
+      </td>
+    </tr>
+    <tr m:rendered="#{basicEntryDto.entryCd != '30'}">
+      <td>&nbsp;</td>
+      <td colspan="5">
+        <span m:value="#{e.guideAdrs3}" m:converter="#{basicEntryCharacterEncodingConverter}"/>
+      </td>
+    </tr>
+    <tr>
+      <th rowspan="2">上<br/>司</th>
+      <th>氏名</th>
+      <td colspan="2">
+        <span m:converter="#{characterEncodingConverter}" m:value="#{e.bossName}"/>
+      </td>
+      <th>所属</th>
+      <td>
+        <span m:converter="#{characterEncodingConverter}" m:value="#{e.bossGroup}"/>
+      </td>
+      <th>職位</th>
+      <td>
+        <span m:converter="#{characterEncodingConverter}" m:value="#{e.bossJobType}"/>
+      </td>
+    </tr>
+    <tr>
+      <th>コメント</th>
+      <td colspan="6">
+        <textarea rows="3" cols="100" m:value="#{e.bossComment}" m:converter="#{changeLineEditConverter}" m:readonly="true"/>
+      </td>
+    </tr>
+  </table>
+</div>
+<div m:rendered="#{basicEntryDto.insupEntryStateNum == 0 && basicEntryDto.selectEntryMst.editFlg == '1'}">
+<div align="center"><b><span m:converter="#{characterEncodingConverter}" m:value="#{basicEntryDto.msgAllStaffDelete}"/></b></div>
+</div>
+<div m:rendered="#{basicEntryDto.insupEntryStateNum == 0 && basicEntryDto.selectEntryMst.editFlg != '1'}">
+<div align="center"><b>上記オーナーによるベーシック研修申込登録情報はありません。</b></div>
+</div>
+
+</form>
+
+</span>
+</body>
+</html>;

@@ -1,0 +1,252 @@
+<html xmlns:m="http://www.seasar.org/maya" m:extends="/jsf/layout/layoutNoNavi.html" m:action="#{longserviceViewListConditionAction.initialize}">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Windows-31j" />
+<meta http-equiv="Content-Style-Type" content="text/css"/>
+<title>永年勤続申請状況確認画面</title>
+</head>
+<body>
+<span m:inject="f:param" m:name="layoutTitle" m:value="永年勤続申込状況確認"/>
+<span m:inject="s:insert" m:name="bodyTitleName">■永年勤続申込状況確認</span>
+<span m:inject="f:param" m:name="onLoadName" m:value="init();"/>
+<span m:inject="f:param" m:name="viewIdValue" m:value="BEN019V01"/>
+<span m:inject="s:insert" m:name="body">
+<style type="text/css">
+<!--
+.scroll_area {
+	height				: 310px;
+	width				: 720px;
+}
+
+table.body_table2 tr th.sinsei_cnt{
+  width				: 75px;
+}
+table.body_table2 tr td.sinsei_cnt{
+  width				: 75px;
+}
+
+table.body_table2 tr th.sinsei_title{
+  width				: 230px;
+}
+
+table.body_table2 tr th.sinsei_oner{
+  width				: 110px;
+}
+table.body_table2 tr td.sinsei_oner{
+  width				: 110px;
+}
+
+table.body_table2 tr th.misinsei_oner{
+  width				: 120px;
+}
+table.body_table2 tr td.misinsei_oner{
+  width				: 120px;
+}
+
+-->
+
+</style>
+<SCRIPT LANGUAGE="javascript">
+<!--
+function init() {
+	var taishoJokenIndex = document.conditionForm.elements['conditionForm:taishouJokenChoice'].selectedIndex;
+ 	var taishoJoken = document.conditionForm.elements['conditionForm:taishouJokenChoice'].value;
+ 	if(taishoJokenIndex == '2') {
+		focusElement('conditionForm');
+	}
+}
+
+function changeTaishoJeken() {
+	//支部リスト表示・非表示
+
+	var taishoJokenIndex = document.conditionForm.elements['conditionForm:taishouJokenChoice'].selectedIndex;
+ 	var taishoJoken = document.conditionForm.elements['conditionForm:taishouJokenChoice'].value;
+	var sibu1 =document.getElementById('conditionForm:div_sibu1');
+ 	var sv1 =document.getElementById('conditionForm:div_sv1');
+ 	var th =document.getElementById('conditionForm:th_Shuturyoku');
+ 	var td =document.getElementById('conditionForm:td_Shuturyoku');
+ 	var th2 =document.getElementById('conditionForm:th_Shuturyoku2');
+ 	var td2 =document.getElementById('conditionForm:td_Shuturyoku2');
+
+ 	sibu1.style.display="none";
+	sv1.style.display="none";
+ 	th.style.display="none";
+	td.style.display="none";
+ 	th2.style.display="none";
+	td2.style.display="none";
+
+	if(taishoJokenIndex == '1') {
+		sibu1.style.display="";
+	 	th.style.display="";
+		td.style.display="";
+	}else if(taishoJokenIndex == '2') {
+		sv1.style.display="";
+	 	th2.style.display="";
+		td2.style.display="";
+	}
+
+	if (taishoJokenIndex == '2') {
+		cursorFocus();
+	}
+}
+
+function cursorFocus() {
+	focusElement("conditionForm");
+}
+
+-->
+</SCRIPT>
+
+<form m:id="conditionForm" onKeyDown="return setDefaultSubmitButton('conditionForm','executeBt');">
+	<input type="hidden" m:id="viewId" m:value="#{viewIdValue}"/>
+	<input type="hidden" m:id="initMenuId" m:value="#{menuAction.initMenuId}"/>
+	<input type="hidden" m:id="initSubMenuId" m:value="#{menuAction.initSubMenuId}"/>
+	<input type="hidden" m:id="windowId" m:value="#{longserviceViewListRequestDto.windowId}"/>
+	<input type="button" value="戻る" m:action="#{longserviceViewListConditionAction.back}"/>
+	<table class="body_table2" style="width:100%;margin-top:4px;">
+    	<tr class="header_row">
+	    	<th rowspan="2" width="*">イベント名称</th>
+	    	<th width="150px">本部&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;：申込開始</th>
+	    	<th width="150px">本部&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;：申込終了</th>
+	    	<th class="sinsei_title" colspan="2">オーナー申請状況</th>
+	    	<th class="sinsei_cnt" rowspan="2">申請人数</th>
+    	</tr>
+
+    	<tr class="header_row">
+	    	<th>オーナー：申込開始</th>
+	    	<th>オーナー：申込終了</th>
+	    	<th>申請オーナー</th>
+	    	<th>未申請オーナー</th>
+    	</tr>
+
+    	<tr>
+			<td rowspan="2">
+				<span m:converter="#{characterEncodingConverter}" m:value="#{longserviceViewListRequestDto.entityUILSViewListEvent.entryTitle}"/>
+			</td>
+	    	<td>
+	    		<span m:value="#{longserviceViewListRequestDto.entityUILSViewListEvent.honbuFromDt}" m:converter="#{longserviceViewListConverter2}"/>
+	    	</td>
+	    	<td>
+	    		<span m:value="#{longserviceViewListRequestDto.entityUILSViewListEvent.honbuToDt}" m:converter="#{longserviceViewListConverter2}"/>
+	    	</td>
+    		<td class="sinsei_oner" rowspan="2" align="right">
+    			<span m:value="#{longserviceViewListRequestDto.entityUILSViewListEvent.applyOnerCnt}"/>
+    		</td>
+    		<td class="misinsei_oner" rowspan="2" align="right">
+    			<span m:converter="#{characterEncodingConverter}" m:value="#{longserviceViewListRequestDto.entityUILSViewListEvent.noApplyOner}"/>
+    		</td>
+    		<td class="sinsei_cnt" rowspan="2" align="right">
+    			<span m:value="#{longserviceViewListRequestDto.entityUILSViewListEvent.applyCnt}"/>
+    		</td>
+       	</tr>
+
+    	<tr>
+	    	<td>
+	    		<span m:value="#{longserviceViewListRequestDto.entityUILSViewListEvent.onerFromDt}" m:converter="#{longserviceViewListConverter2}"/>
+	    	</td>
+	    	<td>
+	    		<span m:value="#{longserviceViewListRequestDto.entityUILSViewListEvent.onerToDt}" m:converter="#{longserviceViewListConverter2}"/>
+	    	</td>
+		</tr>
+	</table>
+	<table class="hiddenBody" style="margin:4px 0px;">
+		<tr>
+			<td>
+			<table class="body_table">
+				<tr>
+					<th>対象条件</th>
+						<td>
+				   			<div class="hideArea">
+							    <select m:id="taishouJokenChoice"
+							    		m:value="#{longserviceViewListRequestDto.taishouJokenChoice}"
+							    		m:items="#{longserviceViewListSessionDto.taishouJokenPull}"
+							    		m:itemValue="selectPullId"
+							    		m:itemLabel="selectPullName"
+							    		m:onchange="changeTaishoJeken()"/>
+						    </div>
+				   		</td>
+			   			<div id="div_sibu1" class="div_sibu" m:style="#{(longserviceViewListRequestDto.taishouJokenChoice == '1') == true ? '' : 'display:none;'}">
+							<th m:id="th_Shuturyoku" m:style="#{(longserviceViewListRequestDto.taishouJokenChoice == '1') == true ? '' : 'display:none;'}">支部</th>
+					    	<td m:id="td_Shuturyoku" m:style="#{(longserviceViewListRequestDto.taishouJokenChoice == '1') == true ? '' : 'display:none;'}">
+								<div class="hideArea">
+					    			<select m:id="sibuChoice"
+					    				m:value="#{longserviceViewListRequestDto.sibuChoice}"
+										m:items="#{longserviceViewListSessionDto.sibu}"
+										m:itemValue="sibuCd"
+					    				m:itemLabel="sibuName"/>
+				    			</div>
+							</td>
+						</div>
+						<div id="div_sv1" class="div_SVCode" m:style="#{(longserviceViewListRequestDto.taishouJokenChoice == '2') == true ? '' : 'display:none;'}">
+							<th m:id="th_Shuturyoku2"
+							    m:style="#{(longserviceViewListRequestDto.taishouJokenChoice == '2') == true ? '' : 'display:none;'}">SVコード<input type="button" value="検索" class="button_in_table" m:action="#{longserviceViewListConditionAction.callSvForm}"/></th>
+						    <td m:id="td_Shuturyoku2" m:style="#{(longserviceViewListRequestDto.taishouJokenChoice == '2') == true ? '' : 'display:none;'}">
+									<input type="text" size="10" maxlength="8"
+									       m:id="svCd" m:value="#{longserviceViewListRequestDto.svCd}"
+									       class="imenotuse height_11"/></td>
+				   		</div>
+		   		 </tr>
+		    </table>
+		   	</td>
+		   	<td width="80px" style="padding-left:3px;">
+		<input type="submit"
+	       value="#{(longserviceViewListRequestDto.buttonFlg == '0') ? '実行' : '再検索'}"
+           m:id="executeBt" m:action="#{longserviceViewListConditionAction.search}"
+           onDblClick="return false;"/>
+            </td>
+            <td>
+	<table class="body_table">
+		<tr>
+	   	    <th>区分</th>
+				<td>
+		    		<div class="hideArea">
+			    		<select m:id="kbnChoice"
+			    				m:value="#{longserviceViewListRequestDto.kbnChoice}"
+			    				m:items="#{longserviceViewListSessionDto.kbn}"
+			    				m:itemValue="kbnPullId"
+					    		m:itemLabel="kbnPullName"/>
+				    </div>
+	    		</td>
+   		 </tr>
+    </table>
+    		</td>
+    		<td style="padding-left:3px;"><input type="button" value="ダウンロード"
+    		           m:action="#{longserviceViewListCsvAction.downloadCsv}"
+    		           onDblClick="return false;"/></td>
+    	</tr>
+    </table>
+	<!--回り込みクリア-->
+<div style="clear:both;"/>
+	<span m:rendered="#{longserviceViewListRequestDto.Table != null}">
+		<table class="body_table2" width="700px">
+			<tr class="header_row">
+				<th width="35px">No.</th>
+				<th width="*">オーナー</th>
+				<th width="50px">申請</th>
+				<th width="100px">申請人数</th>
+			</tr>
+		</table>
+
+		<div class="scroll_area">
+			<table class="body_table2" style="width:700px;border-top-width:0px">
+				<span m:inject="s:forEach" m:items="#{longserviceViewListRequestDto.Table}" m:var="e" m:varindex="i">
+					<tr class="#{i==0?'non_top_border':''}">
+						<td width="35px" align="right"><span m:converter="#{characterEncodingConverter}" m:value="#{i+1}"/></td>
+						<td width="*">
+							<span m:converter="#{characterEncodingConverter}" m:value="#{e.onerCd}"/>&nbsp;<span m:converter="#{characterEncodingConverter}" m:value="#{e.onerNameKj}"/>
+						</td>
+						<td width="50px" align="center">
+							<span m:converter="#{characterEncodingConverter}" m:value="#{e.applyCntMark}"/>
+						</td>
+						<td width="100px" align="right">
+							<span m:value="#{e.applyCnt}"/>
+						</td>
+					</tr>
+				</span>
+			</table>
+		</div>
+	</span>
+	<input type="text" m:id="dummyEnter" style="display:none"/>
+</form>
+</span>
+</body>
+</html>

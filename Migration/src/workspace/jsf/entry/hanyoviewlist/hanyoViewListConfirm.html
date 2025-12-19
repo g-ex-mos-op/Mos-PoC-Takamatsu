@@ -1,0 +1,142 @@
+<html xmlns:m="http://www.seasar.org/maya" m:action="#{hanyoViewListConfirmAction.initialize}" m:extends="/jsf/layout/layoutNoNavi.html">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Windows-31j" />
+<title>研修申込状況照会</title>
+</head>
+<body>
+<span m:inject="f:param" m:name="layoutTitle" m:value="研修申込状況照会"/>
+<span m:inject="f:param" m:name="onLoadName" m:value=""/>
+<span m:inject="s:insert" m:name="bodyTitleName">■研修申込状況照会</span>
+<span m:inject="f:param" m:name="viewIdValue" m:value="BEN006V02"/>
+<span m:inject="s:insert" m:name="body">
+<style type="text/css">
+<!--
+
+.scroll_area {
+	height				: 340px;
+	width				: 950px;
+}
+
+//-->
+</style>
+
+
+<form m:id="hanyoViewList">
+<input type="hidden" m:id="viewId" m:value="#{viewIdValue}"/>
+<input type="hidden" m:id="initMenuId" m:value="#{menuAction.initMenuId}"/>
+<input type="hidden" m:id="initSubMenuId" m:value="#{menuAction.initSubMenuId}"/>
+<input type="submit" value="戻る" m:action="#{hanyoViewListConfirmAction.cancel}"/>&nbsp;&nbsp;
+<input type="button" class="operation_button" value="ダウンロード"
+        m:id="btnDownload"
+        m:action="#{hanyoViewListConfirmAction.downloadCsv}"/>&nbsp;&nbsp;
+	<table cellspacing="0" cellpadding="0">
+	  <tr style="height:4px;">
+	    <td align="right"></td>
+	  </tr>
+	</table>
+
+<table class="body_table2">
+  <tr>
+	<th width="60px" rowspan="2" style="text-align:center;">研修名</th>
+	<th width="180px" style="text-align:center;">開催日</th>
+	<th width="285px" style="text-align:center;">開催名</th>
+	<th width="150px" style="text-align:center;">本部&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;：申込開始</th>
+	<th width="150px" style="text-align:center;">本部&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;：申込終了</th>
+	<th width="45px" rowspan="2" style="text-align:center;">定員</th>
+	<th width="60px" rowspan="2" style="text-align:center;">総申込<br>人数</th>
+  </tr>
+  <tr>
+	<th colspan="2" style="text-align:center;">開催場所</th>
+	<th style="text-align:center;">オーナー：申込開始</th>
+	<th style="text-align:center;">オーナー：申込終了</th>
+  </tr>
+
+  <tr class="font_size_14">
+    <td rowspan="2" style="text-align:center;"><span m:converter="#{characterEncodingConverter}" m:value="#{hanyoViewListCommonDto.entryNameRyaku}"/></td>
+    <td><span m:value="#{hanyoViewListCommonDto.fromDt}" m:converter="#{hanyoDateConverter2}"/>～<span m:value="#{hanyoViewListCommonDto.toDt}" m:converter="#{hanyoDateConverter2}"/></td>
+    <td><span m:value="#{hanyoViewListCommonDto.entryTitle}" m:converter="#{characterEncodingConverter}"/></td>
+    <td><span m:value="#{hanyoViewListCommonDto.honbuInputDtFrom}" m:converter="#{hanyoDateConverter}"/></td>
+    <td><span m:value="#{hanyoViewListCommonDto.honbuInputDtTo}" m:converter="#{hanyoDateConverter}"/></td>
+    <td rowspan="2" align="right"><span m:value="#{hanyoViewListCommonDto.numberLimit}" m:converter="#{NumericConverter}"/></td>
+    <td rowspan="2" align="right"><span m:value="#{hanyoViewListCommonDto.entryNum}" m:converter="#{NumericConverter}"/></td>
+  </tr>
+  <tr>
+	<td colspan="2"><span m:value="#{hanyoViewListCommonDto.entryPlace}" m:converter="#{characterEncodingConverter}"/></td>
+	<td><span m:value="#{hanyoViewListCommonDto.onerInputDtFrom}" m:converter="#{hanyoDateConverter}"/></td>
+	<td><span m:value="#{hanyoViewListCommonDto.onerInputDtTo}" m:converter="#{hanyoDateConverter}"/></td>
+  </tr>
+
+</table>
+	<table cellspacing="0" cellpadding="0">
+	  <tr style="height:4px;">
+	    <td align="right"></td>
+	  </tr>
+	</table>
+
+<table class="body_table2" border="1" width="930">
+  <tr>
+    <th width="20px"></th>
+    <th width="30%" style="text-align:center;">
+	オーナー
+    </th>
+    <th width="40%" style="text-align:center;">
+	店舗
+    </th>
+    <th width="*%" style="text-align:center;">
+	研修生
+    </th>
+  </tr>
+</table>
+
+
+ <div class="scroll_area">
+<table style="border-top-width:0px" class="body_table2" width="930">
+<div m:inject="s:forEach" m:items="#{hanyoViewListCommonDto.hanyoEntryList}" m:var="e" m:varindex="i">
+
+  <div m:rendered="#{e.keiyakuFlg == '1'}">
+    <tr class="non_top_border">
+      <th width="20px"><span m:converter="#{characterEncodingConverter}" m:value="#{i+1}"/></th>
+      <td width="30%" style="text-align:left; background-color:#80FFFF;">
+	    <span m:converter="#{characterEncodingConverter}" m:value="#{e.onerNameKj}"/>
+      </td>
+      <td width="40%" style="text-align:left; background-color:#80FFFF;">
+	    <span m:converter="#{characterEncodingConverter}" m:value="#{e.miseCd}"/>&nbsp;&nbsp;<span m:converter="#{characterEncodingConverter}" m:value="#{e.miseNameKj}"/>
+      </td>
+      <td width="*%" style="text-align:left; background-color:#80FFFF;">
+	    <span m:converter="#{characterEncodingConverter}" m:value="#{e.staffNameKj}"/>
+      </td>
+    </tr>
+  </div>
+
+  <div m:rendered="#{e.keiyakuFlg != '1'}">
+    <tr class="non_top_border">
+      <th width="20px"><span m:converter="#{characterEncodingConverter}" m:value="#{i+1}"/></th>
+      <td width="30%" style="text-align:left;">
+	    <span m:converter="#{characterEncodingConverter}" m:value="#{e.onerNameKj}"/>
+      </td>
+      <td width="40%" style="text-align:left;">
+	    <span m:converter="#{characterEncodingConverter}" m:value="#{e.miseCd}"/>&nbsp;&nbsp;<span m:converter="#{characterEncodingConverter}" m:value="#{e.miseNameKj}"/>
+      </td>
+      <td width="*%" style="text-align:left;">
+	    <span m:converter="#{characterEncodingConverter}" m:value="#{e.staffNameKj}"/>
+      </td>
+    </tr>
+  </div>
+
+</div>
+</table>
+</div>
+
+
+<input type="text" m:id="dummyEnter" style="display:none"/>
+</form>
+<script type="text/javascript">
+<!--
+	focusElement("hanyoRegistSelect");
+-->
+</script>
+
+
+</span>
+</body>
+</html>

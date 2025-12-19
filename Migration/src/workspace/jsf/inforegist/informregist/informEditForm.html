@@ -1,0 +1,131 @@
+<html xmlns:m="http://www.seasar.org/maya" m:action="#{informEditAction.initialize}" m:extends="/jsf/layout/layoutNoNavi.html">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Windows-31j" />
+<title>インフォメーション登録（編集画面）</title>
+</head>
+<body>
+<span m:inject="f:param" m:name="layoutTitle" m:value="インフォメーション登録（編集画面）"/>
+<span m:inject="f:param" m:name="onLoadName" m:value=""/>
+<span m:inject="s:insert" m:name="bodyTitleName">■インフォメーション登録（編集画面）</span>
+<span m:inject="f:param" m:name="viewIdValue" m:value="BIF004V02"/>
+<span m:inject="s:insert" m:name="body">
+<SCRIPT LANGUAGE="javascript">
+<!--
+function downloadKanren(index) {
+	document.informEdit.elements["informEdit:downloadKanrenIndex"].value=index;
+}
+//-->
+</SCRIPT>
+<STYLE type="text/css" media="screen">
+<!--
+-->
+</STYLE>
+<form m:id="informEdit" enctype="multipart/form-data" onKeyDown="return setDefaultSubmitButton('informEdit','dummyEnter');">
+<input type="hidden" m:id="viewId" m:value="#{viewIdValue}"/>
+<input type="hidden" m:id="initMenuId" m:value="#{menuAction.initMenuId}"/>
+<input type="hidden" m:id="initSubMenuId" m:value="#{menuAction.initSubMenuId}"/>
+<input type="hidden" m:id="downloadKanrenIndex" m:value="#{informRegistDto.downloadKanrenIndex}"/>
+<input type="button" value="戻る" class="operation_button" m:action="#{informEditAction.cancel}"/>&nbsp;
+<input type="button" value="確認" class="operation_button" m:action="#{informEditAction.regist}"/>&nbsp;
+<!-- インフォメーション内容 -->
+<table class="body_table2" style="margin-top:4px;">
+  <tr>
+    <th colspan="2">登録モード</th>
+    <td colspan="5"><span m:converter="#{characterEncodingConverter}" m:value="#{informRegistDto.modeName}"/></td>
+  </tr>
+  <tr>
+    <th colspan="2">タイトル</th>
+    <td colspan="5"><input class="imeon" m:id="osiraseTitle" type="text" m:value="#{uiNews.title}" m:converter="#{characterEncodingConverter}" m:maxlength="40" style="width:530px" /></td>
+  </tr>
+  <tr>
+    <th colspan="2">メッセージ</th>
+    <td colspan="5">
+      <textarea m:rows="5" m:id="message" wrap="soft" m:value="#{uiNews.message}" m:converter="#{characterEncodingConverter}" m:converter="#{changeLineEditConverter}" style="width:540px"/>
+    </td>
+  </tr>
+  <tr>
+    <th width="*" colspan="2">公開期間FROM</th>
+    <td width="*"><div class="hideArea">
+    	<select m:id="pubDateFrom"
+	    		m:value="#{uiNews.pubDateFrom}"
+                m:items="#{informRegistDto.listPubDateFrom}"
+                m:itemValue="value"
+                m:itemLabel="label"
+                style="width:100px;">
+        </select>
+        </div>
+    </td>
+   <th width="140px">公開期間TO</th>
+   <td width="*"><div class="hideArea">
+     	<select m:id="pubDateTo"
+	    		m:value="#{uiNews.pubDateTo}"
+                m:items="#{informRegistDto.listPubDateTo}"
+                m:itemValue="value"
+                m:itemLabel="label"
+                style="width:100px;">
+                >
+        </select>
+        </div>
+    </td>
+
+  <th width="60px">登録者</th>
+  <td width="200px"><span m:converter="#{characterEncodingConverter}" m:value="#{uiNews.userNameKj}"/></td>
+  </tr>
+
+  <tr>
+    <th rowspan="5" style="width:70px;">公開対象</th>
+    <th>会社</th>
+    <td colspan="2">
+      <div m:inject="s:forEach" m:items="#{publicTargetDto.listTrnControlCompany}" m:var="e" m:varindex="i">
+        <span m:converter="#{characterEncodingConverter}" m:value="#{e.companyName}"/><br/>
+      </div>
+    </td>
+    <td rowspan="5">
+      <input type="button" class="operation_button" m:value="公開対象選択" m:action="#{informEditAction.startPublicTarget}"/>
+    </td>
+    <td rowspan="5" colspan="2"></td>
+  </tr>
+  <tr>
+    <th>所属</th>
+    <td colspan="2">
+      <div m:inject="s:forEach" m:items="#{publicTargetDto.listTrnControlShozoku}" m:var="e" m:varindex="i">
+        <span m:converter="#{characterEncodingConverter}" m:value="#{e.shozokuName}"/><br/>
+      </div>
+    </td>
+  </tr>
+  <tr>
+    <th>業態</th>
+    <td colspan="2">
+      <div m:inject="s:forEach" m:items="#{publicTargetDto.listTrnControlGyotai}" m:var="e" m:varindex="i">
+        <span m:converter="#{characterEncodingConverter}" m:value="#{e.gyotaiKbnName}"/><br/>
+      </div>
+    </td>
+  </tr>
+  <tr>
+    <th>業態別設定</th>
+    <td colspan="2">
+      <span m:value="#{publicTargetDto.listTrnControlGyotaiKobetuSize > 0?'あり':'なし'}"/>
+    </td>
+  </tr>
+  <tr>
+    <th>個店別設定</th>
+    <td colspan="2">
+      <span style="float:left;" m:value="#{publicTargetDto.listTrnControlGyotaiTenpoSize > 0?'あり':'なし'}"/>
+      <div m:rendered="#{publicTargetDto.listTrnControlGyotaiTenpoSize > 0}">
+          <span style="float:right;"><input type="button"  m:value="指定店舗ダウンロード" m:action="#{informRegistCsvAction.download}"/></span>
+          <span style="clear:both;"/>
+      </div>
+    </td>
+  </tr>
+</table>
+<input type="text" m:id="dummyEnter" style="display:none"/>
+</form>
+</span>
+<script type="text/javascript">
+<!--
+	focusElement("informEdit");
+-->
+</script>
+
+</body>
+</html>

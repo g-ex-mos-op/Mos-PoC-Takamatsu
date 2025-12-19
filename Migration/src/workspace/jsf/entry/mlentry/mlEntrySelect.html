@@ -1,0 +1,201 @@
+<html xmlns:m="http://www.seasar.org/maya" m:action="#{mlEntrySelectAction.initialize}" m:extends="/jsf/layout/layoutNoNavi.html">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Windows-31j" />
+<title></title>
+</head>
+<body>
+<span m:inject="f:param" m:name="layoutTitle" m:value="マスターライセンス受験申込"/>
+<span m:inject="s:insert" m:name="bodyTitleName">■マスターライセンス受験申込</span>
+<span m:inject="f:param" m:name="onLoadName" m:value="onLoadFunction()"/>
+<span m:inject="f:param" m:name="viewIdValue" m:value="BEN008V01"/>
+<span m:inject="s:insert" m:name="body">
+<style type="text/css">
+<!--
+table.body_table2 tr td.align_center {
+  text-align: center;
+}
+table.body_table2 tr td.align_right {
+  text-align: right;
+}
+.scroll_area{
+  height:360px;
+  width:867px;
+  overflow:auto;
+}
+-->
+</style>
+<SCRIPT LANGUAGE="javascript">
+<!--
+function onLoadFunction() {
+    // browserCheck();
+    dispSecurityInfo();
+	focusElement('mlEntrySelect');
+	loadScroll("scroll",310);
+}
+
+function dispSecurityInfo() {
+  var f = document.forms['mlEntrySelect'];
+  var msg = f.elements['mlEntrySelect:infoMsg'].value;
+  if (f.elements['mlEntrySelect:dispSecurityInfo'].value == '1') {
+    if (msg != "") {
+      alert(msg);
+      f.elements['mlEntrySelect:btnExecute'].click();
+    }
+  }
+  return true;
+}
+
+function doAction() {
+	var f=document.forms['hanyoApplicationSelect'];
+	f.target='';
+	f.elements['hanyoApplicationSelect:__link_clicked__'].value='hanyoApplicationSelect:dummyAction';
+	f.submit();
+	return false;
+}
+function browserCheck(){
+	var an = navigator.appName;
+	var plat = navigator.platform;
+    var f = document.forms['mlEntrySelect'];
+    var msg = f.elements['mlEntrySelect:msgBrowserCheck'].value;
+    if (msg == "") {
+      return true;
+    }
+	if(an!="Microsoft Internet Explorer"){
+		f.elements['mlEntrySelect:btnExecute'].disabled = true;
+		alert(msg);
+		return false;
+	}else{
+		if(navigator.userAgent.indexOf("Opera") != -1){
+          f.elements['mlEntrySelect:btnExecute'].disabled = true;
+          alert(msg);
+          return false;
+		}
+	}
+	if(plat.indexOf("Win") == -1){
+      f.elements['mlEntrySelect:btnExecute'].disabled = true;
+      alert(msg);
+	}
+	return true;
+}
+//-->
+</SCRIPT>
+<form m:id="mlEntrySelect" m:onkeydown="return setDefaultSubmitButton('mlEntrySelect','btnExecute');">
+<input type="hidden" m:id="viewId" m:value="#{viewIdValue}"/>
+<input type="hidden" m:id="initMenuId" m:value="#{menuAction.initMenuId}"/>
+<input type="hidden" m:id="initSubMenuId" m:value="#{menuAction.initSubMenuId}"/>
+<input type="hidden" m:id="msgBrowserCheck" m:value="#{mlEntryDto.msgBrowserCheck}"/>
+<input type="hidden" m:id="infoMsg" m:value="#{mlEntryDto.msgOnerUserAlert}"/>
+<input type="hidden" m:id="dispSecurityInfo" m:value="#{mlEntryDto.dispSecurityInfo}"/>
+
+
+<input type="button"
+       m:id="btnExecute"
+       value="実行"
+       class="operation_button"
+       m:action="#{mlEntrySelectAction.regist}"
+       m:disabled="#{mlEntryDto.listEntryMstEmpty}"/>
+<table cellspacing="0" cellpadding="0">
+  <tr style="height:5px;">
+    <td align="right"></td>
+  </tr>
+</table>
+
+<table m:rendered="#{mlEntryDto.userTypeCd == '01'}" class="body_table">
+    <tr>
+      <th>会社</th>
+      <td>
+        <div class="hideArea">
+        <select class="condition_field"
+                m:id="condCompanyCd"
+                m:value="#{mlEntryDto.condCompanyCd}"
+                m:items="#{mlEntryDto.listCompany}"
+                m:itemValue="companyCd"
+                m:itemLabel="companyName">
+            <option value="">モスフードサービス</option>
+            <option value="">トモス</option>
+            <option value="">四季菜</option>
+        </select>
+        </div>
+      </td>
+      <th>
+        対象店舗　
+        <input type="button" value="選択" class="operation_button" m:action="#{mlEntrySelectAction.callMiseForm}" m:disabled="#{mlEntryDto.listEntryMstEmpty}"/>
+      </th>
+      <td>
+        <input class="imenotuse" type="text" m:id="condMiseCd" m:value="#{mlEntryDto.condMiseCd}" m:maxlength="5" m:size="10" m:converter="#{hanyoAppCodeConverter5}"/>
+      </td>
+    </tr>
+</table>
+
+<div m:rendered="#{mlEntryDto.listEntryMst == null}">
+  <div align="center"><b>現在受付期間中のマスターライセンスはありません。</b></div>
+</div>
+<div m:rendered="#{mlEntryDto.listEntryMst != null}" style="margin-top:5px">
+※<font class="font_size_14" color="red">受験申込は、ベーシック研修（旧ベーシックコース）又は出張ベーシック研修（旧出張特別研修）を修了していることが必須となります。</font><br/>
+<table cellspacing="0" cellpadding="0">
+  <tr style="height:5px;">
+    <td align="right"></td>
+  </tr>
+</table>
+
+  <table style="width:850px" class="body_table2">
+    <tr>
+      <th width="50px" rowspan="2" style="text-align:center;">対<br>象</th>
+      <th width="*" style="text-align:center;">実施期間</th>
+        <th m:rendered="#{mlEntryDto.userTypeCd == '01'}" width="200px" style="text-align:center;">本部：申込開始</th>
+        <th  m:rendered="#{mlEntryDto.userTypeCd == '01'}" width="200px" style="text-align:center;">本部：申込終了</th>
+        <th m:rendered="#{mlEntryDto.userTypeCd == '02'}" width="200px" rowspan="2" style="text-align:center;">申込開始</th>
+        <th m:rendered="#{mlEntryDto.userTypeCd == '02'}" width="200px" rowspan="2" style="text-align:center;">申込終了</th>
+    </tr>
+    <tr>
+      <th width="*" style="text-align:center;">タイトル</th>
+        <th m:rendered="#{mlEntryDto.userTypeCd == '01'}" width="200px" style="text-align:center;">オーナー：申込開始</th>
+        <th m:rendered="#{mlEntryDto.userTypeCd == '01'}" width="200px" style="text-align:center;">オーナー：申込終了</th>
+    </tr>
+  </table>
+<div class="scroll_area">
+<span m:converter="#{characterEncodingConverter}" m:inject="s:selectOneRadio2" m:value="#{mlEntryDto.selectIndex}">
+<table width="850px" class="body_table2" style="border-top-width:0px">
+  <div m:inject="s:forEach" m:items="#{mlEntryDto.listEntryMst}" m:var="e" m:varindex="i">
+    <tr class="non_top_border font_size_14">
+      <td width="50px" rowspan="2" class="align_center" m:style="#{e.editFlg == '1' ? '' : 'background-color:#CCCCCC;'}">
+        <input type="radio" m:rendered="#{e.displayFlg == '1' || e.editFlg == '1'}" m:id="indexFlg" m:onclick="setRadioIndex(#{i});" value="#{i}"/>
+      </td>
+      <td width="*" m:style="#{e.editFlg == '1' ? '' : 'background-color:#CCCCCC;text-align:center;'}" class="align_center">
+        <span m:value="#{e.kaisaiDtFrom}" m:converter="#{mlEntryDateConverter1}"/> ～
+        <span m:value="#{e.kaisaiDtTo}" m:converter="#{mlEntryDateConverter1}"/>
+      </td>
+      <td m:rendered="#{mlEntryDto.userTypeCd == '01'}" width="200px" class="align_center" m:style="#{e.editFlg == '1' ? '' : 'background-color:#CCCCCC;text-align:center;'}">
+        <span m:value="#{e.honbuInputDtFrom}" m:converter="#{mlEntryDateConverter2}"/>
+      </td>
+      <td m:rendered="#{mlEntryDto.userTypeCd == '01'}" width="200px" class="align_center" m:style="#{e.editFlg == '1' ? '' : 'background-color:#CCCCCC;text-align:center;'}">
+        <span m:value="#{e.honbuInputDtTo}" m:converter="#{mlEntryDateConverter2}"/>
+      </td>
+      <td m:rendered="#{mlEntryDto.userTypeCd == '02'}" width="200px" rowspan="2" class="align_center" m:style="#{e.editFlg == '1' ? '' : 'background-color:#CCCCCC;text-align:center;'}">
+        <span m:value="#{e.onerInputDtFrom}" m:converter="#{mlEntryDateConverter2}"/>
+      </td>
+      <td m:rendered="#{mlEntryDto.userTypeCd == '02'}" width="200px" rowspan="2" class="align_center" m:style="#{e.editFlg == '1' ? '' : 'background-color:#CCCCCC;text-align:center;'}">
+        <span m:value="#{e.onerInputDtTo}" m:converter="#{mlEntryDateConverter2}"/>
+      </td>
+    </tr>
+    <tr class="font_size_14">
+      <td width="*" class="align_center" m:style="#{e.editFlg == '1' ? '' : 'background-color:#CCCCCC;text-align:center;'}">
+        <span m:converter="#{characterEncodingConverter}" m:value="#{e.entryTitle}"/>&nbsp;
+      </td>
+      <td m:rendered="#{mlEntryDto.userTypeCd == '01'}" width="200px" class="align_center" m:style="#{e.editFlg == '1' ? '' : 'background-color:#CCCCCC;text-align:center;'}">
+        <span m:value="#{e.onerInputDtFrom}" m:converter="#{mlEntryDateConverter2}"/>
+      </td>
+      <td m:rendered="#{mlEntryDto.userTypeCd == '01'}" width="200px" class="align_center" m:style="#{e.editFlg == '1' ? '' : 'background-color:#CCCCCC;text-align:center;'}">
+        <span m:value="#{e.onerInputDtTo}" m:converter="#{mlEntryDateConverter2}"/>
+      </td>
+    </tr>
+  </div>
+</table>
+</span>
+</div>
+</div>
+
+</form>
+</span>
+</body>
+</html>

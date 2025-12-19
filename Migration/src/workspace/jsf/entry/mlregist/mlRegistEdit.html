@@ -1,0 +1,195 @@
+<html xmlns:m="http://www.seasar.org/maya" m:action="#{mlRegistEditAction.initialize}" m:extends="/jsf/layout/layoutNoNavi.html">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Windows-31j"/>
+<meta http-equiv="Content-Style-Type" content="text/css"/>
+<title>マスターライセンスマスタ登録</title>
+</head>
+<body>
+<span m:inject="f:param" m:name="layoutTitle" m:value="マスターライセンスマスタ登録"/>
+<span m:inject="s:insert" m:name="bodyTitleName">■マスターライセンスマスタ登録</span>
+<span m:inject="f:param" m:name="onLoadName" m:value="bodyLoad();"/>
+<span m:inject="f:param" m:name="viewIdValue" m:value="BEN007V02"/>
+<div m:inject="s:insert" m:name="body">
+<style type="text/css">
+<!--
+.date_field {
+	width				: 80px;
+}
+.disable_field {
+	width				: 80px;
+	background-color	: gainsboro;
+	color				: black;
+}
+.place_list table.body_table2 tr td.place {
+    padding-left:3px;
+}
+.place_list table input {
+	width				: 160px;
+}
+.place_list table.body_table2 {
+	width				: 297px;
+	float				: left;
+	margin-right		: -2px;
+}
+.place_list table input {
+	width				: 250px;
+}
+//-->
+</style>
+
+<script type="text/javascript">
+<!--
+function bodyLoad() {
+}
+//-->
+</script>
+
+<form m:id="mlRegistEdit" onkeydown="return setDefaultSubmitButton('mlRegistEdit', 'btnExecute');">
+<input type="hidden" m:id="viewId" m:value="#{viewIdValue}" />
+<input type="hidden" m:id="initMenuId" m:value="#{menuAction.initMenuId}"/>
+<input type="hidden" m:id="initSubMenuId" m:value="#{menuAction.initSubMenuId}"/>
+<input type="submit" value="戻る" m:action="#{mlRegistEditAction.back}"/>&nbsp;&nbsp;
+<input type="submit" value="確認" m:id="btnExecute" m:action="#{mlRegistEditAction.confirm}"/>
+
+<table style="width:885px;margin-top:4px;" cellpadding="0" cellspacing="0">
+  <tr>
+    <td class="body_active_cell tab_change_area_0 element_browser" style="width:200px;">
+      <a href="javascript:void(0);" onClick="changeTabArea('0');return false;"  name="body_anchor_area_0">期間設定</a>
+    </td>
+    <td class="body_non_active_cell tab_change_area_1 element_browser" style="width:200px;">
+      <a href="javascript:void(0);" onClick="changeTabArea('1');return false;" name="body_anchor_area_1">地域選択</a>
+    </td>
+    <td width="*">&nbsp;</td>
+  </tr>
+	<tr style="height:5px;">
+		<td class="body_caption" colspan="3"/>
+	</tr>
+</table>
+
+<div class="element_print">【 期間設定タブ 】</div>
+<div class="visible_tab tab_change_area_0">
+<table class="body_table2" style="width:885px;">
+	<col style="width:200px;"/>
+	<col style="width:240px;"/>
+	<col style="width:200px;"/>
+	<col style="width:*;"/>
+	<tr>
+		<th>対象処理</th>
+		<td colspan="3">
+			<span m:rendered="#{mlRegistDto.editMode == 1}">新規登録</span>
+			<span m:rendered="#{mlRegistDto.editMode == 2}">修正</span>
+			<span m:rendered="#{mlRegistDto.editMode == 3}">削除</span>
+		</td>
+	</tr>
+	<tr>
+		<th>タイトル</th>
+		<td colspan="3">
+			<input type="text" m:id="entryTitle" m:value="#{mlRegistDto.uiEntryMaster.entryTitle}" style="width:640px;" maxlength="100"/>
+		</td>
+	</tr>
+	<tr>
+		<th>開催日</th>
+		<td colspan="3">
+			<input type="text" m:id="openFromDt" m:value="#{mlRegistDto.uiEntryDateOpen.fromDt}" m:converter="#{mlRegistDateConverter2}" maxlength="7" m:readonly="#{!mlRegistDto.editableItem}" m:class="#{(mlRegistDto.editableItem) ? 'date_field' : 'disable_field'}"/>
+			～
+			<input type="text" m:id="openToDt" m:value="#{mlRegistDto.uiEntryDateOpen.toDt}" m:converter="#{mlRegistDateConverter2}" maxlength="7" m:readonly="#{!mlRegistDto.editableItem}" m:class="#{(mlRegistDto.editableItem) ? 'date_field' : 'disable_field'}"/>
+			YYYY/MM
+		</td>
+	</tr>
+	<tr>
+		<th>オーナー：表示開始</th>
+		<td><input type="text" m:id="displayOnerFromDt" m:value="#{mlRegistDto.uiEntryDateDisplayOner.fromDt}" m:converter="#{mlRegistDateConverter1}" maxlength="10" m:readonly="#{!mlRegistDto.editableItem}" m:class="#{(mlRegistDto.editableItem) ? 'date_field' : 'disable_field'}"/>YYYY/MM/DD</td>
+		<th>本部：表示開始</th>
+		<td><input type="text" m:id="displayHeadFromDt" m:value="#{mlRegistDto.uiEntryDateDisplayHead.fromDt}" m:converter="#{mlRegistDateConverter1}" maxlength="10" m:readonly="#{!mlRegistDto.editableItem}" m:class="#{(mlRegistDto.editableItem) ? 'date_field' : 'disable_field'}"/>YYYY/MM/DD</td>
+	</tr>
+	<tr>
+		<th>オーナー：申込開始</th>
+		<td><input type="text" m:id="applyOnerFromDt" m:value="#{mlRegistDto.uiEntryDateApplyOner.fromDt}" m:converter="#{mlRegistDateConverter1}" maxlength="10" m:readonly="#{!mlRegistDto.editableItem}" m:class="#{(mlRegistDto.editableItem) ? 'date_field' : 'disable_field'}"/>YYYY/MM/DD</td>
+		<th>本部：申込開始</th>
+		<td><input type="text" m:id="applyHeadFromDt" m:value="#{mlRegistDto.uiEntryDateApplyHead.fromDt}" m:converter="#{mlRegistDateConverter1}" maxlength="10" m:readonly="#{!mlRegistDto.editableItem}" m:class="#{(mlRegistDto.editableItem) ? 'date_field' : 'disable_field'}"/>YYYY/MM/DD</td>
+	</tr>
+	<tr>
+		<th>オーナー：申込終了</th>
+		<td><input type="text" m:id="applyOnerToDt" m:value="#{mlRegistDto.uiEntryDateApplyOner.toDt}" m:converter="#{mlRegistDateConverter1}" class="date_field" maxlength="10"/>YYYY/MM/DD</td>
+		<th>本部：申込終了</th>
+		<td><input type="text" m:id="applyHeadToDt" m:value="#{mlRegistDto.uiEntryDateApplyHead.toDt}" m:converter="#{mlRegistDateConverter1}" class="date_field" maxlength="10"/>YYYY/MM/DD</td>
+	</tr>
+	<tr>
+		<th>オーナー：表示終了</th>
+		<td><input type="text" m:id="displayOnerToDt" m:value="#{mlRegistDto.uiEntryDateDisplayOner.toDt}" m:converter="#{mlRegistDateConverter1}" class="date_field" maxlength="10"/>YYYY/MM/DD</td>
+		<th>本部：表示終了</th>
+		<td><input type="text" m:id="displayHeadToDt" m:value="#{mlRegistDto.uiEntryDateDisplayHead.toDt}" m:converter="#{mlRegistDateConverter1}" class="date_field" maxlength="10"/>YYYY/MM/DD</td>
+	</tr>
+	<tr>
+		<th>結果開始</th>
+		<td><input type="text" m:id="registFromDt" m:value="#{mlRegistDto.uiEntryDateRegist.fromDt}" m:converter="#{mlRegistDateConverter1}" class="date_field" maxlength="10"/>YYYY/MM/DD</td>
+		<th>結果終了</th>
+		<td><input type="text" m:id="registToDt" m:value="#{mlRegistDto.uiEntryDateRegist.toDt}" m:converter="#{mlRegistDateConverter1}" class="date_field" maxlength="10"/>YYYY/MM/DD</td>
+	</tr>
+	<tr>
+		<th>オーナー：結果表示開始</th>
+		<td><input type="text" m:id="resultOnerFromDt" m:value="#{mlRegistDto.uiEntryDateResultOner.fromDt}" m:converter="#{mlRegistDateConverter1}" class="date_field" maxlength="10"/>YYYY/MM/DD</td>
+		<th>本部：結果表示開始</th>
+		<td><input type="text" m:id="resultHeadFromDt" m:value="#{mlRegistDto.uiEntryDateResultHead.fromDt}" m:converter="#{mlRegistDateConverter1}" class="date_field" maxlength="10"/>YYYY/MM/DD</td>
+	</tr>
+	<tr>
+		<th>オーナー：結果表示終了</th>
+		<td><input type="text" m:id="resultOnerToDt" m:value="#{mlRegistDto.uiEntryDateResultOner.toDt}" m:converter="#{mlRegistDateConverter1}" class="date_field" maxlength="10"/>YYYY/MM/DD</td>
+		<th>本部：結果表示終了</th>
+		<td><input type="text" m:id="resultHeadToDt" m:value="#{mlRegistDto.uiEntryDateResultHead.toDt}" m:converter="#{mlRegistDateConverter1}" class="date_field" maxlength="10"/>YYYY/MM/DD</td>
+	</tr>
+	<tr>
+		<th>備考</th>
+		<td colspan="3">
+			<input type="text" m:id="note" m:value="#{mlRegistDto.uiEntryMaster.note}" style="width:640px;" maxlength="100"/>
+		</td>
+	</tr>
+</table>
+</div>
+
+<div class="element_print" style="margin-top:10px;">【 地域選択タブ 】</div>
+<div class="invisible_tab tab_change_area_1">
+<div class="place_list">
+<table class="body_table2" style="width:296px;">
+	<div m:inject="s:forEach" m:items="#{mlRegistDto.uiEntryPlaceList}" m:var="e" m:varindex="i">
+	<tr m:rendered="#{i >= 0 && i <= 16}">
+		<td class="place">
+			<span m:value="#{e.entryPlaceCd}"/></span>
+			<input type="text" m:value="#{e.entryPlaceName}" maxlength="20"/>
+		</td>
+	</tr>
+	</div>
+</table>
+<table class="body_table2" style="width:296px;">
+	<div m:inject="s:forEach" m:items="#{mlRegistDto.uiEntryPlaceList}" m:var="e" m:varindex="i">
+	<tr m:rendered="#{i >= 17 && i <= 33}">
+		<td class="place">
+			<span m:value="#{e.entryPlaceCd}"/></span>
+			<input type="text" m:value="#{e.entryPlaceName}" maxlength="20"/>
+		</td>
+	</tr>
+	</div>
+</table>
+<table class="body_table2" style="width:297px;">
+	<div m:inject="s:forEach" m:items="#{mlRegistDto.uiEntryPlaceList}" m:var="e" m:varindex="i">
+	<tr m:rendered="#{i >= 34 && i <= 49}">
+		<td class="place">
+			<span m:value="#{e.entryPlaceCd}"/></span>
+			<input type="text" m:value="#{e.entryPlaceName}" maxlength="20"/>
+		</td>
+	</tr>
+	</div>
+</table>
+</div>
+</div>
+
+<script type="text/javascript">
+<!--
+	focusElement("mlRegistEdit");
+-->
+</script>
+</form>
+
+</div>
+</body>
+</html>
