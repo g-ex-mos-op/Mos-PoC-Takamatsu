@@ -1,4 +1,4 @@
 # Mos-PoC-Takamatsu
 
-## 設計ドキュメント
+## マイグレーション用設計ドキュメント
 - Migration/Documents/
