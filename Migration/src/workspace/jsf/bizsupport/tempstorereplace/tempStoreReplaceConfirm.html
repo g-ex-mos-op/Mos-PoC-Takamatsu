@@ -1,0 +1,184 @@
+<html xmlns:m="http://www.seasar.org/maya" m:action="#{tempStoreReplaceConfirmAction.initialize}" m:extends="/jsf/layout/layoutNoNavi.html">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Windows-31j"/>
+<meta http-equiv="Content-Style-Type" content="text/css"/>
+<meta http-equiv="Content-Script-Type" content="text/javascript"/>
+<title>仮店舗置換えメンテナンス</title>
+</head>
+<body>
+<span m:inject="f:param" m:name="layoutTitle" m:value="仮店舗置換えメンテナンス"/>
+<span m:inject="s:insert" m:name="bodyTitleName">■仮店舗置換えメンテナンス</span>
+<span m:inject="f:param" m:name="onLoadName" m:value=""/>
+<span m:inject="f:param" m:name="viewIdValue" m:value="BBS025V03"/>
+<div m:inject="s:insert" m:name="body">
+<style type="text/css">
+<!--
+.field_name {
+	width		: 360px;
+}
+.ownercode_field {
+	width		: 280px;
+}
+.select_button {
+	width		: 52px;
+}
+
+table tr.item_type1 td {
+	background-color	: #CCCCCC;
+}
+table tr.item_type2 td {
+	background-color	: #FFCC66;
+}
+.date_width {
+	width:90px;
+}
+
+.scroll_area {
+	width:975px;
+	height:385px;
+}
+
+-->
+</style>
+
+<script type="text/javascript">
+<!--
+function back(){
+	var f = document.forms['tempStoreReplaceConfirm'];
+	f.target='';
+	f.elements['tempStoreReplaceConfirm:__link_clicked__'].value='tempStoreReplaceConfirm:backAction';
+	f.submit();
+	return false;
+}
+//-->
+</script>
+
+<div class="condition_body">
+<form m:id="tempStoreReplaceConfirm">
+<input type="hidden" m:id="viewId" m:value="#{viewIdValue}"/>
+<input type="hidden" m:id="initMenuId" m:value="#{menuAction.initMenuId}"/>
+<input type="hidden" m:id="initSubMenuId" m:value="#{menuAction.initSubMenuId}"/>
+<a m:id="backAction" m:action="#{tempStoreReplaceConfirmAction.back}"/>
+
+<input type="button" value="戻る" m:onclick="back();" style="margin-right:6px;"/>
+<input type="submit" value="登録" m:action="#{tempStoreReplaceConfirmAction.entry}"/>
+
+<table class="body_table" style="margin-top:4px;margin-bottom:4px;">
+
+    <tr>
+      <th>会社</th>
+      <td><span m:converter="#{characterEncodingConverter}" m:value="#{tempStoreReplaceDto.companyName}" />&nbsp;</td>
+      <th>年度</th>
+      <td width="50" align="center">
+        <span m:value="#{tempStoreReplaceDto.condNendo}" />
+      </td>
+      <th>対象店舗</th>
+      <td width="200">
+  		    <span m:rendered="#{tempStoreReplaceDto.condTargetCd == '0'}">全社</span>
+  		    <span m:converter="#{characterEncodingConverter}" m:rendered="#{tempStoreReplaceDto.condTargetCd == '1'}"><span m:converter="#{characterEncodingConverter}" m:value="#{tempStoreReplaceDto.condJigyoName}" /></span>
+  		    <span m:converter="#{characterEncodingConverter}" m:rendered="#{tempStoreReplaceDto.condTargetCd == '2'}"><span m:converter="#{characterEncodingConverter}" m:value="#{tempStoreReplaceDto.condSibuName}" /></span>
+      </td>
+      <th>確定</th>
+      <td width="80">
+        <span m:converter="#{characterEncodingConverter}" m:value="#{tempStoreReplaceDto.fixedStr}" />
+      </td>
+    </tr>
+
+</table>
+<!-- ヘッダー -->
+<table width="955px" class="body_table2">
+	<tr class="header_row">
+	  <th width="40" rowspan="2">状況</th>
+	  <th colspan="4">仮店舗</th>
+	  <th colspan="3">実店舗</th>
+	</tr>
+	<tr class="header_row">
+	  <th width="204">支部</th>
+	  <th width="40">種別</th>
+	  <th width="48">コード</th>
+	  <th width="130">予算設定開始月</th>
+	  <th class="date_width">置換え日</th>
+	  <th width="*">店番 店舗名称</th>
+	  <th class="date_width">オープン日</th>
+	</tr>
+</table>
+
+<!-- レコード -->
+<div class="scroll_area">
+<table width="955px" class="body_table2" style="border-top-width:0px;">
+	<!-- TempStoreStateList -->
+	<div m:inject="s:forEach" m:items="#{tempStoreReplaceDto.listState}" m:var="e" m:varIndex="i">
+
+	<!-- ALL IN ONE -->
+	<tr m:class="#{ e.setFlg=='1' ? 'item_type2':  ((e.ableUpdateFlg=='0') ? 'item_type1' : '')} non_top_border">
+	  <!-- 状況 -->
+	  <td width="40">
+	  	<span m:rendered="#{e.setFlg == '1'}">確定</span></td>
+	  <!-- 支部名称 -->
+	  <td width="204"><span m:converter="#{characterEncodingConverter}" m:value="#{e.sibuName}" /></td>
+	  <!-- FCRC -->
+	  <td width="40">
+	  	<span m:rendered="#{e.fcRc == '1'}"><span m:value="FC" /></span>
+		<span m:rendered="#{e.fcRc == '2'}"><span m:value="直営" /></span>
+	  </td>
+	  <!-- 仮店番 -->
+	  <td width="48"><span m:value="#{e.kariCd}" /></td>
+	  <!-- 予算設定開始日 -->
+	  <td width="130">
+	    <span m:value="#{e.yosanDt}" m:converter="#{dateConverterYosanDt}" />
+	  </td>
+	  <!-- 置換え日 -->
+	  <td class="date_width" align="center">
+	    <span m:rendered="#{e.setFlg == '1'}">
+	    <span m:value="#{e.kakuteiDt}" m:converter="#{dateConverterKakuteiDt}" />
+	    </span>
+	  	<span m:rendered="#{e.setFlg != '1' && e.ableUpdateFlg == '0'}">
+	  	</span>
+	  	<span m:rendered="#{e.setFlg != '1' && e.ableUpdateFlg == '1'}">
+	  	<span m:value="#{e.kakuteiDt}" m:converter="#{dateConverterKakuteiDt}" />
+	  	</span>
+	  </td>
+	  <!-- 実店舗コード 実店舗名称 -->
+	  <td width="*">
+	    <span m:rendered="#{e.setFlg == '1'}">
+	    <span m:converter="#{characterEncodingConverter}" m:value="#{e.miseCd}" /> <span m:converter="#{characterEncodingConverter}" m:value="#{e.miseNameKj}" />
+	    </span>
+	  	<span m:rendered="#{e.setFlg != '1' && e.ableUpdateFlg == '0'}">
+	  	</span>
+	    <span m:rendered="#{e.setFlg != '1' && e.ableUpdateFlg == '1'}">
+	  	<span m:converter="#{characterEncodingConverter}" name="dspMiseCd#{i}"><span m:converter="#{characterEncodingConverter}" m:value="#{e.miseCd}"/>　<span m:converter="#{characterEncodingConverter}"  m:value="#{e.miseNameKj}"/></span>
+	  	<input type="hidden" m:id="miseCd" m:value="#{e.miseCd}" />
+	  	<input type="hidden" m:id="miseNameKj" m:value="#{e.miseNameKj}" />
+	  	</span>
+	  </td>
+	  <!-- オープン日 -->
+	  <td class="date_width" align="center">
+	    <span m:rendered="#{e.setFlg == '1'}">
+		<span m:value="#{e.openDt}" m:converter="#{dateConverterOpenDt}" />
+	    </span>
+	  	<span m:rendered="#{e.setFlg != '1' && e.ableUpdateFlg == '0'}">
+	  	<span m:value="#{e.openDt}" m:converter="#{dateConverterOpenDt}" />
+	  	</span>
+	    <span m:rendered="#{e.setFlg != '1' && e.ableUpdateFlg == '1'}">
+		<span name="openDt#{i}"><span m:value="#{e.openDt}" m:converter="#{dateConverterOpenDt}" /></span>
+		<input type="hidden" m:id="openDt" m:value="#{e.openDt}" />
+		</span>
+	  </td>
+	</tr>
+
+	</div>
+
+</table>
+</div>
+
+
+<script type="text/javascript">
+<!--
+	focusElement("tempStoreReplaceConfirm");
+-->
+</script>
+</form>
+</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,531 @@
+<html xmlns:m="http://www.seasar.org/maya" m:action="#{plInfoViewResultAction.initialize}" m:extends="/jsf/layout/layoutNoNavi.html">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Windows-31j" />
+<title>P/L照会</title>
+</head>
+<body>
+<span m:inject="f:param" m:name="layoutTitle" m:value="P/L照会"/>
+<span m:inject="f:param" m:name="onLoadName" m:value="load();"/>
+<span m:inject="f:param" m:name="viewIdValue" m:value="BBS006V04"/>
+<span m:inject="f:param" m:name="userTypeCd" m:value="#{plInfoViewCommonDto.userTypeCd}"/>
+<span m:inject="f:param" m:name="isSearchTenpo" m:value="#{plInfoViewDto.condLastSearchTaishoTenpo == '6'}"/>
+<span m:inject="s:insert" m:name="bodyTitleName">■P/L照会</span>
+<span m:inject="s:insert" m:name="body">
+<STYLE type="text/css">
+<!--
+.data_table_width {
+    width:98%;
+}
+.header_koumoku {
+	width:88px;
+}
+.header_name {
+	width:400px;
+}
+.koumoku_width {
+  width:	*;
+}
+.kingaku_width {
+  width:	18%;
+}
+.hiritu_width {
+  width:	8%;
+}
+//-->
+</STYLE>
+<script type="text/javascript">
+<!--
+function execSubmit() {
+  if (document.plInfoView.elements['plInfoView:newwin'] == null) {
+    document.plInfoView.target = "_self";
+    return;
+  }
+  var flg = document.plInfoView.elements['plInfoView:newwin'].checked;
+  var flg2= document.plInfoView.elements['plInfoView:newWindowFlg'].value;
+  if (flg && flg2 == '1') {
+    document.plInfoView.target = "_blank";
+  }
+  else {
+    document.plInfoView.target = "_self";
+  }
+}
+function load() {
+	if(document.plInfoView.elements['plInfoView:condTaishoTenpo'] != null && document.plInfoView.elements['plInfoView:condTaishoTenpo'].value == '4')
+	  if(navigator.userAgent.indexOf('Mac')>-1 && navigator.userAgent.indexOf('Safari')>-1){
+      	document.getElementById('plInfoView:condSelectCd').width="197px";
+      }else{
+      	document.getElementById('plInfoView:condSelectCd').width="192px";
+      }
+}
+
+function switchDisplayObj() {
+
+  var taishoTenpoIndex = document.plInfoView.elements['plInfoView:condTaishoTenpo'].selectedIndex;
+  var taishoTenpo = document.plInfoView.elements['plInfoView:condTaishoTenpo'].value;
+
+  var tenpoShuTitle  =document.getElementById('plInfoView:div_tenpoShuTitle');
+  var searchTypeTitle=document.getElementById('plInfoView:div_searchTypeTitle');
+  var tenpoShu   =document.getElementById('plInfoView:div_tenpoShu');
+  var searchType =document.getElementById('plInfoView:div_searchType');
+
+  var dispTitleMise =document.getElementById('plInfoView:dispTargetTitleMise');
+  var dispTitleOner =document.getElementById('plInfoView:dispTargetTitleOner');
+  var dispSelectCd =document.getElementById('plInfoView:condSelectCd');
+  var dispInputCd =document.getElementById('plInfoView:condInputCd');
+  var dispJigyo=document.getElementById('plInfoView:dispTargetJigyo');
+  var dispArea =document.getElementById('plInfoView:dispTargetArea');
+  var dispSibu =document.getElementById('plInfoView:dispTargetSibu');
+  var dispMise =document.getElementById('plInfoView:condMiseCd');
+  var dispOner =document.getElementById('plInfoView:condOnerCd');
+
+  tenpoShuTitle.style.display="none";
+  tenpoShu.style.display="none";
+  searchTypeTitle.style.display="none";
+  searchType.style.display="none";
+
+  dispTitleMise.style.display="none";
+  dispTitleOner.style.display="none";
+  dispSelectCd.style.display="none";
+  dispInputCd.style.display="none";
+  dispJigyo.style.display="none";
+  dispArea.style.display="none";
+  dispSibu.style.display="none";
+  dispMise.style.display="none";
+  dispOner.style.display="none";
+
+
+  if(taishoTenpo == ''){
+    tenpoShu.style.display="inline";
+    tenpoShuTitle.style.display="inline";
+    dispSelectCd.style.display="";
+  }
+  else if (taishoTenpo == '7') {
+    dispTitleOner.style.display="inline";
+    dispOner.style.display="inline";
+    searchType.style.display="inline";
+    searchTypeTitle.style.display="inline";
+    document.getElementById('plInfoView:condOnerCd').style.display="inline";
+    dispInputCd.style.display="block";
+  }
+  else if (taishoTenpo == '6') {
+    tenpoShuTitle.style.display="inline";
+    dispTitleMise.style.display="inline";
+    dispMise.style.display="inline";
+    document.getElementById('plInfoView:condMiseCd').style.display="inline";
+    dispInputCd.style.display="block";
+  }
+  else {
+    tenpoShu.style.display="inline";
+    tenpoShuTitle.style.display="inline";
+    if (taishoTenpo == '2') {
+      dispJigyo.style.display="inline";
+    }
+    else if (taishoTenpo == '3') {
+      dispArea.style.display="inline";
+    }
+    else if (taishoTenpo == '4') {
+      dispSibu.style.display="inline";
+      if(navigator.userAgent.indexOf('Mac')>-1 && navigator.userAgent.indexOf('Safari')>-1){
+      	dispSelectCd.width="197px";
+      }else{
+      	dispSelectCd.width="192px";
+      }
+      dispSelectCd.style.display="block";
+      return;
+    }
+    dispSelectCd.width="190px";
+    dispSelectCd.style.display="";
+  }
+}
+
+function switchDisplayObjOner() {
+
+  var taishoTenpo = document.plInfoView.elements['plInfoView:condTaishoTenpoOner'].selectedIndex;
+  var dispTargetOnerMise  =document.getElementById('dispTargetOnerMise');
+  var dispTargetOnerMiseTitle  =document.getElementById('dispTargetOnerMiseTitle');
+
+  dispTargetOnerMise.style.display="none";
+
+  if(taishoTenpo == 4){
+    dispTargetOnerMise.style.display="";
+  }
+}
+function setCsvMode(index) {
+  document.plInfoView.elements['plInfoView:csvMode'].value = index;
+  document.plInfoView.elements['plInfoView:newWindowFlg'].value = '';
+  document.plInfoView.target = "_self";
+  document.plInfoView.elements['plInfoView:__link_clicked__'].value='plInfoView:downloadCsv';
+  document.plInfoView.submit();
+}
+function research(){
+	document.plInfoView.elements['plInfoView:__link_clicked__'].value='plInfoView:research';
+	if (document.plInfoView.onsubmit) {
+		document.plInfoView.onsubmit();
+	}
+	document.plInfoView.submit();
+}
+//-->
+</script>
+
+<form m:id="plInfoView" target="_self" onSubmit="execSubmit();" onKeyDown="return setDefaultSubmitButton('plInfoView','btnExecute');">
+<input type="hidden" m:id="viewId" m:value="#{viewIdValue}"/>
+<input type="hidden" m:id="initMenuId" m:value="#{menuAction.initMenuId}"/>
+<input type="hidden" m:id="initSubMenuId" m:value="#{menuAction.initSubMenuId}"/>
+<input type="hidden" m:id="pageType" m:value="#{userTypeCd}"/>
+<input type="hidden" m:id="csvMode" m:value="#{plInfoViewDto.csvMode}"/>
+<input type="hidden" m:id="newWindowFlg" value=""/>
+<!-- ウィンドウID -->
+<input type="hidden" m:value="#{plInfoViewCommonDto.windowId}"/>
+<a m:id="downloadCsv" m:action="#{plInfoViewResultAction.downloadCsv}"/>
+<a m:id="research" m:action="#{plInfoViewResultAction.research}"/>
+<div class="scroll_padding_head">
+<div class="scroll_hidden element_browser margin_bottom_hidden">
+	<table class="hiddenBody #{plInfoViewDto.listEntityTogetuPlusZennen != null?'data_table_width':''}"
+	       style="margin-bottom:3px;">
+		<tr>
+		<td colspan="2">
+			<table class="body_table">
+			    <tr>
+			      <th nowrap=" nowrap">対象年月</th>
+			      <td>
+			        <div class="hideArea">
+			        <select m:value="#{plInfoViewDto.condTargetYM}"
+			                m:items="#{plInfoViewCommonDto.condListTargetYM}"
+			                m:itemValue="value"
+			                m:itemLabel="label">
+			            <option value="">2006/03</option>
+			            <option value="">2006/02</option>
+			            <option value="">2006/01</option>
+			        </select>
+			        </div>
+			      </td>
+			      <th nowrap=" nowrap">対象条件</th>
+			      <td m:rendered="#{plInfoViewCommonDto.userTypeCd == '01'}">
+			          <div class="hideArea">
+			          <select m:id="condTaishoTenpo"
+			                  m:value="#{plInfoViewDto.condTaishoTenpo}"
+			                  m:items="#{plInfoViewCommonDto.listCondTaishoTenpo}"
+			                  m:itemValue="value"
+			                  m:itemlabel="label"
+			                  m:onchange="switchDisplayObj()">
+			            <option value="">FC全社</option>
+			            <option value="2">事業本部</option>
+			            <option value="3">営業エリア</option>
+			            <option value="4">支部</option>
+			            <option value="6">店舗</option>
+			            <option value="7">オーナー</option>
+			          </select>
+			          </div>
+			        </td>
+			      <th m:rendered="#{plInfoViewCommonDto.userTypeCd == '01'}" nowrap=" nowrap" style="border-right-width:0px;">
+			          表示対象</th>
+			      <th m:rendered="#{plInfoViewCommonDto.userTypeCd == '01'}" style="border-left-width:0px;">
+			          <div m:id="dispTargetTitleMise"
+			          	   m:style="#{isSearchTenpo ? 'display:inline;' : 'display:none;'}">
+			          	   <input type="button" value="検索" class="button_in_table"
+								m:action="#{plInfoViewResultAction.callMiseForm}"
+								m:onclick="document.plInfoView.elements['plInfoView:newWindowFlg'].value = '';"/></div>
+			          <div m:id="dispTargetTitleOner"
+			               m:style="#{plInfoViewDto.condTaishoTenpo == '7' ? 'display:inline;' : 'display:none;'}">
+			               <input type="button" value="検索" class="button_in_table"
+			                      m:action="#{plInfoViewResultAction.callOnerForm}"
+			                      m:onclick="document.plInfoView.elements['plInfoView:newWindowFlg'].value = '';"/></div>
+			        </th>
+				  <td m:rendered="#{plInfoViewCommonDto.userTypeCd == '01'}" m:id="condSelectCd" width="190px"
+				         m:style="#{plInfoViewDto.condTaishoTenpo != '6' && plInfoViewDto.condTaishoTenpo != '7' ? 'display:block;' : 'display:none;'}">
+			          <div class="dispTargetJigyo" m:id="dispTargetJigyo" m:style="#{plInfoViewDto.condTaishoTenpo == '2' ? 'display:inline;' : 'display:none;'}">
+				        <div class="hideArea">
+					        <select m:value="#{plInfoViewDto.condJigyouCd}"
+					                m:items="#{plInfoViewCommonDto.condListJigyouCd}"
+					                m:itemValue="jigyouCd"
+					                m:itemLabel="jigyouName">
+					            <option value="">第１営業本部</option>
+					            <option value="">第２営業本部</option>
+					            <option value="">第３営業本部</option>
+					        </select>
+					    </div>
+			          </div>
+			          <div class="dispTargetArea" m:id="dispTargetArea" m:style="#{plInfoViewDto.condTaishoTenpo == '3' ? 'display:inline;' : 'display:none;'}">
+				        <div class="hideArea">
+					        <select
+					                m:value="#{plInfoViewDto.condSlareaCd}"
+					                m:items="#{plInfoViewCommonDto.condListSlareaCd}"
+					                m:itemValue="slareaCd"
+					                m:itemLabel="slareaName">
+					            <option value="">第一エリア</option>
+					            <option value="">第二エリア</option>
+					            <option value="">第三エリア</option>
+					        </select>
+					    </div>
+			          </div>
+			          <div class="dispTargetSibu" m:id="dispTargetSibu" m:style="#{plInfoViewDto.condTaishoTenpo == '4' ? 'display:inline;' : 'display:none;'}">
+				        <div class="hideArea">
+				          <select class="height_21" style="display:inline"
+				                  m:value="#{plInfoViewDto.condSibuCd}"
+				                  m:items="#{plInfoViewCommonDto.condListSibuCd}"
+				                  m:itemValue="sibuCd"
+				                  m:itemLabel="sibuName">
+				              <option value="">北海道支部</option>
+				              <option value="">東北支部</option>
+				              <option value="">関東支部</option>
+				          </select>
+				          <select class="height_21" style="display:inline"
+				                  m:value="#{plInfoViewDto.condBlockCd}"
+				                  m:items="#{plInfoViewCommonDto.condListBlockCd}"
+				                  m:itemValue="blockCd"
+				                  m:itemLabel="blockName"
+				                  m:nulllabel="全ブロック">
+				              <option value="">Ａブロック「</option>
+				              <option value="">Ｂブロック</option>
+				              <option value="">Ｃブロック</option>
+				          </select>
+				        </div>
+			          </div>
+			        </td>
+				  <td m:rendered="#{plInfoViewCommonDto.userTypeCd == '01'}" width="120px" m:id="condInputCd"
+				           m:style="#{plInfoViewDto.condTaishoTenpo == '6' || plInfoViewDto.condTaishoTenpo == '7' ? 'display:block;' : 'display:none;'}">
+			          <input type="text" m:id="condMiseCd" m:value="#{plInfoViewDto.condMiseCd}"
+			                 class="imenotuse height_11 height_15"
+			                 m:size="10" m:maxlength="5"
+			                 m:converter="#{codeConverter5}"
+			                 m:style="#{isSearchTenpo ? 'display:inline;' : 'display:none;'}"/>
+			          <input type="text" m:id="condOnerCd" m:value="#{plInfoViewDto.condOnerCd}"
+			                 class="imenotuse height_11 height_15"
+			                 m:size="10" m:maxlength="5"
+			                 m:converter="#{codeConverter5}"
+			                 m:style="#{plInfoViewDto.condTaishoTenpo == '7' ? 'display:block;' : 'display:none;'}"/>
+			        </td>
+			      <th m:rendered="#{plInfoViewCommonDto.userTypeCd == '01'}" nowrap=" nowrap">
+			          <div class="div_tenpoShuTitle" m:id="div_tenpoShuTitle"
+			               m:style="#{plInfoViewDto.condTaishoTenpo != '7' ? 'display:inline;' : 'display:none;'}">店舗種別</div>
+			          <div class="div_searchTypeTitle" m:id="div_searchTypeTitle"
+			               m:style="#{plInfoViewDto.condTaishoTenpo == '7' ? 'display:inline;' : 'display:none;'}">検索タイプ</div>
+			        </th>
+			      <td m:rendered="#{plInfoViewCommonDto.userTypeCd == '01'}">
+			          <div class="hideArea">
+			          <div class="div_tenpoShu" m:id="div_tenpoShu" m:style="#{(plInfoViewDto.condTaishoTenpo != '6' && plInfoViewDto.condTaishoTenpo != '7') ? 'display:inline;' : 'display:none;'}">
+			            <select m:value="#{plInfoViewDto.condTenpoShu}">
+			              <option value="">全店</option>
+			              <option value="1">前年対象店</option>
+			              <option value="2">予算対象店</option>
+			              <option value="3">新店</option>
+			            </select>
+			          </div>
+			          <div class="div_searchType" m:id="div_searchType" m:style="#{plInfoViewDto.condTaishoTenpo == '7' ? 'display:inline;' : 'display:none;'}">
+			            <select m:value="#{plInfoViewDto.condSearchType}">
+			              <option value="">全社</option>
+			              <option value="1">オーナーのみ</option>
+			              <option value="2">経営店舗合計</option>
+			              <option value="3">経営店舗平均</option>
+			            </select>
+			          </div>
+			          </div>
+			        </td>
+			      <td m:rendered="#{plInfoViewCommonDto.userTypeCd == '02'}">
+			          <div class="hideArea">
+			          <select m:id="condTaishoTenpoOner"
+			                  m:value="#{plInfoViewDto.condTaishoTenpoOner}"
+			                  m:items="#{plInfoViewCommonDto.listCondTaishoTenpoOner}"
+			                  m:itemValue="value"
+			                  m:itemlabel="label"
+			                  m:onchange="switchDisplayObjOner()">
+			            <option value="">全社</option>
+			            <option value="1">本社</option>
+			            <option value="2">全店合計</option>
+			            <option value="3">全店平均</option>
+			            <option value="4">店舗</option>
+			          </select>
+			          </div>
+			          <input type="hidden" m:value="#{plInfoViewDto.condOnerCd}" m:converter="#{codeConverter5}"/>
+			        </td>
+			      <th m:rendered="#{plInfoViewCommonDto.userTypeCd == '02'}" m:id="dispTargetOnerMiseTitle">対象店舗</th>
+			      <td  m:rendered="#{plInfoViewCommonDto.userTypeCd == '02'}"width="250px">
+				      <div class="hideArea" m:style="#{plInfoViewDto.condTaishoTenpoOner == '4' ? '' : 'display:none;'}">
+				        <select m:id="dispTargetOnerMise"
+				                m:value="#{plInfoViewDto.condMiseCdOner}"
+				                m:items="#{plInfoViewCommonDto.condListOnerTenpo}"
+				                m:itemValue="miseCd"
+				                m:itemLabel="miseNameKj">
+				            <option value="">新瑞店</option>
+				            <option value="">平針店</option>
+				            <option value="">日進駅前店</option>
+				        </select>
+			          </div>
+			        </td>
+		        <td m:rendered="#{plInfoViewCommonDto.userTypeCd == '03'}">
+		          <span m:value="#{plInfoViewDto.condMiseCd}"/>
+		          <input type="hidden" m:value="#{plInfoViewDto.condMiseCd}" m:converter="#{codeConverter5}"/>
+		        </td>
+		         <td width="60px"><input type="submit" value="再検索" m:id="btnExecute"
+			           class="#{plInfoViewCommonDto.userTypeCd == '01'?'button_in_table':''}"
+			           m:onclick="document.plInfoView.elements['plInfoView:newWindowFlg'].value = '1';research();return false;"/>
+				</td>
+			   <!--<td width="60px"><input type="submit" value="再検索" m:id="btnExecute"
+			           class="#{plInfoViewCommonDto.userTypeCd == '01'?'button_in_table':''}"
+			           ＜m:action="#{plInfoViewResultAction.research}"
+			           m:onclick="document.plInfoView.elements['plInfoView:newWindowFlg'].value = '1';"/>
+				</td>  -->
+			</tr>
+		</table>
+			</td>
+		</tr>
+		<tr style="line-height:24px;">
+			<td>
+				<table class="hiddenBody" style="width:100%;margin-top:3px;">
+				<tr>
+				<td m:rendered="#{plInfoViewDto.listEntityTogetuPlusZennen != null}">
+					単位：円　
+					<input type="button" value="ダウンロード（構成比無）"
+					        m:id="btnGenkaInfoNasi" m:onclick="setCsvMode('02');"/>
+					<input type="button" value="ダウンロード（構成比有）"
+					        m:id="btnGenkaInfoAri" m:onclick="setCsvMode('01');"/></td>
+				<td m:rendered="#{plInfoViewCommonDto.fcRcFlg == true}" style="text-align:right;">
+			       <input type="checkbox" m:id="uriflg" m:value="#{plInfoViewCommonDto.uriageFlg}"/>売上高＞０の店舗で絞る（加盟店のみ）</td>
+				</tr>
+				</table>
+			</td>
+			<td m:rendered="#{plInfoViewDto.listEntityTogetuPlusZennen != null}"
+			    style="text-align:right;">
+			  <input type="checkbox" m:id="newwin"
+			         m:value="#{plInfoViewResultAction.newWindowFlg}"/>別ウィンドウに表示
+			</td>
+		</tr>
+	</table>
+</div>
+</div>
+
+<div m:rendered="#{plInfoViewDto.listEntityTogetuPlusZennen != null}">
+<!--検索結果情報-->
+    <table class="body_table2" style="margin-bottom:4px;">
+	    <tr>
+	      <th class="header_koumoku">対象店舗</th>
+	      <td class="header_name"><span m:converter="#{characterEncodingConverter}" m:value="#{plInfoViewDto.condMiseCd}"/>　<span m:converter="#{characterEncodingConverter}" m:value="#{plInfoViewDto.condMiseName}"/></td>
+	      <th class="header_koumoku">オープン日</th>
+	      <td class="header_koumoku"><span m:value="#{plInfoViewDto.condMiseOpenDt}" m:converter="#{dateConverterSlash}"/></td>
+	    </tr>
+    </table>
+    <table class="body_table2" style="margin-bottom:4px;">
+	    <tr>
+	      <th class="header_koumoku">対象数</th>
+	      <td class="header_koumoku" style="text-align:right;">
+	      	<span m:value="#{plInfoViewDto.entityTougetu.rowCount}" m:converter="#{numericConverterKingakuRound}"/></td>
+	        <th m:rendered="#{plInfoViewDto.condLastSearchTaishoTenpo == '6' || plInfoViewDto.condLastSearchTaishoTenpo == '7'}" class="header_koumoku">オーナー</th>
+	        <td m:rendered="#{plInfoViewDto.condLastSearchTaishoTenpo == '6' || plInfoViewDto.condLastSearchTaishoTenpo == '7'}" class="header_name">
+	        	<div  m:rendered="#{plInfoViewDto.condLastSearchTaishoTenpo == '6'}">
+	        		<span m:converter="#{characterEncodingConverter}" m:value="#{plInfoViewDto.condMiseOnerCd}"/>　<span m:converter="#{characterEncodingConverter}" m:value="#{plInfoViewDto.condMiseOnerName}"/></div>
+		        <div m:rendered="#{plInfoViewDto.condLastSearchTaishoTenpo == '7'}">
+		        	<span m:converter="#{characterEncodingConverter}" m:value="#{plInfoViewDto.condOnerName}"/></div>
+	        </td>
+	    </tr>
+    </table>
+</div>
+<div m:rendered="#{plInfoViewDto.listEntityTogetuPlusZennen != null}">
+<div class="scroll_padding_head">
+<div class="scroll_hidden margin_bottom_5">
+<table cellspacing="0" cellpadding="0" class="element_browser data_table_width">
+  <tr>
+    <td class="body_active_cell tab_change_area_0" width="150px"
+	        onClick="changeTabArea('0')"
+			onMouseOver="this.style.cursor='pointer';">合計
+    </td>
+    <td class="body_non_active_cell tab_change_area_1" width="150px"
+	        onClick="changeTabArea('1');loadScroll('plinfoviewScroll',316);"
+			onMouseOver="this.style.cursor='pointer';">詳細
+    </td>
+    <td width="*">&nbsp;</td>
+  </tr>
+  <tr class="body_caption" style="height:5px;">
+    <td colspan="3"/></tr>
+</table>
+</div>
+</div>
+
+
+<!--売上純利益タブ-->
+<div class="tab_change_area_0 visible_tab">
+<div class="element_print" style="font-weight:bold;">【　合計　】</div>
+<div class="scroll_padding_head">
+<div class="scroll_hidden">
+<table class="body_table2 data_table_width">
+  <tr class="header_row">
+	<th class="koumoku_width">項目</th>
+    <th class="kingaku_width">当月金額</th>
+    <th class="hiritu_width">構成比</th>
+    <th class="kingaku_width">前年金額</th>
+    <th class="hiritu_width">構成比</th>
+    <th class="kingaku_width">差額</th>
+    <th class="hiritu_width">前年比</th>
+  </tr>
+  <div m:inject="s:forEach" m:items="#{plInfoViewDto.listRCTougetu}" m:var="e">
+  <div m:rendered="#{e.dispPosition == '01'}">
+  <tr>
+    <th class="koumoku_width" style="color:##{e.dispColor};"><span m:converter="#{characterEncodingConverter}" m:value="#{e.koumokuName}"/></th>
+    <td class="kingaku_width body_num"><span m:value="#{e.kingaku}" m:converter="#{numericConverterKingakuColor}" m:escape="false"/></td>
+    <td class="hiritu_width body_num"><span m:value="#{e.kingaku}" m:converter="#{tougetuKosehiRCConverter}" m:escape="false"/></td>
+    <td class="kingaku_width body_num"><span m:value="#{e.kingakuZennen}" m:converter="#{numericConverterKingakuColor}" m:escape="false"/></td>
+    <td class="hiritu_width body_num"><span m:value="#{e.kingakuZennen}" m:converter="#{zennenKosehiRCConverter}" m:escape="false"/></td>
+    <td class="kingaku_width body_num">
+      <span m:value="#{e.kingaku}_#{e.kingakuZennen}" m:converter="#{numericSubtractConverter}" m:escape="false"/>
+    </td>
+    <td class="hiritu_width body_num">
+      <span m:value="#{e.kingaku}_#{e.kingakuZennen}" m:converter="#{hirituConverter}" m:escape="false"/>
+    </td>
+  </tr>
+  </div>
+  </div>
+</table>
+</div>
+</div>
+</div>
+
+<!--詳細タブ-->
+<div class="tab_change_area_1 invisible_tab">
+<div class="element_print" style="font-weight:bold;">【　詳細　】</div>
+<div class="scroll_padding_head">
+<div class="scroll_hidden">
+<table class="body_table2 data_table_width">
+  <tr class="header_row">
+	<th class="koumoku_width">項目</th>
+    <th class="kingaku_width">当月金額</th>
+    <th class="hiritu_width">構成比</th>
+    <th class="kingaku_width">前年金額</th>
+    <th class="hiritu_width">構成比</th>
+    <th class="kingaku_width">差額</th>
+    <th class="hiritu_width">前年比</th>
+  </tr>
+</table>
+</div>
+</div>
+<div class="scroll_padding_data">
+<div class="scroll_standby" id="plinfoviewScroll">
+<table class="body_table2 data_table_width" style="border-top-width:0px">
+  <div m:inject="s:forEach" m:items="#{plInfoViewDto.listRCTougetu}" m:var="e">
+  <tr class="non_top_border">
+    <th class="koumoku_width" color="#{e.dispColor}" style="text-align:#{e.koumokuNameTextAlign};"><span m:converter="#{characterEncodingConverter}" m:value="#{e.koumokuNameDisp}"/></th>
+    <td class="kingaku_width body_num"><span m:value="#{e.kingaku}" m:converter="#{numericConverterKingakuColor}" m:escape="false"/></td>
+    <td class="hiritu_width body_num"><span m:value="#{e.kingaku}" m:converter="#{tougetuKosehiRCConverter}" m:escape="false"/></td>
+    <td class="kingaku_width body_num"><span m:value="#{e.kingakuZennen}" m:converter="#{numericConverterKingakuColor}" m:escape="false"/></td>
+    <td class="hiritu_width body_num"><span m:value="#{e.kingakuZennen}" m:converter="#{zennenKosehiRCConverter}" m:escape="false"/></td>
+    <td class="kingaku_width body_num">
+      <span m:value="#{e.kingaku}_#{e.kingakuZennen}" m:converter="#{numericSubtractConverter}" m:escape="false"/>
+    </td>
+    <td class="hiritu_width body_num">
+      <span m:value="#{e.kingaku}_#{e.kingakuZennen}" m:converter="#{hirituConverter}" m:escape="false"/>
+    </td>
+  </tr>
+  </div>
+</table>
+</div>
+</div>
+</div>
+</div>
+<script type="text/javascript">
+<!--
+  focusElement("plInfoView");
+//-->
+</script>
+<input type="text" m:id="dummyEnter" style="display:none"/>
+</form>
+</span>
+</body>
+</html>

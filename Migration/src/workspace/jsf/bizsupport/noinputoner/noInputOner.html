@@ -1,0 +1,219 @@
+<html xmlns:m="http://www.seasar.org/maya" m:action="#{noInputOnerAction.initialize}" m:extends="/jsf/layout/layoutNoNavi.html">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Windows-31j" />
+<title>P/L入力状況確認</title>
+</head>
+<body>
+<span m:inject="f:param" m:name="layoutTitle" m:value="P/L入力状況確認"/>
+<span m:inject="f:param" m:name="onLoadName" m:value=""/>
+<span m:inject="s:insert" m:name="bodyTitleName">■P/L入力状況確認</span>
+<span m:inject="f:param" m:name="viewIdValue" m:value="BBS004V01"/>
+<span m:inject="s:insert" m:name="body">
+<STYLE type="text/css" media="screen">
+<!--
+table.body_table2 {
+	width:2700px;
+}
+.data_table_width {
+    width:970px;
+}
+td.inputKbn {
+    text-align:center;
+    width:100px;
+}
+@media print {
+	.data_table_width {
+	    width:100%;
+	}
+	table.body_table2 {
+		width:100%;
+	}
+}
+-->
+</STYLE>
+<script type="text/javascript">
+<!--
+function load(){
+  focusElement("noInputOner");
+}
+function enterTAB(){
+	if (event.keyCode == 13) {
+		try {
+			window.event.keyCode = 0x09;
+		}
+		catch(e) {
+			event.returnValue = false;
+		} 
+	}
+	return true;
+}
+function onAllStoreDL() {
+	setDefState();
+	setDefSibu();
+}
+function setDefState() {
+	document.forms['noInputOner'].elements['noInputOner:state'].selectedIndex = 0;
+}
+function setDefSibu() {
+	document.forms['noInputOner'].elements['noInputOner:sibu'].selectedIndex = 0;	
+}
+//-->
+</script>
+
+<form m:id="noInputOner">
+<input type="hidden" m:id="viewId" m:value="#{viewIdValue}"/>
+<input type="hidden" m:id="initMenuId" m:value="#{menuAction.initMenuId}"/>
+<input type="hidden" m:id="initSubMenuId" m:value="#{menuAction.initSubMenuId}"/>
+
+<div class="search_condition">
+<input type="button" value="検索" class="operation_button" m:action="#{noInputOnerAction.search}"/>&nbsp;
+<input type="button" m:value="ダウンロード" m:action="#{noInputOnerCsvOutputAction.downloadCsv}"/>&nbsp;
+<input type="button" m:value="単月全店明細" m:action="#{noInputOnerCsvOutputAllStoreAction.downloadCsv}" onclick="onAllStoreDL()"/>
+<!--input type="button" m:value="ダウンロード" m:action="#{noInputOnerCsvOutputAction.downloadCsv}" m:disabled="#{noInputOnerDto.listNoInputOnerSize == 0}"/-->
+<table class="body_table" style="margin-top:4px;margin-bottom:4px;">
+    <tr>
+      <th>対象年月</th>
+      <td>
+        <select class="condition_field"
+                m:value="#{noInputOnerDto.condNengetuInp}"
+                m:items="#{noInputOnerDto.condListTargetYM}"
+                m:itemValue="value"
+                m:itemLabel="label">
+            <option value="">2006/03</option>
+            <option value="">2006/02</option>
+            <option value="">2006/01</option>
+        </select>
+      </td>
+      <th>状況</th>
+      <td>
+        <div class="hideArea">
+          <select m:id="state" m:value="#{noInputOnerDto.condInputInp}">
+            <option value=""></option>
+            <option value="0">未入力</option>
+            <option value="1">エラー</option>
+          </select>
+        </div>
+      </td>
+      <th>支部</th>
+      <td>
+        <div class="hideArea">
+          <select m:id="sibu" class="condition_field" 
+                  m:value="#{noInputOnerDto.condSibuCdInp}"
+                  m:items="#{noInputOnerDto.listCondSibu}"
+                  m:itemValue="sibuCd"
+                  m:itemLabel="sibuName" 
+                  m:nullLabel=" ">
+              <option value="">北海道支部</option>
+              <option value="">東北支部</option>
+              <option value="">関東支部</option>
+          </select>
+        </div>
+      </td>
+      <td width="150">
+        <input type="checkbox" m:id="closeMiseFlg" m:value="#{noInputOnerDto.closeMiseFlg}"/>クローズ店を含む
+      </td>
+    </tr>
+</table>
+</div>
+<div m:rendered="#{noInputOnerDto.listNoInputOnerSize > 0}">
+<table class="hiddenBody data_table_width">
+	<tr><td>&nbsp;
+	<div m:onkeydown="return setDefaultSubmitButton('noInputOner', 'findMiseBtn');" style="display:inline">
+      <input m:id="miseT" class="imenotuse" type="text"
+             m:value="#{noInputOnerDto.condJumpMiseCd}"
+             m:maxlength="5" m:size="10" m:converter="#{codeConverter5}"/>
+    </div>
+      <input type="button" value="店へ" id="findMiseBtn"
+             m:action="#{noInputOnerAction.jumpMise}"/>
+	<div m:onkeydown="return setDefaultSubmitButton('noInputOner', 'findOnerBtn');" style="display:inline">
+      <input m:id="onerT" class="imenotuse" type="text"
+             m:value="#{noInputOnerDto.condJumpOnerCd}"
+             m:maxlength="5" m:size="10" m:converter="#{codeConverter5}"/>
+	</div>
+      <input type="button" value="オーナーへ" id="findOnerBtn"
+             m:action="#{noInputOnerAction.jumpOner}"/></td>
+    <td align="right">
+		<input type="button" value="最初へ" m:action="#{noInputOnerAction.changePage}" m:disabled="#{noInputOnerDto.firstPage}">
+			<span m:inject="f:param" m:name="selectPageNumber" m:value="#{noInputOnerDto.firstPageNumber}"/>
+		</input>
+		<input type="button" value="前へ" m:action="#{noInputOnerAction.changePage}" m:disabled="#{!noInputOnerDto.existPreviousPage}">
+			<span m:inject="f:param" m:name="selectPageNumber" m:value="#{noInputOnerDto.previousPageNumber}"/>
+		</input>
+		<input type="button" value="次へ" m:action="#{noInputOnerAction.changePage}" m:disabled="#{!noInputOnerDto.existNextPage}">
+			<span m:inject="f:param" m:name="selectPageNumber" m:value="#{noInputOnerDto.nextPageNumber}"/>
+		</input>
+		<input type="button" value="最後へ" m:action="#{noInputOnerAction.changePage}" m:disabled="#{noInputOnerDto.lastPage}">
+			<span m:inject="f:param" m:name="selectPageNumber" m:value="#{noInputOnerDto.lastPageNumber}"/>
+		</input>
+		&nbsp;&nbsp;
+		<span m:value="#{noInputOnerDto.currentPageNumber}"/> / <span m:value="#{noInputOnerDto.lastPageNumber}"/>&nbsp;ページ
+
+	</td>
+	</tr>
+	<tr style="height:4px;">
+		<td colspan="2"></td>
+	</tr>
+	<tr class="body_caption">
+		<td colspan="2">未入力オーナー一覧</td>
+	</tr>
+</table>
+
+<div class="scroll_area data_table_width" style="height:390px;">
+<table class="body_table2">
+  <div m:inject="s:forEach" m:items="#{noInputOnerDto.listNoInputOner}" m:var="e" m:varindex="i">
+  <div m:rendered="#{i % 15 == 0}">
+	<tr class="header_row">
+		<th width="300px" nowrap>オーナー名称</th>
+		<th width="300px" nowrap>店舗名称</th>
+		<th width=100 nowrap>クローズ日</th>
+        <div m:inject="s:forEach" m:items="#{noInputOnerDto.listTableHeader}" m:var="f">
+          <th nowrap><span m:value="#{f}" m:converter="#{dateConverterYMKanji}"/></th>
+        </div>
+    </tr>
+  </div>
+    <tr>
+      <td width="300px">
+        <span m:value="#{e.onerCd}"/>&nbsp;
+        <span m:converter="#{characterEncodingConverter}" m:value="#{e.onerNameKj}"/>
+      </td>
+      <td width="300px">
+        <span m:value="#{e.miseCd}"/>&nbsp;
+        <span m:converter="#{characterEncodingConverter}" m:value="#{e.miseNameKj}"/>
+      </td>
+      <td width=100><span m:value="#{e.closeDt}" m:converter="#{dateConverter}"/></td>
+      <td class="inputKbn"><span m:value="#{e.plDt1}" m:converter="#{inputKbnConverter}"/></td>
+      <td class="inputKbn"><span m:value="#{e.plDt2}" m:converter="#{inputKbnConverter}"/></td>
+      <td class="inputKbn"><span m:value="#{e.plDt3}" m:converter="#{inputKbnConverter}"/></td>
+      <td class="inputKbn"><span m:value="#{e.plDt4}" m:converter="#{inputKbnConverter}"/></td>
+      <td class="inputKbn"><span m:value="#{e.plDt5}" m:converter="#{inputKbnConverter}"/></td>
+      <td width="300px">
+          <span m:value="#{e.miseCd}"/>&nbsp;
+          <span m:converter="#{characterEncodingConverter}" m:value="#{e.miseNameKj}"/>
+      </td>
+      <td class="inputKbn"><span m:value="#{e.plDt6}" m:converter="#{inputKbnConverter}"/></td>
+      <td class="inputKbn"><span m:value="#{e.plDt7}" m:converter="#{inputKbnConverter}"/></td>
+      <td class="inputKbn"><span m:value="#{e.plDt8}" m:converter="#{inputKbnConverter}"/></td>
+      <td class="inputKbn"><span m:value="#{e.plDt9}" m:converter="#{inputKbnConverter}"/></td>
+      <td class="inputKbn"><span m:value="#{e.plDt10}" m:converter="#{inputKbnConverter}"/></td>
+      <td class="inputKbn"><span m:value="#{e.plDt11}" m:converter="#{inputKbnConverter}"/></td>
+      <td width="300px">
+          <span m:value="#{e.miseCd}"/>&nbsp;
+          <span m:converter="#{characterEncodingConverter}" m:value="#{e.miseNameKj}"/>
+      </td>
+      <td class="inputKbn"><span m:value="#{e.plDt12}" m:converter="#{inputKbnConverter}"/></td>
+      <td class="inputKbn"><span m:value="#{e.plDt13}" m:converter="#{inputKbnConverter}"/></td>
+    </tr>
+  </div>
+</table>
+</div>
+</div>
+<script type="text/javascript">
+<!--
+  load();
+//-->
+</script>
+<input type="text" m:id="dummyEnter" style="display:none"/>
+</form>
+</span>
+</body>
+</html>

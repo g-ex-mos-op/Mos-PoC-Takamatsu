@@ -1,0 +1,83 @@
+<html xmlns:m="http://www.seasar.org/maya" m:action="#{pointMstRegistRefAction.initialize}" m:extends="/jsf/layout/layoutNoNavi.html">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Windows-31j" />
+<meta http-equiv="Content-Style-Type" content="text/css"/>
+<meta http-equiv="Content-Script-Type" content="text/javascript"/>
+<title>ポイントマスタメンテナンス</title>
+</head>
+<body>
+<span m:inject="f:param" m:name="layoutTitle" m:value="ポイントマスタメンテナンス"></span>
+<span m:inject="s:insert" m:name="bodyTitleName">■ポイントマスタメンテナンス</span>
+<span m:inject="f:param" m:name="onLoadName" m:value=""></span>
+<span m:inject="f:param" m:name="viewIdValue" m:value="BBS036V01"></span>
+<div m:inject="s:insert" m:name="body">
+<style type="text/css">
+<!--
+.scroll_area {
+	width:	  100%;
+	height:   420px;
+	overflow: auto;
+}
+-->
+</style>
+<script type="text/javascript">
+<!--
+function deleteData(confirmMsg) {
+	if (confirm(confirmMsg)) {
+		document.PointMstRegistRef.elements['PointMstRegistRef:__link_clicked__'].value = 'PointMstRegistRef:delete';
+		document.PointMstRegistRef.submit();
+	}
+}
+//-->
+</script>
+<form m:id="PointMstRegistRef">
+	<input type="hidden" m:id="initMenuId" m:value="#{menuAction.initMenuId}"/>
+	<input type="hidden" m:id="initSubMenuId" m:value="#{menuAction.initSubMenuId}"/>
+	<input type="hidden" m:id="viewId" m:value="#{viewIdValue}" />
+	<input type="submit" value="新規" m:action="#{pointMstRegistRefAction.insert}"/>&nbsp;
+	<input type="submit" value="編集" m:action="#{pointMstRegistRefAction.edit}" m:disabled="#{seidoDataDto.emptyListTarget}"/>
+	<input type="submit" value="計画削除" onclick="deleteData('中期経営計画を削除します。よろしいですか。');return false" onDblClick="return false" m:disabled="#{seidoDataDto.emptyListTarget}"/>&nbsp;
+	<a m:id="delete"  m:action="#{pointMstRegistRefAction.delete}"></a>
+<table class="body_table2" style="margin-top:6px;border-bottom-width:0px;" >
+<caption class="body_title width_percent_69_86" style="text-align:left; padding:2px 0px;">対象一覧</caption>
+<tr>
+		<th width="50px">対象</th>
+		<th width="250px">中期経営計画</th>
+		<th width="150px">開始年度</th>
+		<th width="150px">終了年度</th>
+		<th width="200px">業績連動係数（社員）</th>
+		<th width="200px">業績連動係数（役員）</th>
+</tr>
+</table>
+<div class="scroll_area">
+<div m:inject="s:selectOneRadio2" m:value="#{seidoDataDto.condTarget}" m:required="#{seidoDataDto.emptyListTarget == true ? false : true}">
+<table class="body_table2" style="border-top-width:0px;">
+<div m:inject="s:forEach" m:items="#{seidoDataDto.seidoList}" m:var="e" m:varindex="i">
+<tr>
+		<td width="50px" style="text-align:center;">
+			<input type="radio" value="#{i}"/>
+		</td>
+		<td width="250px">
+		  <span m:converter="#{characterEncodingConverter}" m:value="#{e.planName}"></span>
+		</td>
+		<td width="150px">
+		  <span m:converter="" m:value="#{e.startNendo}"></span>
+		</td>
+		<td width="150px">
+		  <span m:converter="" m:value="#{e.endNendo}"></span>
+		</td>
+		<td width="200px">
+		  <span m:converter="" m:value="#{e.gRendoKeisu}"></span>
+		</td>
+		<td width="200px">
+		  <span m:converter="" m:value="#{e.gRendoKeisuYakuin}"></span>
+		</td>
+</tr>
+</div>
+</table>
+</div>
+</div>
+</form>
+</div>
+</body>
+</html>

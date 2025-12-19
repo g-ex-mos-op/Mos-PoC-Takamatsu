@@ -1,0 +1,852 @@
+<html xmlns:m="http://www.seasar.org/maya" m:action="#{plInfoViewResultAction.initialize}" m:extends="/jsf/layout/layoutNoNavi.html">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Windows-31j" />
+<title>P/L照会</title>
+</head>
+<body>
+<span m:inject="f:param" m:name="layoutTitle" m:value="P/L照会"/>
+<span m:inject="f:param" m:name="onLoadName" m:value="bodyLoad();"/>
+<span m:inject="f:param" m:name="viewIdValue" m:value="BBS006V03"/>
+<span m:inject="f:param" m:name="userTypeCd" m:value="#{plInfoViewCommonDto.userTypeCd}"/>
+<span m:inject="f:param" m:name="isSearchTenpo" m:value="#{plInfoViewDto.condLastSearchTaishoTenpo == '6'}"/>
+<span m:inject="f:param" m:name="scrollHiddenClassName" m:value="#{plInfoViewDto.condLastSearchTaishoTenpo == '6'?'scroll_hidden':''}"/>
+<span m:inject="f:param" m:name="scrollPaddingHead" m:value="#{plInfoViewDto.condLastSearchTaishoTenpo == '6'?'scroll_padding_head':''}"/>
+<span m:inject="f:param" m:name="scrollClassName" m:value="#{plInfoViewDto.condLastSearchTaishoTenpo == '6'?'scroll_standby':''}"/>
+<span m:inject="f:param" m:name="scrollPaddingData" m:value="#{plInfoViewDto.condLastSearchTaishoTenpo == '6'?'scroll_padding_data':''}"/>
+<span m:inject="s:insert" m:name="bodyTitleName">■P/L照会</span>
+<span m:inject="s:insert" m:name="body">
+<STYLE type="text/css">
+<!--
+.data_table_width {
+    width:98%;
+}
+.data_table_width1 {
+    width:100%;
+}
+.header_koumoku {
+	width:80px;
+}
+.header_name {
+	width:400px;
+}
+//-->
+</STYLE>
+<script type="text/javascript">
+<!--
+function execSubmit() {
+  if (document.plInfoView.elements['plInfoView:newwin'] == null) {
+    document.plInfoView.target = "_self";
+    return;
+  }
+  var flg = document.plInfoView.elements['plInfoView:newwin'].checked;
+  var flg2= document.plInfoView.elements['plInfoView:newWindowFlg'].value;
+  if (flg && flg2 == '1') {
+    document.plInfoView.target = "_blank";
+  }
+  else {
+    document.plInfoView.target = "_self";
+  }
+}
+
+function switchDisplayObj() {
+
+  var taishoTenpoIndex = document.plInfoView.elements['plInfoView:condTaishoTenpo'].selectedIndex;
+  var taishoTenpo = document.plInfoView.elements['plInfoView:condTaishoTenpo'].value;
+
+  var tenpoShuTitle  =document.getElementById('plInfoView:div_tenpoShuTitle');
+  var searchTypeTitle=document.getElementById('plInfoView:div_searchTypeTitle');
+  var tenpoShu   =document.getElementById('plInfoView:div_tenpoShu');
+  var searchType =document.getElementById('plInfoView:div_searchType');
+
+  var dispTitleMise =document.getElementById('plInfoView:dispTargetTitleMise');
+  var dispTitleOner =document.getElementById('plInfoView:dispTargetTitleOner');
+  var dispJigyo=document.getElementById('plInfoView:dispTargetJigyo');
+  var dispSelectCd =document.getElementById('plInfoView:condSelectCd');
+  var dispInputCd =document.getElementById('plInfoView:condInputCd');
+  var dispArea =document.getElementById('plInfoView:dispTargetArea');
+  var dispSibu =document.getElementById('plInfoView:dispTargetSibu');
+  var dispMise =document.getElementById('plInfoView:condMiseCd');
+  var dispOner =document.getElementById('plInfoView:condOnerCd');
+
+  tenpoShuTitle.style.display="none";
+  tenpoShu.style.display="none";
+  searchTypeTitle.style.display="none";
+  searchType.style.display="none";
+
+  dispTitleMise.style.display="none";
+  dispTitleOner.style.display="none";
+  dispSelectCd.style.display="none";
+  dispInputCd.style.display="none";
+  dispJigyo.style.display="none";
+  dispArea.style.display="none";
+  dispSibu.style.display="none";
+  dispMise.style.display="none";
+  dispOner.style.display="none";
+
+
+  if(taishoTenpo == ''){
+    tenpoShu.style.display="inline";
+    tenpoShuTitle.style.display="inline";
+    dispSelectCd.style.display="";
+  }
+  else if (taishoTenpo == '7') {
+    dispTitleOner.style.display="inline";
+    dispOner.style.display="inline";
+    searchType.style.display="inline";
+    searchTypeTitle.style.display="inline";
+    document.getElementById('plInfoView:condOnerCd').style.display="inline";
+    dispInputCd.style.display="";
+  }
+  else if (taishoTenpo == '6') {
+    tenpoShuTitle.style.display="inline";
+    dispTitleMise.style.display="inline";
+    dispMise.style.display="inline";
+    document.getElementById('plInfoView:condMiseCd').style.display="inline";
+    dispInputCd.style.display="";
+  }
+  else {
+    tenpoShu.style.display="inline";
+    tenpoShuTitle.style.display="inline";
+    if (taishoTenpo == '2') {
+      dispJigyo.style.display="inline";
+    }
+    else if (taishoTenpo == '3') {
+      dispArea.style.display="inline";
+    }
+    else if (taishoTenpo == '4') {
+      dispSibu.style.display="inline";
+      dispSelectCd.style.display="block";
+      return;
+    }
+    dispSelectCd.style.display="";
+  }
+}
+
+function switchDisplayObjOner() {
+
+  var taishoTenpo = document.plInfoView.elements['plInfoView:condTaishoTenpoOner'].selectedIndex;
+  var dispTargetOnerMise  =document.getElementById('plInfoView:dispTargetOnerMise');
+  var dispTargetOnerMiseTitle  =document.getElementById('plInfoView:dispTargetOnerMiseTitle');
+
+  dispTargetOnerMise.style.display="none";
+
+  if(taishoTenpo == 4){
+    dispTargetOnerMise.style.display="";
+  }
+}
+
+function bodyLoad() {
+	setCsvMode('05');
+	loadScrolls("plInfoView", 300);
+}
+function changeTab(index) {
+	changeTabArea(index);
+	setCsvMode(index);
+	loadScrolls("plInfoView", 300);
+}
+function setCsvMode(index) {
+	document.plInfoView.elements['plInfoView:csvMode'].value = index;
+}
+function downloadCsv() {
+  document.plInfoView.elements['plInfoView:newWindowFlg'].value = '';
+  document.plInfoView.target = "_self";
+  document.plInfoView.elements['plInfoView:__link_clicked__'].value='plInfoView:downloadCsv';
+  document.plInfoView.submit();
+}
+function returnActioin() {
+	document.plInfoView.elements['plInfoView:newWindowFlg'].value = '';
+	document.plInfoView.elements['plInfoView:__link_clicked__'].value='plInfoView:returnActioin';
+	document.plInfoView.submit();
+	}
+function research(){
+	document.plInfoView.elements['plInfoView:newWindowFlg'].value = '1';
+	document.plInfoView.elements['plInfoView:__link_clicked__'].value='plInfoView:research';
+	document.plInfoView.submit();
+}
+//-->
+</script>
+
+<form m:id="plInfoView" onSubmit="execSubmit();"
+      onKeyDown="return setDefaultSubmitButton('plInfoView','btnExecute');">
+<input type="hidden" m:id="viewId" m:value="#{viewIdValue}"/>
+<input type="hidden" m:id="initMenuId" m:value="#{menuAction.initMenuId}"/>
+<input type="hidden" m:id="initSubMenuId" m:value="#{menuAction.initSubMenuId}"/>
+<input type="hidden" m:id="pageType" m:value="#{userTypeCd}"/>
+<input type="hidden" m:id="csvMode" m:value="#{plInfoViewDto.csvMode}"/>
+<input type="hidden" m:id="newWindowFlg" value=""/>
+<!-- ウィンドウID -->
+<input type="hidden" m:value="#{plInfoViewCommonDto.windowId}"/>
+<a m:id="downloadCsv" m:action="#{plInfoViewResultAction.downloadCsv}"/>
+
+<a m:id="returnActioin" m:action="#{plInfoViewResultAction.back}"/>
+<a m:id="research" m:action="#{plInfoViewResultAction.research}"/>
+<div class="element_browser">
+	<input type="button" value="戻る" m:onclick="returnActioin();return false;"
+	       m:style="margin-bottom:4px;#{(plInfoViewDto.listEntityTogetuPlusZennen != null) ? 'display:block;' : 'display:none;'}"/>
+	<div class="#{scrollPaddingHead}">
+	<div class="#{scrollHiddenClassName}">
+	<table class="hiddenBody #{plInfoViewDto.listEntityTogetuPlusZennen != null?'data_table_width1':''}">
+		<tr><td colspan="2" width="100%">
+			<table class="body_table">
+			    <tr>
+			      <th nowrap="nowrap">対象年月</th>
+			      <td>
+			        <div class="hideArea">
+			        <select class="condition_field"
+			                m:value="#{plInfoViewDto.condTargetYM}"
+			                m:items="#{plInfoViewCommonDto.condListTargetYM}"
+			                m:itemValue="value"
+			                m:itemLabel="label">
+			            <option value="">2006/03</option>
+			            <option value="">2006/02</option>
+			            <option value="">2006/01</option>
+			        </select>
+			        </div>
+			      </td>
+			      <div m:rendered="#{plInfoViewCommonDto.userTypeCd == '01'}">
+			      <th nowrap="nowrap">対象条件</th>
+			        <td>
+			          <div class="hideArea">
+			          <select m:id="condTaishoTenpo"
+			                  m:value="#{plInfoViewDto.condTaishoTenpo}"
+			                  m:items="#{plInfoViewCommonDto.listCondTaishoTenpo}"
+			                  m:itemValue="value"
+			                  m:itemlabel="label"
+			                  m:onchange="switchDisplayObj()">
+			            <option value="">FC全社</option>
+			            <option value="2">事業本部</option>
+			            <option value="3">営業エリア</option>
+			            <option value="4">支部</option>
+			            <option value="6">店舗</option>
+			            <option value="7">オーナー</option>
+			          </select>
+			          </div>
+			        </td>
+			      <th nowrap="nowrap" style="border-right-width:0px;">
+			          表示対象</th>
+			      <th style="border-left-width:0px;">
+			          <div m:id="dispTargetTitleMise" m:style="#{plInfoViewDto.condTaishoTenpo == '6' ? 'display:inline;' : 'display:none;'}">
+			          	<input type="button" value="検索" class="button_in_table" m:action="#{plInfoViewResultAction.callMiseForm}" m:onclick="document.plInfoView.elements['plInfoView:newWindowFlg'].value = '';"/></div>
+			          <div m:id="dispTargetTitleOner" m:style="#{plInfoViewDto.condTaishoTenpo == '7' ? 'display:inline;' : 'display:none;'}">
+			          	<input type="button" value="検索" class="button_in_table" m:action="#{plInfoViewResultAction.callOnerForm}" m:onclick="document.plInfoView.elements['plInfoView:newWindowFlg'].value = '';"/></div>
+			        </th>
+			        <td m:id="condSelectCd" width="auto"
+			            m:style="#{plInfoViewDto.condTaishoTenpo != '6' && plInfoViewDto.condTaishoTenpo != '7' ? 'display:;' : 'display:none;'}">
+			          <div class="dispTargetJigyo" m:id="dispTargetJigyo" m:style="#{plInfoViewDto.condTaishoTenpo == '2' ? 'display:inline;' : 'display:none;'}">
+				        <div class="hideArea">
+					        <select class="condition_field"
+					                m:value="#{plInfoViewDto.condJigyouCd}"
+					                m:items="#{plInfoViewCommonDto.condListJigyouCd}"
+					                m:itemValue="jigyouCd"
+					                m:itemLabel="jigyouName">
+					            <option value="">第１営業本部</option>
+					            <option value="">第２営業本部</option>
+					            <option value="">第３営業本部</option>
+					        </select>
+					    </div>
+			          </div>
+			          <div class="dispTargetArea" m:id="dispTargetArea" m:style="#{plInfoViewDto.condTaishoTenpo == '3' ? 'display:inline;' : 'display:none;'}">
+				        <div class="hideArea">
+					        <select class="condition_field"
+					                m:value="#{plInfoViewDto.condSlareaCd}"
+					                m:items="#{plInfoViewCommonDto.condListSlareaCd}"
+					                m:itemValue="slareaCd"
+					                m:itemLabel="slareaName">
+					            <option value="">第一エリア</option>
+					            <option value="">第二エリア</option>
+					            <option value="">第三エリア</option>
+					        </select>
+					    </div>
+			          </div>
+			          <div class="dispTargetSibu" m:id="dispTargetSibu" m:style="#{plInfoViewDto.condTaishoTenpo == '4' ? 'display:inline;' : 'display:none;'}">
+				        <div class="hideArea">
+				          <select class="condition_field  height_21" style="display:inline;width:auto"
+				                  m:value="#{plInfoViewDto.condSibuCd}"
+				                  m:items="#{plInfoViewCommonDto.condListSibuCd}"
+				                  m:itemValue="sibuCd"
+				                  m:itemLabel="sibuName">
+				              <option value="">北海道支部</option>
+				              <option value="">東北支部</option>
+				              <option value="">関東支部</option>
+				          </select>
+				          <select class="condition_field height_21" style="display:inline"
+				                  m:value="#{plInfoViewDto.condBlockCd}"
+				                  m:items="#{plInfoViewCommonDto.condListBlockCd}"
+				                  m:itemValue="blockCd"
+				                  m:itemLabel="blockName"
+				                  m:nulllabel="全ブロック">
+				              <option value="">Ａブロック「</option>
+				              <option value="">Ｂブロック</option>
+				              <option value="">Ｃブロック</option>
+				          </select>
+				        </div>
+			          </div>
+			        </td>
+			       <td width="120px" m:id="condInputCd"
+			           m:style="#{plInfoViewDto.condTaishoTenpo == '6' || plInfoViewDto.condTaishoTenpo == '7' ? 'display:block;' : 'display:none;'}">
+			          <input type="text" m:id="condMiseCd" m:value="#{plInfoViewDto.condMiseCd}"
+			                 class="imenotuse height_11 height_15"
+			                 m:size="10" m:maxlength="5"
+			                 m:converter="#{codeConverter5}"
+			                 m:style="#{plInfoViewDto.condTaishoTenpo == '6' ? 'display:inline;' : 'display:none;'}"/>
+			          <input type="text" m:id="condOnerCd" m:value="#{plInfoViewDto.condOnerCd}"
+			                 class="imenotuse height_11 height_15"
+			                 m:size="10" m:maxlength="5"
+			                 m:converter="#{codeConverter5}"
+			                 m:style="#{plInfoViewDto.condTaishoTenpo == '7' ? 'display:block;' : 'display:none;'}"/>
+			        </td>
+			        <th>
+			          <div class="div_tenpoShuTitle" m:id="div_tenpoShuTitle" m:style="#{plInfoViewDto.condTaishoTenpo != '7' ? 'display:inline;' : 'display:none;'}">店舗種別</div>
+			          <div class="div_searchTypeTitle" m:id="div_searchTypeTitle" m:style="#{plInfoViewDto.condTaishoTenpo == '7' ? 'display:inline;' : 'display:none;'}">検索タイプ</div>
+			        </th>
+			        <td>
+			          <div class="hideArea">
+			          <div class="div_tenpoShu" m:id="div_tenpoShu" m:style="#{(plInfoViewDto.condTaishoTenpo != '6' && plInfoViewDto.condTaishoTenpo != '7') ? 'display:inline;' : 'display:none;'}">
+			            <select   m:value="#{plInfoViewDto.condTenpoShu}">
+			              <option value="">全店</option>
+			              <option value="1">前年対象店</option>
+			              <option value="2">予算対象店</option>
+			              <option value="3">新店</option>
+			            </select>
+			          </div>
+			          <div class="div_searchType" m:id="div_searchType" m:style="#{plInfoViewDto.condTaishoTenpo == '7' ? 'display:inline;' : 'display:none;'}">
+			            <select m:value="#{plInfoViewDto.condSearchType}">
+			              <option value="">全社</option>
+			              <option value="1">オーナーのみ</option>
+			              <option value="2">経営店舗合計</option>
+			              <option value="3">経営店舗平均</option>
+			            </select>
+			          </div>
+			          </div>
+			        </td>
+			      </div>
+			      <div m:rendered="#{plInfoViewCommonDto.userTypeCd == '02'}">
+			      <th>対象条件</th>
+			        <td>
+			          <div class="hideArea">
+			          <select m:id="condTaishoTenpoOner"
+			                  m:value="#{plInfoViewDto.condTaishoTenpoOner}"
+			                  m:items="#{plInfoViewCommonDto.listCondTaishoTenpoOner}"
+			                  m:itemValue="value"
+			                  m:itemlabel="label"
+			                  m:onchange="switchDisplayObjOner()">
+			            <option value="">全社</option>
+			            <option value="1">本社</option>
+			            <option value="2">全店合計</option>
+			            <option value="3">全店平均</option>
+			            <option value="4">店舗</option>
+			          </select>
+			          </div>
+			          <input type="hidden" m:value="#{plInfoViewDto.condOnerCd}" m:converter="#{codeConverter5}"/>
+			        </td>
+			        <th m:id="dispTargetOnerMiseTitle">対象店舗</th>
+			        <td width="250px">
+				      <div m:id="dispTargetOnerMise" class="hideArea"
+				           m:style="#{plInfoViewDto.condTaishoTenpoOner == '4' ? '' : 'display:none;'}">
+				        <select class="condition_field" style="display:inline;margin:0px;"
+				                m:value="#{plInfoViewDto.condMiseCdOner}"
+				                m:items="#{plInfoViewCommonDto.condListOnerTenpo}"
+				                m:itemValue="miseCd"
+				                m:itemLabel="miseNameKj">
+				            <option value="">新瑞店</option>
+				            <option value="">平針店</option>
+				            <option value="">日進駅前店</option>
+				        </select>
+			          </div>
+			        </td>
+			      </div>
+		        <td m:rendered="#{plInfoViewCommonDto.userTypeCd == '03'}">
+		          <span m:value="#{plInfoViewDto.condMiseCd}"/>
+		          <input type="hidden" m:value="#{plInfoViewDto.condMiseCd}" m:converter="#{codeConverter5}"/>
+		        </td>
+				<td><input style ="width:51px;text-align:center;padding-left:3px" type="submit" m:id="btnExecute" value="再検索"
+				       class="#{plInfoViewCommonDto.userTypeCd == '01'?'button_in_table':''}"
+				       m:onclick="research();return false;"/>
+			   </td>
+			</tr>
+		</table>
+		</td>
+		</tr>
+		<tr style="height:4px"><td colspan="2" /></tr>
+		<tr>
+			<td>
+				<table class="hiddenBody" style="width:100%">
+				<tr>
+				<td m:rendered="#{plInfoViewDto.listEntityTogetuPlusZennen != null}">
+				単位：円　
+				  <input type="button" value="ダウンロード"
+				          m:id="btnDownloadKingaku"
+				          m:onclick="downloadCsv();"/>
+				</td>
+				<td m:rendered="#{plInfoViewCommonDto.fcRcFlg == true}"
+				    style="text-align:right;width:310px">
+					<input type="checkbox" m:id="uriflg"
+					       m:value="#{plInfoViewCommonDto.uriageFlg}"/>売上高＞０の店舗で絞る（加盟店のみ）
+				</td>
+				</tr>
+				</table>
+			</td>
+			<td m:rendered="#{plInfoViewDto.listEntityTogetuPlusZennen != null}"
+			    style="text-align:right;" nowrap="nowrap">
+			  <input type="checkbox" m:id="newwin" m:value="#{plInfoViewResultAction.newWindowFlg}"/>別ウィンドウに表示
+			</td>
+		</tr>
+		<tr style="height:4px"><td colspan="2" /></tr>
+	</table>
+	</div>
+	</div>
+</div>
+
+<div m:rendered="#{plInfoViewDto.listEntityTogetuPlusZennen != null}">
+<!--検索結果情報-->
+    <table m:rendered="#{isSearchTenpo}" class="body_table2" style="margin-bottom:4px;">
+	    <tr>
+	      <th class="header_koumoku">対象店舗</th>
+	      <td class="header_name"><span m:converter="#{characterEncodingConverter}" m:value="#{plInfoViewDto.condMiseCd}"/>　<span m:converter="#{characterEncodingConverter}" m:value="#{plInfoViewDto.condMiseName}"/></td>
+	      <th class="header_koumoku">オープン日</th>
+	      <td class="header_koumoku"><span m:value="#{plInfoViewDto.condMiseOpenDt}" m:converter="#{dateConverterSlash}"/></td>
+	    </tr>
+    </table>
+    <table class="body_table2" style="margin-bottom:4px;">
+	    <tr>
+	      <th class="header_koumoku">対象数</th>
+	      <td class="header_koumoku" style="text-align:right;">
+	      	<span m:value="#{plInfoViewDto.entityTougetu.rowCount}" m:converter="#{numericConverterKingakuRound}"/></td>
+	      <div m:rendered="#{isSearchTenpo || plInfoViewDto.condLastSearchTaishoTenpo == '7'}">
+	        <th class="header_koumoku">オーナー</th>
+	        <td class="header_name">
+	        	<div  m:rendered="#{isSearchTenpo}">
+	        		<span m:converter="#{characterEncodingConverter}" m:value="#{plInfoViewDto.condMiseOnerCd}"/>　<span m:converter="#{characterEncodingConverter}" m:value="#{plInfoViewDto.condMiseOnerName}"/></div>
+		        <div m:rendered="#{plInfoViewDto.condLastSearchTaishoTenpo == '7'}">
+		        	<span m:converter="#{characterEncodingConverter}" m:value="#{plInfoViewDto.condOnerName}"/></div>
+	        </td>
+	      </div>
+	    </tr>
+    </table>
+    <div class="#{scrollPaddingHead}">
+    <div class="#{scrollHiddenClassName}">
+	<!--タブ-->
+	<table class="element_browser data_table_width" cellspacing="0" cellpadding="0">
+	  <tr>
+	    <td class="body_active_cell tab_change_area_05"
+	        onClick="changeTab('05');" width="17%"
+			onMouseOver="this.style.cursor='pointer';">原材料原価
+	    </td>
+	    <td class="body_non_active_cell tab_change_area_06"
+	        onClick="changeTab('06');" width="16%"
+			onMouseOver="this.style.cursor='pointer';">野菜原価
+	    </td>
+	    <td class="body_non_active_cell tab_change_area_07"
+	        onClick="changeTab('07');" width="17%"
+			onMouseOver="this.style.cursor='pointer';">包装資材原価
+	    </td>
+	    <td class="body_non_active_cell tab_change_area_08"
+	        onClick="changeTab('08');" width="17%"
+			onMouseOver="this.style.cursor='pointer';">物販原価
+	    </td>
+	    <td class="body_non_active_cell tab_change_area_09"
+	        onClick="changeTab('09');" width="17%"
+			onMouseOver="this.style.cursor='pointer';">水道光熱費情報
+	    </td>
+	    <td class="body_non_active_cell tab_change_area_10"
+	        onClick="changeTab('10');" width="16%"
+			onMouseOver="this.style.cursor='pointer';">経費情報
+	    </td>
+	  </tr>
+	  <tr class="body_caption" style="height:5px;">
+	    <td colspan="6"/></tr>
+	</table>
+	</div>
+	</div>
+	<!--原材料原価-->
+	<div class="tab_change_area_05 visible_tab">
+		<div class="element_print" style="font-weight:bold;"><p/>&lt;原材料原価&gt;</div>
+		<div class="#{scrollPaddingHead}">
+		<div class="#{scrollHiddenClassName}">
+		<table class="body_table2 data_table_width">
+		  <tr class="header_row">
+		    <th width=12%>年月</th>
+		    <th width=13%>前月在庫</th>
+		    <th width=9%>売上比</th>
+		    <th width=13%>当月仕入</th>
+		    <th width=9%>売上比</th>
+		    <th width=13%>当月在庫</th>
+		    <th width=9%>売上比</th>
+		    <th width=13%>原価</th>
+		    <th width=9%>原価率</th>
+		  </tr>
+		</table>
+		</div>
+		</div>
+		<div class="#{scrollPaddingData}">
+		<div class="#{scrollClassName}">
+		<table class="body_table2 data_table_width" style="border-top-width:0px">
+		  <div m:inject="s:forEach" m:items="#{plInfoViewDto.listEntityTogetuPlusZennen}" m:var="e" m:varindex="i">
+		  <tr m:rendered="#{e.rowType == 0}" class="non_top_border">
+		    <td width=12%><span m:value="#{e.plYM}" m:converter="#{dateConverterYMKanji}"/></td>
+		    <td width=13% class="body_num"><span m:value="#{e.genzairyoZenZaiko}" m:converter="#{numericConverterKingakuRound}"/></td>
+		    <td width=9% class="body_num"><span m:value="#{e.genzairyoZenZaiko}_#{e.uriagedakaZen}" m:converter="#{kosehiConverter}"/></td>
+		    <td width=13% class="body_num"><span m:value="#{e.genzairyoShire}" m:converter="#{numericConverterKingakuRound}"/></td>
+		    <td width=9% class="body_num"><span m:value="#{e.genzairyoShire}_#{e.uriagedaka}" m:converter="#{kosehiConverter}"/></td>
+		    <td width=13% class="body_num"><span m:value="#{e.genzairyoZaiko}" m:converter="#{numericConverterKingakuRound}"/></td>
+		    <td width=9% class="body_num"><span m:value="#{e.genzairyoZaiko}_#{e.uriagedaka}" m:converter="#{kosehiConverter}"/></td>
+		    <td width=13% class="body_num"><span m:value="#{e.genzairyoKei}" m:converter="#{numericConverterKingakuRound}"/></td>
+		    <td width=9% class="body_num"><span m:value="#{e.genzairyoKei}_#{e.uriagedaka}" m:converter="#{kosehiConverter}"/></td>
+		  </tr>
+		  <tr class="body_sum5" m:rendered="#{e.rowType == 1}">
+		    <td><span m:value="#{e.plYM}" m:converter="#{dateConverterYMKanji}"/></td>
+		    <td class="body_num"><span m:value="#{e.genzairyoZenZaiko}" m:converter="#{numericConverterKingakuRound}"/></td>
+		    <td class="body_num"><span m:value="#{e.genzairyoZenZaiko}_#{e.uriagedakaZen}" m:converter="#{kosehiConverter}"/></td>
+		    <td class="body_num"><span m:value="#{e.genzairyoShire}" m:converter="#{numericConverterKingakuRound}"/></td>
+		    <td class="body_num"><span m:value="#{e.genzairyoShire}_#{e.uriagedaka}" m:converter="#{kosehiConverter}"/></td>
+		    <td class="body_num"><span m:value="#{e.genzairyoZaiko}" m:converter="#{numericConverterKingakuRound}"/></td>
+		    <td class="body_num"><span m:value="#{e.genzairyoZaiko}_#{e.uriagedaka}" m:converter="#{kosehiConverter}"/></td>
+		    <td class="body_num"><span m:value="#{e.genzairyoKei}" m:converter="#{numericConverterKingakuRound}"/></td>
+		    <td class="body_num"><span m:value="#{e.genzairyoKei}_#{e.uriagedaka}" m:converter="#{kosehiConverter}"/></td>
+		  </tr>
+		  <tr class="body_sum4" m:rendered="#{e.rowType == 2}">
+		    <td><span m:value="#{e.plYM}" m:converter="#{dateConverterYMKanji}"/></td>
+		    <td class="body_num"><span m:value="#{e.genzairyoZenZaiko}" m:converter="#{numericConverterKingakuRound}"/></td>
+		    <td class="body_num"><span m:value="#{e.genzairyoZenZaiko}_#{e.uriagedakaZen}" m:converter="#{kosehiConverter}"/></td>
+		    <td class="body_num"><span m:value="#{e.genzairyoShire}" m:converter="#{numericConverterKingakuRound}"/></td>
+		    <td class="body_num"><span m:value="#{e.genzairyoShire}_#{e.uriagedaka}" m:converter="#{kosehiConverter}"/></td>
+		    <td class="body_num"><span m:value="#{e.genzairyoZaiko}" m:converter="#{numericConverterKingakuRound}"/></td>
+		    <td class="body_num"><span m:value="#{e.genzairyoZaiko}_#{e.uriagedaka}" m:converter="#{kosehiConverter}"/></td>
+		    <td class="body_num"><span m:value="#{e.genzairyoKei}" m:converter="#{numericConverterKingakuRound}"/></td>
+		    <td class="body_num"><span m:value="#{e.genzairyoKei}_#{e.uriagedaka}" m:converter="#{kosehiConverter}"/></td>
+		  </tr>
+		  </div>
+		</table>
+		</div>
+	    </div>
+	</div>
+	<!--野菜原価タブ-->
+	<div class="tab_change_area_06 invisible_tab">
+		<div class="element_print" style="font-weight:bold;"><p/>&lt;野菜原価&gt;</div>
+		<div class="#{scrollPaddingHead}">
+		<div class="#{scrollHiddenClassName}">
+		<table class="body_table2 data_table_width">
+		  <tr class="header_row">
+		    <th width=12%>年月</th>
+		    <th width=13%>前月在庫</th>
+		    <th width=9%>売上比</th>
+		    <th width=13%>当月仕入</th>
+		    <th width=9%>売上比</th>
+		    <th width=13%>当月在庫</th>
+		    <th width=9%>売上比</th>
+		    <th width=13%>原価</th>
+		    <th width=9%>原価率</th>
+		  </tr>
+		</table>
+		</div>
+		</div>
+		<div class="#{scrollPaddingData}">
+		<div class="#{scrollClassName}">
+		<table class="body_table2 data_table_width" style="border-top-width:0px">
+		  <div m:inject="s:forEach" m:items="#{plInfoViewDto.listEntityTogetuPlusZennen}" m:var="e" m:varindex="i">
+		  <tr m:rendered="#{e.rowType == 0}" class="non_top_border">
+		    <td width=12%><span m:value="#{e.plYM}" m:converter="#{dateConverterYMKanji}"/></td>
+		    <td width=13% class="body_num"><span m:value="#{e.yasaiZenZaiko}" m:converter="#{numericConverterKingakuRound}"/></td>
+		    <td width=9% class="body_num"><span m:value="#{e.yasaiZenZaiko}_#{e.uriagedakaZen}" m:converter="#{kosehiConverter}"/></td>
+		    <td width=13% class="body_num"><span m:value="#{e.yasaiShire}" m:converter="#{numericConverterKingakuRound}"/></td>
+		    <td width=9% class="body_num"><span m:value="#{e.yasaiShire}_#{e.uriagedaka}" m:converter="#{kosehiConverter}"/></td>
+		    <td width=13% class="body_num"><span m:value="#{e.yasaiZaiko}" m:converter="#{numericConverterKingakuRound}"/></td>
+		    <td width=9% class="body_num"><span m:value="#{e.yasaiZaiko}_#{e.uriagedaka}" m:converter="#{kosehiConverter}"/></td>
+		    <td width=13% class="body_num"><span m:value="#{e.yasaiKei}" m:converter="#{numericConverterKingakuRound}"/></td>
+		    <td width=9% class="body_num"><span m:value="#{e.yasaiKei}_#{e.uriagedaka}" m:converter="#{kosehiConverter}"/></td>
+		  </tr>
+		  <tr class="body_sum5" m:rendered="#{e.rowType == 1}">
+		    <td><span m:value="#{e.plYM}" m:converter="#{dateConverterYMKanji}"/></td>
+		    <td class="body_num"><span m:value="#{e.yasaiZenZaiko}" m:converter="#{numericConverterKingakuRound}"/></td>
+		    <td class="body_num"><span m:value="#{e.yasaiZenZaiko}_#{e.uriagedakaZen}" m:converter="#{kosehiConverter}"/></td>
+		    <td class="body_num"><span m:value="#{e.yasaiShire}" m:converter="#{numericConverterKingakuRound}"/></td>
+		    <td class="body_num"><span m:value="#{e.yasaiShire}_#{e.uriagedaka}" m:converter="#{kosehiConverter}"/></td>
+		    <td class="body_num"><span m:value="#{e.yasaiZaiko}" m:converter="#{numericConverterKingakuRound}"/></td>
+		    <td class="body_num"><span m:value="#{e.yasaiZaiko}_#{e.uriagedaka}" m:converter="#{kosehiConverter}"/></td>
+		    <td class="body_num"><span m:value="#{e.yasaiKei}" m:converter="#{numericConverterKingakuRound}"/></td>
+		    <td class="body_num"><span m:value="#{e.yasaiKei}_#{e.uriagedaka}" m:converter="#{kosehiConverter}"/></td>
+		  </tr>
+		  <tr class="body_sum4" m:rendered="#{e.rowType == 2}">
+		    <td><span m:value="#{e.plYM}" m:converter="#{dateConverterYMKanji}"/></td>
+		    <td class="body_num"><span m:value="#{e.yasaiZenZaiko}" m:converter="#{numericConverterKingakuRound}"/></td>
+		    <td class="body_num"><span m:value="#{e.yasaiZenZaiko}_#{e.uriagedakaZen}" m:converter="#{kosehiConverter}"/></td>
+		    <td class="body_num"><span m:value="#{e.yasaiShire}" m:converter="#{numericConverterKingakuRound}"/></td>
+		    <td class="body_num"><span m:value="#{e.yasaiShire}_#{e.uriagedaka}" m:converter="#{kosehiConverter}"/></td>
+		    <td class="body_num"><span m:value="#{e.yasaiZaiko}" m:converter="#{numericConverterKingakuRound}"/></td>
+		    <td class="body_num"><span m:value="#{e.yasaiZaiko}_#{e.uriagedaka}" m:converter="#{kosehiConverter}"/></td>
+		    <td class="body_num"><span m:value="#{e.yasaiKei}" m:converter="#{numericConverterKingakuRound}"/></td>
+		    <td class="body_num"><span m:value="#{e.yasaiKei}_#{e.uriagedaka}" m:converter="#{kosehiConverter}"/></td>
+		  </tr>
+		  </div>
+		</table>
+		</div>
+		</div>
+	</div>
+	<!--包装資材原価-->
+	<div class="tab_change_area_07 invisible_tab">
+		<div class="element_print" style="font-weight:bold;"><p/>&lt;包装資材原価&gt;</div>
+		<div class="#{scrollPaddingHead}">
+		<div class="#{scrollHiddenClassName}">
+		<table class="body_table2 data_table_width">
+		  <tr class="header_row">
+		    <th width=12%>年月</th>
+		    <th width=13%>前月在庫</th>
+		    <th width=9%>売上比</th>
+		    <th width=13%>当月仕入</th>
+		    <th width=9%>売上比</th>
+		    <th width=13%>当月在庫</th>
+		    <th width=9%>売上比</th>
+		    <th width=13%>原価</th>
+		    <th width=9%>原価率</th>
+		  </tr>
+		</table>
+		</div>
+		</div>
+		<div class="#{scrollPaddingData}">
+		<div class="#{scrollClassName}">
+		<table class="body_table2 data_table_width" style="border-top-width:0px">
+		  <div m:inject="s:forEach" m:items="#{plInfoViewDto.listEntityTogetuPlusZennen}" m:var="e" m:varindex="i">
+		  <tr m:rendered="#{e.rowType == 0}" class="non_top_border">
+		    <td width=12%><span m:value="#{e.plYM}" m:converter="#{dateConverterYMKanji}"/></td>
+		    <td width=13% class="body_num"><span m:value="#{e.houzaiZenZaiko}" m:converter="#{numericConverterKingakuRound}"/></td>
+		    <td width=9% class="body_num"><span m:value="#{e.houzaiZenZaiko}_#{e.uriagedakaZen}" m:converter="#{kosehiConverter}"/></td>
+		    <td width=13% class="body_num"><span m:value="#{e.houzaiShire}" m:converter="#{numericConverterKingakuRound}"/></td>
+		    <td width=9% class="body_num"><span m:value="#{e.houzaiShire}_#{e.uriagedaka}" m:converter="#{kosehiConverter}"/></td>
+		    <td width=13% class="body_num"><span m:value="#{e.houzaiZaiko}" m:converter="#{numericConverterKingakuRound}"/></td>
+		    <td width=9% class="body_num"><span m:value="#{e.houzaiZaiko}_#{e.uriagedaka}" m:converter="#{kosehiConverter}"/></td>
+		    <td width=13% class="body_num"><span m:value="#{e.houzaiKei}" m:converter="#{numericConverterKingakuRound}"/></td>
+		    <td width=9% class="body_num"><span m:value="#{e.houzaiKei}_#{e.uriagedaka}" m:converter="#{kosehiConverter}"/></td>
+		  </tr>
+		  <tr class="body_sum5" m:rendered="#{e.rowType == 1}">
+		    <td><span m:value="#{e.plYM}" m:converter="#{dateConverterYMKanji}"/></td>
+		    <td class="body_num"><span m:value="#{e.houzaiZenZaiko}" m:converter="#{numericConverterKingakuRound}"/></td>
+		    <td class="body_num"><span m:value="#{e.houzaiZenZaiko}_#{e.uriagedakaZen}" m:converter="#{kosehiConverter}"/></td>
+		    <td class="body_num"><span m:value="#{e.houzaiShire}" m:converter="#{numericConverterKingakuRound}"/></td>
+		    <td class="body_num"><span m:value="#{e.houzaiShire}_#{e.uriagedaka}" m:converter="#{kosehiConverter}"/></td>
+		    <td class="body_num"><span m:value="#{e.houzaiZaiko}" m:converter="#{numericConverterKingakuRound}"/></td>
+		    <td class="body_num"><span m:value="#{e.houzaiZaiko}_#{e.uriagedaka}" m:converter="#{kosehiConverter}"/></td>
+		    <td class="body_num"><span m:value="#{e.houzaiKei}" m:converter="#{numericConverterKingakuRound}"/></td>
+		    <td class="body_num"><span m:value="#{e.houzaiKei}_#{e.uriagedaka}" m:converter="#{kosehiConverter}"/></td>
+		  </tr>
+		  <tr class="body_sum4" m:rendered="#{e.rowType == 2}">
+		    <td><span m:value="#{e.plYM}" m:converter="#{dateConverterYMKanji}"/></td>
+		    <td class="body_num"><span m:value="#{e.houzaiZenZaiko}" m:converter="#{numericConverterKingakuRound}"/></td>
+		    <td class="body_num"><span m:value="#{e.houzaiZenZaiko}_#{e.uriagedakaZen}" m:converter="#{kosehiConverter}"/></td>
+		    <td class="body_num"><span m:value="#{e.houzaiShire}" m:converter="#{numericConverterKingakuRound}"/></td>
+		    <td class="body_num"><span m:value="#{e.houzaiShire}_#{e.uriagedaka}" m:converter="#{kosehiConverter}"/></td>
+		    <td class="body_num"><span m:value="#{e.houzaiZaiko}" m:converter="#{numericConverterKingakuRound}"/></td>
+		    <td class="body_num"><span m:value="#{e.houzaiZaiko}_#{e.uriagedaka}" m:converter="#{kosehiConverter}"/></td>
+		    <td class="body_num"><span m:value="#{e.houzaiKei}" m:converter="#{numericConverterKingakuRound}"/></td>
+		    <td class="body_num"><span m:value="#{e.houzaiKei}_#{e.uriagedaka}" m:converter="#{kosehiConverter}"/></td>
+		  </tr>
+		  </div>
+		</table>
+		</div>
+		</div>
+	</div>
+	<!--物販原価-->
+	<div class="tab_change_area_08 invisible_tab">
+		<div class="element_print" style="font-weight:bold;"><p/>&lt;物販原価&gt;</div>
+		<div class="#{scrollPaddingHead}">
+		<div class="#{scrollHiddenClassName}">
+		<table class="body_table2 data_table_width">
+		  <tr class="header_row">
+		    <th width=12%>年月</th>
+		    <th width=13%>前月在庫</th>
+		    <th width=9%>売上比</th>
+		    <th width=13%>当月仕入</th>
+		    <th width=9%>売上比</th>
+		    <th width=13%>当月在庫</th>
+		    <th width=9%>売上比</th>
+		    <th width=13%>原価</th>
+		    <th width=9%>原価率</th>
+		  </tr>
+		</table>
+		</div>
+		</div>
+		<div class="#{scrollPaddingData}">
+		<div class="#{scrollClassName}">
+		<table class="body_table2 data_table_width" style="border-top-width:0px">
+		  <div m:inject="s:forEach" m:items="#{plInfoViewDto.listEntityTogetuPlusZennen}" m:var="e" m:varindex="i">
+		  <tr m:rendered="#{e.rowType == 0}" class="non_top_border">
+		    <td width=12%><span m:value="#{e.plYM}" m:converter="#{dateConverterYMKanji}"/></td>
+		    <td width=13% class="body_num"><span m:value="#{e.buppanZenZaiko}" m:converter="#{numericConverterKingakuRound}"/></td>
+		    <td width=9% class="body_num"><span m:value="#{e.buppanZenZaiko}_#{e.uriagedakaZen}" m:converter="#{kosehiConverter}"/></td>
+		    <td width=13% class="body_num"><span m:value="#{e.buppanShire}" m:converter="#{numericConverterKingakuRound}"/></td>
+		    <td width=9% class="body_num"><span m:value="#{e.buppanShire}_#{e.uriagedaka}" m:converter="#{kosehiConverter}"/></td>
+		    <td width=13% class="body_num"><span m:value="#{e.buppanZaiko}" m:converter="#{numericConverterKingakuRound}"/></td>
+		    <td width=9% class="body_num"><span m:value="#{e.buppanZaiko}_#{e.uriagedaka}" m:converter="#{kosehiConverter}"/></td>
+		    <td width=13% class="body_num"><span m:value="#{e.buppanKei}" m:converter="#{numericConverterKingakuRound}"/></td>
+		    <td width=9% class="body_num"><span m:value="#{e.buppanKei}_#{e.uriagedaka}" m:converter="#{kosehiConverter}"/></td>
+		  </tr>
+		  <tr class="body_sum5" m:rendered="#{e.rowType == 1}">
+		    <td><span m:value="#{e.plYM}" m:converter="#{dateConverterYMKanji}"/></td>
+		    <td class="body_num"><span m:value="#{e.buppanZenZaiko}" m:converter="#{numericConverterKingakuRound}"/></td>
+		    <td class="body_num"><span m:value="#{e.buppanZenZaiko}_#{e.uriagedakaZen}" m:converter="#{kosehiConverter}"/></td>
+		    <td class="body_num"><span m:value="#{e.buppanShire}" m:converter="#{numericConverterKingakuRound}"/></td>
+		    <td class="body_num"><span m:value="#{e.buppanShire}_#{e.uriagedaka}" m:converter="#{kosehiConverter}"/></td>
+		    <td class="body_num"><span m:value="#{e.buppanZaiko}" m:converter="#{numericConverterKingakuRound}"/></td>
+		    <td class="body_num"><span m:value="#{e.buppanZaiko}_#{e.uriagedaka}" m:converter="#{kosehiConverter}"/></td>
+		    <td class="body_num"><span m:value="#{e.buppanKei}" m:converter="#{numericConverterKingakuRound}"/></td>
+		    <td class="body_num"><span m:value="#{e.buppanKei}_#{e.uriagedaka}" m:converter="#{kosehiConverter}"/></td>
+		  </tr>
+		  <tr class="body_sum4" m:rendered="#{e.rowType == 2}">
+		    <td><span m:value="#{e.plYM}" m:converter="#{dateConverterYMKanji}"/></td>
+		    <td class="body_num"><span m:value="#{e.buppanZenZaiko}" m:converter="#{numericConverterKingakuRound}"/></td>
+		    <td class="body_num"><span m:value="#{e.buppanZenZaiko}_#{e.uriagedakaZen}" m:converter="#{kosehiConverter}"/></td>
+		    <td class="body_num"><span m:value="#{e.buppanShire}" m:converter="#{numericConverterKingakuRound}"/></td>
+		    <td class="body_num"><span m:value="#{e.buppanShire}_#{e.uriagedaka}" m:converter="#{kosehiConverter}"/></td>
+		    <td class="body_num"><span m:value="#{e.buppanZaiko}" m:converter="#{numericConverterKingakuRound}"/></td>
+		    <td class="body_num"><span m:value="#{e.buppanZaiko}_#{e.uriagedaka}" m:converter="#{kosehiConverter}"/></td>
+		    <td class="body_num"><span m:value="#{e.buppanKei}" m:converter="#{numericConverterKingakuRound}"/></td>
+		    <td class="body_num"><span m:value="#{e.buppanKei}_#{e.uriagedaka}" m:converter="#{kosehiConverter}"/></td>
+		  </tr>
+		  </div>
+		</table>
+		</div>
+		</div>
+	</div>
+	<!--水道光熱費情報-->
+	<div class="tab_change_area_09 invisible_tab">
+		<div class="element_print" style="font-weight:bold;"><p/>&lt;水道光熱費情報&gt;</div>
+		<div class="#{scrollPaddingHead}">
+		<div class="#{scrollHiddenClassName}">
+		<table class="body_table2 data_table_width">
+		  <tr class="header_row">
+		    <th width=12%>年月</th>
+		    <th width=10.45%>電気</th>
+		    <th width=7.15%>売上比</th>
+		    <th width=10.45%>ガス</th>
+		    <th width=7.15%>売上比</th>
+		    <th width=10.45%>水道</th>
+		    <th width=7.15%>売上比</th>
+		    <th width=10.45%>その他</th>
+		    <th width=7.15%>売上比</th>
+		    <th width=10.45%>合計</th>
+		    <th width=7.15%>売上比</th>
+		  </tr>
+		</table>
+		</div>
+		</div>
+		<div class="#{scrollPaddingData}">
+		<div class="#{scrollClassName}">
+		<table class="body_table2 data_table_width" style="border-top-width:0px">
+		  <div m:inject="s:forEach" m:items="#{plInfoViewDto.listEntityTogetuPlusZennen}" m:var="e" m:varindex="i">
+		  <tr m:rendered="#{e.rowType == 0}" class="non_top_border">
+		    <td width=12%><span m:value="#{e.plYM}" m:converter="#{dateConverterYMKanji}"/></td>
+		    <td width=10.45% class="body_num"><span m:value="#{e.elec}" m:converter="#{numericConverterKingakuRound}"/></td>
+		    <td width=7.15% class="body_num"><span m:value="#{e.elec}_#{e.uriagedaka}" m:converter="#{kosehiConverter}"/></td>
+		    <td width=10.45% class="body_num"><span m:value="#{e.gas}" m:converter="#{numericConverterKingakuRound}"/></td>
+		    <td width=7.15% class="body_num"><span m:value="#{e.gas}_#{e.uriagedaka}" m:converter="#{kosehiConverter}"/></td>
+		    <td width=10.45% class="body_num"><span m:value="#{e.water}" m:converter="#{numericConverterKingakuRound}"/></td>
+		    <td width=7.15% class="body_num"><span m:value="#{e.water}_#{e.uriagedaka}" m:converter="#{kosehiConverter}"/></td>
+		    <td width=10.45% class="body_num"><span m:value="#{e.sonota}" m:converter="#{numericConverterKingakuRound}"/></td>
+		    <td width=7.15% class="body_num"><span m:value="#{e.sonota}_#{e.uriagedaka}" m:converter="#{kosehiConverter}"/></td>
+		    <td width=10.45% class="body_num"><span m:value="#{e.suikouUchiwake}" m:converter="#{numericConverterKingakuRound}"/></td>
+		    <td width=7.15% class="body_num"><span m:value="#{e.suikouUchiwake}_#{e.uriagedaka}" m:converter="#{kosehiConverter}"/></td>
+		  </tr>
+		  <tr class="body_sum5" m:rendered="#{e.rowType == 1}">
+		    <td><span m:value="#{e.plYM}" m:converter="#{dateConverterYMKanji}"/></td>
+		    <td class="body_num"><span m:value="#{e.elec}" m:converter="#{numericConverterKingakuRound}"/></td>
+		    <td class="body_num"><span m:value="#{e.elec}_#{e.uriagedaka}" m:converter="#{kosehiConverter}"/></td>
+		    <td class="body_num"><span m:value="#{e.gas}" m:converter="#{numericConverterKingakuRound}"/></td>
+		    <td class="body_num"><span m:value="#{e.gas}_#{e.uriagedaka}" m:converter="#{kosehiConverter}"/></td>
+		    <td class="body_num"><span m:value="#{e.water}" m:converter="#{numericConverterKingakuRound}"/></td>
+		    <td class="body_num"><span m:value="#{e.water}_#{e.uriagedaka}" m:converter="#{kosehiConverter}"/></td>
+		    <td class="body_num"><span m:value="#{e.sonota}" m:converter="#{numericConverterKingakuRound}"/></td>
+		    <td class="body_num"><span m:value="#{e.sonota}_#{e.uriagedaka}" m:converter="#{kosehiConverter}"/></td>
+		    <td class="body_num"><span m:value="#{e.suikouUchiwake}" m:converter="#{numericConverterKingakuRound}"/></td>
+		    <td class="body_num"><span m:value="#{e.suikouUchiwake}_#{e.uriagedaka}" m:converter="#{kosehiConverter}"/></td>
+		  </tr>
+		  <tr class="body_sum4" m:rendered="#{e.rowType == 2}">
+		    <td><span m:value="#{e.plYM}" m:converter="#{dateConverterYMKanji}"/></td>
+		    <td class="body_num"><span m:value="#{e.elec}" m:converter="#{numericConverterKingakuRound}"/></td>
+		    <td class="body_num"><span m:value="#{e.elec}_#{e.uriagedaka}" m:converter="#{kosehiConverter}"/></td>
+		    <td class="body_num"><span m:value="#{e.gas}" m:converter="#{numericConverterKingakuRound}"/></td>
+		    <td class="body_num"><span m:value="#{e.gas}_#{e.uriagedaka}" m:converter="#{kosehiConverter}"/></td>
+		    <td class="body_num"><span m:value="#{e.water}" m:converter="#{numericConverterKingakuRound}"/></td>
+		    <td class="body_num"><span m:value="#{e.water}_#{e.uriagedaka}" m:converter="#{kosehiConverter}"/></td>
+		    <td class="body_num"><span m:value="#{e.sonota}" m:converter="#{numericConverterKingakuRound}"/></td>
+		    <td class="body_num"><span m:value="#{e.sonota}_#{e.uriagedaka}" m:converter="#{kosehiConverter}"/></td>
+		    <td class="body_num"><span m:value="#{e.suikouUchiwake}" m:converter="#{numericConverterKingakuRound}"/></td>
+		    <td class="body_num"><span m:value="#{e.suikouUchiwake}_#{e.uriagedaka}" m:converter="#{kosehiConverter}"/></td>
+		  </tr>
+		  </div>
+		</table>
+		</div>
+		</div>
+	</div>
+	<!--経費情報-->
+	<div class="tab_change_area_10 invisible_tab">
+		<div class="element_print" style="font-weight:bold;"><p/>&lt;経費情報&gt;</div>
+		<div class="#{scrollPaddingHead}">
+		<div class="#{scrollHiddenClassName}">
+		<table class="body_table2 data_table_width">
+		  <tr class="header_row">
+		    <th width=11%>年月</th>
+		    <th width=11%>その他１</th>
+		    <th width=10.75%>売上比</th>
+		    <th width=11%>その他２</th>
+		    <th width=10.75%>売上比</th>
+		    <th width=11%>その他３</th>
+		    <th width=10.75%>売上比</th>
+		    <th width=13%>合計</th>
+		    <th width=10.75%>売上比</th>
+		  </tr>
+		</table>
+		</div>
+		</div>
+		<div class="#{scrollPaddingData}">
+		<div class="#{scrollClassName}">
+		<table class="body_table2 data_table_width" style="border-top-width:0px">
+		  <div m:inject="s:forEach" m:items="#{plInfoViewDto.listEntityTogetuPlusZennen}" m:var="e" m:varindex="i">
+		  <tr m:rendered="#{e.rowType == 0}" class="non_top_border">
+		    <td width=11%><span m:value="#{e.plYM}" m:converter="#{dateConverterYMKanji}"/></td>
+		    <td width=11% class="body_num"><span m:value="#{e.yobi}" m:converter="#{numericConverterKingakuRound}"/></td>
+		    <td width=10.75% class="body_num"><span m:value="#{e.yobi}_#{e.uriagedaka}" m:converter="#{kosehiConverter}"/></td>
+		    <td width=11% class="body_num"><span m:value="0" m:converter="#{numericConverterKingakuRound}"/></td>
+		    <td width=10.75% class="body_num"><span m:value="0.00" m:converter="#{tougetuKosehiConverter}"/></td>
+		    <td width=11% class="body_num"><span m:value="0" m:converter="#{numericConverterKingakuRound}"/></td>
+		    <td width=10.75% class="body_num"><span m:value="0.00" m:converter="#{tougetuKosehiConverter}"/></td>
+		    <td width=13% width="120" class="body_num"><span m:value="#{e.keihiShokei}" m:converter="#{numericConverterKingakuRound}"/></td>
+		    <td width=10.75% class="body_num"><span m:value="#{e.keihiShokei}_#{e.uriagedaka}" m:converter="#{kosehiConverter}"/></td>
+		  </tr>
+		  <tr class="body_sum5" m:rendered="#{e.rowType == 1}">
+		    <td><span m:value="#{e.plYM}" m:converter="#{dateConverterYMKanji}"/></td>
+		    <td class="body_num"><span m:value="#{e.yobi}" m:converter="#{numericConverterKingakuRound}"/></td>
+		    <td class="body_num"><span m:value="#{e.yobi}_#{e.uriagedaka}" m:converter="#{kosehiConverter}"/></td>
+		    <td class="body_num"><span m:value="0" m:converter="#{numericConverterKingakuRound}"/></td>
+		    <td class="body_num"><span m:value="0.00" m:converter="#{tougetuKosehiConverter}"/></td>
+		    <td class="body_num"><span m:value="0" m:converter="#{numericConverterKingakuRound}"/></td>
+		    <td class="body_num"><span m:value="0.00" m:converter="#{tougetuKosehiConverter}"/></td>
+		    <td class="body_num"><span m:value="#{e.keihiShokei}" m:converter="#{numericConverterKingakuRound}"/></td>
+		    <td class="body_num"><span m:value="#{e.keihiShokei}_#{e.uriagedaka}" m:converter="#{kosehiConverter}"/></td>
+		  </tr>
+		  <tr class="body_sum4" m:rendered="#{e.rowType == 2}">
+		    <td><span m:value="#{e.plYM}" m:converter="#{dateConverterYMKanji}"/></td>
+		    <td class="body_num"><span m:value="#{e.yobi}" m:converter="#{numericConverterKingakuRound}"/></td>
+		    <td class="body_num"><span m:value="#{e.yobi}_#{e.uriagedaka}" m:converter="#{kosehiConverter}"/></td>
+		    <td class="body_num"><span m:value="0" m:converter="#{numericConverterKingakuRound}"/></td>
+		    <td class="body_num"><span m:value="0.00" m:converter="#{tougetuKosehiConverter}"/></td>
+		    <td class="body_num"><span m:value="0" m:converter="#{numericConverterKingakuRound}"/></td>
+		    <td class="body_num"><span m:value="0.00" m:converter="#{tougetuKosehiConverter}"/></td>
+		    <td class="body_num"><span m:value="#{e.keihiShokei}" m:converter="#{numericConverterKingakuRound}"/></td>
+		    <td class="body_num"><span m:value="#{e.keihiShokei}_#{e.uriagedaka}" m:converter="#{kosehiConverter}"/></td>
+		  </tr>
+		  </div>
+		</table>
+		</div>
+		</div>
+	</div>
+
+</div>
+<script type="text/javascript">
+<!--
+  focusElement("plInfoView");
+//-->
+</script>
+<input type="text" m:id="dummyEnter" style="display:none"/>
+</form>
+</span>
+</body>
+</html>

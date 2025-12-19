@@ -1,0 +1,206 @@
+<html xmlns:m="http://www.seasar.org/maya" m:action="#{bunsAutoAmtRegistConditionAction.initialize}" m:extends="/jsf/layout/layoutNoNavi.html">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Windows-31j" />
+<title><span m:value="バンズ自動設定数量照会/変更"/></title>
+<span m:inject="f:param" m:name="layoutTitle" m:value="バンズ自動設定数量照会/変更"/>
+<span m:inject="s:insert" m:name="bodyTitleName">■バンズ自動設定数量照会/変更／照会</span>
+<span m:inject="f:param" m:name="viewIdValue" m:value="BBS026V01"/>
+<span m:inject="f:param" m:name="onLoadName" m:value="init()"/>
+</head>
+<body>
+<span m:inject="s:insert" m:name="body" >
+<SCRIPT LANGUAGE="javascript">
+<!--
+/**
+ * 初期化処理
+ */
+function init() {
+	var objectTaishoJoken = document.conditionForm.elements['conditionForm:targetTaishoJoken'];
+	var taishoJokenIndex = objectTaishoJoken.selectedIndex;
+ 	var taishoJoken = objectTaishoJoken.value;
+	if(taishoJokenIndex == '0') {
+	    //オーナー選択時
+		document.conditionForm.elements['conditionForm:targetOnerCd'].focus();
+	}else if(taishoJokenIndex == '1') {
+	    //店舗コード選択時
+		document.conditionForm.elements['conditionForm:targetMiseCd'].focus();
+	}else if(taishoJokenIndex == '2') {
+		document.conditionForm.elements['conditionForm:targetSvCd'].focus();
+	}
+
+}
+/**
+ * 対象条件変更処理
+ *
+ *
+ */
+function changeTaishoJeken(){
+	//コードエリア表示・非表示
+	var objectTaishoJoken = document.conditionForm.elements['conditionForm:targetTaishoJoken'];
+	var taishoJokenIndex = objectTaishoJoken.selectedIndex;
+ 	var taishoJoken = objectTaishoJoken.value;
+ 	//表示対象：オーナーコードエリア
+ 	var div_oner = document.getElementById('conditionForm:div_oner');
+ 	var th_oner =document.getElementById('conditionForm:th_oner');
+ 	var td_oner =document.getElementById('conditionForm:td_oner');
+ 	//表示対象：店舗コードエリア
+ 	var div_mise = document.getElementById('conditionForm:div_mise');
+ 	var th_mise =document.getElementById('conditionForm:th_mise');
+ 	var td_mise =document.getElementById('conditionForm:td_mise');
+ 	//表示対象：ＳＶコードエリア
+ 	var div_sv = document.getElementById('conditionForm:div_sv');
+ 	var th_sv =document.getElementById('conditionForm:th_sv');
+ 	var td_sv =document.getElementById('conditionForm:td_sv');
+
+	//初めに全て非表示にする。
+	div_oner.style.display="none";
+ 	th_oner.style.display="none";
+	td_oner.style.display="none";
+
+	div_mise.style.display="none";
+ 	th_mise.style.display="none";
+	td_mise.style.display="none";
+
+	div_sv.style.display="none";
+ 	th_sv.style.display="none";
+	td_sv.style.display="none";
+
+	if(taishoJokenIndex == '0') {
+	    //オーナー選択時
+		div_oner.style.display="";
+	 	th_oner.style.display="";
+		td_oner.style.display="";
+		document.conditionForm.elements['conditionForm:onerSearchBt'].focus();
+		document.conditionForm.elements['conditionForm:targetOnerCd'].focus();
+	}else if(taishoJokenIndex == '1') {
+	    //店舗コード選択時
+		div_mise.style.display="";
+	 	th_mise.style.display="";
+		td_mise.style.display="";
+		document.conditionForm.elements['conditionForm:miseSearchBt'].focus();
+		document.conditionForm.elements['conditionForm:targetMiseCd'].focus();
+	}else if(taishoJokenIndex == '2') {
+	    //ＳＶコード選択時
+		div_sv.style.display="";
+	 	th_sv.style.display="";
+		td_sv.style.display="";
+		document.conditionForm.elements['conditionForm:svSearchBt'].focus();
+		document.conditionForm.elements['conditionForm:targetSvCd'].focus();
+	}
+}
+/**
+ * 検索ボタン押下処理
+ *
+ */
+function callSearchForm(type){
+	document.conditionForm.elements['conditionForm:__link_clicked__'].value='conditionForm:' + type;
+	document.conditionForm.submit();
+}
+/**
+ * 実行ボタン押下処理
+ *
+ */
+function exec(){
+	document.conditionForm.elements['conditionForm:__link_clicked__'].value='conditionForm:search';
+	document.conditionForm.submit();
+}
+/**
+ * 未設定店舗一覧ボタン押下処理
+ *
+ */
+function execDownloadUnSet(){
+	var targetKbn = document.conditionForm.elements['kbnUnSet'];
+	document.conditionForm.elements['conditionForm:targetKbn'].value = "unset";
+	//アクションの値を設定する。
+	document.conditionForm.elements['conditionForm:__link_clicked__'].value='conditionForm:downloadCsv';
+	document.conditionForm.submit();
+}
+/**
+ * 全店ダウロードボタン押下処理
+ *
+ */
+function execDownload(){
+	var targetKbn = document.conditionForm.elements['kbnAll'];
+	document.conditionForm.elements['conditionForm:targetKbn'].value = "all";
+	//アクションの値を設定する。
+	document.conditionForm.elements['conditionForm:__link_clicked__'].value='conditionForm:downloadCsv';
+	document.conditionForm.submit();
+}
+
+
+-->
+</SCRIPT>
+
+<!-- 本部ユーザーの場合 -->
+<form m:id="conditionForm" onKeyDown="return setDefaultSubmitButton('conditionForm','executeBt');">
+	<input type="hidden" m:id="viewId" m:value="#{viewIdValue}"/>
+	<input type="hidden" m:id="initMenuId" m:value="#{menuAction.initMenuId}"/>
+	<input type="hidden" m:id="initSubMenuId" m:value="#{menuAction.initSubMenuId}"/>
+	<input type="hidden" m:id="windowId" m:value="#{bunsAutoAmtRegistReqDto.windowId}"/>
+	<input type="hidden" m:id="targetKbn" m:value="#{bunsAutoAmtRegistReqDto.targetKbn}"/>
+	<input type="hidden" id="loadingFlg" value=""/>
+	<a id="search" m:action="#{bunsAutoAmtRegistConditionAction.search}"/>
+	<a id="downloadCsv" m:action="#{bunsAutoAmtRegistCsvOutputAction.downloadCsv}"/>
+	<a id="callOnerForm" m:action="#{bunsAutoAmtRegistConditionAction.callOnerForm}"/>
+	<a id="callMiseForm" m:action="#{bunsAutoAmtRegistConditionAction.callMiseForm}"/>
+	<a id="callSvForm"   m:action="#{bunsAutoAmtRegistConditionAction.callSvForm}"/>
+	<span m:rendered="#{bunsAutoAmtRegistDto.honbuUser}">
+		<table class="body_table" border="1" style="margin-bottom: 4px;">
+			<tr>
+				<th>対象条件</th>
+		    	<td>
+		   			<div class="hideArea">
+				    <select m:id="targetTaishoJoken"
+				    		m:value="#{bunsAutoAmtRegistReqDto.targetTaishoJoken}"
+				    		m:items="#{bunsAutoAmtRegistDto.listTaishoJoken}"
+				    		m:itemValue="code"
+				    		m:itemLabel="name"
+				    		m:onchange="changeTaishoJeken()"/>
+				    </div>
+		   		</td>
+				<div id="div_oner" m:style="#{(bunsAutoAmtRegistReqDto.taishoJokenOner) == true ? '' : 'display:none;'}">
+					<th m:id="th_oner" m:style="#{(bunsAutoAmtRegistReqDto.taishoJokenOner) == true ? '' : 'display:none;'}">
+						オーナー&nbsp;<input type="button" value="検索" m:id="onerSearchBt" m:onclick="callSearchForm('callOnerForm');return false;"/>
+					</th>
+			    	<td m:id="td_oner" m:style="#{(bunsAutoAmtRegistReqDto.taishoJokenOner) == true ? '' : 'display:none;'}">
+						<input type="text" m:id="targetOnerCd" size="10" maxlength="5" m:value="#{bunsAutoAmtRegistReqDto.targetOnerCd}" style="ime-mode:disabled"/>
+					</td>
+		   		</div>
+				<div id="div_mise" m:style="#{(bunsAutoAmtRegistReqDto.taishoJokenMise) == true ? '' : 'display:none;'}">
+					<th m:id="th_mise" m:style="#{(bunsAutoAmtRegistReqDto.taishoJokenMise) == true ? '' : 'display:none;'}">
+						店舗&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="button" m:id="miseSearchBt" value="検索" m:onclick="callSearchForm('callMiseForm');return false;"/>
+					</th>
+			    	<td m:id="td_mise" m:style="#{(bunsAutoAmtRegistReqDto.taishoJokenMise) == true ? '' : 'display:none;'}">
+						<input type="text" m:id="targetMiseCd" size="10" maxlength="5" m:value="#{bunsAutoAmtRegistReqDto.targetMiseCd}" style="ime-mode:disabled" m:converter="#{bunsAutoAmtRegistCodeCnvt5}"/>
+					</td>
+		   		</div>
+				<div id="div_sv" m:style="#{(bunsAutoAmtRegistReqDto.taishoJokenSv) == true ? '' : 'display:none;'}">
+					<th m:id="th_sv" m:style="#{(bunsAutoAmtRegistReqDto.taishoJokenSv) == true ? '' : 'display:none;'}">
+						SV&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="button" m:id="svSearchBt" value="検索" m:onclick="callSearchForm('callSvForm');return false;"/>
+					</th>
+			    	<td m:id="td_sv" m:style="#{(bunsAutoAmtRegistReqDto.taishoJokenSv) == true ? '' : 'display:none;'}">
+						<input type="text" m:id="targetSvCd" size="10" maxlength="8" m:value="#{bunsAutoAmtRegistReqDto.targetSvCd}" style="ime-mode:disabled" m:converter="#{bunsAutoAmtRegistCodeCnvt8}"/>
+					</td>
+		   		</div>
+
+	    		<td>
+	    			<input type="button" value="実行"  name="conditionForm:executeBt" class="operation_button" onClick="exec(); return false;" onDblClick="return false;"/>
+		    	</td>
+		    </tr>
+	   	</table>
+		<span m:rendered="#{bunsAutoAmtRegistDto.download}">
+
+		   	<table cellpadding="0" cellspacing="0">
+			    <tr>
+					<td ><input type="button" value="未設定店舗一覧" onClick="execDownloadUnSet(); return false;" onDblClick="return false"/></td>
+					<td>&nbsp;</td>
+					<td><input type="button" value="全店ダウンロード" onClick="execDownload(); return false;" onDblClick="return false"/></td>
+			    </tr>
+			</table>
+		</span>
+	</span>
+	<input type="text" m:id="dummyText" m:style="display:none;"/>
+</form>
+</span>
+</body>
+</html>

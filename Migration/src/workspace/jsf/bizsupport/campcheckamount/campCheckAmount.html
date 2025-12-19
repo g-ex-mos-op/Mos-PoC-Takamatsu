@@ -1,0 +1,333 @@
+<html xmlns:m="http://www.seasar.org/maya" m:action="#{campCheckAmountAction.initialize}" m:extends="/jsf/layout/layoutNoNavi.html">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=Windows-31j" />
+	<meta http-equiv="Content-Style-Type" content="text/css"/>
+	<link href="./css/main.css" rel="stylesheet" type="text/css"/>
+	<link href="./css/header.css" rel="stylesheet" type="text/css"/>
+	<link href="./css/navi.css" rel="stylesheet" type="text/css"/>
+	<link href="./css/body.css" rel="stylesheet" type="text/css"/>
+	<script type="text/javascript" src="./js/bird.js"></script>
+	<title>キャンペーン設定数量確</title>
+</head>
+<body>
+<span m:inject="f:param" m:name="layoutTitle" m:value="キャンペーン設定数量確認"/>
+<span m:inject="f:param" m:name="onLoadName" m:value="bodyLoad();"/>
+<span m:inject="s:insert" m:name="bodyTitleName">■キャンペーン設定数量確認</span>
+<span m:inject="f:param" m:name="viewIdValue" m:value="BBS027V01"/>
+<span m:inject="s:insert" m:name="body">
+<STYLE type="text/css" media="screen">
+<!--
+.scroll_area {
+  width         : 977px;
+}
+@media screen and (min-width:0\0) {
+
+  .download {
+      height: 21px;
+ }
+  .button_height {
+      height: 20px;
+ }
+}
+//-->
+</STYLE>
+<script type="text/javascript">
+  <!--
+    function bodyLoad() {
+      var f=document.forms['campcheckamount'];
+      if(f.elements['campcheckamount:userTypeCd'].value == '01') {
+	      if(f.elements['campcheckamount:taishoCond'].value == 'TENPO') {
+	        document.getElementById('campcheckamount:tenpo_tlt').style.display="";
+	        document.getElementById('campcheckamount:tenpo_nai').style.display="";
+	        document.getElementById('campcheckamount:oner_nai').style.display="none";
+	        document.getElementById('campcheckamount:sibu_nai').style.display="none";
+	        document.getElementById('campcheckamount:block_nai').style.display="none";
+	        focusElement("campcheckamount");
+	      }
+	  }
+    }
+
+    function changeCond() {
+        document.getElementById('campcheckamount:tenpo_tlt').style.display="none";
+        document.getElementById('campcheckamount:tenpo_nai').style.display="none";
+	    document.getElementById('campcheckamount:oner_nai').style.display="none";
+        document.getElementById('campcheckamount:sibu_nai').style.display="none";
+        document.getElementById('campcheckamount:block_nai').style.display="none";
+      var f=document.forms['campcheckamount'];
+      if(f.elements['campcheckamount:taishoCond'].value == 'TENPO') {
+        document.getElementById('campcheckamount:tenpo_tlt').style.display="";
+        document.getElementById('campcheckamount:tenpo_nai').style.display="";
+      } else if(f.elements['campcheckamount:taishoCond'].value == 'OWNER') {
+        document.getElementById('campcheckamount:tenpo_tlt').style.display="";
+	    document.getElementById('campcheckamount:oner_nai').style.display="";
+      } else if(f.elements['campcheckamount:taishoCond'].value == 'SIBU') {
+        document.getElementById('campcheckamount:sibu_nai').style.display="";
+        document.getElementById('campcheckamount:block_nai').style.display="";
+      }
+    }
+
+    function callFm() {
+		var f=document.forms['campcheckamount'];
+		if(f.elements['campcheckamount:taishoCond'].value == 'TENPO') {
+    		f.elements['campcheckamount:__link_clicked__'].value='campcheckamount:callMiseForm';
+    	} else if(f.elements['campcheckamount:taishoCond'].value == 'OWNER') {
+    	  f.elements['campcheckamount:__link_clicked__'].value='campcheckamount:callOnerForm';
+    	}
+		f.submit();
+		return false;
+    }
+
+    function csvDownLoad() {
+		var f=document.forms['campcheckamount'];
+		f.elements['campcheckamount:__link_clicked__'].value='campcheckamount:downLoadCsv';
+		f.submit();
+		return false;
+    }
+
+    function csvQuantityDownLoad() {
+		var f=document.forms['campcheckamount'];
+		f.elements['campcheckamount:__link_clicked__'].value='campcheckamount:downLoadQuantityCsv';
+		f.submit();
+		return false;
+    }
+
+    function tabChange(tabArea) {
+	  	var f=document.forms['campcheckamount'];
+		f.elements['campcheckamount:tabKbn'].value = tabArea;
+		f.elements['campcheckamount:__link_clicked__'].value='campcheckamount:changeTab';
+		f.submit();
+    }
+
+    function exec() {
+		var f=document.forms['campcheckamount'];
+		f.elements['campcheckamount:__link_clicked__'].value='campcheckamount:execute';
+		f.submit();
+    }
+
+  //-->
+</script>
+<form m:id="campcheckamount" onKeyDown="return setDefaultSubmitButton('campcheckamount','executeBt');">
+<input type="hidden" m:id="viewId" m:value="#{viewIdValue}"/>
+<input type="hidden" m:id="initMenuId" m:value="#{menuAction.initMenuId}"/>
+<input type="hidden" m:id="initSubMenuId" m:value="#{menuAction.initSubMenuId}"/>
+<input type="hidden" m:id="execFlg" m:value="#{campCheckAmountDto.execFlg}"/>
+<input type="hidden" m:id="tabKbn" m:value="#{campCheckAmountDto.tabKbn}"/>
+<input type="hidden" m:id="userTypeCd" m:value="#{campCheckAmountDto.userTypeCd}"/>
+<input type="hidden" m:id="tabViewFlg" m:value="#{campCheckAmountDto.tabViewFlg}"/>
+<a m:id="callMiseForm"  m:action="#{campCheckAmountAction.callMiseForm}"/>
+<a m:id="callOnerForm"  m:action="#{campCheckAmountAction.callOnerForm}"/>
+<a m:id="execute"  m:action="#{campCheckAmountAction.execute}"/>
+<a m:id="changeTab"  m:action="#{campCheckAmountAction.changeTab}"/>
+<a m:id="downLoadCsv" m:action="#{campCheckAmountCsvOutputAction.downloadCsv}"/>
+<a m:id="downLoadQuantityCsv" m:action="#{campCheckAmountCsvQuantityOutputAction.downloadCsv}"/>
+<!-- 条件に対する複数window対応 -->
+<input type="hidden" m:id="windowId" m:value="#{campCheckAmountSaveDto.windowId}"/>
+  <table class="body_table" style="margin-bottom:4px;">
+    <tr>
+	  <th nowrap>対象キャンペーン</th>
+	  <td>
+	      <div id="ariDta" class="hideArea" m:style="#{(campCheckAmountDto.taishoCmpListSz > 0) ? 'display:inline;' : 'display:none;'}">
+	        <select m:id="taishoCmpNo"
+	            m:value="#{campCheckAmountDto.taishoCmpNo}"
+	            m:items="#{campCheckAmountDto.taishoCmpList}"
+	            m:itemValue="cmpNo"
+	            m:itemlabel="cmpName">
+	        </select>
+	      </div>
+	      <div id="nasiDta" m:style="#{(campCheckAmountDto.taishoCmpListSz == 0) ? 'display:inline;' : 'display:none;'}">対象なし&nbsp;</div>
+	  </td>
+      <th width="70" style="#{campCheckAmountDto.userTypeCd == '01'?'':'display:none;'}">対象条件</th>
+      <td width="50" style="#{campCheckAmountDto.userTypeCd == '01'?'':'display:none;'}">
+  	    <div class="hideArea">
+          <select m:id="taishoCond"
+                m:value="#{campCheckAmountDto.taishoCond}"
+                m:items="#{campCheckAmountDto.taishoCondList}"
+                m:itemValue="value"
+                m:itemlabel="label"
+                m:onchange="changeCond()">
+          </select>
+        </div>
+      </td>
+      <th width="70" m:style="border-right-width:0px;display:#{campCheckAmountDto.userTypeCd == '01'?'':'display:none;'}">表示対象</th>
+      <th m:id="tenpo_tlt" m:style="border-left-width:0px;#{campCheckAmountDto.userTypeCd == '01' && (campCheckAmountDto.taishoCond == 'TENPO' || campCheckAmountDto.taishoCond == 'OWNER') ? 'inline;' : 'display:none;'}">
+	    <input type="button" m:value="検索" class="button_in_table" m:onclick="callFm();"/>
+	  </th>
+	  <td m:id="tenpo_nai" m:style="#{(campCheckAmountDto.userTypeCd == '01' && campCheckAmountDto.taishoCond == 'TENPO') ? 'inline;' : 'display:none;'}">
+	    <input type="text" m:id="taishoMiseCd"
+	           size="10" m:maxlength="5" class="imenotuse height_11"
+	           m:value="#{campCheckAmountDto.taishoMiseCd}"/>
+	  </td>
+	  <td m:id="oner_nai" m:style="#{(campCheckAmountDto.userTypeCd == '01' && campCheckAmountDto.taishoCond == 'OWNER') ? 'inline;' : 'display:none;'}">
+	    <input type="text" m:id="taishoOnerCd"
+	           size="10" m:maxlength="5" class="imenotuse height_11"
+	           m:value="#{campCheckAmountDto.taishoOnerCd}"/></td>
+	  <td m:id="sibu_nai" m:style="#{(campCheckAmountDto.userTypeCd == '01' && campCheckAmountDto.taishoCond == 'SIBU') ? 'inline;' : 'display:none;'}border-right-width:0px;">
+        <div class="hideArea">
+          <select m:id="taishoSibuCd"
+               m:value="#{campCheckAmountDto.taishoSibuCd}"
+               m:items="#{campCheckAmountDto.taishoSibuList}"
+               m:itemValue="sibuCd"
+               m:itemlabel="sibuName">
+          </select></div></td>
+	  <td m:id="block_nai" m:style="#{(campCheckAmountDto.userTypeCd == '01' && campCheckAmountDto.taishoCond == 'SIBU') ? 'inline;' : 'display:none;'}border-left-width:0px;">
+        <div class="hideArea">
+          <select m:id="taishoBlockCd"
+               m:value="#{campCheckAmountDto.taishoBlockCd}"
+               m:items="#{campCheckAmountDto.taishoBlockList}"
+               m:itemValue="blockCd"
+               m:itemlabel="blockName">
+          </select></div>
+	  </td>
+      <td style="padding-left:3px;">
+        <input type="button" value="#{campCheckAmountDto.buttonNm}"
+              name="campcheckamount:executeBt"  class="button_in_table"
+              m:onclick="exec(); return false;" onDblClick="return false;"/>
+      </td>
+    </tr>
+  </table>
+
+  <div m:rendered="#{campCheckAmountDto.resultListSz > 0}">
+  <table style="float:left;" cellspacing="0" cellpadding="0" class="element_browser">
+    <tr>
+      <div m:rendered="#{campCheckAmountDto.tabViewFlg == '0'}">
+	  	<td class="body_#{campCheckAmountDto.tabKbn == 1?'':'non_'}active_cell"
+	           width="150px" name="tab_change_area_1">
+	        <a href="#" m:onclick="tabChange('1');return false;"
+	           name="body_anchor_area_1" m:passthrough="true">スポット数量</a>
+	  	</td>
+		<td class="body_#{campCheckAmountDto.tabKbn == 2?'':'non_'}active_cell"
+		    width="150px" name="tab_change_area_2">
+		      <a href="#" m:onclick="tabChange('2');return false;"
+		         name="body_anchor_area_2" m:passthrough="true">設定数量</a>
+		</td>
+	  </div>
+	  <div m:rendered="#{campCheckAmountDto.tabViewFlg != '0'}">
+	    <td class="body_#{campCheckAmountDto.tabKbn == 1?'':'non_'}active_cell"
+	        width="150px">スポット数量</td>
+	    <td class="body_#{campCheckAmountDto.tabKbn == 2?'':'non_'}active_cell"
+	        width="150px">設定数量</td>
+	  </div>
+    </tr>
+  </table>
+  <div  name="tab_change_area_1">
+    <div m:rendered="#{campCheckAmountDto.tabKbn == '1'}" >
+    <div class="element_print">【　スポット数量　】</div>
+    <div style="width:20px">
+	</div>
+	<table class="clear_float" width="960px" cellspacing="0" cellpadding="0">
+		<tr style="line-height:5px;" class="body_caption">
+	  <td>&nbsp;</td></tr></table>
+    <table class="body_table2">
+      <tr class="header_row">
+        <th width="150">有償金額合計</th>
+        <td width="150" class="body_num"><span m:value="#{campCheckAmountDto.yuShoAmtSum}" m:converter="#{campCheckAmountNumericConverter}"/></td>
+        <td width="*"><input type="button" m:onclick="csvDownLoad();" value="ダウンロード"/></td>
+	  </tr>
+	</table>
+	<div m:rendered="#{campCheckAmountDto.userTypeCd == '01'}">
+	  <div class="scroll_hidden" style="margin-top:4px;">
+      <table width="960" class="body_table2">
+	    <tr class="header_row">
+		  <th width="250" class="header">店舗名称</th>
+		  <th width="*">商品名称</th>
+		  <th width="90">単価</th>
+		  <th width="80">無償数量</th>
+		  <th width="110">有償設定数量</th>
+		  <th width="130">スポット有償数量</th>
+		  <th width="80">合計</th>
+	    </tr>
+	  </table>
+	  </div>
+	  <div class="scroll_area" style="height:368px;">
+	    <table width="960" class="body_table2" style="border-top-width:0px;">
+		  <div m:inject="s:forEach" m:items="#{campCheckAmountDto.resultListTab1}" m:var="eT1" m:varindex="iT1">
+		    <tr class="non_top_border font_size_14">
+              <td width="250"><span m:converter="#{characterEncodingConverter}" m:value="#{eT1.miseCd}"/>&nbsp;&nbsp;<span m:converter="#{characterEncodingConverter}" m:value="#{eT1.miseNameKj}"/></td>
+              <td width="*"><span m:converter="#{characterEncodingConverter}" m:value="#{eT1.shoCdDai}"/>&nbsp;&nbsp;<span m:converter="#{characterEncodingConverter}" m:value="#{eT1.posNameKna}"/></td>
+              <td width="90" class="body_num"><span m:value="#{eT1.tankaUri}" m:converter="#{numericConverterTanka}"/></td>
+              <td width="80" class="body_num"><span m:value="#{eT1.mushoAmt}" m:converter="#{amountNumericConverter}"/></td>
+              <td width="110" class="body_num"><span m:value="#{eT1.yushoEAmt}" m:converter="#{amountNumericConverter}"/></td>
+              <td width="130" class="body_num"><span m:value="#{eT1.yushoAmt}" m:converter="#{amountNumericConverter}"/></td>
+              <td width="80" class="body_num"><span m:value="#{eT1.amtSum}" m:converter="#{amountNumericConverter}"/></td>
+		    </tr>
+		  </div>
+	    </table>
+	  </div>
+	</div>
+    <div m:rendered="#{campCheckAmountDto.userTypeCd == '02'}">
+	  <div class="scroll_hidden" style="margin-top:4px;">
+      <table width="960" class="body_table2">
+	    <tr class="header_row">
+		  <th width="210" class="header">店舗名称</th>
+		  <th width="*">商品名称</th>
+		  <th width="#{birdUserInfo.browserType == 'safari'?42:40}">荷姿</th>
+		  <th width="130">入り目</th>
+		  <th width="90">単価</th>
+		  <th width="70">無償数量</th>
+		  <th width="70">有償<br/>設定数量</th>
+		  <th width="70">スポット<br/>有償数量</th>
+		  <th width="60">合計</th>
+	    </tr>
+	  </table>
+	  </div>
+	  <div class="scroll_area" style="height:358px;">
+	    <table width="960" class="body_table2" style="border-top-width:0px;">
+ 		  <div m:inject="s:forEach" m:items="#{campCheckAmountDto.resultListTab1}" m:var="eT1" m:varindex="iT1">
+		    <tr class="non_top_border font_size_14">
+              <td width="210"><span m:converter="#{characterEncodingConverter}" m:value="#{eT1.miseCd}"/>　<span m:converter="#{characterEncodingConverter}" m:value="#{eT1.miseNameKj}"/></td>
+              <td width="*"><span m:converter="#{characterEncodingConverter}" m:value="#{eT1.shoCdDai}"/>　<span m:converter="#{characterEncodingConverter}" m:value="#{eT1.posNameKna}"/></td>
+              <td width="#{birdUserInfo.browserType == 'safari'?42:40}"><span m:converter="#{characterEncodingConverter}" m:value="#{eT1.posNisugata}"/></td>
+              <td width="130"><span m:converter="#{characterEncodingConverter}" m:value="#{eT1.posIrime}"/></td>
+              <td width="90" class="body_num"><span m:value="#{eT1.tankaUri}" m:converter="#{numericConverterTanka}"/></td>
+              <td width="70" class="body_num"><span m:value="#{eT1.mushoAmt}" m:converter="#{amountNumericConverter}"/></td>
+              <td width="70" class="body_num"><span m:value="#{eT1.yushoEAmt}" m:converter="#{amountNumericConverter}"/></td>
+              <td width="70" class="body_num"><span m:value="#{eT1.yushoAmt}" m:converter="#{amountNumericConverter}"/></td>
+              <td width="60" class="body_num"><span m:value="#{eT1.amtSum}" m:converter="#{amountNumericConverter}"/></td>
+		    </tr>
+		  </div>
+	    </table>
+	  </div>
+	</div>
+	</div>
+  </div>
+  <div name="tab_change_area_2">
+    <div m:rendered="#{campCheckAmountDto.tabKbn == '2'}">
+    <div class="element_print">【　設定数量　】</div>
+    <div class="download">
+		<input type="button" class="button_height"  style="width:80px;margin-left: 2px;" m:onclick="csvQuantityDownLoad();" value="ダウンロード"/>
+	</div>
+	<table width="800px" cellspacing="0" cellpadding="0" class="clear_float">
+		<tr style="line-height:5px;" class="body_caption">
+	  <td>&nbsp;</td></tr></table>
+    <table width="800px" class="body_table2">
+      <col width="360"/>
+      <col width="*"/>
+	  <col width="80px"/>
+      <tr class="header_row">
+        <th>店舗名称</th>
+        <th>アイテム名称</th>
+        <th>数量</th>
+      </tr>
+    </table>
+    <div class="scroll_area" style="width:820px; height:400px;">
+      <table width="800px" class="body_table2" style="border-top-width:0px;">
+        <col width="360"/>
+        <col width="*"/>
+	    <col width="80px"/>
+	      <div m:inject="s:forEach" m:items="#{campCheckAmountDto.resultListTab2}" m:var="eT2" m:varindex="iT2">
+	        <tr class="non_top_border">
+			  <td m:rendered="#{eT2.miseCd != ''}"
+			      m:rowspan="#{eT2.cnt}" valign="top"><span m:converter="#{characterEncodingConverter}" m:value="#{eT2.miseCd}"/>&nbsp;&nbsp;<span m:converter="#{characterEncodingConverter}" m:value="#{eT2.miseNameKj}"/></td>
+			  <td><span m:converter="#{characterEncodingConverter}" m:value="#{eT2.koteiCdName}"/></td>
+			  <td class="body_num"><span m:value="#{eT2.koteiAmt}" m:converter="#{amountNumericConverter}"/></td>
+	        </tr>
+          </div>
+	  </table>
+	</div>
+	</div>
+  </div>
+  </div>
+</form>
+</span>
+</body>
+</html>

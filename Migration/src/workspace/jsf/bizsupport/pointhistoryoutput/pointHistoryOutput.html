@@ -1,0 +1,143 @@
+<html xmlns:m="http://www.seasar.org/maya" m:action="#{pointHistoryOutputAction.initialize}" m:extends="/jsf/layout/layoutNoNavi.html">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Windows-31j" />
+<title>ポイント履歴出力</title>
+</head>
+<body>
+<span m:inject="f:param" m:name="layoutTitle" m:value="ポイント履歴出力"/>
+<span m:inject="f:param" m:name="onLoadName" m:value="init();"/>
+<span m:inject="s:insert" m:name="bodyTitleName">■ポイント履歴出力</span>
+<span m:inject="f:param" m:name="viewIdValue" m:value="BBS038V01"/>
+<span m:inject="s:insert" m:name="body">
+<SCRIPT LANGUAGE="javascript">
+<!--
+function init(){
+   check2 =document.getElementById('pointHistoryOutput:mode2').checked;
+   var varPaneTaishoku =document.getElementById('pointHistoryOutput:pane_taishoku');
+
+   if(check2 == true){
+	   varPaneTaishoku.style.display="none";
+   } else {
+	   varPaneTaishoku.style.display="inline";
+   }
+}
+
+function chgShoriKbn(flg) {
+   var varPaneTaishoku =document.getElementById('pointHistoryOutput:pane_taishoku');
+   if(flg == 1){
+	   varPaneTaishoku.style.display="inline";
+   }else if(flg == 2){
+	   varPaneTaishoku.style.display="none";
+   }
+}
+
+//社員番号が8桁未満の場合は前0埋めで処理
+function formatUserId(mId){
+   var length=0;
+   var zero ="00000000";
+   var userIdValue;
+   var userIdInput= document.getElementById("pointHistoryOutput:" + mId);
+   userIdValue = userIdInput.value;
+   if(userIdValue.length<=0){
+      userIdInput.value = "";
+   } else {
+      userIdValue = zero+userIdValue;
+      length = userIdValue.length;
+      userIdValue= userIdValue .substring(length-8);
+      userIdInput.value = userIdValue;
+   }
+}
+
+
+//-->
+</SCRIPT>
+
+<form m:id="pointHistoryOutput" onKeyDown="return setDefaultSubmitButton('pointHistoryOutput','btnDownload');">
+<input type="hidden" m:id="viewId" m:value="#{viewIdValue}"/>
+
+<table class="body_table" width="410">
+  <tr>
+     <th width="100">会社</th>
+        <td>
+            <select style="width:170px;" m:id="kbCompanyCd"
+                    m:value="#{pointHistoryOutputDto.kbCompanyCd}"
+                    m:items="#{pointHistoryOutputDto.listCompany}"
+                    m:itemValue="kbCompanyCd"
+                    m:itemLabel="kbCompanyName"
+                    >
+                <option value="">モスフードサービス</option>
+                <option value="">モスストアカンパニー</option>
+            </select>
+  </tr>
+  <tr>
+    <th width="100" >社員番号</th>
+    <td>
+      <input class="imenotuse" type="text" m:id="userId" m:value="#{pointHistoryOutputDto.userId}"
+             onblur="formatUserId('userId')" m:maxlength="8" m:size="10"/>
+    </td>
+  </tr>
+  <tr>
+    <th width="100">年度</th>
+    <td >
+      <input class="imenotuse" type="text" m:id="nendoFrom" m:value="#{pointHistoryOutputDto.nendoFrom}" m:maxlength="4" m:size="4"/>
+      ～
+      <input class="imenotuse" type="text" m:id="nendoTo" m:value="#{pointHistoryOutputDto.nendoTo}" m:maxlength="4" m:size="4"/>
+    </td>
+  </tr>
+  <tr>
+    <th width="100">退職者</th>
+    <td >
+       <div m:id="pane_taishoku" style="display:none" >
+
+          <span m:inject="s:selectOneRadio2" m:value="#{pointHistoryOutputDto.taishokuIndex}">
+                 <input type="radio" m:id="taishokuHukumu" value="1" />含む&nbsp;
+                 <input type="radio" m:id="taishokuNotHukumu" value="2"/>含まない&nbsp;
+          </span>
+       </div>
+    </td>
+  </tr>
+</table>
+
+<table  cellspacing="0" cellpadding="0" style="clear:both;margin-top:5px;">
+  <tr>
+    <td>
+      <table class="body_table" width="680" >
+         <tr>
+           <th width="100">
+              処理選択
+           </th>
+           <td width="580">
+              <span m:inject="s:selectOneRadio2" m:value="#{pointHistoryOutputDto.shoriKbnIndex}">
+                <input type="radio" m:id="mode1" value="1" onclick="chgShoriKbn(1)" />ポイント履歴出力&nbsp;
+                <input type="radio" m:id="mode2" value="2" onclick="chgShoriKbn(2)" />退職時精算&nbsp;
+                <input type="radio" m:id="mode3" value="3" onclick="chgShoriKbn(1)" />役員ポイント履歴&nbsp;
+                <input type="radio" m:id="mode4" value="4" onclick="chgShoriKbn(1)" />累積ポイント確認&nbsp;
+              </span>
+           </td>
+         </tr>
+      </table>
+    </td>
+    <td>
+       &nbsp;
+       <input type="button" class="operation_button" value="ダウンロード"
+              m:id="btnDownload"
+              m:action="#{pointHistoryOutputAction.downloadCsv}"/>&nbsp;&nbsp;
+
+       <input type="text" m:id="dummyEnter" style="display:none"/>
+    </td>
+  </tr>
+</table>
+
+
+
+
+</form>
+<script type="text/javascript">
+<!--
+  focusElement("pointHistoryOutput");
+-->
+</script>
+
+</span>
+</body>
+</html>

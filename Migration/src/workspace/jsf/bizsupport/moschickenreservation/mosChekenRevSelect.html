@@ -1,0 +1,226 @@
+<html xmlns:m="http://www.seasar.org/maya" m:extends="/jsf/layout/layoutNoNavi.html" m:action="#{mosChickenRevConditionAction.initialize}">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=Windows-31j" />
+  <title>ﾋﾟｰｽ・ﾏﾈｰｼﾞｬｰ予約入力</title>
+ </head>
+
+ <body>
+  <span m:inject="f:param" m:name="layoutTitle" m:value="ﾋﾟｰｽ・ﾏﾈｰｼﾞｬｰ予約入力"/>
+  <span m:inject="s:insert" m:name="bodyTitleName">■ﾋﾟｰｽ・ﾏﾈｰｼﾞｬｰ予約入力</span>
+  <span m:inject="f:param" m:name="onLoadName" m:value="init();"/>
+  <span m:inject="f:param" m:name="viewIdValue" m:value="BBS016V01"/>
+  <span m:inject="s:insert" m:name="body">
+  <STYLE type="text/css">
+   <!--
+   //-->
+   </STYLE>  <script type="text/javascript">
+  <!--
+   function changeTitle(){
+    document.mosChickenRevSelect.elements['mosChickenRevSelect:__link_clicked__'].value='mosChickenRevSelect:changeTitle';
+    document.mosChickenRevSelect.submit();
+    return false;
+   }
+   function onerSearch(){
+    userTypeCode = document.forms['mssChousaDataSelect'].elements['mssChousaDataSelect:usertypeCd'].value;
+    document.forms['mosChickenRevSelect'].elements['mosChekenRevSelect:__link_clicked__'].value='mosChickenRevSelect:onerSearch';
+    document.forms['mosChickenRevSelect'].submit();
+   }
+
+   function init(){
+    initShoriFlg = document.forms['mosChickenRevSelect'].elements['mosChickenRevSelect:initShoriFlg'].value;
+    if(initShoriFlg == '1' && document.forms['mosChickenRevSelect'].elements['mosChickenRevSelect:miseCd']!=null) {
+     document.forms['mosChickenRevSelect'].elements['mosChickenRevSelect:miseCd'].focus();
+    }else if(initShoriFlg == '0'){
+     document.forms['mosChickenRevSelect'].elements['mosChickenRevSelect:onerCd'].focus();
+    }
+   focusElement("mosChickenRevSelect");
+
+   }
+
+   function revExec(listIndex){
+    document.mosChickenRevSelect.elements["mosChickenRevSelect:revIndex"].value=listIndex;
+    document.mosChickenRevSelect.elements['mosChickenRevSelect:__link_clicked__'].value='mosChickenRevSelect:revExec';
+    document.mosChickenRevSelect.submit();
+   }
+
+   function onerSearch() {
+   	document.mosChickenRevSelect.elements['mosChickenRevSelect:__link_clicked__'].value='mosChickenRevSelect:onerSearch';
+    document.mosChickenRevSelect.submit();
+   }
+
+   function honbuExec() {
+   	document.mosChickenRevSelect.elements['mosChickenRevSelect:onerDefCd'].value=document.mosChickenRevSelect.elements['mosChickenRevSelect:onerCd'].value;
+	var f=document.forms['mosChickenRevSelect'];
+	f.elements['mosChickenRevSelect:__link_clicked__'].value='mosChickenRevSelect:honbuExec';
+	f.submit();
+	return;
+   }
+
+   function newExecute() {
+   	document.mosChickenRevSelect.elements['mosChickenRevSelect:__link_clicked__'].value='mosChickenRevSelect:newExecute';
+    document.mosChickenRevSelect.submit();
+   }
+
+   function btnExecute() {
+   	document.mosChickenRevSelect.elements['mosChickenRevSelect:__link_clicked__'].value='mosChickenRevSelect:btnExecute';
+    document.mosChickenRevSelect.submit();
+   }
+
+   function honbuUserBack() {
+   	document.mosChickenRevSelect.elements['mosChickenRevSelect:__link_clicked__'].value='mosChickenRevSelect:honbuUserBack';
+    document.mosChickenRevSelect.submit();
+   }
+
+   -->
+  </script>
+   <form m:id="mosChickenRevSelect" onKeyDown="return setDefaultSubmitButton('mosChickenRevSelect','onerExec');">
+   	<input type="hidden" m:id="windowId" m:value="#{mosChickenRevInfoDto.windowId}"/>
+    <input type="hidden" m:id="revIndex" m:value="#{mosChickenRevInfoDto.revIndex}"/>
+    <input type="hidden" m:id="initShoriFlg" m:value="#{mosChickenRevInfoDto.initShoriFlg}"/>
+    <input type="hidden" m:id="viewId" m:value="#{viewIdValue}"/>
+	<input type="hidden" m:id="initMenuId" m:value="#{menuAction.initMenuId}"/>
+	<input type="hidden" m:id="initSubMenuId" m:value="#{menuAction.initSubMenuId}"/>
+    <input type="hidden" m:id="onerDefCd" m:value="#{mosChickenRevInfoDto.onerDefCd}"/>
+    <a m:id="revExec" m:action="#{mosChickenInfoEditAction.revExec}"/>
+    <a m:id="changeTitle" m:action="#{mosChickenRevConditionAction.changeTitle}"/>
+    <a m:id="onerSearch" m:action="#{mosChickenRevConditionAction.onerSearch}"/>
+    <a m:id="honbuExec" m:action="#{mosChickenRevConditionAction.honbuExec}"/>
+	<a m:id="newExecute" m:action="#{mosChickenInfoEditAction.newReserved}"/>
+	<a m:id="btnExecute" m:action="#{mosChickenRevConditionAction.exec}" />
+	<a m:id="honbuUserBack" m:action="#{mosChickenRevConditionAction.honbuUserBack}"/>
+     <table m:rendered="#{mosChickenRevInfoDto.initShoriFlg == 0}" class="hiddenBody">
+        <tr>
+            <td>
+				<table class="body_table">
+					<tr>
+						<th style="text-align:left; border-right-width: 0;">
+							オーナー</th>
+						<th width="50" style="border-left-width: 0;">
+						  <input type="button" value="検索" m:id="onerSerch"
+						         onclick="onerSearch();"/></th>
+						<td><input class="imenotuse" m:id="onerCd" type="text"
+						           maxlength="5" size="10"/></td>
+                    </tr>
+                </table>
+            </td>
+            <td>
+      		<input type="button" value="実行" m:name="mosChickenRevSelect:onerExec"
+             m:onclick="honbuExec();" m:onDblClick="return false"
+             style="margin-left:3px;"/>
+            </td>
+        </tr>
+     </table>
+    <span m:rendered="#{mosChickenRevInfoDto.initShoriFlg == 1}">
+    <span m:rendered="#{mosChickenRevInfoDto.listCampSize > 0}">
+     <span m:rendered="#{mosChickenRevInfoDto.userTypeCd == '01'}">
+         <input type="button" m:name="mosChickenRevSelect:honbuUserBack" class="operation_button" value="戻る" m:onclick="honbuUserBack();"/>
+     </span>
+     <table class="body_table" width="900px" style="margin:4px 0px">
+       <tr>
+        <th nowrap=" nowrap" width="10%">タイトル</th>
+        <td width="25%">
+         <div class="hideArea">
+          <select class="condition_field" style="width:288px;"
+           m:id="title"
+           m:value="#{mosChickenRevInfoDto.ckanriNo}"
+           m:items="#{mosChickenRevInfoDto.listCamp}"
+           m:itemValue="ckanriNo"
+           m:itemLabel="title"
+           m:onChange="changeTitle()">
+          </select>
+         </div>
+        </td>
+        <th nowrap=" nowrap" width="25%">&nbsp;対象店舗&nbsp;</th>
+        <td width="35%">
+         <span m:rendered = "#{mosChickenRevInfoDto.miseCnt > 1}">
+          <div class="hideArea">
+           <select class="condition_field" style="width:250px;"
+            m:id="miseCd"
+            m:value="#{mosChickenRevInfoDto.miseCd}"
+            m:items="#{mosChickenRevInfoDto.listOnerMise}"
+            m:itemValue="miseCd"
+            m:itemLabel="miseNameKj">
+           </select>
+          </div>
+         </span>
+         <span m:rendered="#{mosChickenRevInfoDto.miseCnt == 1}">
+           <span m:converter="#{characterEncodingConverter}" m:value="#{mosChickenRevInfoDto.miseNmKj}"/>
+         </span>
+        </td>
+        <th nowrap=" nowrap" width="10%">&nbsp;お渡し日&nbsp;</th>
+        <td width="25%">
+         <div class="hideArea">
+          <select class="condition_field" style="width:100px;"
+           m:id="reservDate"
+           m:value="#{mosChickenRevInfoDto.reservDate}"
+           m:items="#{mosChickenRevInfoDto.listDate}"
+           m:itemValue="code"
+		   m:itemLabel="name"
+           m:nullLabel=" ">
+          </select>
+         </div>
+        </td>
+        <td width="5%">
+         <input type="button" value="検索" m:name="mosChickenRevSelect:btnExecute"
+                onclick="btnExecute();" onDblClick="return false"/>
+        </td>
+       </tr>
+      </table>
+     <input type="button" value="新規登録" m:name="mosChickenRevSelect:newExecute"
+            onclick="newExecute();" onDblClick="return false"/>
+     </span>
+    </span>
+    <span m:rendered="#{mosChickenRevInfoDto.listMosChiCkenInfo != null}">
+     <table width="970px" class="body_table2" style="margin-top:4px;">
+      <tr class="header_row">
+       <th nowrap="nowrap" width="85px">
+        お渡し時間</th>
+       <th nowrap="nowrap" width="570px" colspan="2">
+        備考</th>
+       <th nowrap="nowrap" width="65px">
+        ﾌﾟﾚﾐｱﾑ</th>
+       <th nowrap="nowrap" width="40px">
+        代金</th>
+       <th nowrap="nowrap" width="100px" align="center">
+        ｷｬﾝｾﾙ状況</th>
+       <th nowrap="nowrap" width="90px" align="center">
+        ｷｬﾝｾﾙ日</th>
+      </tr>
+     </table>
+     <div class="scroll_area" style="width:990px; height:380px;">
+      <table style="border-top-width:0px" width="970px" class="body_table2">
+       <div m:inject="s:forEach" m:items="#{mosChickenRevInfoDto.listMosChiCkenInfo}" m:var="e" m:varindex="i">
+        <tr class="non_top_border">
+          <td m:rendered="#{e.rowspan == 1}" width="85px">
+           <span m:converter="#{characterEncodingConverter}" m:value="#{e.reserveHh}"/>:<span m:converter="#{characterEncodingConverter}" m:value="#{e.reserveMm}"/>
+          </td>
+          <td m:rendered="#{e.rowspan > 1}" width="85px" rowspan="#{e.rowspan}" valign="top">
+           <span m:converter="#{characterEncodingConverter}" m:value="#{e.reserveHh}"/>:<span m:converter="#{characterEncodingConverter}" m:value="#{e.reserveMm}"/>
+          </td>
+         <td  width="460px" align="left">
+          <span m:converter="#{characterEncodingConverter}" m:value="#{e.remark}"/>
+         </td>
+         <td  width="*px" align="left">
+          <a href="javascript:void(0)" onclick="revExec(#{i});return false;"><span m:value="[変更／取消]"/></a>
+         </td>
+         <td width="65px" align="center">
+          <span m:rendered="#{e.premiumFlg == '1'}">済</span>
+         </td>
+         <td width="40px" align="center">
+          <span m:rendered="#{e.paymentFlg == 1}">済</span>
+         </td>
+         <td width="100px"  align="center">
+          <span m:rendered="#{e.cancelFlg == 1}">キャンセル済</span>
+         </td>
+         <td width="90px"  align="center">
+          <span m:rendered="#{e.cancelFlg == 1}"><span m:value="#{e.cancelDt}"/></span>
+         </td>
+        </tr>
+       </div>
+      </table>
+     </div>
+    </span>
+   </form>
+  </span>
+ </body>
+</html>

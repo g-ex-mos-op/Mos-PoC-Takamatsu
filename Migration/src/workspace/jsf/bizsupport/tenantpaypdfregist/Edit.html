@@ -1,0 +1,156 @@
+<html xmlns:m="http://www.seasar.org/maya" m:action="#{tenantPayPdfRegistEditAction.initialize}" m:extends="/jsf/layout/layoutNoNavi.html">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Windows-31j" />
+<title>テナント入金明細登録(編集画面)</title>
+<span m:inject="f:param" m:name="layoutTitle" m:value="テナント入金明細登録(編集画面)"/>
+<span m:inject="s:insert" m:name="bodyTitleName">■テナント入金明細登録(編集画面)</span>
+<span m:inject="f:param" m:name="viewIdValue" m:value="#{tenantPayPdfRegistReqDto.viewId}"/>
+<span m:inject="f:param" m:name="onLoadName" m:value="load()"/>
+<span m:inject = "f:param" m:name = "msg" m:value="結果が表示されるまでに時間がかかります。よろしいですか？"/>
+</head>
+<body>
+<span m:inject="s:insert" m:name="body" >
+<STYLE type="text/css">
+<!--
+.data_table_width {
+    width:98%;
+}
+//-->
+</STYLE>
+<script type="text/javascript">
+<!--
+function load(){
+	focusElement('editForm');
+}
+/**
+ * 戻るボタン押下時処理
+ *
+ */
+function back(confirmMsg){
+	if(returnLoadingStatus()) {
+		//実行前に確認アラートを出力
+		if(confirm(confirmMsg)){
+			document.editForm.target ="_self";
+			document.editForm.elements['editForm:__link_clicked__'].value='editForm:back';
+			document.editForm.submit();
+		}
+		else {
+			document.editForm.loadingFlg.value ="";
+		}
+	}
+}
+/**
+ * ウィンドウロードフラグ設定処理
+ *
+ *
+ */
+function setLoadingFlg() {
+	document.editForm.loadingFlg.value = "ON";
+}
+/**
+ * ウィンドウロードステータス取得処理
+ *
+ */
+function returnLoadingStatus(){
+	if(isLoadingFlgOFF()) {
+		setLoadingFlg();
+		return true;
+	}
+	return false;
+}
+/**
+ * ウィンドウロードステータス取得処理
+ *
+ */
+function isLoadingFlgOFF(){
+	return (document.editForm.loadingFlg.value != "ON");
+}
+//-->
+</script>
+<form m:id="editForm" onKeyDown="return setDefaultSubmitButton('editForm','btnExecute');" enctype="multipart/form-data">
+	<input type="hidden" id="viewId" m:value="#{viewIdValue}" />
+	<input type="hidden" id="initMenuId" m:value="#{menuAction.initMenuId}"/>
+	<input type="hidden" id="initSubMenuId" m:value="#{menuAction.initSubMenuId}"/>
+	<input type="hidden" id="windowId" m:value="#{tenantPayPdfRegistReqDto.windowId}"/>
+	<input type="hidden" m:value="#{tenantPayPdfRegistReqDto.miseCd}"/>
+	<input type="hidden" m:value="#{tenantPayPdfRegistReqDto.taishoYm}"/>
+	<input type="hidden" m:value="#{tenantPayPdfRegistReqDto.kaisuu}"/>
+	<input type="hidden" id="selectedIndex" m:value="#{tenantPayPdfRegistSearchedDto.selectedIndex}"/>
+	<input type="hidden" m:value="#{tenantPayPdfRegistReqDto.sesstionKey}"/>
+	<input type="hidden" id="loadingFlg" value="" m:passthrough="true"/>
+	<div style="margin-bottom:3px;margin-right:5px;">
+		<input type="button" value="戻る" m:action="#{tenantPayPdfRegistEditAction.back}" onClick="back('編集中の内容がある場合は破棄されます。よろしいですか？');" onDblClick="return false;"/>
+		<input type="button" m:action="#{tenantPayPdfRegistEditAction.auth}" m:value="確認" class="operation_button" onDblClick="return false;"/>
+	</div>
+	<table class="body_table2 data_table_width" >
+	    <tr>
+	    	<th>登録モード</th><td><span m:converter="#{characterEncodingConverter}" m:value="#{tenantPayPdfRegistSesDto.registTypeName}"/></td>
+	    </tr>
+	    <tr>
+			<th>
+				店コード&nbsp;<input m:rendered="#{tenantPayPdfRegistSesDto.registType==1}" id="miseSchBt" type="button" value="検索"  m:action="#{tenantPayPdfRegistEditAction.callMiseForm}" onDblClick="return false;"/>
+			</th>
+			<td m:rendered="#{tenantPayPdfRegistSesDto.registType==1}">
+				<input type="text" m:value="#{tenantPayPdfRegistSesDto.registDataEntity.urikakeCd}" size="10" maxlength="5" style="ime-mode:disabled;"/>
+			</td>
+			<td m:rendered="#{tenantPayPdfRegistSesDto.registType!=1}">
+				<span m:converter="#{characterEncodingConverter}" m:value="#{tenantPayPdfRegistSesDto.registDataEntity.urikakeCd} #{tenantPayPdfRegistSesDto.registDataEntity.urikakeName}"/>
+			</td>
+		</tr>
+		<tr>
+			<th>対象年月</th>
+			<td m:rendered="#{tenantPayPdfRegistSesDto.registType==1}">
+				<div class="hideArea">
+					<select class="condition_field" 
+							m:value="#{tenantPayPdfRegistSesDto.registDataEntity.keisanYm}"
+							m:items="#{tenantPayPdfRegistSesDto.listTaishoYm}"
+							m:itemValue="key"
+							m:itemLabel="keyName"
+							>
+						<option value="200907">2009/07</option>
+						<option value="200906">2009/06</option>
+					</select>
+				</div>
+			</td>
+			<td m:rendered="#{tenantPayPdfRegistSesDto.registType!=1}">
+				<span m:value="#{tenantPayPdfRegistSesDto.registDataEntity.keisanYm}" m:converter="#{dateConverterYM}"/>
+			</td>
+		</tr>
+		<tr>
+			<th>回数</th>
+			<td m:rendered="#{tenantPayPdfRegistSesDto.registType==1}">
+				<div class="hideArea">
+					<select class="condition_field" 
+						m:value="#{tenantPayPdfRegistSesDto.registDataEntity.seq}"
+						>
+						<option value="01">1</option>
+						<option value="02">2</option>
+					</select>
+				</div>
+			</td>
+			<td m:rendered="#{tenantPayPdfRegistSesDto.registType!=1}">
+				<span m:value="#{tenantPayPdfRegistSesDto.registDataEntity.seq}" m:converter="#{numericCnvtSeq}"/>
+			</td>
+	    </tr>
+		<tr>
+			<th rowspan="2">ファイル登録</th>
+			<td>
+				<span m:converter="#{characterEncodingConverter}" m:inject="x:inputFileUpload" id="uploadFile" size="130" m:value="#{tenantPayPdfRegistSesDto.uploadedFile}"/>
+				<input type="button" m:action="#{tenantPayPdfRegistEditAction.uploadTemporary}" m:value="決定" onDblClick="return false;"/>
+			</td>
+		</tr>
+		<tr m:rendered="#{tenantPayPdfRegistSesDto.registDataEntity.fileName!=null}">
+			<td>
+				<div style="float:left;">
+				<span m:converter="#{characterEncodingConverter}" m:value="#{tenantPayPdfRegistSesDto.registDataEntity.fileName}"/>
+					<!--削除(PDF削除)ボタン-->
+					<input type="button" m:action="#{tenantPayPdfRegistEditAction.removePdf}" m:value="削除" onDblClick="return false;"/>
+				</div>
+			</td>
+		</tr>
+	</table>
+	<input type="text" m:id="dummyEnter" style="display:none"/>
+</form>
+</span>
+</body>
+</html>

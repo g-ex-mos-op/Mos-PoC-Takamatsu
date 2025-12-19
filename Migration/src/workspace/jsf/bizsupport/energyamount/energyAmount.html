@@ -1,0 +1,367 @@
+<html xmlns:m="http://www.seasar.org/maya" m:action="#{energyamountAction.initialize}" m:extends="/jsf/layout/layoutNoNavi.html">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Windows-31j"/>
+<meta http-equiv="Content-Style-Type" content="text/css"/>
+<meta http-equiv="Content-Script-Type" content="text/javascript"/>
+<title>エネルギー使用量ダウンロード</title>
+</head>
+<body>
+<span m:inject="f:param" m:name="layoutTitle" m:value="エネルギー使用量ダウンロード"/>
+<span m:inject="s:insert" m:name="bodyTitleName">■エネルギー使用量ダウンロード</span>
+<span m:inject="f:param" m:name="viewIdValue" m:value="BBS032V01"/>
+<span m:inject="f:param" m:name="onLoadName" m:value="onLoadFunction()"/>
+<span m:inject="f:param" m:name="userType" m:value="#{energyamountSessionDto.userTypeCd}"/>
+<span m:converter="#{characterEncodingConverter}" m:inject="f:param" m:name="suiiTaishoJoken" m:value="#{energyamountSuiiReqDto.taishoJoken}"/>
+<span m:inject="f:param" m:name="suiiTaishoCd" m:value="#{energyamountSuiiReqDto.taishoCd}"/>
+<div m:inject="s:insert" m:name="body">
+<style type="text/css">
+<!--
+-->
+</style>
+
+<script type="text/javascript">
+<!--
+function onLoadFunction() {
+	focusElement('energyamount');
+}
+/**
+ * 対象データ切り替え処理
+ */
+function changeTaishoData(targetData) {
+	var objSelectTag = document.energyamount.getElementsByTagName("select");
+	var targetFeild = "field_eng_";
+	var targetKikan = "";
+	var targetTaisho = "";
+	var isHonbuUser = ("01"==document.energyamount.elements['energyamount:userTypeCd'].value);
+	if(isHonbuUser && "SUII"!=targetData) {
+		document.energyamount.suiiMiseCd.style.display = 'none';
+		document.energyamount.elements['energyamount:btMiseSearch'].style.display = 'none';
+	}
+	for (i = 0; i < objSelectTag.length; i++) {
+		var classNm = objSelectTag[i].className;
+		if(classNm.indexOf(targetFeild) >= 0){
+			if(classNm.indexOf(targetData) >= 0) {
+				var taishoDataFeild = targetFeild+targetData;
+				if("LIST"==targetData) {
+					//エネルギー使用量一覧をチェックされた場合は下記の処理を行います。
+					if(classNm == taishoDataFeild) {
+						if("energyamount:condTaishoKikan"==objSelectTag[i].id) {
+							targetKikan = objSelectTag[i].options[objSelectTag[i].selectedIndex].value;
+						}
+					}
+					else if(classNm.indexOf(taishoDataFeild+"_") >=0 && classNm != taishoDataFeild+"_"+targetKikan) {
+						objSelectTag[i].style.display = 'none';
+						continue;
+					}
+				}
+				if("SUII"==targetData) {
+					//推移表をチェックされた場合は下記の処理を行います。
+					if(classNm == taishoDataFeild) {
+						if("energyamount:suiiTaishoJoken"==objSelectTag[i].id) {
+							targetTaisho = objSelectTag[i].options[objSelectTag[i].selectedIndex].value;
+						}
+					}
+					else if(classNm != taishoDataFeild+"_"+targetTaisho) {
+						objSelectTag[i].style.display = 'none';
+						continue;
+					}
+				}
+				objSelectTag[i].style.display = 'inline';
+				continue;
+			}
+			objSelectTag[i].style.display = 'none';
+		}
+	}// end of for
+	if(isHonbuUser && "SUII"==targetData) {
+		//推移表処理
+		var elementTaishoJoken = document.energyamount.elements['energyamount:suiiTaishoJoken'];
+		if(elementTaishoJoken !=null) {
+			changeTaishoJoken(targetData, elementTaishoJoken.options[elementTaishoJoken.selectedIndex].value);
+		}
+	}
+}
+/**
+ * 対象期間切り替え処理
+ */
+function changeTaishoKikan(targetData, targetKikan) {
+	var objSelectTag = document.energyamount.getElementsByTagName("select");
+	var taishoDataFeild = "field_eng_"+targetData+"_";
+	for (i = 0; i < objSelectTag.length; i++) {
+		var classNm = objSelectTag[i].className;
+		if(classNm.indexOf(taishoDataFeild) >= 0){
+			if(classNm == taishoDataFeild+targetKikan) {
+				objSelectTag[i].style.display = 'inline';
+			}
+			else {
+				objSelectTag[i].style.display = 'none';
+			}
+		}
+	}
+}
+/**
+ * 対象条件切り替え処理
+ */
+function changeTaishoJoken(targetData, targetJoken) {
+	var objSelectTag = document.energyamount.getElementsByTagName("select");
+	var taishoDataFeild = "field_eng_"+targetData+"_";
+	for (i = 0; i < objSelectTag.length; i++) {
+		var classNm = objSelectTag[i].className;
+		if(classNm.indexOf(taishoDataFeild) >= 0){
+			if(classNm == taishoDataFeild+targetJoken) {
+				objSelectTag[i].style.display = 'inline';
+			}
+			else {
+				objSelectTag[i].style.display = 'none';
+			}
+		}
+	}
+	if("MISE"==targetJoken) {
+		document.energyamount.suiiMiseCd.style.display = 'inline';
+		document.energyamount.elements['energyamount:btMiseSearch'].style.display = 'inline';
+	}
+	else {
+		document.energyamount.suiiMiseCd.style.display = 'none';
+		document.energyamount.elements['energyamount:btMiseSearch'].style.display = 'none';
+	}
+}
+
+/**
+ * ボタン押下時推移表用データ設定処理
+ *
+ */
+function settingSuiiData(){
+	//推移表ダウンロード処理
+	var elementTaishoJoken = document.energyamount.elements['energyamount:suiiTaishoJoken'];
+	if(elementTaishoJoken !=null) {
+		//対象条件が存在する場合は対象選択の値を対象コードへ設定します。
+		var taishoJoken = elementTaishoJoken.options[elementTaishoJoken.selectedIndex].value;
+		var taishoCd = "";
+		if("SIBU"==taishoJoken) {
+			//支部プルダウンの選択値を対象コードへ設定します。
+			var pdwnSibu = document.energyamount.elements['energyamount:suiiSibuCd'];
+			taishoCd = pdwnSibu.options[pdwnSibu.selectedIndex].value;
+		}
+		else if("MISE"==taishoJoken) {
+			taishoCd = document.energyamount.suiiMiseCd.value;
+		}
+		document.energyamount.elements['energyamount:suiiTaishoCd'].value=taishoCd;
+	}
+}
+/**
+ * ダウンローﾄﾞボタン押下時処理
+ *
+ */
+function execDownLoad(){
+	var elemntTaishoData = document.energyamount.elements['energyamount:taishoData'];
+	var suiiIndex = 1;
+	if(elemntTaishoData.length==3) {
+		suiiIndex = 2;
+	}
+	//推移表ダウンロード処理
+	if(elemntTaishoData[suiiIndex].checked) {
+		settingSuiiData();
+		document.energyamount.elements['energyamount:__link_clicked__'].value='energyamount:downloadCsvSuii';
+	}
+	else {
+		document.energyamount.elements['energyamount:__link_clicked__'].value='energyamount:downloadCsv';
+	}
+	document.energyamount.target ="_self";
+	document.energyamount.submit();
+}
+
+/**
+ * 共通店選択を開ける
+ *
+ */
+function callMiseForm(){
+	document.energyamount.elements['energyamount:__link_clicked__'].value='energyamount:callMiseForm';
+	document.energyamount.submit();
+}
+
+-->
+</script>
+<form m:id="energyamount" target="_self" onKeyDown="return setDefaultSubmitButton('energyamount','btnExecute');">
+	<input type="hidden" m:id="viewId" m:value="#{viewIdValue}" />
+	<input type="hidden" m:id="initMenuId" m:value="#{menuAction.initMenuId}"/>
+	<input type="hidden" m:id="initSubMenuId" m:value="#{menuAction.initSubMenuId}"/>
+	<input type="hidden" m:id="userTypeCd" m:value="#{userType}"/>
+	<a id="downloadCsv" m:action="#{energyamountAction.downloadCsv}"/>
+	<!--推移表用-->
+	<input type="hidden" m:value="#{energyamountSuiiReqDto.companyCd}"/>
+	<input type="hidden" m:id="suiiTaishoCd" m:value="#{energyamountSuiiReqDto.taishoCd}"/>
+	<a id="downloadCsvSuii" m:action="#{energyamountCsvSuiiAction.downloadCsv}"/>
+	<a id="callMiseForm" m:action="#{energyamountAction.callMiseForm}"/>
+	<!--条件テーブル-->
+	<table cellpadding="0" cellspacing="0">
+	<tr>
+		<td>
+		<table class="body_table" style="width:100%; border-bottom:0px;">
+			<tr>
+			    <th width="85px" style="border-bottom:0px;">対象データ</th>
+			    <td width="*" style="border-bottom:0px;">
+				    <span m:converter="#{characterEncodingConverter}" m:inject="s:selectOneRadio2" m:id="taishoData" m:value="#{energyamountRequestDto.taishoData}">
+				      <input type="radio" value="LIST" onclick="changeTaishoData(this.value);"/>エネルギー使用量一覧
+				      <span m:rendered="#{energyamountSessionDto.userTypeCd == '01'}">
+				      <!--本部ユーザーの場合のみ未入力店舗一覧を選択可能-->
+				      &nbsp;&nbsp;<input type="radio" value="NOINPUT" onclick="changeTaishoData(this.value);"/>未入力店舗一覧</span>
+				      &nbsp;&nbsp;<input type="radio" value="SUII" onclick="changeTaishoData(this.value);"/>エネルギーデータ推移表
+				    </span>
+			    </td>
+			</tr>
+		</table>
+		<table class="body_table" style="width:100%; border-top:0px;">
+		<tr style="line-height:24px;">
+		    <th width="85px">対象期間</th>
+		    <td>
+		        <div class="hideArea">
+		        <!--エネルギー使用量一覧-->
+		        <select class="field_eng_LIST"
+		            m:items="#{energyamountSessionDto.listTaishoKikan}"
+		            m:value="#{energyamountRequestDto.taishoKikan}"
+		            m:id="condTaishoKikan"
+		            m:itemValue="code"
+		            m:itemLabel="value"
+		            onChange="changeTaishoKikan('LIST',this.options[this.selectedIndex].value);"
+		            m:style="#{'LIST'==energyamountRequestDto.taishoData?'':'display:none'}"/>
+		        <!--未入力店舗一覧用-->
+		        <select class="field_eng_NOINPUT"
+		            m:items="#{energyamountSessionDto.listNoInputTaishoKikan}"
+		            m:value="#{energyamountRequestDto.taishoKikanNoinput}"
+		            m:id="condNoInputTaishoKikan"
+		            m:itemValue="code"
+		            m:itemLabel="value"
+		            m:style="#{'NOINPUT'==energyamountRequestDto.taishoData?'':'display:none'}"/>
+		        <!--エネルギーデータ推移表用-->
+		        <select
+		        	class="field_eng_SUII"
+		            m:value="#{energyamountSuiiReqDto.taishoKikan}"
+		            m:style="#{'SUII'==energyamountRequestDto.taishoData?'':'display:none'}">
+		            <option value="">年度累計</option>
+		            </select>
+		        </div>
+		    </td>
+		    <th>対象年月</th>
+		    <td width="83px">
+		        <div class="hideArea">
+		        <!--エネルギー使用量一覧 年月プルダウン-->
+		        <select class="field_eng_LIST_NENGETU"
+		            m:items="#{energyamountSessionDto.listTaishoNengetu}"
+		            m:value="#{energyamountRequestDto.taishoNengetu}"
+		            m:id="condTaishoNengetu"
+		            m:itemValue="code"
+		            m:itemLabel="value"
+		            m:style="#{'LIST'==energyamountRequestDto.taishoData && 'NENGETU'==energyamountRequestDto.taishoKikan?'':'display:none'}"/>
+		        <!--エネルギー使用量一覧 年度プルダウン-->
+		        <select class="field_eng_LIST_NENDO"
+		            m:items="#{energyamountSessionDto.listTaishoNendo}"
+		            m:value="#{energyamountRequestDto.taishoNendo}"
+		            m:id="condTaishoNendo"
+		            m:itemValue="code"
+		            m:itemLabel="value"
+		            m:style="#{'LIST'==energyamountRequestDto.taishoData && 'NENDO'==energyamountRequestDto.taishoKikan?'':'display:none'}"/>
+		        <!--未入力店舗一覧用 年月プルダウンのみ-->
+		        <select class="field_eng_NOINPUT"
+		            m:items="#{energyamountSessionDto.listNoInputTaishoNengetu}"
+		            m:value="#{energyamountRequestDto.taishoNengetuNoinput}"
+		            m:id="condNoInputTaishoNengetu"
+		            m:itemValue="code"
+		            m:itemLabel="value"
+		            m:style="#{'NOINPUT'==energyamountRequestDto.taishoData?'':'display:none'}"/>
+		        <!--エネルギーデータ推移表用 年度プルダウンのみ-->
+		        <select class="field_eng_SUII"
+		            m:items="#{energyamountSuiiSesDto.listNendo}"
+		            m:value="#{energyamountSuiiReqDto.nendo}"
+		            m:itemValue="code"
+		            m:itemLabel="value"
+		            m:style="#{'SUII'==energyamountRequestDto.taishoData?'':'display:none'}"/>
+		        </div>
+		    </td>
+			<div  m:rendered="#{energyamountSessionDto.userTypeCd == '01'}">
+		    <th>対象条件</th>
+		    <td>
+		        <div class="hideArea">
+		        <select class="field_eng_LISTNOINPUT"
+		        m:style="#{'SUII'!=energyamountRequestDto.taishoData?'':'display:none'}">
+		        	<option value="">支部</option></select>
+		        <!--エネルギーデータ推移表用-->
+		        <select class="field_eng_SUII"
+		            m:id="suiiTaishoJoken"
+		            m:items="#{energyamountSuiiSesDto.listTaishoJoken}"
+		            m:value="#{energyamountSuiiReqDto.taishoJoken}"
+		            m:style="#{'SUII'==energyamountRequestDto.taishoData?'':'display:none'}"
+		            onChange="changeTaishoJoken('SUII', this.options[this.selectedIndex].value);">
+		        	<option value="SIBU">支部</option>
+		        	<option value="SLAREA">営業エリア</option>
+		        	<option value="MISE">個店</option>
+		        	</select>
+		        </div>
+		    </td>
+		    <th>対象選択&nbsp;<input type="button"
+		                             m:id="btMiseSearch" value="検索"
+		                             onClick="settingSuiiData();callMiseForm();return false;" onDblClick="return false"
+		                             m:style="#{'SUII'==energyamountRequestDto.taishoData && 'MISE'==suiiTaishoJoken?'':'display:none'}" /></th>
+		    <td colspan="2">
+		        <div class="hideArea">
+		        <select class="field_eng_LISTNOINPUT"
+		            m:value="#{energyamountRequestDto.taishoJoken}"
+		            m:items="#{energyamountSessionDto.listTaishoJoken}"
+		            m:id="condTaishoCd"
+		            m:itemValue="sibuCd"
+		            m:itemLabel="sibuName"
+		            m:style="#{'SUII'!=energyamountRequestDto.taishoData?'':'display:none'}"/>
+		        <!--エネルギーデータ推移表用 支部プルダウン-->
+		        <select class="field_eng_SUII_SIBU"
+		            m:id="suiiSibuCd"
+		            m:items="#{energyamountSuiiSesDto.listSibuCd}"
+		            m:value="#{suiiTaishoCd}"
+		            m:itemValue="sibuCd"
+		            m:itemLabel="sibuName"
+		            m:style="#{'SUII'==energyamountRequestDto.taishoData && 'SIBU'==suiiTaishoJoken?'':'display:none'}"
+		            />
+		        </div>
+		        <input type="text" name="suiiMiseCd" value="#{'MISE'==suiiTaishoJoken?suiiTaishoCd:''}"
+		         size="10" maxlength="5"  class="imenotuse"
+		         m:style="#{'SUII'==energyamountRequestDto.taishoData && 'MISE'==suiiTaishoJoken?'':'display:none'}"
+		         m:passthrough="true"/>
+		    </td>
+		    </div>
+		    <th>メーター区分</th>
+		    <td width="73px">
+		        <div class="hideArea">
+		        <!--エネルギー使用量一覧-->
+		        <select class="field_eng_LIST"
+		            m:items="#{energyamountSessionDto.listMeterKbn}"
+		            m:value="#{energyamountRequestDto.meterKbn}"
+		            m:id="condMeterKbn"
+		            m:itemValue="code"
+		            m:itemLabel="value"
+		            m:style="#{'LIST'==energyamountRequestDto.taishoData?'':'display:none'}"/>
+		        <!--未入力店舗一覧用-->
+		        <select class="field_eng_NOINPUT"
+		            m:items="#{energyamountSessionDto.listNoInputMeterKbn}"
+		            m:value="#{energyamountRequestDto.meterKbnNoinput}"
+		            m:id="condNoInputMeterKbn"
+		            m:itemValue="code"
+		            m:itemLabel="value"
+		            m:style="#{'NOINPUT'==energyamountRequestDto.taishoData?'':'display:none'}"/>
+		        <!--推移表用-->
+		        <select class="field_eng_SUII"
+		            m:items="#{energyamountSessionDto.listNoInputMeterKbn}"
+		            m:value="#{energyamountSuiiReqDto.meterKbn}"
+		            m:itemValue="code"
+		            m:itemLabel="value"
+		            m:style="#{'SUII'==energyamountRequestDto.taishoData?'':'display:none'}"/>
+		        </div>
+		    </td>
+		</tr>
+		</table>
+		</td>
+		</tr>
+	</table>
+	<input type="button" style="clear:both;margin-top:5px;" name="energyamount:btnExecute"
+	       value="ダウンロード" onClick="execDownLoad();" onDblclick="return false;"
+	       m:passthrough="true"/>
+</form>
+</div>
+</body>
+</html>

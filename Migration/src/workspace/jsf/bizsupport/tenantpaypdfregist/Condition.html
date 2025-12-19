@@ -1,0 +1,243 @@
+<html xmlns:m="http://www.seasar.org/maya" m:action="#{tenantPayPdfRegistConditionAction.initialize}" m:extends="/jsf/layout/layoutNoNavi.html">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Windows-31j" />
+<title>テナント入金明細登録</title>
+<span m:inject="f:param" m:name="layoutTitle" m:value="テナント入金明細登録"/>
+<span m:inject="s:insert" m:name="bodyTitleName">■テナント入金明細登録</span>
+<span m:inject="f:param" m:name="viewIdValue" m:value="#{tenantPayPdfRegistReqDto.viewId}"/>
+<span m:inject="f:param" m:name="onLoadName" m:value="load()"/>
+<span m:inject = "f:param" m:name = "msg" m:value="結果が表示されるまでに時間がかかります。よろしいですか？"/>
+</head>
+<body>
+<span m:inject="s:insert" m:name="body" >
+<STYLE type="text/css">
+<!--
+/* テーブルヘッダデフォルト設定 パターン２*/
+/* テーブルヘッダのセンタリング用 */
+table.body_table2 tr th{
+  text-align            : center;
+  border                : 1px solid;
+}
+/* テーブル枠の設定 */
+table.tab_table{
+  border-style          : solid;
+  border-width          : 2px;
+  border-collapse       : collapse;
+}
+table.body_table2 th.leftArea{
+  text-align            : left;
+}
+table.body_table2 col.leftArea{
+  text-align            : left;
+}
+table.body_table2 col.numArea{
+  text-align            : right;
+}
+table.body_table2 col.cenArea{
+  text-align            : center;
+}
+
+.scroll_area {
+    width:100%;
+	height:	  410px;
+	overflow: auto;
+}
+.data_table_width {
+    width:98%;
+}
+.width_SelectIndex {
+    width:35px;
+}
+.width_Mise {
+    width:*px;
+}
+.width_KeisanYm {
+    width:70px;
+}
+.width_Seq {
+    width:40px;
+}
+.width_FileName {
+    width:280px;
+}
+@media print {
+    .data_table_width {
+        width:100%;
+    }
+	.width_SelectIndex {
+	    width:4%;
+	}
+	.width_Mise {
+	    width:*;
+	}
+	.width_KeisanTm {
+	    width:8%;
+	}
+	.width_Seq {
+	    width:4%;
+	}
+	.width_FileName {
+	    width:25%;
+	}
+}
+
+//-->
+</STYLE>
+<script type="text/javascript">
+<!--
+function load(){
+  	focusElement('conditionForm');
+}
+/**
+ * ウィンドウロードステータス取得処理
+ *
+ */
+function returnLoadingStatus(){
+	if(isLoadingFlgOFF()) {
+		setLoadingFlg();
+		return true;
+	}
+	return false;
+}
+/**
+ * ウィンドウロードステータス取得処理
+ *
+ */
+function isLoadingFlgOFF(){
+	return (document.conditionForm.elements['conditionForm:loadingFlg'].value != "ON");
+}
+/**
+ * ウィンドウロードフラグ設定処理
+ *
+ *
+ */
+function setLoadingFlg() {
+	document.conditionForm.elements['conditionForm:loadingFlg'].value = "ON";
+}
+/**
+ * ダウンローﾄﾞボタン押下時処理
+ *
+ */
+function download(index){
+	if(isLoadingFlgOFF()){
+		document.conditionForm.elements['conditionForm:downloadIndex'].value=index;
+		document.conditionForm.elements['conditionForm:__link_clicked__'].value='conditionForm:download';
+		document.conditionForm.target ="_self";
+		document.conditionForm.submit();
+	}
+}
+
+//-->
+</script>
+
+<form m:id="conditionForm" onKeyDown="return setDefaultSubmitButton('conditionForm','btnExecute');">
+	<input type="hidden" id="viewId" m:value="#{tenantPayPdfRegistReqDto.viewId}" />
+	<input type="hidden" id="initMenuId" m:value="#{menuAction.initMenuId}"/>
+	<input type="hidden" id="initSubMenuId" m:value="#{menuAction.initSubMenuId}"/>
+	<input type="hidden" id="windowId" m:value="#{tenantPayPdfRegistReqDto.windowId}"/>
+	<input type="hidden" name="kikanSiteiName" m:value="期間指定" m:passthrough="true"/>
+	<input type="hidden" id="loadingFlg" value=""/>
+    <input type="hidden" id="jyokenMsg" m:value="#{msg}" m:passthrough="true"/>
+	<!--登録系ボタン-->
+	<div style="margin-bottom:3px;margin-right:5px;">
+		<input type="button" value="新規登録" m:action="#{tenantPayPdfRegistConditionAction.callInsertForm}" onDblClick="return false;"/>
+		<span  m:rendered="#{tenantPayPdfRegistSearchedDto.existSearchedData}">
+		<input type="button" value="編集" m:action="#{tenantPayPdfRegistConditionAction.callUpdateForm}" onDblClick="return false;"/>
+		<input type="button" value="削除" m:action="#{tenantPayPdfRegistConditionAction.callDeleteForm}" onDblClick="return false;"/>
+		</span>
+	</div>
+	<!--条件項目テーブル-->
+	<table class="body_table cond_pane_display" style="float:left;">
+	    <tr>
+			 <th nowrap>
+				 店コード<input id="miseSchBt" type="button" m:action="#{tenantPayPdfRegistConditionAction.callMiseForm}" value="検索" onClick="callMiseForm();" onDblClick="return false;"/>
+			 </th>
+			 <td style="width:70px;">
+				<input type="text" id="miseCd" m:value="#{tenantPayPdfRegistReqDto.miseCd}" size="10" maxlength="5" style="ime-mode:disabled;"/>
+			</td>
+			<th>対象年月</th>
+			<td>
+				<div class="hideArea">
+					<select class="condition_field" 
+							m:id="taishoKikan"
+							m:value="#{tenantPayPdfRegistReqDto.taishoYm}"
+							m:items="#{tenantPayPdfRegistReqDto.listTaishoYm}"
+							m:itemValue="key"
+							m:itemLabel="keyName"
+							m:nullLabel=" "
+						>
+						<option value="200907">2009/07</option>
+						<option value="200906">2009/06</option>
+					</select>
+				</div>
+			</td>
+			<th>回数</th>
+			<td>
+				<div class="hideArea">
+					<select class="condition_field" 
+						m:value="#{tenantPayPdfRegistReqDto.kaisuu}"
+						>
+						<option value=""></option>
+						<option value="01">1</option>
+						<option value="02">2</option>
+					</select>
+				</div>
+			</td>
+	    </tr>
+	</table>
+	<!--検索ボタン-->
+	<input type="submit" class="operation_button" m:action="#{tenantPayPdfRegistConditionAction.search}" id="btnExecute" m:value="#{tenantPayPdfRegistSearchedDto.searched==true?'再検索':'検索'}" onDblClick="return false;" style="float:left;margin:3px;"/>
+	<input type="hidden" id="view_viewId" m:value="#{tenantPayPdfRegistSearchedDto.viewId}" />
+	<input type="hidden" id="view_windowId" m:value="#{tenantPayPdfRegistSearchedDto.windowId}"/>
+	<input type="hidden" id="view_taishoJoken" m:value="#{tenantPayPdfRegistSearchedDto.miseCd}"/>
+	<input type="hidden" id="view_hyojiTaisho" m:value="#{tenantPayPdfRegistSearchedDto.taishoYm}"/>
+	<input type="hidden" id="view_taishoKikan" m:value="#{tenantPayPdfRegistSearchedDto.kaisuu}"/>
+	<input type="hidden" id="downloadIndex" m:value="#{tenantPayPdfRegistSearchedDto.downloadIndex}"/>
+	<div m:id="pane_waitmsg" style="clear:both;display:none">
+		<p/><span style="font-weight:bold;" m:value="検索しています。しばらくお待ち下さい・・・"/>
+	</div>
+
+	<!--検索結果-->
+	<div m:rendered="#{tenantPayPdfRegistSearchedDto.existSearchedData}" class="pane_result">
+	<a id="download" m:action="#{tenantPayPdfRegistConditionAction.download}" />
+		<table class="body_table2 data_table_width" style="margin-top:5px;">
+			<tr>
+				<th class="width_SelectIndex">&nbsp;</th>
+				<th class="width_Mise">店舗</th>
+				<th class="width_KeisanYm">対象年月</th>
+				<th class="width_Seq numArea">回数</th>
+				<th class="width_FileName">ファイル</th>
+			</tr>
+		</table>
+		<div m:rendered="#{tenantPayPdfRegistSearchedDto.existSearchedData}" class="scroll_area">
+			<table class="body_table2 data_table_width" style="border-top-width:0px">
+			    <colgroup>
+			        <col class="width_SelectIndex cenArea"/>
+			        <col class="width_Mise leftArea"/>
+			        <col class="width_KeisanYm leftArea"/>
+			        <col class="width_Seq numArea"/>
+			        <col class="width_FileName leftArea "/>
+			    </colgroup>
+				<span m:converter="#{characterEncodingConverter}" m:inject="s:selectOneRadio2" m:id="selectIndex" m:value="#{tenantPayPdfRegistSearchedDto.selectedIndex}">
+				    <span m:inject="s:forEach" m:items="#{tenantPayPdfRegistSearchedDto.listSearchData}" m:var="ui" m:varindex="i">
+				      <tr>
+						  <td><input type="radio" value="#{i}"/></td>
+				          <td><span m:converter="#{characterEncodingConverter}" m:value="#{ui.urikakeCd} #{ui.urikakeName}"/></td>
+						  <td><span m:value="#{ui.keisanYm}" m:converter="#{dateConverterYM}"/></td>
+						  <td><span m:value="#{ui.seq}" m:converter="#{numericCnvtSeq}"/></td>
+						  <td><a href="javaScript:download(#{i});"  title="#{ui.fileName}" onDblClick="return false;" m:passthrough="true">
+						  		<span m:converter="#{characterEncodingConverter}" m:value="#{ui.fileName}"/>
+						  	</a>
+						  </td>
+						</tr>
+					</span>
+				</span>
+			</table>
+		</div>
+	</div>
+	<input type="text" id="dummyEnter" style="display:none"/>
+</form>
+
+</span>
+</body>
+</html>
