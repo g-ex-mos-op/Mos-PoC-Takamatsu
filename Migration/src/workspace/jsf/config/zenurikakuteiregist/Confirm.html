@@ -1,0 +1,80 @@
+<html xmlns:m="http://www.seasar.org/maya" m:action="#{zenurikakuteiRegistConfirmAction.initialize}" m:extends="/jsf/layout/layoutNoNavi.html">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Windows-31j" />
+<title>売上速報前月売上確定登録(確認画面)</title>
+<span m:inject="f:param" m:name="layoutTitle" m:value="売上速報前月売上確定登録(確認画面)"/>
+<span m:inject="s:insert" m:name="bodyTitleName">■売上速報前月売上確定登録(確認画面)</span>
+<span m:inject="f:param" m:name="viewIdValue" m:value="BCF008V02"/>
+<span m:inject="f:param" m:name="onLoadName" m:value="load()"/>
+<span m:inject = "f:param" m:name = "msg" m:value="結果が表示されるまでに時間がかかります。よろしいですか？"/>
+</head>
+<body>
+<span m:inject="s:insert" m:name="body" >
+<STYLE type="text/css">
+<!--
+.data_table_width {
+    width:98%;
+}
+
+table.this_table tr td.plumArea{
+  background-color      : #D8BFD8;
+
+}
+.data_table_width {
+    width:98%;
+
+}
+//-->
+</STYLE>
+<script type="text/javascript">
+<!--
+function load(){
+}
+/**
+ * 戻るボタン押下時処理
+ *
+ */
+function back(){
+	document.mainForm.elements['mainForm:__link_clicked__'].value='mainForm:back';
+	document.mainForm.submit();
+}
+/**
+ * 登録・終了ボタン押下時処理
+ *
+ */
+function auth(){
+	document.mainForm.elements['mainForm:__link_clicked__'].value='mainForm:auth';
+	document.mainForm.submit();
+}
+//-->
+</script>
+<form m:id="mainForm" onKeyDown="return setDefaultSubmitButton('mainForm','btnExecute');">
+	<input type="hidden" id="viewId" m:value="#{viewIdValue}" />
+	<input type="hidden" m:id="initMenuId" m:value="#{menuAction.initMenuId}"/>
+	<input type="hidden" m:id="initSubMenuId" m:value="#{menuAction.initSubMenuId}"/>
+	<input type="hidden" id="windowId" m:value="#{zenurikakuteiRegistReqDto.windowId}"/>
+	<input type="hidden"  m:value="#{zenurikakuteiRegistReqDto.sesstionKey}"/>
+		<a id="back" m:action="#{zenurikakuteiRegistConfirmAction.back}"/>
+		<a id="auth" m:action="#{zenurikakuteiRegistConfirmAction.auth}"/>
+	<b>※以下の内容で登録します。修正する場合は、「戻る」ボタンを押下して、前の画面に戻ってください。<br/></b>
+	<div style="margin-top:5px;margin-bottom:5px;" align="left">
+		<input type="button" m:value="戻る" name="backbt" onClick="return back();" onDblClick="return false;" m:passthrough="true"/>
+			&nbsp;<input type="button" name="mainForm:btnExecute" m:value="登録・終了" class="operation_button" onClick="return auth();" onDblClick="return false;"/>
+	</div>
+	<table class="this_table" >
+	    <tr>
+	      <th width="150px">年月</th><th width="150px">種別</th>
+	    </tr>
+	    <div m:inject="s:forEach" m:items="#{zenurikakuteiRegistSesDto.listRegistData}" m:var="e" m:varindex="i">
+	    <tr>
+	    	<td><span m:value="#{e.uriSokuYm}" m:converter="#{dateCnvtKjYM}"/></td>
+	    	<td class="#{e.statusFlg == '1'? 'plumArea':''}">
+	    		<span m:converter="#{characterEncodingConverter}" m:value="#{e.statusName}"/>
+	    	</td>
+	    </tr>
+	    </div>
+	</table>
+</form>
+</span>
+</body>
+</html>

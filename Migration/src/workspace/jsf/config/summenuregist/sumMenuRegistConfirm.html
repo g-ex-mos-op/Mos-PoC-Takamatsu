@@ -1,0 +1,94 @@
+<html xmlns:m="http://www.seasar.org/maya" m:action="#{sumMenuRegistConfirmAction.initialize}" m:extends="/jsf/layout/layoutNoNavi.html">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Windows-31j"/>
+<meta http-equiv="Content-Style-Type" content="text/css"/>
+<meta http-equiv="Content-Script-Type" content="text/javascript"/>
+<title>メニュー集約マスタ設定（確認画面）</title>
+</head>
+<body>
+<span m:inject="f:param" m:name="layoutTitle" m:value="メニュー集約マスタ設定（確認画面）"/>
+<span m:inject="s:insert" m:name="bodyTitleName">■メニュー集約マスタ設定（確認画面）</span>
+<span m:inject="f:param" m:name="viewIdValue" m:value="BCF009V02"/>
+<span m:inject="f:param" m:name="onLoadName" m:value="onLoadFunction()"/>
+<div m:inject="s:insert" m:name="body">
+<style type="text/css">
+<!--
+.scroll_area {
+	width:	  570px;
+	height:   420px;
+	overflow: auto;
+}
+@media print {
+}
+-->
+</style>
+
+<script type="text/javascript">
+<!--
+function onLoadFunction() {
+    focusElement('editForm');
+}
+-->
+</script>
+
+<form m:id="editForm" target="_self">
+<input type="hidden" m:id="viewId" m:value="#{viewIdValue}" />
+<input type="hidden" m:id="initMenuId" m:value="#{menuAction.initMenuId}"/>
+<input type="hidden" m:id="initSubMenuId" m:value="#{menuAction.initSubMenuId}"/>
+<input type="hidden" m:id="sessionKey" m:value="#{sumMenuRegistReqDto.sessionKey}"/>
+
+<input type="button" 
+       m:id="backBtn" value="戻る" 
+       m:action="#{sumMenuRegistConfirmAction.back}"
+       ondblclick="return false;"/>
+&nbsp;
+<input type="button" 
+       m:id="confirmBtn" value="登録・終了" 
+       m:action="#{sumMenuRegistConfirmAction.regist}"
+       ondblclick="return false;"/>
+
+<br/>
+<div style="clear:both;line-height:25%;"><br/></div>
+	<table class="body_table2" style="width:550px;border-bottom:0px;">
+		<span m:inject="s:forEach" m:items="#{sumMenuRegistDto.listKoMenu}" m:var="e" m:varindex="i">
+		 <tr m:rendered="#{e.sumMenuFlg == '1'}">
+		  <th width="115px;">集約先メニュー</th>
+		  <td ><span m:converter="#{characterEncodingConverter}"n m:inject="h:outputText" m:value="#{e.menuCd}"/>&nbsp;<span m:converter="#{characterEncodingConverter}"n m:inject="h:outputText" m:value="#{e.menuName}"/></td>
+		 </tr>
+		</span>
+	</table>
+	<table class="body_table2" style="width:550px;border-top:0px;border-bottom:0px;">
+	 <colgroup>
+	  <col style="width:*;"/>
+	  <col style="width:0px;"/>
+	  <col style="width:55px;"/>
+	 </colgroup>
+	 <tr class="header_row">
+	  <th colspan="2">対象メニュー</th>
+	  <th>換算数</th>
+	 </tr>
+	</table>
+	<div class="scroll_area">
+	<table class="body_table2" style="width:550px;border-top:0px;">
+	 <colgroup>
+		  <col style="width:*;"/>
+		  <col style="width:0px;"/>
+		  <col style="width:55px;"/>
+	 </colgroup>
+	<span m:inject="s:forEach" m:items="#{sumMenuRegistDto.listKoMenu}" m:var="e" m:varindex="i">
+	 <tr m:rendered="#{e.sumMenuFlg != '1' && !e.sakujoFlg}">
+	   <td style="border-right:0px;"><span m:converter="#{characterEncodingConverter}" m:value="#{e.menuCd}"/>&nbsp;<span m:converter="#{characterEncodingConverter}" m:value="#{e.menuName}"/></td>
+	   <td style="text-align:right;border-left:0px;">
+
+	   </td>
+	   <td style="text-align:right;"><span m:converter="#{characterEncodingConverter}" m:value="#{e.convValue}"/></td>
+	 </tr>
+	</span>
+	</table>
+	</div>
+	<input type="text" m:id="dummyEnter" style="display:none"/>
+
+</form>
+</div>
+</body>
+</html>

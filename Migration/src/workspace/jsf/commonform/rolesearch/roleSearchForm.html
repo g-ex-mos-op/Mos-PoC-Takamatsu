@@ -1,0 +1,107 @@
+<html xmlns:m="http://www.seasar.org/maya" m:action="#{roleSearchAction.initialize}" m:extends="/jsf/layout/layoutNoNavi.html">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Windows-31j"/>
+<meta http-equiv="Content-Style-Type" content="text/css"/>
+<title>ロール選択</title>
+</head>
+<body>
+<span m:inject="f:param" m:name="layoutTitle" m:value="ロール選択"/>
+<span m:inject="s:insert" m:name="bodyTitleName">■ロール選択</span>
+<span m:inject="f:param" m:name="viewIdValue" m:value="BCO004V01"/>
+<span m:inject="f:param" m:name="onLoadName" m:value="load()"/>
+<div m:inject="s:insert" m:name="body">
+<style type="text/css">
+<!--
+.operation_pane {
+	width				: 100%;
+}
+.operation_checkbox {
+	margin-left			: 40px;
+}
+
+.col_check {
+	width				: 40px;
+	text-align			: center;
+}
+.col_rolename {
+	width				: 220px;
+}
+.col_description {
+	width				: *;
+}
+.col_link {
+	width				: 110px;
+}
+
+-->
+</style>
+<script type="text/javascript">
+<!--
+function load() {
+	loadScroll("commonformScroll", 385);
+}
+function fillCheckboxValue(formobj, value) {
+    for (i = 0; i < formobj.elements.length; i++) {
+        if (formobj.elements[i].type == "checkbox") {
+            formobj.elements[i].checked = value;
+        }
+    }
+}
+-->
+</script>
+<form>
+<input type="hidden" m:id="viewId" m:value="#{viewIdValue}" />
+<input type="hidden" m:id="initMenuId" m:value="#{menuAction.initMenuId}"/>
+<input type="hidden" m:id="initSubMenuId" m:value="#{menuAction.initSubMenuId}"/>
+<input type="hidden" m:value="#{roleSearchAction.initialFlag}" />
+
+<div class="operation_pane">
+<input type="submit" value="決定" m:action="#{roleSearchAction.select}"/>
+<input type="submit" value="戻る" m:action="#{roleSearchAction.cancel}"/>
+<input type="button" value="すべてON" class="operation_checkbox" onclick="fillCheckboxValue(this.form, true)"/>
+<input type="button" value="すべてOFF" onclick="fillCheckboxValue(this.form, false)"/>
+</div>
+<div class="scroll_padding_head">
+<div class="scroll_hidden margin_bottom_hidden">
+<ul class="list_tab_area" style="margin-top:4px;">
+<div m:inject="s:forEach" m:items="#{roleSearchRoleListDto.bunruiList}" m:var="e" m:varindex="i">
+	<li class="body_#{e.bunruiCd != roleSearchRoleListDto.selectedBunruiCd?'non_':''}active_cell"
+	    style="width:165px;">
+		<a m:action="#{roleSearchAction.changeTab}" class="list_tab">
+			<span m:converter="#{characterEncodingConverter}" m:value="#{e.bunruiName}"/>
+			<span m:inject="f:param" m:name="selectBunruiCd" m:value="#{e.bunruiCd}"/>
+		</a>
+	</li>
+</div>
+</ul>
+<table class="body_table2" width="98%">
+	<caption class="body_caption" style="line-height:3px;">&nbsp;</caption>
+	<tr class="header_row">
+	<th class="col_check">選択</th>
+	<th class="col_rolename">ロール名</th>
+	<th class="col_description">説明</th>
+	<th class="col_link">対象ユーザー</th>
+	</tr>
+</table>
+</div>
+</div>
+<div class="scroll_padding_data">
+<div class="scroll_standby" id="commonformScroll">
+<table class="body_table2" width="98%" style="border-top-width:0px;">
+    <div m:inject="s:forEach" m:items="#{roleSearchRoleListDto.roleList}" m:var="e" m:varindex="i">
+    <tr class="non_top_border font_size_14">
+        <td class="col_check"><input type="checkbox" m:value="#{e.checkedRole}"/></td>
+        <td class="col_rolename"><span m:converter="#{characterEncodingConverter}" m:value="#{e.roleName}"/></td>
+        <td class="col_description"><span m:converter="#{characterEncodingConverter}" m:value="#{e.description}"/></td>
+        <td class="col_link"><a m:action="#{roleSearchCsvAction.downloadCsv}">ダウンロード<span m:inject="f:param" m:name="selectRoleCd" m:value="#{e.roleCd}"/></a></td>
+    </tr>
+    </div>
+</table>
+</div>
+</div>
+
+<input type="text" m:id="dummyEnter" style="display:none"/>
+</form>
+</div>
+</body>
+</html>

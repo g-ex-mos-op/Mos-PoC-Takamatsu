@@ -1,0 +1,207 @@
+<html xmlns:m="http://www.seasar.org/maya" m:action="#{urisokuRegistEditAction.initialize}" m:extends="/jsf/layout/layoutNoNavi.html">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Windows-31j" />
+<title>売上速報設定登録(編集画面)</title>
+<span m:inject="f:param" m:name="layoutTitle" m:value="売上速報設定登録(編集画面)"/>
+<span m:inject="s:insert" m:name="bodyTitleName">■売上速報設定登録(編集画面)</span>
+<span m:inject="f:param" m:name="viewIdValue" m:value="BCF007V05"/>
+<span m:inject="f:param" m:name="onLoadName" m:value="load();"/>
+<span m:inject = "f:param" m:name = "msg" m:value="結果が表示されるまでに時間がかかります。よろしいですか？"/>
+</head>
+<body>
+<span m:inject="s:insert" m:name="body" >
+<STYLE type="text/css">
+<!--
+.data_table_width {
+    width:732px;
+}
+.col_seq {
+  width:40px;
+  text-align  : center;
+}
+.col_campMenu {
+  width:250px;
+}
+.col_campKikan {
+  width:178px;
+}
+
+//-->
+</STYLE>
+<script type="text/javascript">
+<!--
+function load(){
+	loadScroll("editcampScroll", 340);
+	focusElement('mainForm');
+}
+/**
+ * 戻るボタン押下時処理
+ *
+ */
+function back(confirmMsg){
+	if(returnLoadingStatus()) {
+		//実行前に確認アラートを出力
+		if(confirm(confirmMsg)){
+			document.mainForm.target ="_self";
+			document.mainForm.elements['mainForm:__link_clicked__'].value='mainForm:back';
+			document.mainForm.submit();
+		}
+		else {
+			document.mainForm.elements['mainForm:loadingFlg'].value ="";
+		}
+	}
+}
+/**
+ * 実行ボタン押下時処理
+ *
+ */
+function confirmExec(){
+	if(returnLoadingStatus()) {
+		document.mainForm.target ="_self";
+		document.mainForm.elements['mainForm:__link_clicked__'].value='mainForm:confirm';
+		document.mainForm.submit();
+	}
+}
+/**
+ * ウィンドウロードフラグ設定処理
+ *
+ *
+ */
+function setLoadingFlg() {
+	document.mainForm.elements['mainForm:loadingFlg'].value = "ON";
+}
+/**
+ * ウィンドウロードステータス取得処理
+ *
+ */
+function returnLoadingStatus(){
+	if(isLoadingFlgOFF()) {
+		setLoadingFlg();
+		return true;
+	}
+	return false;
+}
+/**
+ * ウィンドウロードステータス取得処理
+ *
+ */
+function isLoadingFlgOFF(){
+	return (document.mainForm.elements['mainForm:loadingFlg'].value != "ON");
+}
+
+/*
+ * メインタブ切り替え
+ */
+function changeTab(targetTab) {
+	if(returnLoadingStatus()) {
+		document.mainForm.elements['mainForm:selectedTabMain'].value= targetTab;
+		document.mainForm.elements['mainForm:__link_clicked__'].value='mainForm:changeTab';
+		document.mainForm.target ="_self";
+		document.mainForm.submit();
+	}
+}
+function setValueFlg(elementIndex, paramName, checkFlg) {
+	var targetName = targetElementName("mainForm", paramName, elementIndex);
+	var targetForm = document.mainForm;
+	if(checkFlg) {
+		targetForm.elements[targetName].value="1";
+	}
+	else {
+		targetForm.elements[targetName].value="0";
+	}
+}
+//-->
+</script>
+<form m:id="mainForm" onKeyDown="return setDefaultSubmitButton('mainForm','btnExecute');">
+	<input type="hidden" id="viewId" m:value="#{viewIdValue}" />
+	<input type="hidden" m:id="initMenuId" m:value="#{menuAction.initMenuId}"/>
+	<input type="hidden" m:id="initSubMenuId" m:value="#{menuAction.initSubMenuId}"/>
+	<input type="hidden" id="windowId" m:value="#{urisokuRegistReqDto.windowId}"/>
+	<input type="hidden" id="selectedTabMain" m:value="#{urisokuRegistReqDto.selectedTabMain}"/>
+	<input type="hidden" id="selectedTabSub" m:value="#{urisokuRegistReqDto.selectedTabSub}"/>
+	<input type="hidden"  m:value="#{urisokuRegistReqDto.sesstionKey}"/>
+	<input type="hidden" id="loadingFlg" value="" m:passthrough="true"/>
+		<a id="changeTab" m:action="#{urisokuRegistEditAction.changeTab}"/>
+		<a id="confirm" m:action="#{urisokuRegistEditAction.confirm}"/>
+		<a id="back" m:action="#{urisokuRegistEditAction.back}"/>
+	    <span m:inject="s:forEach" m:items="#{urisokuRegistSesDto.listRegistDataCamp}" m:var="e" m:varindex="i">
+			<input type="hidden" m:id="titleFlg" m:value="#{e.titleFlg}" />
+			<input type="hidden" m:id="jissekiFlg" m:value="#{e.jissekiFlg}" />
+	    </span>
+	<table class="hiddenBody">
+		<tr>
+		<td>
+		<table class="body_table2" >
+		    <tr>
+		      <th>対象レポート年月</th>
+		      <td width="70px"><span m:value="#{urisokuRegistSesDto.taishoYm}" m:converter="#{dateConverterYM}"/></td>
+		    </tr>
+		</table>
+		</td>
+		<td>
+			&nbsp;<input type="button" value="戻る" onClick="back('編集中の内容がある場合は破棄されます。よろしいですか？');" onDblClick="return false;" m:passthrough="true"/>
+		</td>
+		<td>
+			&nbsp;<input type="button" name="mainForm:btnExecute" m:value="確認" onClick="return confirmExec();" onDblClick="return false;"/>
+		</td>
+		</tr>
+	</table>
+	<div style="margin-top:10px;" />
+	<table class="data_table_width" cellspacing="0" cellpadding="0">
+		<tr>
+			<div m:inject="s:forEach" m:items="#{urisokuRegistSesDto.listRegistData}" m:var="uiMainTab" m:varindex="i">
+	    		<th width="180px" m:rendered="#{uiMainTab.key==urisokuRegistReqDto.selectedTabMain}" class="view_tab_#{uiMainTab.key} body_active_tab select_border-top">
+    		<span m:converter="#{characterEncodingConverter}" m:value="#{uiMainTab.keyName}" /></th>
+	    		<th width="180px" m:rendered="#{uiMainTab.key!=urisokuRegistReqDto.selectedTabMain}" class="view_tab_#{uiMainTab.key} body_non_active_tab">
+    		<a href="javaScript:void(0); return false;" onClick="changeTab('#{uiMainTab.key}'); return false;" onDblClick="return false;" m:passthrough="true" >
+    		<span m:converter="#{characterEncodingConverter}" m:value="#{uiMainTab.keyName}" /></a></th>
+   			</div>
+		    <th></th>
+		  </tr>
+		<tr class="tab_area" style="height:5px;"><td colspan="5"></td></tr>
+	</table>
+	<div m:rendered="#{urisokuRegistSesDto.existlistRegistDataCamp==true}">
+	<div style="margin-top:4px;margin-bottom:4px;font-weight: bold;">
+「タイトル表示」を選択したキャンペーンは、タイトルと対象期間が速報レポートに表示されます。<br/>
+「実績表示」を選択したキャンペーンは、対象メニューの実績が速報レポートに表示されます。
+	</div>
+	</div>
+</form>
+
+<form m:id="editForm">
+	<!--キャンペーン設定-->
+	<div style="text-align : center;" m:rendered="#{urisokuRegistSesDto.existlistRegistDataCamp==false}">
+	<p/>設定可能なキャンペーンは存在しません。</div>
+	<div m:rendered="#{urisokuRegistSesDto.existlistRegistDataCamp==true}">
+		<table class="body_table2 data_table_width">
+		    <tr class="header_row">
+		    	<th class="col_seq">SEQ</th>
+		    	<th class="col_seq">ﾀｲﾄﾙ<br/>表示</th>
+		    	<th class="col_seq">実績<br/>表示</th>
+		    	<th width="*">タイトル</th>
+		    	<th class="col_campKikan">対象期間</th>
+		    	<th class="col_campMenu">対象メニュー</th>
+		    </tr>
+		</table>
+		<div class="scroll_standby" style="width:753px" id="editcampScroll">
+			<table class="body_table2 data_table_width" style="border-top-width:0px;">
+			    <span m:inject="s:forEach" m:items="#{urisokuRegistSesDto.listRegistDataCamp}" m:var="e" m:varindex="i">
+				    <tr class="non_top_border">
+				    	<span m:rendered="#{1==e.menuSeqNo}">
+				    	<td class="col_seq" rowspan="#{e.menuCnt}" valign="middle"><span m:value="#{e.seqNo}"/></td>
+				    	<td class="col_seq" rowspan="#{e.menuCnt}" valign="middle"><input type="checkbox" m:value="#{e.title}" onClick="setValueFlg(#{i},'titleFlg',this.checked);"/></td>
+				    	<td class="col_seq" rowspan="#{e.menuCnt}" valign="middle"><input type="checkbox" m:value="#{e.jisseki}" onClick="setValueFlg(#{i},'jissekiFlg',this.checked);"/></td>
+				    	<td width="*" rowspan="#{e.menuCnt}" valign="middle"><span m:converter="#{characterEncodingConverter}" m:value="#{e.campTitle}"/></td>
+				    	<td class="col_campKikan font_size_14" rowspan="#{e.menuCnt}" valign="middle"><span m:value="#{e.campFrom}" m:converter="#{dateConverterYMD}"/>～<span m:value="#{e.campTo}" m:converter="#{dateConverterYMD}"/></td>
+				    	</span>
+				    	<td class="col_campMenu"><span m:converter="#{characterEncodingConverter}" m:value="#{e.menuNameKj}"/></td>
+				    </tr>
+			    </span>
+			</table>
+		</div>
+	</div>
+	<input type="text" m:id="dummyEnter" style="display:none"/>
+</form>
+</span>
+</body>
+</html>

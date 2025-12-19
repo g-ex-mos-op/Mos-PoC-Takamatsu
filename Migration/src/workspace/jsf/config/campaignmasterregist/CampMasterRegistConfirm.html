@@ -1,0 +1,181 @@
+<html xmlns:m="http://www.seasar.org/maya" m:action="#{campmasterregistConfirmAction.initialize}" m:extends="/jsf/layout/layoutNoNavi.html">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Windows-31j"/>
+<meta http-equiv="Content-Style-Type" content="text/css"/>
+<meta http-equiv="Content-Script-Type" content="text/javascript"/>
+<title>キャンペーンマスタ登録（確認画面）</title>
+</head>
+<body>
+<span m:inject="f:param" m:name="layoutTitle" m:value="キャンペーンマスタ登録（確認画面）"/>
+<span m:inject="s:insert" m:name="bodyTitleName">■キャンペーンマスタ登録（確認画面）</span>
+<span m:inject="f:param" m:name="viewIdValue" m:value="BCF006V02"/>
+<span m:inject="f:param" m:name="onLoadName" m:value="onLoadFunction()"/>
+<div m:inject="s:insert" m:name="body">
+<style type="text/css">
+<!--
+.scroll_area_menu {
+	width:	  507px;
+	height:   295px;
+	overflow: auto;
+}
+.scroll_area {
+	width:	  350px;
+	height:   337px;
+	overflow: auto;
+}
+.scroll_area_mise {
+	width:	  420px;
+	height:   337px;
+	overflow: auto;
+}
+.sibu_width {
+	width:	  330px;
+}
+-->
+</style>
+
+<script type="text/javascript">
+<!--
+function onLoadFunction() {
+    var objForm = document.campmasterregistEdit;
+    if (objForm.elements['campmasterregistEdit:warMsg1'].value != "") {
+        alert(objForm.elements['campmasterregistEdit:warMsg1'].value);
+    }
+    if (objForm.elements['campmasterregistEdit:warMsg2'].value != "") {
+        alert(objForm.elements['campmasterregistEdit:warMsg2'].value);
+    }
+}
+-->
+</script>
+
+<form m:id="campmasterregistEdit" enctype="multipart/form-data">
+<input type="hidden" m:id="initMenuId" m:value="#{menuAction.initMenuId}"/>
+<input type="hidden" m:id="initSubMenuId" m:value="#{menuAction.initSubMenuId}"/>
+
+<input type="hidden" m:id="viewId" m:value="#{viewIdValue}" />
+<input type="hidden" m:id="warMsg1" m:value="#{campmasterregistDto.warningMsg1}"/>
+<input type="hidden" m:id="warMsg2" m:value="#{campmasterregistDto.warningMsg2}"/>
+<span style="font-weight:bold;" m:rendered="#{campmasterregistDto.registMode != 3}">※以下の内容で登録します。修正する場合は、「戻る」ボタンを押下して、前の画面に戻ってください。<br/></span>
+<input type="submit" value="戻る" m:action="#{campmasterregistConfirmAction.doBack}" onDblClick="return false;"/>
+<input type="submit" value="登録・終了" m:action="#{campmasterregistConfirmAction.doRegist}" m:rendered="#{campmasterregistDto.registMode != 3}"/>
+<table class="body_table2" style="width:630px;margin-top:4px;margin-bottom:15px;">
+  <col style="width:130px"/>
+  <col style="width:500px"/>
+  <tr>
+    <th class="body_header4">タイトル</th>
+    <td><span m:converter="#{characterEncodingConverter}" m:value="#{campmasterregistDto.entityMstCampaign.campTitle}"/></td>
+  </tr>
+</table>
+<!--画面左側start-->
+<table class="hiddenBody">
+<tr>
+	<td valign="top">
+		<!--設定項目-->
+		<table class="body_table2" style="width:390px;margin-bottom:15px;">
+		  <col style="width:130px"/>
+		  <col style="width:130px"/>
+		  <col style="width:130px"/>
+		  <tr class="header_row">
+		    <th>設定項目</th>
+		    <th>開始日</th>
+		    <th>終了日</th>
+		  </tr>
+		  <tr>
+		    <th class="body_header">対象期間</th>
+		    <td><span m:value="#{campmasterregistDto.entityMstCampaign.campFrom}" m:converter="#{campmasterregistDateConverter}"/></td>
+		    <td><span m:value="#{campmasterregistDto.entityMstCampaign.campTo}" m:converter="#{campmasterregistDateConverter}"/></td>
+		  </tr>
+		  <tr>
+		    <th class="body_header">表示期間</th>
+		    <td><span m:value="#{campmasterregistDto.entityMstCampaign.dispFrom}" m:converter="#{campmasterregistDateConverter}"/></td>
+		    <td><span m:value="#{campmasterregistDto.entityMstCampaign.dispTo}" m:converter="#{campmasterregistDateConverter}"/></td>
+		  </tr>
+		</table>
+		<!--対象メニュー-->
+	<table class="body_table2" width="490px">
+	   <tr class="header_row">
+	      <th style="width:220px;">対象メニュー</th>
+	      <th style="width:*;">集約先</th>
+	      <th style="width:60px;">換算値</th>
+	    </tr>
+	</table>
+	<div class="scroll_area_menu">
+	    <table class="body_table2" width="490px" style="border-top-width:0px;">
+			<div m:inject="s:forEach" m:items="#{campmasterregistDto.entityMstMenuList}" m:var="e" m:varindex="i">
+		      <div m:inject="s:forEach" m:items="#{e}" m:var="f" m:varindex="j">
+		        <tr m:rendered="#{f.menuCd != null}" class="non_top_border">
+		          <td class="font_size_14" style="width:50px;"><span m:value="#{f.menuCd}"/></td>
+		          <td class="font_size_15" style="width:167px;"><span m:converter="#{characterEncodingConverter}" m:value="#{f.menuNameKj}"/></td>
+		          <td class="font_size_14" style="width:51px;"><span m:value="#{f.sumMenuCd}"/></td>
+		          <td class="font_size_15" style="width:*;"><span m:converter="#{characterEncodingConverter}" m:value="#{f.sumMenuNameKj}"/></td>
+		          <td class="font_size_14" style="width:60px;text-align:right;"><span m:converter="#{characterEncodingConverter}" m:value="#{f.convValue}"/></td>
+		        </tr>
+		      </div>
+		    </div>
+	    </table>
+	</div>
+	</td>
+	<td style="width:15px;"/>
+	<td valign="top">
+		  <table class="body_table2" style="margin-bottom:4px;">
+		    <tr>
+		      <th style="width:80px">対象店舗</th>
+		      <td style="width:80px">
+		        <span m:rendered="#{campmasterregistDto.condTaishoTenpo == '1'}">全店</span>
+		        <span m:rendered="#{campmasterregistDto.condTaishoTenpo == '2'}">支部</span>
+		        <span m:rendered="#{campmasterregistDto.condTaishoTenpo == '3'}">個店</span>
+		      </td>
+		    </tr>
+		  </table>
+		  <div m:rendered="#{campmasterregistDto.condTaishoTenpo == '2'}">
+		    <table class="body_table2 sibu_width">
+		      <tr class="header_row">
+		        <th>対象支部</th>
+		      </tr>
+		    </table>
+		    <div class="scroll_area">
+		    <table class="body_table2 sibu_width" style="border-top-width:0px;">
+		      <div m:inject="s:forEach"
+		           m:items="#{campmasterregistDto.flgAreaDai?campmasterregistDto.listAreaDai:campmasterregistDto.listSibu}"
+		           m:var="e" m:varindex="i">
+		        <tr m:rendered="#{e.chkSentaku}" class="non_top_border">
+		          <td><span m:converter="#{characterEncodingConverter}" m:value="#{e.sibuName}"/></td>
+		        </tr>
+		      </div>
+		    </table>
+		    </div>
+		  </div>
+		  <div m:rendered="#{campmasterregistDto.condTaishoTenpo == '3'}">
+		    <div style="font-weight:bold;">件数：<span m:converter="#{characterEncodingConverter}" m:value="#{campmasterregistDto.uploadFileDataSize}"/>件</div>
+		    <table class="body_table2" style="width:400px;">
+		      <col style="width:50px"/>
+		      <col style="width:*;"/>
+		      <tr class="header_row">
+		        <th colspan="2">対象店舗</th>
+		      </tr>
+		    </table>
+		    <div class="scroll_area_mise">
+		    <table class="body_table2" style="width:400px;border-top-width:0px;">
+		      <col style="width:50px"/>
+		      <col style="width:*;"/>
+		    <div m:inject="s:forEach" m:items="#{campmasterregistDto.uploadFileData}" m:var="e" m:varindex="i">
+		      <tr class="non_top_border">
+		        <td><span m:value="#{e.miseCd}"/></td>
+		        <td><span m:converter="#{characterEncodingConverter}" m:value="#{e.miseNameKj}"/></td>
+		      </tr>
+		    </div>
+		    </table>
+		    </div>
+		  </div>
+	</td>
+</tr>
+<tr>
+	<td>
+</td>
+</tr>
+</table>
+<input type="text" m:id="dummyEnter" style="display:none"/>
+</form>
+</div>
+</body>
+</html>

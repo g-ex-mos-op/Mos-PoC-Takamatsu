@@ -1,0 +1,71 @@
+<html xmlns:m="http://www.seasar.org/maya" m:action="#{urisokuRegistConditionAction.initialize}" m:extends="/jsf/layout/layoutNoNavi.html">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Windows-31j" />
+<title>売上速報設定登録</title>
+<span m:inject="f:param" m:name="layoutTitle" m:value="売上速報設定登録"/>
+<span m:inject="s:insert" m:name="bodyTitleName">■売上速報設定登録</span>
+<span m:inject="f:param" m:name="viewIdValue" m:value="BCF007V01"/>
+<span m:inject="f:param" m:name="onLoadName" m:value="load()"/>
+</head>
+<body>
+<span m:inject="s:insert" m:name="body" >
+<STYLE type="text/css">
+<!--
+//-->
+</STYLE>
+<script type="text/javascript">
+<!--
+function load(){
+}
+/**
+ * 実行ボタン押下時処理
+ *
+ */
+function search(){
+	document.mainForm.elements['mainForm:__link_clicked__'].value='mainForm:edit';
+	document.mainForm.submit();
+}
+//-->
+</script>
+<form m:id="mainForm" onKeyDown="return setDefaultSubmitButton('mainForm','btnExecute');">
+	<input type="hidden" id="viewId" m:value="#{viewIdValue}" />
+	<input type="hidden" m:id="initMenuId" m:value="#{menuAction.initMenuId}"/>
+	<input type="hidden" m:id="initSubMenuId" m:value="#{menuAction.initSubMenuId}"/>
+	<input type="hidden" id="windowId" m:value="#{urisokuRegistReqDto.windowId}"/>
+		<a id="edit" m:action="#{urisokuRegistConditionAction.edit}"/>
+	<table class="hiddenBody">
+		<tr>
+		<td>
+		<table class="body_table" >
+		    <tr>
+		      <th>対象レポート年月</th>
+		      <td width="70px">
+		        <div class="hideArea">
+					<select class="condition_field" 
+							m:id="taishoYm"
+							m:value="#{urisokuRegistReqDto.taishoYm}"
+							m:items="#{urisokuRegistSesDto.listTaishoYm}"
+							m:itemValue="code"
+							m:itemLabel="name"
+							>
+						<option value="200808">2008/08</option>
+						<option value="200807">2008/07</option>
+						<option value="200806">2008/06</option>
+					</select>
+				  </div>
+		      </td>
+		    </tr>
+		</table>
+		</td>
+		<td style="padding-left:3px;"><input type="button"  name="mainForm:btnExecute" m:value="実行" class="operation_button" onClick="return search();" onDblClick="return false;"/>
+		</td>
+		</tr>
+	</table>
+</form>
+<p style="font-weight:bold">
+【注意事項】<br/><font color="red">末日まで</font>に入力をお願い致します。<br/><br/>
+【入力されたデータの反映タイミング】<br/> ・登録後翌日反映です。
+</p>
+</span>
+</body>
+</html>

@@ -1,0 +1,362 @@
+<html xmlns:m="http://www.seasar.org/maya">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Windows-31j" />
+<title>S2JSFExample</title>
+</head>
+<body>
+<span m:inject="s:insert">
+<form m:id="svIndexSearch">
+<input type="hidden" m:id="viewId" m:value="#{viewIdValue}" />
+<input type="hidden" m:id="initMenuId" m:value="#{menuAction.initMenuId}"/>
+<input type="hidden" m:id="initSubMenuId" m:value="#{menuAction.initSubMenuId}"/>
+<SCRIPT LANGUAGE="javascript">
+<!--
+function naviLoad(){
+  //タブ切り替え初期処理（外部jsに定義）
+  naviTabChange('table','tab_change_area_0', 'td');
+  naviAnchorStyleChange('svIndexSearch:navi_anchor_area_0');
+}
+//-->
+</SCRIPT>
+<br>
+<input type="hidden" m:value="#{svSearchConditionDto.kaisyaCd}"/>
+<table cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="navi_caption" width="150px">SV５０音検索</td>
+  </tr>
+</table>
+<br>
+<table width="150px" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="navi_non_active_cell" width="75px" id="tab_change_area_0">
+      <a href="javascript:naviTabChange('table','tab_change_area_0', 'td');naviAnchorStyleChange('svIndexSearch:navi_anchor_area_0');" 
+      		class="navi_selected_link" id="navi_anchor_area_0">カナ</a>
+    </td>
+    <td class="navi_non_active_cell" width="75px" id="tab_change_area_1">
+      <a href="javascript:naviTabChange('table','tab_change_area_1', 'td');naviAnchorStyleChange('svIndexSearch:navi_anchor_area_1');" 
+      		class="navi_selected_link" id="navi_anchor_area_1">英数字</a>
+    </td>
+  </tr>
+</table>
+<table width="150px" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="navi_caption">
+      <br>
+    </td>
+  </tr>
+</table>
+<table class="tab_change_area_0" cellspacing="0" cellpadding="0" border="0" width="150px">
+  <tr>
+    <td>
+      <a m:action="#{svSearchAction.search}">ア<span m:inject="f:param" m:name="indexSearchKey" m:value="11"/></a>
+    </td>
+    <td>
+      <a m:action="#{svSearchAction.search}">イ<span m:inject="f:param" m:name="indexSearchKey" m:value="12"/></a>
+    </td>
+    <td>
+      <a m:action="#{svSearchAction.search}">ウ<span m:inject="f:param" m:name="indexSearchKey" m:value="13"/></a>
+    </td>
+    <td>
+      <a m:action="#{svSearchAction.search}">エ<span m:inject="f:param" m:name="indexSearchKey" m:value="14"/></a>
+    </td>
+    <td>
+      <a m:action="#{svSearchAction.search}">オ<span m:inject="f:param" m:name="indexSearchKey" m:value="15"/></a>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <a m:action="#{svSearchAction.search}">カ<span m:inject="f:param" m:name="indexSearchKey" m:value="21"/></a>
+    </td>
+    <td>
+      <a m:action="#{svSearchAction.search}">キ<span m:inject="f:param" m:name="indexSearchKey" m:value="22"/></a>
+    </td>
+    <td>
+      <a m:action="#{svSearchAction.search}">ク<span m:inject="f:param" m:name="indexSearchKey" m:value="23"/></a>
+    </td>
+    <td>
+      <a m:action="#{svSearchAction.search}">ケ<span m:inject="f:param" m:name="indexSearchKey" m:value="24"/></a>
+    </td>
+    <td>
+      <a m:action="#{svSearchAction.search}">コ<span m:inject="f:param" m:name="indexSearchKey" m:value="25"/></a>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <a m:action="#{svSearchAction.search}">サ<span m:inject="f:param" m:name="indexSearchKey" m:value="31"/></a>
+    </td>
+    <td>
+      <a m:action="#{svSearchAction.search}">シ<span m:inject="f:param" m:name="indexSearchKey" m:value="32"/></a>
+    </td>
+    <td>
+      <a m:action="#{svSearchAction.search}">ス<span m:inject="f:param" m:name="indexSearchKey" m:value="33"/></a>
+    </td>
+    <td>
+      <a m:action="#{svSearchAction.search}">セ<span m:inject="f:param" m:name="indexSearchKey" m:value="34"/></a>
+    </td>
+    <td>
+      <a m:action="#{svSearchAction.search}">ソ<span m:inject="f:param" m:name="indexSearchKey" m:value="35"/></a>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <a m:action="#{svSearchAction.search}">タ<span m:inject="f:param" m:name="indexSearchKey" m:value="41"/></a>
+    </td>
+    <td>
+      <a m:action="#{svSearchAction.search}">チ<span m:inject="f:param" m:name="indexSearchKey" m:value="42"/></a>
+    </td>
+    <td>
+      <a m:action="#{svSearchAction.search}">ツ<span m:inject="f:param" m:name="indexSearchKey" m:value="43"/></a>
+    </td>
+    <td>
+      <a m:action="#{svSearchAction.search}">テ<span m:inject="f:param" m:name="indexSearchKey" m:value="44"/></a>
+    </td>
+    <td>
+      <a m:action="#{svSearchAction.search}">ト<span m:inject="f:param" m:name="indexSearchKey" m:value="45"/></a>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <a m:action="#{svSearchAction.search}">ナ<span m:inject="f:param" m:name="indexSearchKey" m:value="51"/></a>
+    </td>
+    <td>
+      <a m:action="#{svSearchAction.search}">ニ<span m:inject="f:param" m:name="indexSearchKey" m:value="52"/></a>
+    </td>
+    <td>
+      <a m:action="#{svSearchAction.search}">ヌ<span m:inject="f:param" m:name="indexSearchKey" m:value="53"/></a>
+    </td>
+    <td>
+      <a m:action="#{svSearchAction.search}">ネ<span m:inject="f:param" m:name="indexSearchKey" m:value="54"/></a>
+    </td>
+    <td>
+      <a m:action="#{svSearchAction.search}">ノ<span m:inject="f:param" m:name="indexSearchKey" m:value="55"/></a>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <a m:action="#{svSearchAction.search}">ハ<span m:inject="f:param" m:name="indexSearchKey" m:value="61"/></a>
+    </td>
+    <td>
+      <a m:action="#{svSearchAction.search}">ヒ<span m:inject="f:param" m:name="indexSearchKey" m:value="62"/></a>
+    </td>
+    <td>
+      <a m:action="#{svSearchAction.search}">フ<span m:inject="f:param" m:name="indexSearchKey" m:value="63"/></a>
+    </td>
+    <td>
+      <a m:action="#{svSearchAction.search}">ヘ<span m:inject="f:param" m:name="indexSearchKey" m:value="64"/></a>
+    </td>
+    <td>
+      <a m:action="#{svSearchAction.search}">ホ<span m:inject="f:param" m:name="indexSearchKey" m:value="65"/></a>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <a m:action="#{svSearchAction.search}">マ<span m:inject="f:param" m:name="indexSearchKey" m:value="71"/></a>
+    </td>
+    <td>
+      <a m:action="#{svSearchAction.search}">ミ<span m:inject="f:param" m:name="indexSearchKey" m:value="72"/></a>
+    </td>
+    <td>
+      <a m:action="#{svSearchAction.search}">ム<span m:inject="f:param" m:name="indexSearchKey" m:value="73"/></a>
+    </td>
+    <td>
+      <a m:action="#{svSearchAction.search}">メ<span m:inject="f:param" m:name="indexSearchKey" m:value="74"/></a>
+    </td>
+    <td>
+      <a m:action="#{svSearchAction.search}">モ<span m:inject="f:param" m:name="indexSearchKey" m:value="75"/></a>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <a m:action="#{svSearchAction.search}">ヤ<span m:inject="f:param" m:name="indexSearchKey" m:value="81"/></a>
+    </td>
+    <td>
+    </td>
+    <td>
+      <a m:action="#{svSearchAction.search}">ユ<span m:inject="f:param" m:name="indexSearchKey" m:value="82"/></a>
+    </td>
+    <td>
+    </td>
+    <td>
+      <a m:action="#{svSearchAction.search}">ヨ<span m:inject="f:param" m:name="indexSearchKey" m:value="83"/></a>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <a m:action="#{svSearchAction.search}">ラ<span m:inject="f:param" m:name="indexSearchKey" m:value="91"/></a>
+    </td>
+    <td>
+      <a m:action="#{svSearchAction.search}">リ<span m:inject="f:param" m:name="indexSearchKey" m:value="92"/></a>
+    </td>
+    <td>
+      <a m:action="#{svSearchAction.search}">ル<span m:inject="f:param" m:name="indexSearchKey" m:value="93"/></a>
+    </td>
+    <td>
+      <a m:action="#{svSearchAction.search}">レ<span m:inject="f:param" m:name="indexSearchKey" m:value="94"/></a>
+    </td>
+    <td>
+      <a m:action="#{svSearchAction.search}">ロ<span m:inject="f:param" m:name="indexSearchKey" m:value="95"/></a>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <a m:action="#{svSearchAction.search}">ワ<span m:inject="f:param" m:name="indexSearchKey" m:value="96"/></a>
+    </td>
+    <td>
+    </td>
+    <td>
+      <a m:action="#{svSearchAction.search}">ヲ<span m:inject="f:param" m:name="indexSearchKey" m:value="97"/></a>
+    </td>
+    <td>
+    </td>
+    <td>
+      <a m:action="#{svSearchAction.search}">ン<span m:inject="f:param" m:name="indexSearchKey" m:value="98"/></a>
+    </td>
+  </tr>
+</table>
+
+<table class="tab_change_area_1" cellspacing="0" cellpadding="0" border="0" width="150px">
+  <tr>
+    <td>
+      <a m:action="#{svSearchAction.search}">A<span m:inject="f:param" m:name="indexSearchKey" m:value="101"/></a>
+    </td>
+    <td>
+      <a m:action="#{svSearchAction.search}">B<span m:inject="f:param" m:name="indexSearchKey" m:value="102"/></a>
+    </td>
+    <td>
+      <a m:action="#{svSearchAction.search}">C<span m:inject="f:param" m:name="indexSearchKey" m:value="103"/></a>
+    </td>
+    <td>
+      <a m:action="#{svSearchAction.search}">D<span m:inject="f:param" m:name="indexSearchKey" m:value="104"/></a>
+    </td>
+    <td>
+      <a m:action="#{svSearchAction.search}">E<span m:inject="f:param" m:name="indexSearchKey" m:value="105"/></a>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <a m:action="#{svSearchAction.search}">F<span m:inject="f:param" m:name="indexSearchKey" m:value="106"/></a>
+    </td>
+    <td>
+      <a m:action="#{svSearchAction.search}">G<span m:inject="f:param" m:name="indexSearchKey" m:value="107"/></a>
+    </td>
+    <td>
+      <a m:action="#{svSearchAction.search}">H<span m:inject="f:param" m:name="indexSearchKey" m:value="108"/></a>
+    </td>
+    <td>
+      <a m:action="#{svSearchAction.search}">I<span m:inject="f:param" m:name="indexSearchKey" m:value="109"/></a>
+    </td>
+    <td>
+      <a m:action="#{svSearchAction.search}">J<span m:inject="f:param" m:name="indexSearchKey" m:value="110"/></a>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <a m:action="#{svSearchAction.search}">K<span m:inject="f:param" m:name="indexSearchKey" m:value="111"/></a>
+    </td>
+    <td>
+      <a m:action="#{svSearchAction.search}">L<span m:inject="f:param" m:name="indexSearchKey" m:value="112"/></a>
+    </td>
+    <td>
+      <a m:action="#{svSearchAction.search}">M<span m:inject="f:param" m:name="indexSearchKey" m:value="113"/></a>
+    </td>
+    <td>
+      <a m:action="#{svSearchAction.search}">N<span m:inject="f:param" m:name="indexSearchKey" m:value="114"/></a>
+    </td>
+    <td>
+      <a m:action="#{svSearchAction.search}">O<span m:inject="f:param" m:name="indexSearchKey" m:value="115"/></a>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <a m:action="#{svSearchAction.search}">P<span m:inject="f:param" m:name="indexSearchKey" m:value="116"/></a>
+    </td>
+    <td>
+      <a m:action="#{svSearchAction.search}">Q<span m:inject="f:param" m:name="indexSearchKey" m:value="117"/></a>
+    </td>
+    <td>
+      <a m:action="#{svSearchAction.search}">R<span m:inject="f:param" m:name="indexSearchKey" m:value="118"/></a>
+    </td>
+    <td>
+      <a m:action="#{svSearchAction.search}">S<span m:inject="f:param" m:name="indexSearchKey" m:value="119"/></a>
+    </td>
+    <td>
+      <a m:action="#{svSearchAction.search}">T<span m:inject="f:param" m:name="indexSearchKey" m:value="120"/></a>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <a m:action="#{svSearchAction.search}">U<span m:inject="f:param" m:name="indexSearchKey" m:value="121"/></a>
+    </td>
+    <td>
+      <a m:action="#{svSearchAction.search}">V<span m:inject="f:param" m:name="indexSearchKey" m:value="122"/></a>
+    </td>
+    <td>
+      <a m:action="#{svSearchAction.search}">W<span m:inject="f:param" m:name="indexSearchKey" m:value="123"/></a>
+    </td>
+    <td>
+      <a m:action="#{svSearchAction.search}">X<span m:inject="f:param" m:name="indexSearchKey" m:value="124"/></a>
+    </td>
+    <td>
+      <a m:action="#{svSearchAction.search}">Y<span m:inject="f:param" m:name="indexSearchKey" m:value="125"/></a>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <a m:action="#{svSearchAction.search}">Z<span m:inject="f:param" m:name="indexSearchKey" m:value="126"/></a>
+    </td>
+    <td>
+    </td>
+    <td>
+    </td>
+    <td>
+    </td>
+    <td>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <a m:action="#{svSearchAction.search}">0<span m:inject="f:param" m:name="indexSearchKey" m:value="0"/></a>
+    </td>
+    <td>
+      <a m:action="#{svSearchAction.search}">1<span m:inject="f:param" m:name="indexSearchKey" m:value="1"/></a>
+    </td>
+    <td>
+      <a m:action="#{svSearchAction.search}">2<span m:inject="f:param" m:name="indexSearchKey" m:value="2"/></a>
+    </td>
+    <td>
+      <a m:action="#{svSearchAction.search}">3<span m:inject="f:param" m:name="indexSearchKey" m:value="3"/></a>
+    </td>
+    <td>
+      <a m:action="#{svSearchAction.search}">4<span m:inject="f:param" m:name="indexSearchKey" m:value="4"/></a>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <a m:action="#{svSearchAction.search}">5<span m:inject="f:param" m:name="indexSearchKey" m:value="5"/></a>
+    </td>
+    <td>
+      <a m:action="#{svSearchAction.search}">6<span m:inject="f:param" m:name="indexSearchKey" m:value="6"/></a>
+    </td>
+    <td>
+      <a m:action="#{svSearchAction.search}">7<span m:inject="f:param" m:name="indexSearchKey" m:value="7"/></a>
+    </td>
+    <td>
+      <a m:action="#{svSearchAction.search}">8<span m:inject="f:param" m:name="indexSearchKey" m:value="8"/></a>
+    </td>
+    <td>
+      <a m:action="#{svSearchAction.search}">9<span m:inject="f:param" m:name="indexSearchKey" m:value="9"/></a>
+    </td>
+  </tr>
+</table>
+
+<br>
+<br>
+<table>
+  <tr>
+      <td align="left">文字を選択すると該当オーナーが表示されます</td>
+  </tr>
+</table>
+</form>
+</span>
+</body>
+</html>
