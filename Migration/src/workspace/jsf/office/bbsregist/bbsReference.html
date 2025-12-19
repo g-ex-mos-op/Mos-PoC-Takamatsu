@@ -1,0 +1,106 @@
+<html xmlns:m="http://www.seasar.org/maya" m:action="#{keijibanReferenceAction.initialize}" m:extends="/jsf/layout/layoutNoNavi.html">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Windows-31j"/>
+<title>社内掲示板</title>
+</head>
+<body>
+<span m:inject="f:param" m:name="layoutTitle" m:value="社内掲示板"/>
+<span m:inject="f:param" m:name="onLoadName" m:value=""/>
+<span m:inject="s:insert" m:name="bodyTitleName">■社内掲示板</span>
+<span m:inject="f:param" m:name="viewIdValue" m:value="BOF003V02"/>
+<span m:inject="s:insert" m:name="body">
+<SCRIPT LANGUAGE="javascript">
+<!--
+function download(fileIndex) {
+	document.keijibanRef.elements["keijibanRef:selectedAttachFileIndex"].value=fileIndex;
+}
+
+function kakunin(msg){
+   return confirm(msg);
+}
+//-->
+</SCRIPT>
+<STYLE type="text/css" media="screen">
+</STYLE>
+
+<form m:id="keijibanRef" enctype="multipart/form-data">
+	<input type="hidden" m:id="initMenuId" m:value="#{menuAction.initMenuId}"/>
+	<input type="hidden" m:id="initSubMenuId" m:value="#{menuAction.initSubMenuId}"/>
+	<input type="hidden" m:id="viewId" m:value="#{viewIdValue}"/>
+	<input type="hidden" m:id="downloadIndex" m:value="#{keijibanConditionDto.downloadIndex}"/>
+	<input type="hidden" m:id="selectedAttachFileIndex" m:value="#{keijibanRegistDto.selectedAttachFileIndex}"/>
+
+	<input type="button" value="戻る" class="operation_button" m:action="#{keijibanReferenceAction.cancel}"/>&nbsp;
+	<input type="button" value="修正" class="operation_button" m:action="#{keijibanReferenceAction.regist}"/>&nbsp;
+	<input type="button" value="削除" class="operation_button" m:action="#{keijibanReferenceAction.delete}" m:disabled="#{!keijibanRegistDto.editFlg}" m:onclick="return kakunin('削除します。宜しいですか？')"/>&nbsp;
+
+<table class="body_table2" width="900" style="margin-top:5px;">
+	<tr>
+		<th class="body_header3" width="150">カテゴリー</th>
+		<td clas="body_field" colspan=3>
+			<span m:converter="#{characterEncodingConverter}" m:value="#{keijibanRegistDto.refEntity.cateName}"/>
+		</td>
+	</tr>
+	<tr>
+		<th class="body_header3">タイトル</th>
+		<td class="body_field" colspan=3>
+			<span m:converter="#{characterEncodingConverter}" m:value="#{keijibanRegistDto.refEntity.title}"/>
+		</td>
+	</tr>
+
+	<tr>
+		<th class="body_header3">メッセージ</th>
+		<td clas="body_field" colspan=3>
+			<span m:value="#{keijibanRegistDto.refEntity.message}" m:converter="#{keijibanRegistChangeLineRefConverter}" m:escape="false"/>
+		</td>
+	</tr>
+
+	<tr>
+		<th class="body_header3" width="160">登録者</th>
+		<td class="body_field">
+			<span m:converter="#{characterEncodingConverter}" m:value="#{keijibanRegistDto.refEntity.firstUserName}"/>
+		</td>
+		<th class="body_header3" width="120">更新者</th>
+		<td class="body_field" width="270">
+			<span m:converter="#{characterEncodingConverter}" m:value="#{keijibanRegistDto.refEntity.lastUserName}"/>
+		</td>
+	</tr>
+	<tr>
+		<th class="body_header3" rowspan=4>添付ファイル登録</th>
+		<td class="body_field">
+			<span m:converter="#{characterEncodingConverter}" m:value="#{keijibanRegistDto.refEntity.attachName1}"/>&nbsp;
+		</td>
+		<td class="body_field" colspan=2>
+			<a m:action="#{keijibanRegistDownLoadTenpuRefAction.download}" m:onclick="download(1)" >
+				<span m:converter="#{characterEncodingConverter}" m:value="#{keijibanRegistDto.refEntity.attachFl1}"/>
+			</a>
+		</td>
+	</tr>
+	<tr>
+		<td class="body_field">
+			<span m:converter="#{characterEncodingConverter}" m:value="#{keijibanRegistDto.refEntity.attachName2}"/>&nbsp;
+		</td>
+		<td class="body_field" colspan=2>
+			<a m:action="#{keijibanRegistDownLoadTenpuRefAction.download}" m:onclick="download(2)">
+				<span m:converter="#{characterEncodingConverter}" m:value="#{keijibanRegistDto.refEntity.attachFl2}"/>
+			</a>
+		</td>
+	</tr>
+	<tr>
+		<td class="body_field">
+			<span m:converter="#{characterEncodingConverter}" m:value="#{keijibanRegistDto.refEntity.attachName3}"/>&nbsp;
+		</td>
+		<td class="body_field" colspan=2>
+			<a m:action="#{keijibanRegistDownLoadTenpuRefAction.download}" m:onclick="download(3)">
+				<span m:converter="#{characterEncodingConverter}" m:value="#{keijibanRegistDto.refEntity.attachFl3}"/>
+			</a>
+		</td>
+	</tr>
+
+</table>
+
+
+</form>
+</span>
+</body>
+</html>

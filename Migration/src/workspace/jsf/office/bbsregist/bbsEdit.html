@@ -1,0 +1,134 @@
+<html xmlns:m="http://www.seasar.org/maya" m:action="#{keijibanRegistAction.initialize}" m:extends="/jsf/layout/layoutNoNavi.html">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Windows-31j" />
+<title>社内掲示板</title>
+</head>
+<body>
+<span m:inject="f:param" m:name="layoutTitle" m:value="社内掲示板"/>
+<span m:inject="f:param" m:name="onLoadName" m:value=""/>
+<span m:inject="s:insert" m:name="bodyTitleName">■社内掲示板</span>
+
+<span m:inject="f:param" m:name="viewIdValue" m:value="BOF003V03"/>
+<span m:inject="s:insert" m:name="body">
+<SCRIPT LANGUAGE="javascript">
+<!--
+function kakunin(msg){
+   return confirm(msg);
+}
+//-->
+</SCRIPT>
+<STYLE type="text/css" media="screen">
+</STYLE>
+
+<form m:id="keijibanRegist" enctype="multipart/form-data" onKeyDown="return setDefaultSubmitButton('keijibanRegist','dummyEnter');">
+	<input type="hidden" m:id="initMenuId" m:value="#{menuAction.initMenuId}"/>
+	<input type="hidden" m:id="initSubMenuId" m:value="#{menuAction.initSubMenuId}"/>
+	<input type="hidden" m:id="viewId" m:value="#{viewIdValue}"/>
+	<input type="button" value="戻る" class="operation_button" m:action="#{keijibanRegistAction.cancel}"/>&nbsp;
+	<input type="button" value="登録" class="operation_button" m:action="#{keijibanRegistAction.regist}" m:onclick="return kakunin('登録します。宜しいですか？')"/>
+	<!-- 掲示板内容 -->
+	<table class="body_table2" width="900" style="margin-top:5px;">
+		<tr>
+			<th class="body_header3" width="150">カテゴリー</th>
+			<td clas="body_field" colspan="4" width="270">
+				<select class="condition_field" id="keijibancate"
+						m:value="#{keijibanRegistDto.editEntity.cateId}"
+						m:items="#{keijibanRegistDto.listCategory}"
+						m:itemValue="cateId"
+						m:itemLabel="cateName" >
+					<option value="">カテゴリ１</option>
+					<option value="">カテゴリ２</option>
+					<option value="">カテゴリ３</option>
+				</select>
+			</td>
+		</tr>
+	
+		<tr>
+			<th class="body_header3">タイトル</th>
+			<td class="body_field" colspan="4">
+				<input id="keijibantitle" class="imeon" type="text" m:value="#{keijibanRegistDto.editEntity.title}" m:maxlength="80" m:size="100" m:disabled="#{!keijibanRegistDto.editFlg}" m:maxlength="40">
+			</td>		
+		</tr>	
+		<tr>
+			<th class="body_header3">メッセージ</th>
+			<td clas="body_field" colspan="4">
+				<textarea m:rows="14" m:cols="80" id="keijibanmsg" wrap="soft" m:value="#{keijibanRegistDto.editEntity.message}" m:converter="#{keijibanRegistChangeLineEditConverter}" m:disabled="#{!keijibanRegistDto.editFlg}">
+				</textarea>
+			</td>
+		</tr>
+		<tr>
+			<th class="body_header3" width="120" >登録者</th>
+			<td class="body_field" width="200" colspan="2">
+				<span m:converter="#{characterEncodingConverter}" m:value="#{keijibanRegistDto.editEntity.firstUserName}"/>
+			</td>
+			<th class="body_header3" width="120" >更新者</th>
+			<td class="body_field" width="200">
+				<span m:converter="#{characterEncodingConverter}" m:value="#{keijibanRegistDto.editEntity.lastUserName}"/>
+			</td>
+		</tr>
+		<tr>
+			<th class="body_header3" rowspan="5">添付ファイル登録</th>
+			<th class="body_header3" colspan="2">添付ファイルタイトル</th>
+			<td class="body_field" colspan="2"></td>
+		</tr>
+		<tr>
+			<td class="body_field" colspan="2">
+				<input class="imeon" type="text" id="uploadFileTenpuTitle" m:value="#{keijibanRegistDto.attachName}" m:maxlength="80" m:size="60" m:disabled="#{!keijibanRegistDto.editFlg}" m:maxlength="40"/>
+			</td>
+			<td class="body_field" colspan="2">
+				<span m:converter="#{characterEncodingConverter}" m:inject="x:inputFileUpload" id="uploadFileTenpu" m:value="#{keijibanRegistDto.uploadedAttachFile}" m:size="40" m:disabled="#{!keijibanRegistDto.addAttachFile}" />
+	
+				<input type="button" type="button" value="決定" class="operation_button" m:action="#{keijibanRegistAction.uploadAttachFile}" m:disabled="#{!keijibanRegistDto.addAttachFile}"/>&nbsp;
+				<input type="button" type="button" value="削除" class="operation_button" m:action="#{keijibanRegistAction.deleteAttachFile}" m:disabled="#{!keijibanRegistDto.editFlg}"/>
+	
+			</td>
+		</tr>
+		<tr>
+			<td class="body_field" align="center" width="50">
+				<input type="checkbox" m:value="#{keijibanRegistDto.cmbDelFlg1}" m:disabled="#{!keijibanRegistDto.editFlg}"/>
+			</td>
+			<td class="body_field"  width="300">
+				<span m:converter="#{characterEncodingConverter}" m:value="#{keijibanRegistDto.editEntity.attachName1}"/>
+			</td>
+			<td class="body_field" colspan=2 width="550">
+				<span m:converter="#{characterEncodingConverter}" m:value="#{keijibanRegistDto.editEntity.attachFl1}"/>
+			</td>
+		</tr>
+		<tr>
+			<td class="body_field" align="center">
+				<input type="checkbox" m:value="#{keijibanRegistDto.cmbDelFlg2}" m:disabled="#{!keijibanRegistDto.editFlg}"/>
+			</td>
+			<td class="body_field" >
+				<span m:converter="#{characterEncodingConverter}" m:value="#{keijibanRegistDto.editEntity.attachName2}"/>
+			</td>
+			<td class="body_field" colspan=2>
+				<span m:converter="#{characterEncodingConverter}" m:value="#{keijibanRegistDto.editEntity.attachFl2}"/>
+			</td>
+		</tr>
+		<tr>
+			<td class="body_field" align="center">
+				<input type="checkbox" m:value="#{keijibanRegistDto.cmbDelFlg3}" m:disabled="#{!keijibanRegistDto.editFlg}"/>
+			</td>
+			<td class="body_field" >
+				<span m:converter="#{characterEncodingConverter}" m:value="#{keijibanRegistDto.editEntity.attachName3}"/>
+			</td>
+			<td class="body_field" colspan=2>
+				<span m:converter="#{characterEncodingConverter}" m:value="#{keijibanRegistDto.editEntity.attachFl3}"/>
+			</td>
+		</tr>
+	</table>
+
+	<div m:rendered="#{keijibanRegistDto.editFlg}">
+		<script type="text/javascript">
+		<!--
+			focusElement("keijibanRegist");
+		-->
+		</script>
+	</div>
+
+<input type="text" m:id="dummyEnter" style="display:none"/>
+
+</form>
+</span>
+</body>
+</html>

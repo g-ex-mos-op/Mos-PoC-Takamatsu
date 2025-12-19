@@ -1,0 +1,213 @@
+<html xmlns:m="http://www.seasar.org/maya" m:action="#{keijibanConditionAction.initialize}" m:extends="/jsf/layout/layoutNoNavi.html">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Windows-31j" />
+<title>社内掲示板</title>
+</head>
+<body>
+<span m:inject="f:param" m:name="layoutTitle" m:value="社内掲示板"/>
+<span m:inject="f:param" m:name="onLoadName" m:value=""/>
+<span m:inject="s:insert" m:name="bodyTitleName">■社内掲示板</span>
+<span m:inject="f:param" m:name="viewIdValue" m:value="BOF003V01"/>
+<span m:inject="s:insert" m:name="body">
+<script type="text/javascript">
+<!--
+
+function download(listIndex, fileIndex) {
+	document.keijibanRegist.elements["keijibanRegist:downloadIndex"].value=listIndex;
+	document.keijibanRegist.elements["keijibanRegist:selectedAttachFileIndex"].value=fileIndex;
+
+}
+//-->
+</script>
+<STYLE type="text/css" media="screen">
+    <!--
+
+/* ulを使用したタブ(アクティブなタブ) */
+.selected_tab {
+    color               : white;
+    background-color    : navy;
+    text-decoration     : none;
+    font-weight         : bold;
+}
+
+/* ulを使用したタブ(非アクティブなタブ文字色) */
+.list_tab * a {
+  text-decoration       : none;
+  font-weight           : bold;
+  color                 : navy;
+}
+.list_tab_area {
+  width:98%;
+}
+.scroll_area {
+	width:100%;
+	height:400px;
+    overflow  : auto;
+
+}
+ -->
+</STYLE>
+
+<form m:id="keijibanRegist">
+	<input type="hidden" m:id="initMenuId" m:value="#{menuAction.initMenuId}"/>
+	<input type="hidden" m:id="initSubMenuId" m:value="#{menuAction.initSubMenuId}"/>
+	<input type="hidden" m:id="viewId" m:value="#{viewIdValue}"/>
+	<input type="hidden" m:id="downloadIndex" m:value="#{keijibanConditionDto.downloadIndex}"/>
+	<input type="hidden" m:id="selectedAttachFileIndex" m:value="#{keijibanConditionDto.selectedAttachFileIndex}"/>
+	<table cellpadding="0" cellspacing="0" width="98%">
+		<tr>
+			<td>
+				<table class="body_table" style="float:left">
+					<tr>
+						<th>検索文字</th>
+						<td>
+							<input class="imeon" m:id="keyWord" type="text" m:value="#{keijibanConditionAction.selectedKeyWord}" m:maxlength="80" m:size="35"/>
+							<input type="checkbox" m:value="#{keijibanConditionAction.selectedTitleFlg}"/>タイトル&nbsp;&nbsp;
+							<input type="checkbox" m:value="#{keijibanConditionAction.selectedMsgFlg}"/>メッセージ
+						</td>
+					</tr>
+				</table>
+				<input type="button" value="検索" class="operation_button" m:action="#{keijibanConditionAction.searchKeyWord}" style="float:left;margin:3px;"/>
+				<input type="button" value="書き込む" class="operation_button" m:action="#{keijibanConditionAction.goInsert}" style="float:left;margin:3px;"/>&nbsp;
+			</td>
+			<td m:rendered="#{keijibanConditionDto.listCategorySize != 0}" align="right" style="margin:3px;">
+				<input type="submit" m:disabled="#{keijibanConditionDto.firstPage}" value="最初へ" m:action="#{keijibanConditionAction.changePage}">
+					<span m:inject="f:param" m:name="selectPageNumber" m:value="#{keijibanConditionDto.firstPageNumber}"/>
+				</input>
+				<input type="submit" m:disabled="#{!keijibanConditionDto.existPreviousPage}" value="前へ" m:action="#{keijibanConditionAction.changePage}">
+					<span m:inject="f:param" m:name="selectPageNumber" m:value="#{keijibanConditionDto.previousPageNumber}"/>
+				</input>
+				<input type="submit" m:disabled="#{!keijibanConditionDto.existNextPage}" value="次へ" m:action="#{keijibanConditionAction.changePage}">
+					<span m:inject="f:param" m:name="selectPageNumber" m:value="#{keijibanConditionDto.nextPageNumber}"/>
+				</input>
+				<input type="submit" m:disabled="#{keijibanConditionDto.lastPage}" value="最後へ" m:action="#{keijibanConditionAction.changePage}">
+					<span m:inject="f:param" m:name="selectPageNumber" m:value="#{keijibanConditionDto.lastPageNumber}"/>
+				</input>
+				<span  m:value="#{keijibanConditionDto.currentPageNumber}"/> / <span m:value="#{keijibanConditionDto.lastPageNumber}"/>&nbsp;ページ
+			</td>
+		</tr>
+	</table>
+	<div class="search_result" m:rendered="#{keijibanConditionDto.listCategorySize != 0}" style="clear:both;margin-top:5px;">
+		<!-- カテゴリ タブ -->
+		<!-- 初期表示用 -->
+		<span m:rendered="#{!keijibanConditionDto.keywordSearchMode}">
+			<ul class="list_tab_area">
+			<div m:inject="s:forEach" m:items="#{keijibanConditionDto.listCategory}" m:var="e" m:varindex="i">
+				<li class="list_tab #{e.cateId == keijibanConditionDto.cateId?'selected_tab':''}">
+				&nbsp;
+					<span m:converter="#{characterEncodingConverter}" m:rendered="#{e.cateId == keijibanConditionDto.cateId}" m:value="#{e.cateName}"/>
+					<span m:rendered="#{e.cateId != keijibanConditionDto.cateId}">
+						<a m:action="#{keijibanConditionAction.changeTab}">
+							<span m:converter="#{characterEncodingConverter}" m:value="#{e.cateName}"/>
+							<span m:inject="f:param" m:name="selectedCateId" m:value="#{e.cateId}"/>
+						</a>
+					</span>
+				&nbsp;
+				</li>
+			</div>
+			</ul>
+			<table cellpadding="0" cellspacing="0" width="98%">
+				<tr  class="body_caption" style="height:5px;">
+					<td/></tr>
+			</table>
+			<table class="body_table2" style="width:98%;margin-top:0px;">
+				<tr>
+					<th width="80%">タイトル</th>
+					<th width="*">添付ファイル</th>
+				</tr>
+			</table>
+			<div class="scroll_area">
+				<table class="body_table" width="98%">
+					<div m:rendered="#{keijibanConditionDto.listKeijibanSize != 0}">
+						<div m:inject="s:forEach" m:items="#{keijibanConditionDto.listKeijiban}" m:var="e" m:varindex="i">
+							<tr>
+								<td width="80%">
+									<a m:action="#{keijibanConditionAction.goReference}">
+										<span m:converter="#{characterEncodingConverter}" m:inject="f:param" m:name="selectedIndex" m:value="#{i}"/>
+										<span m:converter="#{characterEncodingConverter}" m:value="#{e.title}"/>
+									</a>
+								</td>
+								<td width="*">
+									<span m:rendered="#{e.existFile1}">
+										<a m:action="#{keijibanRegistDownLoadTenpuCodAction.download}" m:onclick="download(#{i}, 1)" title="#{e.attachFl1}">
+											添付1
+										</a>&nbsp;&nbsp;
+									</span>
+									<span m:rendered="#{e.existFile2}">
+										<a m:action="#{keijibanRegistDownLoadTenpuCodAction.download}" m:onclick="download(#{i}, 2)" title="#{e.attachFl2}">
+											添付2
+										</a>&nbsp;&nbsp;
+									</span>
+									<span m:rendered="#{e.existFile3}">
+										<a m:action="#{keijibanRegistDownLoadTenpuCodAction.download}" m:onclick="download(#{i}, 3)" title="#{e.attachFl3}">
+											添付3
+										</a>&nbsp;&nbsp;
+									</span>
+								</td>
+							</tr>
+						</div>
+					</div>
+				</table>
+			</div>
+		</span>
+
+		<!-- 検索結果用 -->
+		<span m:rendered="#{keijibanConditionDto.keywordSearchMode}">
+			<table class="body_table2" width="98%">
+				<tr>
+					<th width="10%">カテゴリー</th>
+					<th width="70%">タイトル</th>
+					<th width="*">添付ファイル</th>
+				</tr>
+			</table>
+
+			<div class="scroll_area">
+			<table class="body_table" width="98%">
+				<div m:rendered="#{keijibanConditionDto.listKeijibanSize != 0}">
+					<div m:inject="s:forEach" m:items="#{keijibanConditionDto.listKeijiban}" m:var="e" m:varindex="i">
+						<tr>
+							<td width="10%">
+								<span m:converter="#{characterEncodingConverter}" m:value="#{e.cateName}"/>
+							</td>
+							<td width="70%">
+								<a m:action="#{keijibanConditionAction.goReference}">
+									<span m:converter="#{characterEncodingConverter}" m:inject="f:param" m:name="selectedIndex" m:value="#{i}"/>
+									<span m:converter="#{characterEncodingConverter}" m:value="#{e.title}"/>
+								</a>
+							</td>
+							<td width="*">
+								<span m:rendered="#{e.existFile1}">
+									<a m:action="#{keijibanRegistDownLoadTenpuCodAction.download}" m:onclick="download(#{i}, 1)" title="#{e.attachFl1}">
+										添付1
+									</a>&nbsp;&nbsp;
+								</span>
+								<span m:rendered="#{e.existFile2}">
+									<a m:action="#{keijibanRegistDownLoadTenpuCodAction.download}" m:onclick="download(#{i}, 2)" title="#{e.attachFl2}">
+										添付2
+									</a>&nbsp;&nbsp;
+								</span>
+								<span m:rendered="#{e.existFile3}">
+									<a m:action="#{keijibanRegistDownLoadTenpuCodAction.download}" m:onclick="download(#{i}, 3)" title="#{e.attachFl3}">
+										添付3
+									</a>&nbsp;&nbsp;
+								</span>
+							</td>
+						</tr>
+					</div>
+				</div>
+			</table>
+			</div>
+		</span>
+
+	</div>
+
+	<input type="text" m:id="dummyEnter" style="display:none"/>
+	<script type="text/javascript">
+	<!--
+		focusElement("keijibanRegist");
+	-->
+	</script>
+</form>
+</span>
+</body>
+</html>

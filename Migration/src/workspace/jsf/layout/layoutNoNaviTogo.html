@@ -1,0 +1,45 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns:m="http://www.seasar.org/maya">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=Windows-31j" />
+	<meta http-equiv="Content-Style-Type" content="text/css">
+	<title m:value="#{layoutTitle}"/>
+	<link rel="stylesheet" type="text/css" href="#{request.contextPath}/css/#{browserType}/body.css?#{togologinAction.requestTime}"/>
+	<link rel="stylesheet" type="text/css" href="#{request.contextPath}/css/#{browserType}/header.css?#{togologinAction.requestTime}"/>
+	<link rel="stylesheet" type="text/css" href="#{request.contextPath}/css/#{browserType}/main.css?#{togologinAction.requestTime}"/>
+	<link rel="stylesheet" type="text/css" href="#{request.contextPath}/css/#{browserType}/header_2.css?#{togologinAction.requestTime}"/>
+	<link rel="stylesheet" type="text/css" href="#{request.contextPath}/css/#{browserType}/body_2.css?#{togologinAction.requestTime}"/>
+	<link rel="stylesheet" type="text/css" href="#{request.contextPath}/css/#{browserType}/print.css?#{togologinAction.requestTime}" media="print"/>
+	<script  type="text/javascript" src="#{request.contextPath}/js/bird.js?#{togologinAction.requestTime}"></script>
+</head>
+<body scroll="yes" onLoad="#{onLoadName}">
+	<form name="focusElementForm" m:passthrough="true">
+		<input type="hidden" name="FOCUS_ELEMENT" value="#{errHtmlElementDto.htmlElementName}" m:passthrough="true"/>
+		<input type="hidden" name="FOCUS_ELEMENT_INDEX" value="#{errHtmlElementDto.htmlElementIndex}" m:passthrough="true"/>
+	</form>
+	<table class="layout" cellspacing="0" cellpadding="0">
+	  <tr>
+		<td id="naviarea" class="linkTogoarea">
+	      <div class="">
+	        <span m:inject="s:insert" m:name="naviarea"/>
+	      </div>
+	    </td>
+	    <td class="bodyarea">
+	      <table class="body_base_layout" cellspacing="0" cellpadding="0">
+	        <tr>
+	          <td>
+	            <h2 class="body_title" style="float:left;">
+	              <span style="float:left;"><span m:inject="s:insert" m:name="bodyTitleName"/></span>
+	            </h2>
+	            <div class="body_error_massage" style="clear:both;">
+	              <span m:inject="h:messages" m:globalOnly="false" m:showDetail="false"/>
+	            </div>
+	            <span m:inject="s:insert" m:name="body"/>
+	          </td>
+	        </tr>
+	      </table>
+	    </td>
+	  </tr>
+	</table>
+</body>
+</html>

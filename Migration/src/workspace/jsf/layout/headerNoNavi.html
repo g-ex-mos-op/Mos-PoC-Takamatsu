@@ -1,0 +1,54 @@
+<html xmlns:m="http://www.seasar.org/maya">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Windows-31j" />
+<meta http-equiv="Content-Style-Type" content="text/css">
+</head>
+<body>
+<span m:inject="s:insert">
+	<script language="javascript">
+	<!--
+	    function addMyMenu() {
+	        var msg = document.headerForm.elements['headerForm:addMyMenuMsg'].value;
+	        if (!confirm(msg)) {
+	            return false;
+	        }
+	        document.getElementById('headerForm:addMyMenuIFrame').contentWindow.document.addMyMenuForm.elements['addMyMenuForm:targetMyMenuViewId'].value
+	            = document.headerForm.elements['headerForm:initViewId'].value;
+	        document.getElementById('headerForm:addMyMenuIFrame').contentWindow.document.addMyMenuForm.elements['addMyMenuForm:__link_clicked__'].value = "addMyMenuForm:addMyMenuAction";
+	        document.getElementById('headerForm:addMyMenuIFrame').contentWindow.document.addMyMenuForm.submit();
+	    }
+	-->
+	</script>
+<form m:id="headerForm" onKeyDown="return setDefaultSubmitButton('headerForm','btnExecute');" target = "_blank" style="width:100%; display:inline">
+	<input type="hidden" m:id="showViewId" m:value="#{menuAction.showViewId}" />
+	<input type="hidden" m:id="initViewId" m:value="#{menuAction.initViewId}" />
+	<input type="hidden" m:id="addMyMenuMsg" m:value="#{headerDto.addMyMenuMsg}"/>
+    <iframe src="#{request.contextPath}/jsf/layout/controlMenuIFrame.html" height=0 width=0 m:id="addMyMenuIFrame" style="float:right"/>
+<table m:rendered="#{birdUserInfo.pmossles==false}" class="titleline" cellspacing="0" cellpadding="0">
+  <tr>
+  	<td><span m:inject="s:insert" m:src="/jsf/layout/search.html"/></td>
+	<td class="title_status" style="font-size:smaller;">
+      <font class="title_status_info">
+      	ユーザー：<span m:converter="#{characterEncodingConverter}" m:value="#{headerDto.userNameKj}"/>&nbsp;前回ログイン：<span m:converter="#{characterEncodingConverter}" m:value="#{headerDto.loginTime}"/>
+      </font>
+    </td>
+	<td class="title_status">
+      <span m:rendered="#{pullDownMenuDto.leaveOutMenu==false}" class="menu_switch_display">
+        <a href="#" onclick="addMyMenu();">
+	      [マイメニュー登録]
+	    </a>
+	  </span>
+      <span class="menu_switch_display">
+        <a m:action="BSA009V01" target="_blank">
+          <span m:inject="f:param" m:name="showViewId" m:value="#{menuAction.showViewId}"/>
+	      [<span m:converter="#{characterEncodingConverter}" m:value="#{pullDownMenuDto.helpName}" />]
+	    </a>
+	  </span>
+    </td>
+  </tr>
+</table>
+</form>
+</span>
+
+</body>
+</html>

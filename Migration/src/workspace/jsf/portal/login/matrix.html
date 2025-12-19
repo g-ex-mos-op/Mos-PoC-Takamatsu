@@ -1,0 +1,96 @@
+<html xmlns:m="http://www.seasar.org/maya" m:action="#{matrixAction.init}">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Windows-31j" />
+<meta http-equiv="Content-Style-Type" content="text/css">
+<link rel="stylesheet" type="text/css" href="#{request.contextPath}/css/#{birdUserInfo.browserType}/body.css?#{loginAction.requestTime}"/>
+<link rel="stylesheet" type="text/css" href="#{request.contextPath}/css/#{birdUserInfo.browserType}/main.css?#{loginAction.requestTime}"/>
+<span m:inject="f:param" m:name="maskValue" m:value="●"/>
+<title>マトリクス認証画面</title>
+<script type="text/javascript">
+<!--
+function clearForm(formobj) {
+    formobj.elements["matrix:matrixValue"].value = "";
+    formobj.elements["matrix:viewValue"].value = "";
+}
+
+function clickKeyBtn(keyVal) {
+    var viewValue = document.matrix.elements["matrix:viewValue"].value;
+    var matrixVal = document.matrix.elements["matrix:matrixValue"].value;
+    if (viewValue.length < 3) {
+        document.matrix.elements["matrix:viewValue"].value = viewValue + document.matrix.elements["matrix:maskValue"].value;
+        document.matrix.elements["matrix:matrixValue"].value = matrixVal + keyVal;
+    }
+}
+//-->
+</script>
+
+</head>
+
+<body>
+<span m:inject="f:param" m:name="viewIdValue" m:value="BPO000V02"/>
+<span m:inject="f:param" m:name="layoutTitle" m:value="Home"/>
+<span m:inject="s:insert" m:name="body">
+
+<img style="margin:10px" m:inject="h:graphicImage" m:url="/images/bird.gif"/>
+<div align="center">
+
+<form id="matrix">
+<input type="hidden" m:id="viewId" m:value="#{viewIdValue}"/>
+<input type="hidden" m:id="matrixValue" m:value="#{matrixDto.matrixValue}"/>
+<input type="hidden" m:id="maskValue" m:value="#{maskValue}"/>
+<table width="350" cellspacing="0" cellpadding="0">
+  <tr><td class="body_caption">■マトリクス認証画面</td></tr>
+  <tr><td>&nbsp;</td></tr>
+  <tr>
+    <td>
+      <font style="font-weight:bold;color:red;"><span class="matrix_font" m:inject="h:messages" m:globalOnly="false" m:showDetail="false"/></font>
+      <input type="button" value="戻る" m:action="#{matrixAction.back}"/>
+    </td>
+  </tr>
+  <tr><td>&nbsp;</td></tr>
+  <tr><td align="center" class="matrix_font">登録した位置のボタンを順番に押してください。</td></tr>
+</table>
+<br>
+
+<table class="body_table" width="300" border="1">
+  <tr class="header_row">
+  	<th>&nbsp;</th>
+    <th>A</th>
+    <th>B</th>
+    <th>C</th>
+    <th>D</th>
+    <th>E</th>
+  </tr>
+
+<span m:inject="s:forEach"
+	m:items="#{matrixDto.matrixList}"
+	m:var="e"
+	m:varIndex="i">
+	<tr m:class="#{i % 2 == 0 ? 'evenRow' : 'oddRow'}">
+	    <th style="text-align:center;"><span m:converter="#{characterEncodingConverter}" m:value="#{i+1}"/></th>
+	    <td class="body_field" align="center"><input type="button" m:value="#{e.buttonLabelA}" onclick="javascript:clickKeyBtn('#{e.keyA}');" style="width:30px;"/></td>
+	    <td class="body_field" align="center"><input type="button" m:value="#{e.buttonLabelB}" onclick="javascript:clickKeyBtn('#{e.keyB}');" style="width:30px;"/></td>
+	    <td class="body_field" align="center"><input type="button" m:value="#{e.buttonLabelC}" onclick="javascript:clickKeyBtn('#{e.keyC}');" style="width:30px;"/></td>
+	    <td class="body_field" align="center"><input type="button" m:value="#{e.buttonLabelD}" onclick="javascript:clickKeyBtn('#{e.keyD}');" style="width:30px;"/></td>
+	    <td class="body_field" align="center"><input type="button" m:value="#{e.buttonLabelE}" onclick="javascript:clickKeyBtn('#{e.keyE}');" style="width:30px;"/></td>
+	</tr>
+</span>
+</table>
+<p>
+<table width="300">
+  <tr>
+    <td>
+      <input type="text" m:id="viewValue" style="color:black;background-color:white;" m:value="#{matrixDto.viewValue}" size=10 maxlength="3" readonly="readonly"/>
+    </td>
+    <td>
+      <input type="button" value="実行" m:action="#{matrixAction.matrix}"/>&nbsp;
+      <input type="button" value="リセット" onclick="clearForm(this.form);"/>&nbsp;
+    </td>
+  </tr>
+</table>
+</form>
+</div>
+
+</span>
+</body>
+</html>

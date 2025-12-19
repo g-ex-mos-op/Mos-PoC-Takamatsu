@@ -1,0 +1,183 @@
+<html xmlns:m="http://www.seasar.org/maya" m:action="#{matrixRegistAction.init}">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Windows-31j" />
+<meta http-equiv="Content-Style-Type" content="text/css">
+<link rel="stylesheet" type="text/css" href="#{request.contextPath}/css/#{birdUserInfo.browserType}/body.css?#{loginAction.requestTime}"/>
+<link rel="stylesheet" type="text/css" href="#{request.contextPath}/css/#{birdUserInfo.browserType}/main.css?#{loginAction.requestTime}"/>
+<script type="text/javascript" src="#{request.contextPath}/js/bird.js"></script>
+<title>マトリクス認証 キー登録画面</title>
+<script type="text/javascript">
+<!--
+function load(){
+	document.matrix.elements["matrix:A1"].focus();
+}
+function clearForm(formobj) {
+    for (i = 0; i < formobj.elements.length; i++) {
+        if (formobj.elements[i].type == "text") {
+            formobj.elements[i].value = "";
+        }
+    }
+    document.matrix.elements["matrix:A1"].focus();
+}
+//-->
+</script>
+</head>
+
+<body onLoad="load();">
+<span m:inject="f:param" m:name="viewIdValue" m:value="BPO000V03"/>
+<span m:inject="f:param" m:name="layoutTitle" m:value="Home"/>
+<span m:inject="f:param" m:name="userID" m:value="#{loginDto.userId}"/>
+<span m:inject="s:insert" m:name="body">
+
+<img style="margin:10px" m:inject="h:graphicImage" m:url="/images/bird.gif"/>
+<div align="center">
+
+<form id="matrix">
+<input type="hidden" m:id="viewId" m:value="#{viewIdValue}"/>
+<table width="400" cellspacing="0" cellpadding="0">
+  <tr><td class="body_caption">■マトリクス認証 キー登録画面</td></tr>
+  <tr><td>&nbsp;</td></tr>
+  <tr>
+    <td>
+      <font style="font-weight:bold;color:red;"><span m:inject="h:messages" m:globalOnly="false" m:showDetail="false"/></font>
+      <input type="button" value="実行" m:action="#{matrixRegistAction.regist}"/>&nbsp;
+      <input type="button" value="リセット" onclick="clearForm(this.form);"/>&nbsp;
+      <input type="button" value="戻る" m:action="#{matrixRegistAction.backFromRegist}"/>
+      <input type="button" value="スキップ" m:action="#{matrixRegistAction.skip}" m:rendered="#{matrixDto.matrixResetFlg}"/>
+    </td>
+  </tr>
+</table>
+<br/>
+
+
+<table class="body_table" width="300" border="1">
+  <tr>
+    <th class="body_header1" width=100>ユーザーID</th>
+    <td class="body_field" width=200><span m:value="#{userID}"/></td>
+  </tr>
+</table>
+<input type="hidden" m:name="userId" m:value="#{userID}" />
+
+<br/>
+<div align="center">
+<table><tr><td class="font_size_14">
+マトリクス認証で使用するキーの位置を３つ選び<br/>1～3の数字で入力して下さい。
+</td></tr></table>
+</div>
+
+<table class="body_table" width="300" border="1">
+  <tr>
+  	<th class="body_header1">&nbsp;</th>
+    <th class="body_header1">A</th>
+    <th class="body_header1">B</th>
+    <th class="body_header1">C</th>
+    <th class="body_header1">D</th>
+    <th class="body_header1">E</th>
+  </tr>
+  <tr>
+    <th class="body_header1">1</th>
+    <td class="body_field">
+    	<input type="text" id="A1" class="imenotuse width_38" m:maxlength="1" m:size="5" m:value="#{matrixRegistDto.keyA1}"/>
+    </td>
+    <td class="body_field">
+    	<input type="text" id="B1" class="imenotuse width_38" m:maxlength="1" m:size="5" m:value="#{matrixRegistDto.keyB1}"/>
+    </td>
+    <td class="body_field">
+    	<input type="text" id="C1" class="imenotuse width_38" m:maxlength="1" m:size="5" m:value="#{matrixRegistDto.keyC1}"/>
+    </td>
+    <td class="body_field">
+    	<input type="text" id="D1" class="imenotuse width_38" m:maxlength="1" m:size="5" m:value="#{matrixRegistDto.keyD1}"/>
+    </td>
+    <td class="body_field">
+    	<input type="text" id="E1" class="imenotuse width_38" m:maxlength="1" m:size="5" m:value="#{matrixRegistDto.keyE1}"/>
+    </td>
+  </tr>
+  <tr>
+    <th class="body_header1">２</th>
+    <td class="body_field">
+    	<input type="text" id="A2" class="imenotuse width_38" m:maxlength="1" m:size="5" m:value="#{matrixRegistDto.keyA2}"/>
+    </td>
+    <td class="body_field">
+    	<input type="text" id="B2" class="imenotuse width_38" m:maxlength="1" m:size="5" m:value="#{matrixRegistDto.keyB2}"/>
+    </td>
+    <td class="body_field">
+    	<input type="text" id="C2" class="imenotuse width_38" m:maxlength="1" m:size="5" m:value="#{matrixRegistDto.keyC2}"/>
+    </td>
+    <td class="body_field">
+    	<input type="text" id="D2" class="imenotuse width_38" m:maxlength="1" m:size="5" m:value="#{matrixRegistDto.keyD2}"/>
+    </td>
+    <td class="body_field">
+    	<input type="text" id="E2" class="imenotuse width_38" m:maxlength="1" m:size="5" m:value="#{matrixRegistDto.keyE2}"/>
+    </td>
+  </tr>
+  <tr>
+    <th class="body_header1">３</th>
+    <td class="body_field">
+    	<input type="text" id="A3" class="imenotuse width_38" m:maxlength="1" m:size="5" m:value="#{matrixRegistDto.keyA3}"/>
+    </td>
+    <td class="body_field">
+    	<input type="text" id="B3" class="imenotuse width_38" m:maxlength="1" m:size="5" m:value="#{matrixRegistDto.keyB3}"/>
+    </td>
+    <td class="body_field">
+    	<input type="text" id="C3" class="imenotuse width_38" m:maxlength="1" m:size="5" m:value="#{matrixRegistDto.keyC3}"/>
+    </td>
+    <td class="body_field">
+    	<input type="text" id="D3" class="imenotuse width_38" m:maxlength="1" m:size="5" m:value="#{matrixRegistDto.keyD3}"/>
+    </td>
+    <td class="body_field">
+    	<input type="text" id="E3" class="imenotuse width_38" m:maxlength="1" m:size="5" m:value="#{matrixRegistDto.keyE3}"/>
+    </td>
+  </tr>
+  <tr>
+    <th class="body_header1">４</th>
+    <td class="body_field">
+    	<input type="text" id="A4" class="imenotuse width_38" m:maxlength="1" m:size="5" m:value="#{matrixRegistDto.keyA4}"/>
+    </td>
+    <td class="body_field">
+    	<input type="text" id="B4" class="imenotuse width_38" m:maxlength="1" m:size="5" m:value="#{matrixRegistDto.keyB4}"/>
+    </td>
+    <td class="body_field">
+    	<input type="text" id="C4" class="imenotuse width_38" m:maxlength="1" m:size="5" m:value="#{matrixRegistDto.keyC4}"/>
+    </td>
+    <td class="body_field">
+    	<input type="text" id="D4" class="imenotuse width_38" m:maxlength="1" m:size="5" m:value="#{matrixRegistDto.keyD4}"/>
+    </td>
+    <td class="body_field">
+    	<input type="text" id="E4" class="imenotuse width_38" m:maxlength="1" m:size="5" m:value="#{matrixRegistDto.keyE4}"/>
+    </td>
+  </tr>
+  <tr>
+    <th class="body_header1">５</th>
+    <td class="body_field">
+    	<input type="text" id="A5" class="imenotuse width_38" m:maxlength="1" m:size="5" m:value="#{matrixRegistDto.keyA5}"/>
+    </td>
+    <td class="body_field">
+    	<input type="text" id="B5" class="imenotuse width_38" m:maxlength="1" m:size="5" m:value="#{matrixRegistDto.keyB5}"/>
+    </td>
+    <td class="body_field">
+    	<input type="text" id="C5" class="imenotuse width_38" m:maxlength="1" m:size="5" m:value="#{matrixRegistDto.keyC5}"/>
+    </td>
+    <td class="body_field">
+    	<input type="text" id="D5" class="imenotuse width_38" m:maxlength="1" m:size="5" m:value="#{matrixRegistDto.keyD5}"/>
+    </td>
+    <td class="body_field">
+    	<input type="text" id="E5" class="imenotuse width_38" m:maxlength="1" m:size="5" m:value="#{matrixRegistDto.keyE5}"/>
+    </td>
+  </tr>
+</table>
+<br/>
+<span>
+<table width=340><tr><td class="font_size_14">
+ここで決めた場所と順番は、今後1年間同じです。<br/>
+忘れないようにしてください。<br/>
+場所と順番を決めて次画面に進むと、
+マスに表示される番号は毎回変わりますが、
+最初に決めた場所と順番通りに押してください。
+</td></tr></table>
+</span>
+</form>
+</div>
+</span>
+
+</body>
+</html>

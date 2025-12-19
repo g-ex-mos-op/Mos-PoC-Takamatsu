@@ -1,0 +1,235 @@
+<html xmlns:m="http://www.seasar.org/maya" m:action="#{portalTopSokuhoAction.initialize}">
+	<head>
+	<title>
+	</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=Windows-31j" />
+	<meta http-equiv="Content-Style-Type" content="text/css">
+	<link rel="stylesheet" type="text/css" href="#{request.contextPath}/css/#{birdUserInfo.browserType}/main.css?#{headerDto.loginTime}"/>
+	<link rel="stylesheet" type="text/css" href="#{request.contextPath}/css/#{birdUserInfo.browserType}/body.css?#{headerDto.loginTime}"/>
+	<link rel="stylesheet" type="text/css" href="#{request.contextPath}/css/#{birdUserInfo.browserType}/body_#{birdUserInfo.emosslesAppId}.css?#{headerDto.loginTime}"/>
+	<link rel="stylesheet" type="text/css" href="#{request.contextPath}/css/#{birdUserInfo.browserType}/print.css?#{headerDto.loginTime}" media="print"/>
+	<script type="text/javascript" src="#{request.contextPath}/js/bird.js?#{headerDto.loginTime}"></script>
+<SCRIPT LANGUAGE="javascript">
+<!--
+function clearErrerMsg() {
+	var objs = document.getElementsByTagName("div");
+	for(i = 0; i < objs.length; i++) {
+		var classNm = objs[i].className;
+		if(classNm=="body_error_massage"){
+			objs[i].style.display = "none";
+			break;
+		}
+	}
+}
+function download(pdfType) {
+	clearErrerMsg();
+	document.sokuhoForm.elements['sokuhoForm:pdfType'].value=pdfType;
+	document.sokuhoForm.target="";
+	document.sokuhoForm.elements['sokuhoForm:__link_clicked__'].value='sokuhoForm:download';
+	document.sokuhoForm.submit();
+}
+function calenderInfo() {
+	clearErrerMsg();
+	document.sokuhoForm.elements['sokuhoForm:__link_clicked__'].value='sokuhoForm:calenderInfo';
+	document.sokuhoForm.target="CALENDER_INF";
+	window.open("", "CALENDER_INF", "toolbar=no, status=yes");
+	document.sokuhoForm.submit();
+}
+// -->
+</SCRIPT>
+	<style type="text/css">
+	<!--
+	.body_caption td {
+		padding:2px 1px;
+	}
+	table.body_table2 {
+		width:100%;
+	}
+	/* テーブルヘッダデフォルト設定 パターン２*/
+	/* テーブルヘッダのセンタリング用 */
+	table.body_table2 tr th{
+	  text-align            : center;
+	  font-size:11pt;
+	}
+	/* 表：数値項目表示(背景色：緑) */
+	table.body_table2 tr td.body_sum5{
+	  background-color      : #FFC0A0;
+	}
+	.scroll_area01 {
+	    width:100%;
+		height:	  253px;
+		overflow: auto;
+	}
+	.scroll_area02, .scroll_area03 {
+	    width:100%;
+		height:	  277px;
+		overflow: auto;
+	}
+	.width_dt {
+	    width:40px;
+	}
+	.width_uriage {
+	    width:80px;
+	}
+	.width_Hiritu {
+	    width:51px;
+	}
+	table.body_table2 tr td{
+	  text-align            : right;
+	}
+	/* 2016/10/12 cut to body.css layout repaire
+	.dwnldBt_report {
+	    width:175px;
+	}
+	.dwnldBt_lastMonthreport {
+	    width:125px;
+	} */
+	table.body_table2 tr th.zennenFontSize {
+		font-size:8pt;
+	}
+	-->
+	</style>
+	</head>
+<body>
+	<form id="sokuhoForm">
+	<input type="hidden" id="pdfType" value="#{portalTopDto.pdfType}"/>
+	<a id="download" m:action="#{portalTopSokuhoAction.download}"/>
+	<a id="calenderInfo" m:action="#{portalTopCalenderInfoAction.calenderInfo}"/>
+	<table cellpadding="0" cellspacing="0">
+		<tr>
+			<th class="body_caption">&nbsp;対象日：<span m:value="#{birdDateInfo.appDate}" m:converter="#{dateConverterYMDEKj}"/>&nbsp;</th>
+			<td m:rendered="#{birdUserInfo.mstUser.userTypeCd=='01' && portalTopDto.mosVisitor}"
+			     class="element_browser">
+				&nbsp;<input value="売上速報レポートダウンロード" class="dwnldBt_report" type="submit" onClick="download('THIS');" onDblClick="return false;"/>
+				<input value="前月分ダウンロード" class="dwnldBt_lastMonthreport" type="submit" onClick="download('LAST');" onDblClick="return false;"/>
+			</td>
+			<td class="element_browser">&nbsp;<input type="button" value="カレンダー情報" onClick="calenderInfo();" onDblClick="return false;"/></td>
+		</tr>
+	</table>
+
+	<input type="text" m:id="dummyEnter" style="display:none"/>
+	</form>
+	<div style="line-height:3px;"><br/></div>
+    <div style="" class="body_error_massage">
+      <span m:inject="h:messages" m:globalOnly="false" m:showDetail="false"/>
+    </div>
+	<table m:rendered="#{birdUserInfo.mstUser.userTypeCd=='01'}"
+	       class="element_browser"
+	       cellspacing="0" cellpadding="0" width="100%">
+		<tr>
+			<span m:inject="s:forEach" m:items="#{portalTopDto.listSokuho}" m:var="uiTab">
+    		<td width="120px" class="body#{uiTab.key=='0'? '':'_non'}_active_cell tab_change_area_#{uiTab.key}"
+    		    onClick="changeTabArea('#{uiTab.key}');"
+    		    onDblClick="return false;" onMouseOver="this.style.cursor='pointer';">
+				<span m:converter="#{characterEncodingConverter}" m:value="#{uiTab.keyName}"/></td>
+    		</span>
+    		<td>&nbsp;</td>
+   			</tr>
+		<tr class="body_caption" style="height:5px;"><td colspan="3"></td></tr>
+	</table>
+	<div class="scroll_area#{birdUserInfo.mstUser.userTypeCd}">
+	<span m:inject="s:forEach" m:items="#{portalTopDto.listSokuho}" m:var="uiTab" m:varIndex="t">
+		<div class="#{uiTab.key=='0'? '':'in'}visible_tab tab_change_area_#{uiTab.key}">
+		<span m:inject="s:forEach" m:items="#{uiTab.listData}" m:var="uiSegment" m:varindex="s">
+			<table width="100%" cellspacing="0" cellpadding="0">
+			  <tr m:rendered="#{s>=1}" style="height:8px;"><td></td></tr>
+			  <span m:inject="s:forEach" m:items="#{uiSegment.listData}" m:var="uiData" m:varindex="i">
+			  <tr m:rendered="#{i==0}" class="body_caption">
+			    <td m:rendered="#{birdUserInfo.mstUser.userTypeCd=='01'}">
+				    <span m:converter="#{characterEncodingConverter}" m:value="#{uiSegment.keyName}"/>&nbsp;&nbsp;計画比当月見込：<span m:converter="#{characterEncodingConverter}" m:value="#{uiData.yosanhiMikomi}"/>％
+					&nbsp;&nbsp;&nbsp;<span m:value="#{portalTopDto.appLastMonthDay}" m:converter="#{dateConverterM}"/>月末店舗数：<span m:value="#{uiData.tenpoCount}" m:converter="#{numericConverter}"/>店
+					&nbsp;&nbsp;&nbsp;前年<span m:value="#{portalTopDto.appLastMonthDay}" m:converter="#{dateConverterM}"/>月末店舗数：<span m:value="#{uiData.zenTenpoCount}" m:converter="#{numericConverter}"/>店
+			    </td>
+			    <td m:rendered="#{birdUserInfo.mstUser.userTypeCd=='02'}">
+				    <span m:value="#{uiSegment.keyName}"/>&nbsp;&nbsp;&nbsp;店舗数：<span m:value="#{uiData.tenpoCount}" m:converter="#{numericConverter}"/>
+			    </td>
+			    <td m:rendered="#{birdUserInfo.mstUser.userTypeCd=='03'}">
+				    <span m:converter="#{characterEncodingConverter}" m:value="#{uiSegment.keyName}"/>
+			    </td>
+			  </tr>
+			  </span>
+			  <tr style="height:3px;"><td></td></tr>
+			  <tr>
+				<td>
+				  <table class="body_table2">
+				  	<colgroup>
+				  		<col class="width_dt"/>
+				  		<col /><col /><col class="width_Hiritu"/>
+				  		<col /><col class="width_Hiritu"/>
+				  		<col></col><col class="width_Hiritu"/>
+				  	</colgroup>
+					  <tr>
+					  	<th></th>
+					  	<th>売上額</th>
+						  	<th m:rendered="#{birdUserInfo.mstUser.userTypeCd=='01'}">計画額</th><th m:rendered="#{birdUserInfo.mstUser.userTypeCd=='01'}">計画比</th>
+						  	<th m:rendered="#{birdUserInfo.mstUser.userTypeCd!='01'}">予算額</th><th m:rendered="#{birdUserInfo.mstUser.userTypeCd!='01'}">予算比</th>
+					  	<th class="#{birdUserInfo.mstUser.userTypeCd=='01' && uiTab.key=='1'?'zennenFontSize':''}">前年同<span m:value="#{birdUserInfo.mstUser.userTypeCd=='01'?'月':'曜'}"/>
+					  	<span m:inject="h:outputText" value="#{birdUserInfo.mstUser.userTypeCd=='01' && uiTab.key=='1'?'<br/>営業日補正':''}" escape="false"/></th><th>前年比</th>
+					  	<th>前年同日</th><th>前年比</th>
+					  </tr>
+					  <span m:inject="s:forEach" m:items="#{uiSegment.listData}" m:var="uiData" m:varindex="i">
+					  <tr>
+					  	<th><span m:converter="#{characterEncodingConverter}" m:value="#{uiData.dtName}"/></th>
+					  	<td><span m:value="#{uiData.uriage}" m:converter="#{bizreportNumericCnvt}"/></td>
+					  	<td><span m:value="#{uiData.yosan}" m:converter="#{numericConverter}"/></td>
+					  	<td><span m:value="#{uiData.yosanHi}" m:converter="#{numericConverter}"/></td>
+					  	<td><span m:value="#{uiTab.key=='1'?uiData.zenUriageNet:uiData.zenUriage}" m:converter="#{bizreportNumericCnvt}"/></td>
+					  	<td><span m:value="#{uiTab.key=='1'?uiData.uriageZenHiNet:uiData.uriageZenHi}" m:converter="#{numericConverter}"/></td>
+					  	<td><span m:value="#{uiData.zenUriageDoujitu}" m:converter="#{bizreportNumericCnvt}"/></td>
+					  	<td class="#{uiData.dtType!='1'?'body_sum5':''}"><span m:value="#{uiData.uriageZenHiDoujitu}" m:converter="#{numericConverter}"/></td>
+					  </tr>
+					  </span>
+				  </table>
+			 	</td>
+			  </tr>
+			  <tr style="height:5px;"/>
+			  <tr>
+				<td>
+				  <table class="body_table2">
+				  	<colgroup>
+				  		<col class="width_dt"/>
+				  		<col/>
+				  		<col/><col class="width_Hiritu"/>
+				  		<col/><col class="width_Hiritu"/>
+				  		<col class=""/>
+				  		<col class=""/><col class="width_Hiritu"/>
+				  		<col class=""/><col class="width_Hiritu"/>
+				  	</colgroup>
+					  <tr>
+					  	<th></th>
+					  	<th>客数</th>
+					  	<th class="#{birdUserInfo.mstUser.userTypeCd=='01' && uiTab.key=='1'?'zennenFontSize':''}">前年同<span m:value="#{birdUserInfo.mstUser.userTypeCd=='01'?'月':'曜'}"/>
+					  		<span m:inject="h:outputText" value="#{birdUserInfo.mstUser.userTypeCd=='01' && uiTab.key=='1'?'<br/>営業日補正':''}" escape="false"/></th><th style="">前年比</th>
+					  	<th>前年同日</th><th>前年比</th>
+					  	<th class="#{birdUserInfo.mstUser.userTypeCd=='01' && uiTab.key=='1'?'zennenFontSize':''}">客単価</th>
+					  	<th class="#{birdUserInfo.mstUser.userTypeCd=='01' && uiTab.key=='1'?'zennenFontSize':''}">前年<span m:inject="h:outputText" value="#{uiTab.key!='1'?'<br/>':''}" escape="false"/>同<span m:value="#{birdUserInfo.mstUser.userTypeCd=='01'?'月':'曜'}"/>
+					  	<span m:inject="h:outputText" value="#{birdUserInfo.mstUser.userTypeCd=='01' && uiTab.key=='1'?'<br/>営業日補正':''}" escape="false"/></th>
+					  	<th>前年比</th>
+					  	<th>前年<br/>同日</th><th>前年比</th>
+					  </tr>
+					  <span m:inject="s:forEach" m:items="#{uiSegment.listData}" m:var="uiData" m:varindex="i">
+					  <tr>
+					  	<th><span m:converter="#{characterEncodingConverter}" m:value="#{uiData.dtName}"/></th>
+					  	<td><span m:value="#{uiData.kyakusu}" m:converter="#{numericConverter}"/></td>
+					  	<td><span m:value="#{uiTab.key=='1'?uiData.zenKyakusuNet:uiData.zenKyakusu}" m:converter="#{numericConverter}"/></td>
+					  	<td><span m:value="#{uiTab.key=='1'?uiData.kyakusuZenHiNet:uiData.kyakusuZenHi}" m:converter="#{numericConverter}"/></td>
+					  	<td><span m:value="#{uiData.zenKyakusuDoujitu}" m:converter="#{numericConverter}"/></td>
+					  	<td><span m:value="#{uiData.kyakusuZenHiDoujitu}" m:converter="#{numericConverter}"/></td>
+					  	<td><span m:value="#{uiData.kyakutanka}" m:converter="#{bizreportNumericCnvt}"/></td>
+					  	<td><span m:value="#{uiTab.key=='1'?uiData.zenKyakutankaNet:uiData.zenKyakutanka}" m:converter="#{bizreportNumericCnvt}"/></td>
+					  	<td><span m:value="#{uiTab.key=='1'?uiData.kyakutankaZenHiNet:uiData.kyakutankaZenHi}" m:converter="#{numericConverter}"/></td>
+					  	<td><span m:value="#{uiData.zenKyakutankaDoujitu}" m:converter="#{numericConverter}"/></td>
+					  	<td class="#{uiData.dtType!='1'?'body_sum5':''}"><span m:value="#{uiData.kyakutankaZenHiDoujitu}" m:converter="#{numericConverter}"/></td>
+					  </tr>
+					  </span>
+				  </table>
+				</td>
+			  </tr>
+			</table>
+		</span>
+		<table class="height_portal"><tr ></tr></table>
+	</div>
+	</span>
+	</div>
+</body>
+</html>

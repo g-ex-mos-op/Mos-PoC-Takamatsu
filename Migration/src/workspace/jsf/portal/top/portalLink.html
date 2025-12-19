@@ -1,0 +1,173 @@
+<html xmlns:m="http://www.seasar.org/maya" m:action="#{portalTopLinkAction.initialize}">
+	<head>
+	<title>
+	</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=Windows-31j" />
+	<meta http-equiv="Content-Style-Type" content="text/css">
+	<link rel="stylesheet" type="text/css" href="#{request.contextPath}/css/#{birdUserInfo.browserType}/header_#{birdUserInfo.emosslesAppId}.css?#{headerDto.loginTime}"/>
+	<link rel="stylesheet" type="text/css" href="#{request.contextPath}/css/#{birdUserInfo.browserType}/main.css?#{headerDto.loginTime}"/>
+	<link rel="stylesheet" type="text/css" href="#{request.contextPath}/css/#{birdUserInfo.browserType}/body.css?#{headerDto.loginTime}"/>
+	<link rel="stylesheet" type="text/css" href="#{request.contextPath}/css/#{birdUserInfo.browserType}/body_#{birdUserInfo.emosslesAppId}.css?#{headerDto.loginTime}"/>
+	<link rel="stylesheet" type="text/css" href="#{request.contextPath}/css/#{birdUserInfo.browserType}/print.css?#{headerDto.loginTime}" media="print"/>
+	<script type="text/javascript" src="#{request.contextPath}/js/bird.js?#{headerDto.loginTime}"></script>
+	<script type="text/javascript" src="#{request.contextPath}/js/kumu.js"></script>
+	<script type="text/javascript" src="#{request.contextPath}/js/ajax.js"></script>
+	<SCRIPT LANGUAGE="javascript">
+	<!--
+	var tmpcolor;
+	// onマウス時の色の設定
+	function overColor(menuObj) {
+		menuObj.style.backgroundColor = "#FFCCAA";
+	}
+	// マウスが外れた際に色を戻す
+	function outColor(menuObj) {
+	    menuObj.style.backgroundColor = '';
+	}
+	/*
+	 * 表示ステータス変更処理
+	 */
+	function changeDisplay(targetTag, firstClassNm, lastClassNm) {
+		var objs = document.linkForm.getElementsByTagName(targetTag);
+		for (i = 0; i < objs.length; i++) {
+			var classNm = objs[i].className;
+			if(classNm.indexOf(firstClassNm)>=0){
+				if("" != lastClassNm && classNm.indexOf(lastClassNm)>=0) {
+					objs[i].style.display     = "block";
+				}else{
+					objs[i].style.display   = "none";
+				}
+			}
+		}
+	}
+	/**
+	 * タブ切り替え
+	 * 今週・来週タブの切り替えを行います。
+	 * @commonTab 共通タブ名称
+	 * @dispTab 表示対象タブ名称
+	 */
+	function changeTab(commonTab, dispTab) {
+		var firstClassNm = commonTab;
+		var lastClassNm = dispTab;
+		changeDisplay("table", firstClassNm, lastClassNm);
+		changeDisplay("th", firstClassNm, lastClassNm);
+	}
+	function deleteMyMenu(viewId) {
+	  document.linkForm.initViewId.value=viewId;
+	  document.linkForm.elements['linkForm:__link_clicked__'].value='linkForm:deleteMyMenu';
+	  document.linkForm.target="_self";
+	  document.linkForm.submit();
+	  return false;
+	}
+	function linkUp(rowIndex,count) {
+		if(count<=1){
+			sublinkUp(rowIndex);
+		}else{
+			if(rowIndex=="0025"){
+				Kumu.Ajax.ASYNC = false;
+				Kumu.Ajax.executeTeedaAjax(portalSessionKeyAction_ajaxGetSessionKey, [], Kumu.Ajax.RESPONSE_TYPE_TEXT);
+				function portalSessionKeyAction_ajaxGetSessionKey(res){
+					if (res=='has') {
+						document.linkForm.elements['linkForm:linkId'].value=rowIndex;
+						document.linkForm.elements['linkForm:__link_clicked__'].value='linkForm:allianceInfo';
+						document.linkForm.target="ALLOAMCE_INF";
+				        var iTop = (window.screen.availHeight - 230) / 2;
+				        var iLeft = (window.screen.availWidth - 360) / 2;
+				        window.open("", "ALLOAMCE_INF", 'height=200,innerHeight=200,width=350,innerWidth=350,top=' + iTop + ',left=' + iLeft + ',status=no,toolbar=no,menubar=no,location=no,resizable=no,scrollbars=0');
+						document.linkForm.submit();
+						return false;
+					} else {
+						document.linkForm.elements['linkForm:__link_clicked__'].value='linkForm:allianceInfo';
+						document.linkForm.target="_blank";
+						document.linkForm.submit();
+						return false;
+					}
+				 }
+			}else{
+				sublinkUp(rowIndex);
+			}
+		}
+	}
+
+	function sublinkUp(rowIndex){
+		 document.linkForm.elements['linkForm:linkId'].value=rowIndex;
+		 document.linkForm.elements['linkForm:__link_clicked__'].value='linkForm:linkUp';
+		 document.linkForm.target="_blank";
+		 document.linkForm.submit();
+		 return false;
+	}
+	// -->
+	</SCRIPT>
+	<style type="text/css">
+	<!--
+	.scroll_area {
+	    width  : 100%;
+		height : 450px;
+	}
+	a {
+		color:#000000;
+	}
+	-->
+	</style>
+	</head>
+<body>
+	<form id="linkForm">
+	<input type="hidden" m:name=":isUseCommonDto" m:value="1" m:passthrough="true"/>
+	<input type="hidden" m:id="viewId" m:value="#{viewIdValue}" />
+	<input type="hidden" m:name="initViewId" m:value="" m:passthrough="true"/>
+	<input type="hidden" m:id="linkId" m:value="#{commonOutLinkDto.linkId}"/>
+	<input type="hidden" m:id="dougaCd" m:value="#{commonOutLinkDto.dougaCd}"/>
+	<a id="deleteMyMenu" m:action="#{portalTopAction.deleteMyMenu}"/>
+	<a id="linkUp" m:action="#{portalTopLinkAction.linkUp}"/>
+	<a id="allianceInfo" m:action="#{portalTopAllianceInfoAction.getOutLinkInfo}"/>
+	<table width="100%" border="0" cellspacing="0" cellpadding="0">
+	<tr>
+		<th width="*" align="right"></th>
+		<th class="link_out" align="right" style="#{portalTopLinkAction.linkType=='out'?'':'display:none;'}"><font onMouseOver="this.style.cursor='pointer';" onClick="changeTab('link_', 'mymenu');">&gt;&gt;マイメニューを開く</font></th>
+		<th class="link_mymenu" align="right" style="#{portalTopLinkAction.linkType=='mymenu'?'':'display:none;'}"><font onMouseOver="this.style.cursor='pointer';" onClick="changeTab('link_', 'out');">&lt;&lt;マイメニューを閉じる</font></th>
+	</tr>
+	</table>
+	<div class="scroll_area">
+		<table width="223px" class="link_out" border="0" cellspacing="0" cellpadding="0" style="#{portalTopLinkAction.linkType=='out'?'':'display:none;'}">
+		    <span m:inject="s:forEach" m:items="#{portalTopDto.listOutLink}" m:var="e" m:varindex="i">
+		  <tr>
+		    <td><img m:inject="h:graphicImage" m:url="/images/#{e.imgPath}" width="223px" onMouseOver="this.style.cursor='pointer';" onClick="linkUp('#{e.linkId}','#{portalTopDto.count}');" onDblClick="return false;" target="_blank"/></td>
+		  </tr>
+		  <tr style="height:5px"><td/></tr>
+		    </span>
+		</table>
+		<table border="0" width="98%" class="link_mymenu" cellspacing="0" cellpadding="0" style="#{portalTopLinkAction.linkType=='mymenu'?'':'display:none;'}">
+		    <span m:inject="s:forEach" m:items="#{birdUserInfo.listMyMenu}" m:var="mymenu">
+		    	<span m:rendered="#{mymenu.sakujoFlg !='1'}">
+			  <tr style="font-size:11pt;">
+			  	<td width="22px">
+			        <img m:inject="h:graphicImage" m:url="/images/mos_#{birdUserInfo.emosslesAppId}.gif" width="20px"/>
+			    </td>
+			    <td class="link_feild">
+			    	<span m:rendered="#{mymenu.menuDispKbn=='1'}">
+			    	<font style="text-decoration:underline"
+			    				onClick="window.parent.callScreen('#{mymenu.viewId}', '#{mymenu.screenId}', '#{mymenu.menuId}', '#{mymenu.subMenuId}', '#{mymenu.menuDispKbn}', '#{mymenu.param}');"
+			    				onDblClick="return false;" ><span onMouseOver="this.style.cursor='pointer';"
+			    				m:value="#{mymenu.subMenuName}"/></font>
+			    	</span>
+			    	<span m:rendered="#{mymenu.menuDispKbn=='2'}">
+			    	<font onClick="linkUp('#{mymenu.param}');" onDblClick="return false;" style="text-decoration:underline"><span m:converter="#{characterEncodingConverter}" onMouseOver="this.style.cursor='pointer';" m:value="#{mymenu.subMenuName}"/></font>
+			    	</span>
+
+			    </td>
+			    <td nowrap="nowrap" align="right">
+			    	<font onClick="deleteMyMenu('#{mymenu.viewId}');" onDblClick="return false;" style="text-decoration:underline"><span onMouseOver="this.style.cursor='pointer';">[削除]</span></font>
+			    </td>
+			  </tr>
+			  </span>
+		    </span>
+	    	<tr><td>&nbsp;</td></tr>
+	    	<tr>
+	    		<td ></td>
+	    		<td align="right" colspan="2"><a href="../../../help/MyMenu.pdf" target="mymenuHelp">[マイメニューの使い方]</a></td>
+	    	</tr>
+		 </table>
+	</div>
+	<input type="text" m:id="dummyEnter" style="display:none"/>
+	</form>
+</body>
+</html>
