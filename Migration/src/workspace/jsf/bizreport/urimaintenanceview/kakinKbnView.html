@@ -1,0 +1,261 @@
+<html xmlns:m="http://www.seasar.org/maya" m:action="#{kaikeiKbnViewAction.initialize}" m:extends="/jsf/layout/layoutNoNavi.html">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Windows-31j"/>
+<title>売上修正確認明細</title>
+</head>
+<body>
+<span m:inject="f:param" m:name="layoutTitle" m:value="売上修正(会計区分確認画面)"/>
+<span m:inject="s:insert" m:name="bodyTitleName">■売上修正確認明細</span>
+<span m:inject="f:param" m:name="onLoadName" m:value="load();"/>
+<span m:inject="f:param" m:name="viewIdValue" m:value="BBR009V02"/>
+<span m:inject="f:param" m:name="dayRowCnt" m:rendered="#{uriMainteViewMeisaiResultDto.searchFlg}"
+      m:value="#{(uriMainteViewMeisaiResultDto.syukeiKbnResultData.tabCnt>10?1:2)}"/>
+
+<div m:inject="s:insert" m:name="body">
+
+<script type="text/javascript">
+<!--
+function load() {
+	document.kaikeiform.elements['kaikeiform:loadingFlg'].value = "";
+}
+function setLoadingFlg() {
+	document.kaikeiform.elements['kaikeiform:loadingFlg'].value = "ON";
+}
+/**
+ * ウィンドウロードステータス取得処理
+ *
+ */
+function returnLoadingStatus(){
+	if(isLoadingFlgOFF()) {
+		setLoadingFlg();
+		return true;
+	}
+	return false;
+}
+/**
+ * ウィンドウロードステータス取得処理
+ *
+ */
+function isLoadingFlgOFF(){
+	return (document.kaikeiform.elements['kaikeiform:loadingFlg'].value != "ON");
+}
+
+function changeTab(tabNo) {
+	changeTabArea(tabNo, 'tab_change_area_', 'div', 'li');
+}
+-->
+</script>
+
+
+<style type="text/css">
+<!--
+.list_tab_area {
+    width               : 955px;
+    margin-top:4px;
+    display:block;
+}
+
+table.list_width {
+	width:955px;
+}
+table.list_data {
+	border-top-width:0px;
+	border-bottom-width:2px;
+}
+table.list_data tr{
+  line-height:20px;
+}
+table.list_data tr td{
+  padding: 0px 1px;
+  text-align            : right;
+  border-top-width:0px;
+}
+table.body_table2 tr td.num_true{
+  background-color      : #FF9933;
+}
+.col_tenpo {
+	width:202px;
+}
+.col_eigyoDt {
+	width:82px;
+}
+.col_ken {
+	width:43px;
+}
+.col_kin {
+	width:80px;
+}
+table.body_table2 tr td.col_total {
+	background-color      : #FFC0A0;
+}
+.col_totalken {
+	width:50px;
+}
+.col_totalkin {
+	width:90px;
+}
+
+-->
+</style>
+<script type="text/javascript">
+<!--
+/**
+ *  アクション実行
+ */
+function executeAction(formName, actionName) {
+    document.forms[formName].elements[formName + ':__link_clicked__'].value = formName + ':' + actionName;
+    document.forms[formName].submit();
+    return false;
+}
+-->
+</script>
+
+<form m:id="kaikeiform" style="display:inline;">
+	<input type="hidden" m:id="windowId" m:value="#{uriMainteViewMeisaiJokenDto.windowId}"/>
+	<input type="hidden" m:id="tabNo"    m:value="#{uriMainteViewMeisaiResultDto.tabNo}"/>
+	<input type="hidden" m:id="viewId" m:value="#{viewIdValue}" />
+	<input type="hidden" name="maxScrollHeight"
+	       m:value="" m:passthrough="true"/>
+	<input type="hidden" id="loadingFlg" value=""/>
+	<input type="hidden" m:id="syukeiCd" m:value="#{uriMainteViewMeisaiJokenDto.syukeiCd}"/>
+	<a id="search"       m:action="#{kaikeiKbnViewAction.search}"/>
+
+	<!--結果表示エリア-->
+	<table class="hiddenBody element_browser">
+		<tr>
+		<td>
+		<table class="body_table" style="display:block;">
+			<tr>
+				<th nowrap>会社</th>
+				<td>
+					<div class="hideArea">
+						<select m:value="#{uriMainteViewMeisaiJokenDto.companyCd}"
+							m:items="#{uriMainteViewSesDto.companyList}"
+							m:itemValue="companyCd"
+							m:itemLabel="companyName"
+							m:id="companyList">
+						</select>
+					</div>
+				</td>
+
+				<th nowrap>修正日</th>
+				<td>
+					<div class="hideArea">
+						<select m:value="#{uriMainteViewMeisaiJokenDto.syuseiDate}"
+							m:items="#{uriMainteViewSesDto.syuseDateList}"
+							m:itemValue="code"
+							m:itemLabel="name"
+							m:id="syuseDateList">
+						</select>
+					</div>
+				</td>
+
+	      		<th>集計区分</th>
+	      		<td>
+					<div class="hideArea">
+						<select m:id="syukeiKbnList" m:value="#{uriMainteViewMeisaiJokenDto.syukeiCd}"
+								m:items="#{uriMainteViewSesDto.syukeiKbnList}"
+								m:itemValue="syukeiCd" m:itemLabel="syukeiName"/>
+					</div>
+		 		</td>
+			</tr>
+		</table>
+		</td>
+		<td>
+		<input type="button" value="再検索"
+					 name="kaikeiform:btnExecute"
+					 onclick="executeAction('kaikeiform', 'search')" style="margin:3px;"/></td></tr>
+	</table>
+
+	<!--結果表示エリア-->
+	<div m:rendered="#{uriMainteViewMeisaiJokenDto.searchFlg}">
+	<table class="body_table2 element_browser" style="margin-top:4px;margin-bottom:4px;">
+	    <tr>
+	      <th>集計区分名称</th>
+	      <td><span m:converter="#{characterEncodingConverter}" m:value="#{uriMainteViewMeisaiResultDto.syukeiKbnResultData.name}"/>&nbsp;</td>
+	    </tr>
+	</table>
+	<table class="body_table2 element_print" style="margin-top:4px;margin-bottom:4px;">
+	    <tr>
+	      <th>会社</th>
+	      <td><span m:converter="#{characterEncodingConverter}" m:value="#{uriMainteViewMeisaiResultDto.companyName}"/>&nbsp;</td>
+	      <th>修正日</th>
+	      <td><span m:value="#{uriMainteViewMeisaiResultDto.syuseiDate}" m:converter="#{dateConverterYMD}"/>&nbsp;</td>
+	      <th>集計区分名称</th>
+	      <td><span m:converter="#{characterEncodingConverter}" m:value="#{uriMainteViewMeisaiResultDto.syukeiKbnResultData.name}"/>&nbsp;</td>
+	    </tr>
+	</table>
+	<!-- タブ部 -->
+	<ul class="list_tab_area">
+      <div m:inject="s:forEach" m:items="#{uriMainteViewMeisaiResultDto.syukeiKbnResultData.listTabResult}" m:var="tabData" m:varindex="t">
+        <li class="body_#{tabData.key == '01'?'':'non_'}active_cell  tab_change_area_#{tabData.key} element_browser"
+          style="width:90px;">
+              <a href="javaScript:changeTab('#{tabData.key}');" onDblClick="return false;">
+                <span m:converter="#{characterEncodingConverter}" m:value="#{tabData.keyName}"/></a>
+        </li>
+      </div>
+    </ul>
+	<!-- タブ帯部 -->
+	<table class="body_caption element_browser #{birdUserInfo.browserType =='safari'?'width_961_s':'list_width'}" style="clear:both;" cellspacing="0" cellpadding="0">
+	  <tr style="height:5px;"><td></td></tr>
+	</table>
+
+	<div m:inject="s:forEach" m:items="#{uriMainteViewMeisaiResultDto.syukeiKbnResultData.listTabResult}" m:var="tabData" m:varindex="t">
+		<!--タブの件数分出力されます-->
+		<div class="tab_change_area_#{tabData.key} #{tabData.key == '01'?'':'in'}visible_tab">
+
+			<!-- 印刷時のみ -->
+			<span class="element_print" m:value="【#{tabData.keyName}タブ】" />
+
+			<!--結果表示エリア:ヘッダー部-->
+			<table class="body_table2">
+				<tr class="header_row">
+					<th class="col_tenpo" rowspan="2">対象店舗</th><!--営業日-->
+					<th class="col_eigyoDt width_88_s" rowspan="2">営業日</th><!--営業日-->
+					<div m:inject="s:forEach" m:items="#{tabData.listHeader}" m:var="title" m:varindex="h">
+					<th colspan="2"><span m:converter="#{characterEncodingConverter}" m:value="#{title.keyName}"/></th><!--会計区分名称-->
+					</div>
+					<th colspan="2">合計</th><!--取消金額-->
+				</tr>
+				<tr class="header_row">
+					<div m:inject="s:forEach" m:items="#{tabData.listHeader}" m:var="title" m:varindex="h">
+					<th class="col_ken">件数</th>
+					<th class="col_kin">金額</th>
+					</div>
+					<th class="col_totalken">件数</th>
+					<th class="col_totalkin">金額</th>
+				</tr>
+			</table>
+			<!--結果表示エリア:スクロール開始 -->
+			<div class="scroll_area" style="width:#{((129)*tabData.listHeaderCnt)+459}px;height:#{dayRowCnt*23+302}px;">
+				<!--結果表示エリア:データ部開始-->
+				<table class="body_table2 list_data">
+					<div m:inject="s:forEach" m:items="#{tabData.listData}" m:var="meisai" m:varindex="d">
+						<!--会計区分データ-->
+						<tr m:rendered="#{meisai.eigyoDt != null}" class="defaultTR non_top_border">
+							<td class="col_tenpo" style="text-align:left"><span m:converter="#{characterEncodingConverter}" m:value="#{meisai.taishoName}"/></td><!--対象店舗-->
+							<td class="col_eigyoDt width_88_s" style="text-align:left"><span m:value="#{meisai.eigyoDt}" m:converter="#{dateConverterYMD}" /></td><!--営業日-->
+							<td class="col_ken num_#{meisai.revisedKen1}"><span m:value="#{meisai.reviseKen1}" m:converter="#{numConverter}"/></td><!--件数-->
+							<td class="col_kin num_#{meisai.revisedKin1}"><span m:value="#{meisai.reviseKin1}" m:converter="#{numConverter}"/></td><!--金額-->
+							<td class="col_ken num_#{meisai.revisedKen2}" m:rendered="#{meisai.existsMeisai2}" ><span m:value="#{meisai.reviseKen2}" m:converter="#{numConverter}"/></td><!--件数-->
+							<td class="col_kin num_#{meisai.revisedKin2}" m:rendered="#{meisai.existsMeisai2}" ><span m:value="#{meisai.reviseKin2}" m:converter="#{numConverter}"/></td><!--金額-->
+							<td class="col_ken num_#{meisai.revisedKen3}" m:rendered="#{meisai.existsMeisai3}" ><span m:value="#{meisai.reviseKen3}" m:converter="#{numConverter}"/></td><!--件数-->
+							<td class="col_kin num_#{meisai.revisedKin3}" m:rendered="#{meisai.existsMeisai3}" ><span m:value="#{meisai.reviseKin3}" m:converter="#{numConverter}"/></td><!--金額-->
+							<td class="col_ken num_#{meisai.revisedKen4}" m:rendered="#{meisai.existsMeisai4}" ><span m:value="#{meisai.reviseKen4}" m:converter="#{numConverter}"/></td><!--件数-->
+							<td class="col_kin num_#{meisai.revisedKin4}" m:rendered="#{meisai.existsMeisai4}" ><span m:value="#{meisai.reviseKin4}" m:converter="#{numConverter}"/></td><!--金額-->
+							<td class="col_totalken col_total"><span m:value="#{meisai.reviseKenTotal}" m:converter="#{numConverter}" /></td><!--合計件数-->
+							<td class="col_totalkin col_total"><span m:value="#{meisai.reviseKinTotal}" m:converter="#{numConverter}" /></td><!--合計金額-->
+						</tr>
+					</div>
+				</table>
+			</div>
+			<!--結果表示エリア:スクロール終了-->
+		</div>
+	</div>
+	<input type="text" m:id="dummyEnter" style="display:none"/>
+	</div>
+	</form>
+</div>
+</body>
+</html>
+s

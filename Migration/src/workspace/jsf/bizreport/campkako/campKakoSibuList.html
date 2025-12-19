@@ -1,0 +1,539 @@
+<html xmlns:m="http://www.seasar.org/maya" m:action="#{campKakoSibuListAction.initialize}" m:extends="/jsf/layout/layoutNoNavi.html">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Windows-31j" />
+<title>キャンペーン過去履歴（期間合計）</title>
+<span m:inject="f:param" m:name="layoutTitle" m:value="キャンペーン過去履歴（期間合計）"/>
+<span m:inject="s:insert" m:name="bodyTitleName">■キャンペーン過去履歴（期間合計）</span>
+<span m:inject="f:param" m:name="viewIdValue" m:value="BBR014V01"/>
+<span m:inject="f:param" m:name="userTypeCd" m:value="#{campKakoSessionDto.userTypeCd}"/>
+<span m:inject="f:param" m:name="isTotal" m:value="#{campKakoViewRequestDto.menuTotaledKbn == 'TOTAL'}"/>
+<span m:inject="f:param" m:name="onLoadName" m:value="load()"/>
+<span m:inject="f:param" m:name = "msg" m:value="結果が表示されるまでに時間がかかります。よろしいですか？"/>
+</head>
+<body>
+<span m:inject="s:insert" m:name="body" >
+<STYLE type="text/css">
+<!--
+
+/* 表：比率項目表示 */
+.body_table2 tr td.hiritu_red{
+  background-color      : #C0FFC0;
+  color                 : red;
+}
+.body_table2 tr td.hiritu{
+  background-color      : #C0FFC0;
+}
+
+/* 表：合計欄表示（タイプ１） */
+tr.body_sum1 td.hiritu, tr.body_sum1 td.hiritu_red{
+  background-color      : #FFD2E9;
+}
+/* 表：合計欄表示（タイプ１） */
+tr.body_sum2 td.hiritu, tr.body_sum2 td.hiritu_red{
+  background-color      : #C0C0FF;
+}
+/* 表：合計欄表示（タイプ１） */
+tr.body_sum3 td.hiritu, tr.body_sum3 td.hiritu_red{
+  background-color      : #C0FFFF;
+}
+/* 表：合計欄表示（タイプ５） */
+tr.body_sum5 td.hiritu, tr.body_sum5 td.hiritu_red{
+  background-color      : #FFC0A0;
+}
+
+.data_table_width {
+    width:98%;
+}
+.width_SibuName {
+    width:*%;
+}
+.width_Menu {
+    width:250px;
+}
+.width_Uriage {
+    width:120px;
+}
+.width_MenuUriage {
+    width:110px;
+}
+.width_KazuKei {
+    width:100px;
+}
+.width_KoseiHi {
+	width:90px;
+}
+.width_Hiritu {
+    width:57px;
+}
+//-->
+</STYLE>
+<script type="text/javascript">
+<!--
+var userTypeHONBU = "01";
+var userTypeONER = "02";
+var userTypeMISE = "03";
+function load(){
+	var formCondition = document.conditionForm;
+	if(formCondition != null && formCondition.elements['conditionForm:windowId'] != null) {
+		formCondition.elements['conditionForm:loadingFlg'].value = "";
+		if(formCondition.elements['downloadBt'] != null) {
+			formCondition.elements['downloadBt'].disabled = "";
+		}
+  	}
+  	loadScroll("campkakoScroll", 379);
+}
+/**
+ * 検索ボタン押下時処理
+ *
+ */
+function search(){
+	var formCondition = document.conditionForm;
+	if(returnLoadingStatus()){
+	    setJokenData();
+		if(isUserType(userTypeHONBU)){
+			formCondition.elements['conditionForm:__link_clicked__'].value='conditionForm:search';
+		}else{
+			formCondition.elements['conditionForm:__link_clicked__'].value='conditionForm:searchMise';
+		}
+		if(formCondition.elements['conditionForm:condNewWindowFlg'] != null) {
+		    if (formCondition.elements['conditionForm:condNewWindowFlg'].checked) {
+				formCondition.target ="_blank";
+				formCondition.elements['conditionForm:loadingFlg'].value = "";
+			}else{
+				formCondition.target ="_self";
+			}
+			formCondition.elements['conditionForm:newWindowFlg'].value = formCondition.elements['conditionForm:condNewWindowFlg'].checked;
+		}
+		if (formCondition.target == "_self") {
+		    if (document.getElementById("conditionForm:doExecuteBtn") != null) {
+    		    document.getElementById("conditionForm:doExecuteBtn").disabled = true;
+    		}
+		    document.getElementById("conditionForm:pane_result").style.display = "none";
+		    document.getElementById("conditionForm:pane_waitmsg").style.display = "inline";
+		}
+		formCondition.submit();
+	}
+}
+/**
+ * 指定支部店舗一覧画面表示処理
+ */
+function linkUp(sibuCd) {
+	var formCondition = document.conditionForm;
+    if (returnLoadingStatus()) {
+		formCondition.elements['conditionForm:view_hyojiTaisho'].value=sibuCd;
+		formCondition.elements['conditionForm:__link_clicked__'].value='conditionForm:linkUp';
+		formCondition.elements['conditionForm:newWindowFlg'].value=false;
+		formCondition.target ="_blank";
+		formCondition.elements['conditionForm:loadingFlg'].value = "";
+		formCondition.submit();
+	}
+}
+/**
+ * ウィンドウロードステータス取得処理
+ *
+ */
+function returnLoadingStatus(){
+	if(isLoadingFlgOFF()) {
+		setLoadingFlg();
+		return true;
+	}
+	return false;
+}
+/**
+ * ウィンドウロードステータス取得処理
+ *
+ */
+function isLoadingFlgOFF(){
+	var formCondition = document.conditionForm;
+	return (formCondition.elements['conditionForm:loadingFlg'].value != "ON");
+}
+/**
+ * ダウンローﾄﾞボタン押下時処理
+ *
+ */
+function execDownLoad(){
+	var formCondition = document.conditionForm;
+	if(isLoadingFlgOFF()){
+    	formCondition.elements['conditionForm:hyojiTaisho'].value="";
+		formCondition.elements['conditionForm:__link_clicked__'].value='conditionForm:downloadCsv';
+		formCondition.target ="_self";
+		formCondition.submit();
+	}
+}
+
+/**
+ * ユーザータイプ判別処理
+ *
+ */
+function isUserType(code){
+	var formCondition = document.conditionForm;
+	var userType = formCondition.elements['conditionForm:userTypeCd'].value;
+	return (code == userType);
+}
+/**
+ * 会社コードモスフード判別処理
+ *
+ */
+function isCompanyCdMos(){
+	var formCondition = document.conditionForm;
+	var companyCd = "";
+    companyCd = formCondition.elements['conditionForm:companyCd'].value;
+	return (companyCd == "00");
+}
+
+/**
+ * ウィンドウロードフラグ設定処理
+ *
+ *
+ */
+function setLoadingFlg() {
+	var formCondition = document.conditionForm;
+	formCondition.elements['conditionForm:loadingFlg'].value = "ON";
+}
+/**
+ * プルダウンリストエレメント取得処理
+ */
+function getPullDownElement(targetTag, commonClassName, targetCode) {
+	var formCondition = document.conditionForm;
+	var objsDiv = formCondition.getElementsByTagName(targetTag);
+	for (i = 0; i < objsDiv.length; i++) {
+		var classNm = objsDiv[i].className;
+		if(classNm.substring(0,commonClassName.length) == commonClassName){
+			if(classNm.substring(commonClassName.length) == targetCode) {
+				return elementPullDown = objsDiv[i];
+			}
+		}
+	}
+	return null;
+}
+/*
+ * タブ切り替え
+ */
+function changeTab() {
+	var formCondition = document.conditionForm;
+    if(returnLoadingStatus()) {
+		formCondition.target ="_self";
+		formCondition.elements['conditionForm:__link_clicked__'].value='conditionForm:changeTab';
+		formCondition.submit();
+	}
+}
+/*
+ * 条件フォーム用表示ステータス変更処理
+ */
+function changeDisplay(targetTag, firstCalssNm, lastClassNm) {
+	var formCondition = document.conditionForm;
+	var objs = formCondition.getElementsByTagName(targetTag);
+	for (i = 0; i < objs.length; i++) {
+		var classNm = objs[i].className;
+		if(classNm.substring(0,firstCalssNm.length) == firstCalssNm){
+			if(classNm.substring(firstCalssNm.length) == lastClassNm) {
+				objs[i].style.display     = "inline";
+			}else{
+				objs[i].style.display   = "none";
+			}
+		}
+	}
+}
+/*
+ * 条件フォーム用表示ステータス変更処理
+ */
+function changeDisplayForView(targetTag, firstCalssNm, lastClassNm) {
+	var formCondition = document.conditionForm;
+	var objs = formCondition.getElementsByTagName(targetTag);
+	for (i = 0; i < objs.length; i++) {
+		var classNm = objs[i].className;
+		if(classNm.substring(0,firstCalssNm.length) == firstCalssNm){
+			if(classNm.substring(classNm.length-lastClassNm.length) == lastClassNm) {
+				objs[i].style.display     = "inline";
+			}else{
+				objs[i].style.display   = "none";
+			}
+		}
+	}
+}
+/*
+ * 年度切り替え
+ */
+function changeNendo() {
+	var formCondition = document.conditionForm;
+    if(returnLoadingStatus()) {
+		formCondition.target ="_self";
+		formCondition.elements['conditionForm:__link_clicked__'].value='conditionForm:changeNendo';
+		formCondition.submit();
+	}
+}
+function setJokenData(){
+	var formCondition = document.conditionForm;
+	 //店舗種別の値を検索条件へ設定します。
+     var elementPdwn = formCondition.elements['conditionForm:tenpoShubetuPdwn'];
+	 if(null != elementPdwn) {
+	 	formCondition.elements['conditionForm:tenpoShubetu'].value =  elementPdwn.options[elementPdwn.selectedIndex].value;
+	 }
+	 elementPdwn = formCondition.elements['conditionForm:pldwnRankKind'];
+	 //順位の値を検索条件へ設定します。
+	 if(null != elementPdwn) {
+		 formCondition.elements['conditionForm:rankKind'].value =  elementPdwn.options[elementPdwn.selectedIndex].value;
+	 }
+}
+//-->
+</script>
+	<form m:id="conditionForm" onKeyDown="return setDefaultSubmitButton('conditionForm','doExecuteBtn');" target="_self">
+		<input type="hidden" id="viewId" m:value="#{campKakoRequestDto.viewId}" />
+		<input type="hidden" m:id="initMenuId" m:value="#{menuAction.initMenuId}"/>
+		<input type="hidden" m:id="initSubMenuId" m:value="#{menuAction.initSubMenuId}"/>
+		<input type="hidden" id="windowId" m:value="#{campKakoRequestDto.windowId}"/>
+		<input type="hidden" id="userTypeCd" m:value="#{userTypeCd}" m:passthrough="true"/>
+		<input type="hidden" id="loadingFlg" value=""/>
+		<input type="hidden" id="companyCd" m:value="#{campKakoRequestDto.companyCd}"/>
+		<input type="hidden" id="taishoKikan" m:value="#{campKakoRequestDto.taishoKikan}"/>
+		<input type="hidden" id="taishoJoken" m:value="#{campKakoRequestDto.taishoJoken}"/>
+		<input type="hidden" id="hyojiTaisho" m:value="#{campKakoRequestDto.hyojiTaisho}"/>
+		<input type="hidden" id="taishoDt" m:value="#{campKakoRequestDto.taishoDt}"/>
+		<input type="hidden" id="tenpoShubetu" m:value="#{campKakoRequestDto.tenpoShubetu}"/>
+		<input type="hidden" id="rankKind" m:value="#{campKakoRequestDto.rankKind}"/>
+		<input type="hidden" id="zennenDataShubetu" m:value="#{campKakoRequestDto.zennenDataShubetu}"/>
+		<input type="hidden" id="newWindowFlg" m:value="#{campKakoRequestDto.newWindowFlg}"/>
+	    <input type="hidden" id="jyokenMsg" m:value="#{msg}"/>
+	    <input type="hidden" id="view_viewId" m:value="#{campKakoViewRequestDto.viewId}" />
+		<input type="hidden" id="view_windowId" m:value="#{campKakoViewRequestDto.windowId}"/>
+		<input type="hidden" id="view_companyCd" m:value="#{campKakoViewRequestDto.companyCd}"/>
+		<input type="hidden" id="view_nendo" m:value="#{campKakoViewRequestDto.nendo}"/>
+		<input type="hidden" id="view_campId" m:value="#{campKakoViewRequestDto.campId}"/>
+		<input type="hidden" id="view_menuTotaledKbn" m:value="#{campKakoViewRequestDto.menuTotaledKbn}"/>
+		<input type="hidden" id="view_tenpoShubetu" m:value="#{campKakoViewRequestDto.tenpoShubetu}"/>
+		<input type="hidden" id="view_shukeiKbn" m:value="#{campKakoViewRequestDto.shukeiKbn}"/>
+		<input type="hidden" id="view_taishoKikan" m:value="#{campKakoViewRequestDto.taishoKikan}"/>
+		<input type="hidden" id="view_taishoJoken" m:value="#{campKakoViewRequestDto.taishoJoken}"/>
+		<input type="hidden" id="view_hyojiTaisho" m:value="#{campKakoViewRequestDto.hyojiTaisho}"/>
+		<input type="hidden" id="view_taishoDt" m:value="#{campKakoViewRequestDto.taishoDt}"/>
+		<input type="hidden" id="view_rankKind" m:value="#{campKakoViewRequestDto.rankKind}"/>
+		<input type="hidden" id="view_zennenDataShubetu" m:value="#{campKakoViewRequestDto.zennenDataShubetu}"/>
+
+		<a id="changeCompany" m:action="#{campKakoSibuListAction.changeCompany}"/>
+		<a id="changeCamp" m:action="#{campKakoSibuListAction.changeCamp}"/>
+		<a id="changeNendo" m:action="#{campKakoSibuListAction.changeNendo}"/>
+		<a id="search" m:action="#{campKakoSibuListAction.search}"/>
+		<a id="searchMise" m:action="#{campKakoMiseListAction.search}"/>
+		<a id="downloadCsv" m:action="#{campKakoCsvDownloadAction.downloadCsv}"/>
+		<a id="changeTab" m:action="#{campKakoSibuListAction.changeTab}"/>
+        <a id="linkUp" m:action="#{campKakoSibuListAction.linkUp}" />
+
+
+	<div m:id="pane_waitmsg" style="display:none">
+	<p/>
+	<span style="font-weight:bold;">
+	検索しています。しばらくお待ち下さい・・・
+	</span>
+	</div>
+	<div m:id="pane_result">
+		<table class="element_browser hiddenBody" style="margin-bottom:4px;">
+		    <tr>
+		    <td rowspan="2">
+				<table class="body_table element_browser" >
+		            <tr>
+		              <th>年度</th>
+		              <td>
+		                <div class="hideArea">
+		                  <select class="condition_field"
+		                          m:id="nendo"
+		                          m:value="#{campKakoRequestDto.nendo}"
+		                          m:items="#{campKakoRequestDto.listsNendo}"
+		                          m:itemValue="code"
+		                          m:itemLabel="name"
+		                          m:onchange="changeNendo()">
+		                      <option value="2006">2006年度</option>
+		                      <option value="2007">2007年度</option>
+		                      <option value="2008">2008年度</option>
+		                  </select>
+		                </div>
+		              </td>
+		              <th>キャンペーン</th>
+		              <td>
+		                <div class="hideArea">
+		                    <select m:rendered="#{campKakoRequestDto.listsCamp != null}"
+		                            class="condition_field"
+		                            m:id="campId"
+		                            m:value="#{campKakoRequestDto.campId}"
+		                            m:items="#{campKakoRequestDto.listsCamp}"
+		                            m:itemValue="campId"
+		                            m:itemLabel="campTitle">
+		                        <option value="200801">2008年4月度テリヤキチキン</option>
+		                        <option value="200802">２００８年玄米フレークシェイク</option>
+		                    </select>
+		                    <span m:rendered="#{campKakoRequestDto.listsCamp == null}">該当キャンペーンはありません。</span>
+		                </div>
+		              </td>
+		              <th>メニュー</th>
+		              <td colspan="2">
+		                <div class="hideArea">
+		                    <select class="condition_field"
+		                            m:id="menuTotaledKbn"
+		                            m:value="#{campKakoRequestDto.menuTotaledKbn}"
+		                            m:items="#{campKakoSessionDto.listMenuTotaled}"
+		                            m:itemValue="code"
+		                            m:itemLabel="name"
+		                            disabled="#{campKakoRequestDto.listsCamp == null}">
+		                        <option value="TOTAL">合計</option>
+		                        <option value="TANPIN">単品</option>
+		                        <option value="SHUYAKU">単品(集約)</option>
+		                    </select>
+		                  </div>
+		              </td>
+		            </tr>
+		            <tr>
+		              <th m:rendered="#{userTypeCd=='01'}">店舗種別</th>
+		              <td m:rendered="#{userTypeCd=='01'}">
+		                <div class="hideArea">
+		                  <select class="condition_field"
+		                          m:id="tenpoShubetuPdwn"
+		                          m:value="#{campKakoRequestDto.tenpoShubetu}"
+		                          m:items="#{campKakoSessionDto.listTenpoShubetu}"
+		                          m:itemValue="code"
+		                          m:itemLabel="name"
+		                          disabled="#{campKakoRequestDto.listsCamp == null}">
+		                        <option value="ALL">全店</option>
+		                        <option value="1">前年対象店</option>
+		                  </select>
+		                </div>
+		              </td>
+		              <th>
+		                <span m:value="#{(userTypeCd=='01')? '集計区分':'支部'}"/>
+		              </th>
+		              <td colspan="3" style="border-right-width:0px;">
+		                <div class="hideArea">
+		                  <select class="condition_field"
+		                          m:id="shukeiKbn"
+		                          m:value="#{campKakoRequestDto.shukeiKbn}"
+		                          m:items="#{campKakoSessionDto.listShukeiKbn}"
+		                          m:itemValue="code"
+		                          m:itemLabel="name"
+		                          disabled="#{campKakoRequestDto.listsCamp == null}">
+		                        <option value="AREA_DAI">直営・販社含む</option>
+		                        <option value="SIBU">直営・販社含まない</option>
+		                  </select>
+		                </div>
+		              </td>
+		              <th m:rendered="#{userTypeCd=='02' || userTypeCd=='03'}">順位</th>
+		              <td m:rendered="#{userTypeCd=='02' || userTypeCd=='03'}"
+		                   style="border-right-width:0px;">
+		                <div class="hideArea">
+		                    <select m:id="pldwnRankKind"
+		                        m:value="#{campKakoRequestDto.rankKind}"
+		                        m:items="#{campKakoSessionDto.listRankKind}"
+		                        m:itemValue="code"
+		                        m:itemLabel="name"
+		                        disabled="#{campKakoRequestDto.listsCamp == null}">
+		                        <option value="KINKOSEIHI">金額構成比</option>
+		                        <option value="KOSU">個数</option>
+		                    </select>
+		                </div>
+		              </td>
+		              <td align="right" style="border-left-width:0px;padding-left:3px;">
+		              	  <input type="button"
+				               m:id="doExecuteBtn" value="#{campKakoRequestDto.searched=='true'?'再検索':'実行'}"
+				               disabled="#{campKakoRequestDto.listsCamp == null}"
+				               onclick="return search();" ondblclick="return false;"/>
+
+		              </td>
+		            </tr>
+		        </table>
+		    </td>
+		    <td rowspan="2">&nbsp;</td>
+		    <td><span style="font-size:11pt;" m:value="#{'01'!=userTypeCd?'※MSC＝モスストアカンパニー(旧販社)':''}"/></td>
+		    </tr>
+		    <tr>
+		    <td valign="bottom">
+		        <a href="javaScript:void(0);" onClick="changeTab(); return false;" onDblClick="return false;" >推移表へ</a>
+		        </td>
+		    </tr>
+		</table>
+	    <span m:rendered="#{campKakoViewRequestDto.existSearchedData}">
+	    <div class="scroll_padding_head">
+	    	<div class="scroll_hidden margin_bottom_hidden">
+	        <table class="hiddenBody data_table_width" style="margin-bottom:4px;">
+	               <tr>
+	                <td>
+					<table class="body_table2 element_print" style="margin-bottom:4px;">
+					    <tr class="header_row">
+					        <th>年度</th>
+					        <td><span m:value="#{campKakoViewRequestDto.nendo}"/>&nbsp;</td>
+					        <th>キャンペーン</th>
+					        <td><span m:converter="#{characterEncodingConverter}" m:value="#{campKakoViewRequestDto.campTitle}"/>&nbsp;</td>
+					        <th>メニュー</th>
+					        <td>
+					        	<span m:inject="s:forEach"
+					        	      m:items="#{campKakoSuiiSessionDto.listMenuTotaled}" m:var="e">
+					        	      <span m:rendered="#{campKakoViewRequestDto.menuTotaledKbn == e.value}"
+					        	            m:value="#{e.label}"/>&nbsp;
+					        	</span>
+					       </td>
+					    </tr>
+					</table>
+	                <table class="body_table2">
+	                    <tr>
+	                        <th>対象期間</th>
+	                        <td><span m:value="#{campKakoViewRequestDto.mstCampDate.campFrom}" m:converter="#{commonCampaignDtCnvtYMD}"/>～<span m:value="#{campKakoViewRequestDto.mstCampDate.campTo}" m:converter="#{commonCampaignDtCnvtYMD}"/>&nbsp;</td>
+	                        <th>対象店舗数</th>
+	                        <td align="right" width="50px"><span m:value="#{campKakoViewRequestDto.taishoTenpoCnt}" m:converter="#{commonCampaignNumConverter}"/></td>
+	                    </tr>
+	                </table>
+	                </td>
+	                <td align="right">
+	                    <table class="element_browser hiddenBody">
+	                           <tr>
+	                            <td>
+	                                <input type="button" name="downloadBt" value="ダウンロード" onClick="execDownLoad(); return false;" onDblClick="return false"/>
+	                            </td>
+	                            <td><input type="checkbox" id="condNewWindowFlg" m:value="#{campKakoRequestDto.newWindowFlg}"/>別ウィンドウに表示</td>
+	                        </tr>
+	                    </table>
+	                </td>
+	            </tr>
+	        </table>
+	        <table class="body_table2 data_table_width">
+	            <tr class="header_row">
+	                <th class="width_SibuName">支部名称</th>
+	                <th  m:rendered="#{!isTotal}" class="width_Menu">メニュー</th>
+	                <th class="width_KazuKei">販売個数</th>
+	                <th class="width_MenuUriage">販売金額</th>
+	                <th class="width_KoseiHi">金額構成比</th>
+	                <th m:rendered="#{isTotal}" class="width_Uriage">売上</th>
+	                <th m:rendered="#{isTotal}" class="width_Uriage">前年売上</th>
+	                <th m:rendered="#{isTotal}" class="width_Hiritu">前年比</th>
+	            </tr>
+	        </table>
+	        </div>
+	        </div>
+	        <div class="scroll_padding_data">
+	        <div class="scroll_standby" id="campkakoScroll">
+	            <table class="body_table2 data_table_width" style="border-top-width:0px;">
+	            <span m:inject="s:forEach" m:items="#{campKakoViewRequestDto.listSearchData}" m:var="ui" m:varindex="e">
+	              <tr class="#{ui.trCssClass} non_top_border">
+                      <td class="width_SibuName" style="font-weight:bold;">
+                      	<span m:rendered="#{ui.sibuCd != null}">
+                          <a href="javaScript:void(0);"
+                             onClick="linkUp('#{ui.sibuCd}'); return false;"
+                             onDblClick="return false;"><span m:converter="#{characterEncodingConverter}" m:value="#{ui.sibuName}"/></a>
+	                      </span>
+	                      <span m:converter="#{characterEncodingConverter}" m:value="#{(ui.sibuCd == null && ui.sibuName != null ? ui.sibuName : '')}"/>
+                      </td>
+                      <td m:rendered="#{!isTotal}" class="width_Menu"><span m:converter="#{characterEncodingConverter}" m:value="#{ui.menuNameKj}"/></td>
+                      <td class="width_KazuKei body_num"><span m:value="#{ui.kazuKei}" m:converter="#{commonCampaignNumConverter}"/></td>
+                      <td class="width_MenuUriage body_num"><span m:value="#{ui.menuUriage}" m:converter="#{commonCampaignNumConverter}" /></td>
+                      <td class="width_KoseiHi body_num #{ui.kingakuKoseiHiCssClass}"><span m:value="#{ui.kingakuKoseiHi}" m:converter="#{commonCampaignNumConverter}" /></td>
+                      <td m:rendered="#{isTotal}" class="width_Uriage body_num"><span m:value="#{ui.uriage}" m:converter="#{bizreportNumericCnvt}" /></td>
+                      <td m:rendered="#{isTotal}" class="width_Uriage body_num"><span m:value="#{ui.uriageZen}" m:converter="#{bizreportNumericCnvt}" /></td>
+                      <td m:rendered="#{isTotal}" class="width_Hiritu body_num #{(campKakoViewRequestDto.zennenDataShubetu == 'DOGETUHOSEI' ? ui.netUriageZennenHiCssClass:ui.uriageZennenHiCssClass)}">
+                          <span m:value="#{(campKakoViewRequestDto.zennenDataShubetu == 'DOGETUHOSEI' ? ui.netUriageZennenHi:ui.uriageZennenHi)}"
+                                m:converter="#{commonCampaignNumConverter}" /></td>
+	              </tr>
+	            </span>
+	            </table>
+	        </div>
+	        </div>
+	    </span>
+	</div>
+    </form>
+</span>
+</body>
+</html>

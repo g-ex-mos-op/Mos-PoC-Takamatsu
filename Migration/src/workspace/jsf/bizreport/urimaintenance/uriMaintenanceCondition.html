@@ -1,0 +1,109 @@
+<html xmlns:m="http://www.seasar.org/maya" m:action="#{uriMaintenanceConditionAction.initialize}" m:extends="/jsf/layout/layoutNoNavi.html">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Windows-31j"/>
+<title>売上修正</title>
+</head>
+<body>
+<span m:inject="f:param" m:name="layoutTitle" m:value="売上修正"/>
+<span m:inject="s:insert" m:name="bodyTitleName">■売上修正</span>
+<span m:inject="f:param" m:name="onLoadName" m:value="bodyLoad();"/>
+<span m:inject="f:param" m:name="viewIdValue" m:value="BBR008V01"/>
+<div m:inject="s:insert" m:name="body">
+
+<script type="text/javascript">
+<!--
+// 初期設定
+function bodyLoad() {
+
+}
+-->
+</script>
+
+
+<style type="text/css">
+<!--
+.condition_body {
+}
+.scroll_area {
+	overflow:auto;
+}
+-->
+</style>
+
+
+<form m:id="uriMaintenanceCondition"  m:onkeydown="return setDefaultSubmitButton('uriMaintenanceCondition','btnExecute');">
+<input type="hidden" m:id="windowId" m:value="#{uriMaintenanceDto.windowId}"/>
+<input type="hidden" m:id="viewId" m:value="#{viewIdValue}" />
+<input type="hidden" m:id="initMenuId" m:value="#{menuAction.initMenuId}"/>
+<input type="hidden" m:id="initSubMenuId" m:value="#{menuAction.initSubMenuId}"/>
+
+<table class="hiddenBody">
+	<tr>
+	  <td>
+
+		<table class="body_table">
+		    <tr>
+		      <th>会社</th>
+		      <td width="90">
+		        <div class="hideArea">
+		        <select class="condition_field"
+		              m:id="condCompanyCd"
+		              m:value="#{uriMaintenanceDto.condCompanyCd}"
+		              m:items="#{uriMaintenanceDto.listCompany}"
+		              m:itemValue="companyCd"
+		              m:itemLabel="companyName">                
+		            <option value="">モスフードサービス</option>
+		        </select>
+		        </div>
+		      </td>
+		      <th style="border-right-width:0px;">店コード</th>
+		      <th style="border-left-width:0px;"><input type="submit" value="検索" m:action="#{uriMaintenanceConditionAction.miseSearch}"/>
+		      </th>
+		      <td>
+			  	  <input type="text" class="imenotuse"
+			  	         m:id="miseCd" value="#{uriMaintenanceDto.condMiseCd}"
+			  	         m:converter="#{uriMainteCodeConverterMise}" size="6" maxlength="5"/>
+		      </td>    
+		      <th>対象年月</th>
+		      <td>
+		        <div class="hideArea">
+		        <select class="condition_field"
+		        		m:id="condTargetYm"
+		                m:value="#{uriMaintenanceDto.condTargetYm}"
+		                m:items="#{uriMaintenanceDto.listTargetYm}"
+		                m:itemValue="value"
+		                m:itemLabel="label">
+		            <option value="">2006/03</option>
+		            <option value="">2006/02</option>
+		            <option value="">2006/01</option>
+		        </select>
+		        </div>
+		      </td>
+		    </tr>
+		</table>
+
+	  </td>
+	  <td>
+		<input type="submit" value="実行" m:id="btnExecute" style="margin-left:3px;"
+		       m:action="#{uriMaintenanceConditionAction.execute}"/>	  
+	  </td>
+	</tr>
+</table>
+
+<br/>
+
+<span style="font-weight:bold">
+	※18:00～25:00までの間はデータの更新は出来ません。照会機能のみとなります。
+</span>
+
+
+
+<script type="text/javascript">
+<!--
+	focusElement("uriMaintenanceCondition");
+//-->
+</script>
+</form>
+</div>
+</body>
+</html>

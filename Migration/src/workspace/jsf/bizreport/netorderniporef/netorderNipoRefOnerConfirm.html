@@ -1,0 +1,367 @@
+<html xmlns:m="http://www.seasar.org/maya" m:action="#{netorderNipoRefOnerConfirmAction.initialize}" m:extends="/jsf/layout/layoutNoNavi.html">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Windows-31j"/>
+<title>ネット注文</title>
+</head>
+<body>
+<span m:inject="f:param" m:name="layoutTitle" m:value="ネット注文"/>
+<span m:inject="s:insert" m:name="bodyTitleName">■ネット注文</span>
+<span m:inject="f:param" m:name="onLoadName" m:value="bodyLoad();"/>
+<span m:inject="f:param" m:name="viewIdValue" m:value="BBR017V04"/>
+<span m:inject="f:param" m:name="maxScrollHeight" m:value="#{nipoRefResultParameterDto.taishoKikan1Day?327:312}"/>
+<span m:inject="f:param" m:name="kikanStyleCd" m:value="#{nipoRefResultParameterDto.taishoKikan1Day?'tenko':'eigyoNissu'}"/>
+<span m:inject="f:param" m:name="kikanLabel" m:value="#{nipoRefResultParameterDto.taishoKikan1Day?'天候':'営業日数'}"/>
+<div m:inject="s:insert" m:name="body">
+<style type="text/css">
+<!--
+	table.body_table tr td.tenko {
+		text-align : center;
+	}
+    .data_table_width {
+        width:98%;
+    }
+	.width_miseName {
+	    width:*%;
+	}
+	.width_uriage {
+	    width:110px;
+	}
+	.width_yosan {
+	    width:110px;
+	}
+	.width_hiritu {
+	    width:70px;
+	}
+	.width_kyakusu {
+	    width:110px;
+	}
+	.width_tenposhu {
+	    width:25px;
+	}
+	.width_tenko {
+	    width:47px;
+	}
+	.width_eigyoNissu {
+	    width:45px;
+	}
+-->
+</style>
+
+<script type="text/javascript">
+<!--
+// 初期設定
+function bodyLoad() {
+	loadScroll("nipoRefScroll"+document.nipoRefCondition.elements['nipoRefCondition:subTagKbn'].value, document.nipoRefCondition.scrollMaxHeight.value);
+}
+function changeNipoTab(subTagKbn) {
+	changeTabArea(subTagKbn);
+	document.nipoRefCondition.elements['nipoRefCondition:subTagKbn'].value = subTagKbn;
+	bodyLoad();
+}
+// 対象期間＆前年データ種別 プルダウン変更処理
+function switchDisplayKikanOner() {
+
+    //対象期間プルダウン初期状態
+	document.getElementById('nipoRefCondition:div_kikanNipo').style.display="none";
+	document.getElementById('div_kikanCurrMonth').style.display="none";
+	document.getElementById('nipoRefCondition:div_kikanYM').style.display="none";
+	document.getElementById('nipoRefCondition:div_kikanSitei').style.display="none";
+    document.getElementById('nipoRefCondition:div_gepocsv_oner').style.display="none";
+
+	//前年データ種別プルダウン初期状態
+	document.getElementById('nipoRefCondition:div_zenData_oner').style.display="inline";
+
+	var taishoKikan = document.nipoRefCondition.elements['nipoRefCondition:kikanTaishoOner'].selectedIndex;
+	if(taishoKikan == 0) {
+		document.getElementById('nipoRefCondition:div_kikanNipo').style.display="inline";
+	}else if(taishoKikan == 1) {
+		document.getElementById('div_kikanCurrMonth').style.display="inline";
+	}else if(taishoKikan == 2) {
+		document.getElementById('nipoRefCondition:div_kikanYM').style.display="inline";
+	}else if(taishoKikan == 3) {
+		document.getElementById('nipoRefCondition:div_kikanSitei').style.display="inline";
+	}else if(taishoKikan == 4) {
+		document.getElementById('nipoRefCondition:div_gepocsv_oner').style.display="inline";
+
+		//前年データ種別プルダウン変更処理
+		document.getElementById('nipoRefCondition:div_zenData_oner').style.display="none";
+	}
+}
+// 店リンク押下処理
+function setLinkInfo(miseCd) {
+	document.nipoRefCondition.elements['nipoRefCondition:miseCd'].value = miseCd;
+	document.nipoRefCondition.elements['nipoRefCondition:isUseCommonDto'].value = '1';
+	document.nipoRefCondition.target = "_blank";
+	document.forms['nipoRefCondition'].elements['nipoRefCondition:__link_clicked__'].value='nipoRefCondition:selectMiseLink';
+	document.forms['nipoRefCondition'].submit();
+	return;
+}
+// ダウンロード
+function downloadCsv() {
+	document.nipoRefCondition.target = "_self";
+	document.forms['nipoRefCondition'].elements['nipoRefCondition:__link_clicked__'].value='nipoRefCondition:downloadCsv';
+	document.forms['nipoRefCondition'].submit();
+	return;
+}
+// ダウンロード(営業月報抽出)
+function downloadCsvGepo() {
+	document.nipoRefCondition.target = "_self";
+	document.forms['nipoRefCondition'].elements['nipoRefCondition:__link_clicked__'].value='nipoRefCondition:downloadCsvGepo';
+	document.forms['nipoRefCondition'].submit();
+	return;
+}
+function executeSearch() {
+    //対象期間プルダウンで、営業月報抽出が選択されている場合、別ウィンドウ表示しない。
+	var taishoKikan = document.nipoRefCondition.elements['nipoRefCondition:kikanTaishoOner'].selectedIndex;
+
+	if (taishoKikan == 4) {
+		downloadCsvGepo();
+		return;
+	}
+	//別ウィンドウのチェック
+	initWindow();
+	document.forms['nipoRefCondition'].elements['nipoRefCondition:__link_clicked__'].value='nipoRefCondition:reSearch';
+	document.forms['nipoRefCondition'].submit();
+}
+/**
+ * 画面タブ起動処理
+ */
+function callScreenTab(targetTab){
+	//別ウィンドウのチェック
+	initWindow();
+	document.nipoRefCondition.elements['nipoRefCondition:newWindowFlg'].value = "1";
+	document.nipoRefCondition.elements['nipoRefCondition:__link_clicked__'].value='nipoRefCondition:'+targetTab;
+	document.forms['nipoRefCondition'].submit();
+}
+/**
+ * 別ウィンドウ処理
+ */
+function initWindow() {
+	//別ウィンドウのチェック
+	var isChecked = false;
+	if(document.nipoRefCondition.elements['nipoRefCondition:newwin'] != null){
+	    isChecked = document.nipoRefCondition.elements['nipoRefCondition:newwin'].checked;
+		document.nipoRefCondition.elements['nipoRefCondition:newWindowFlg'].value=isChecked;
+		if(isChecked) {
+			document.nipoRefCondition.target = "_blank";
+			return;
+		}
+	}
+	document.nipoRefCondition.target = "_self";
+}
+-->
+
+</script>
+
+<form m:id="nipoRefCondition"  target="_self" onsubmit="initWindow();">
+	<input type="hidden" m:id="viewId" m:value="#{viewIdValue}"/>
+	<input type="hidden" m:id="initMenuId" m:value="#{menuAction.initMenuId}"/>
+	<input type="hidden" m:id="initSubMenuId" m:value="#{menuAction.initSubMenuId}"/>
+	<input type="hidden" m:id="windowId" m:value="#{nipoRefSearchParameterDto.windowId}"/>
+	<input type="hidden" m:id="newWindowFlg" value="#{netorderNipoRefOnerConfirmAction.newWindowFlg}"/>
+	<input type="hidden" m:value="#{nipoRefSearchParameterDto.researchFlg}"/>
+	<input type="hidden" m:id="miseCd" m:value="#{netorderNipoRefOnerConfirmAction.miseCd}"/>
+	<input type="hidden" m:id="isUseCommonDto" m:value="1"/>
+	<input type="hidden" name="scrollMaxHeight" m:value="#{maxScrollHeight}" m:passthrough="true"/>
+	<a m:id="selectMiseLink" m:action="#{netorderNipoRefOnerConfirmAction.selectedMise}"/>
+	<a m:id="reSearch" m:action="#{netorderNipoRefOnerConfirmAction.reSearch}"/>
+	<a m:id="downloadCsv" m:action="#{netorderNipoRefOnerConfirmAction.downloadCsvOner}"/>
+	<a m:id="downloadCsvGepo" m:action="#{netorderNipoRefOnerConfirmAction.downloadCsvGepo}"/>
+	<a m:id="eigyonipo" m:action="#{netorderNipoRefOnerConfirmAction.goEigyoNipo}"/>
+	<a m:id="takuhai" m:action="#{netorderNipoRefOnerConfirmAction.goTakuhaiNipo}"/>
+	<a m:id="yago" m:action="#{netorderNipoRefOnerConfirmAction.goYago}"/>
+	<a m:id="moscard" m:action="#{netorderNipoRefOnerConfirmAction.callMoscard}"/>
+	<table class="hiddenBody element_browser"
+	       style="margin-bottom:4px;">
+		<tr>
+		<td>
+	<!-- 条件部プルダウン -->
+	<table class="body_table">
+	<tr>
+		<th>会社</th>
+		<td>
+			<div class="hideArea">
+				<select class="condition_field"
+					m:value="#{nipoRefSearchParameterDto.companyCd}"
+					m:items="#{nipoRefConditionDto.companyList}"
+					m:id="companyCd"
+					m:itemValue="companyCd"
+					m:itemLabel="companyName"/></div>
+		</td>
+		<th>前年データ種別</th>
+		<td>
+			<div class="hideArea">
+				<div id="div_zenData_oner" class="div_zenData_oner" style="#{'GEPOCSV'==nipoRefSearchParameterDto.taishoKikanCd?'display:none;':''}">
+					<select m:value="#{nipoRefSearchParameterDto.zenDataZennenOthCd}"
+						m:items="#{nipoRefConditionDto.zenDataZennenOthList}"
+						m:id="zenDataOnerCd"
+						m:itemValue="code"
+						m:itemLabel="name"/></div></div>
+		</td>
+		<th>対象期間</th>
+		<td>
+			<div class="hideArea">
+				<select m:value="#{nipoRefSearchParameterDto.taishoKikanCd}"
+					m:items="#{netorderNipoRefOnerConfirmAction.netorderTaishoKikanList}"
+					m:itemValue="code"
+					m:itemLabel="name"
+					m:id="kikanTaishoOner"
+					m:onchange="switchDisplayKikanOner();"/></div>
+		</td>
+		<th>期間指定</th>
+		<td>
+			<div class="hideArea">
+				<div id="div_kikanNipo" class="div_kikanNipo" style="#{nipoRefSearchParameterDto.taishoKikan1Day ? '' : 'display:none;'}">
+					<select m:value="#{nipoRefSearchParameterDto.kikanNipo}"
+							m:items="#{nipoRefConditionDto.kikanFromList}"
+							m:id="kikanNipo"
+							m:itemValue="code"
+							m:itemLabel="name"/></div>
+				<div id="div_kikanCurrMonth" class="div_kikanCurrMonth"></div>
+				<div id="div_kikanYM" class="div_kikanYM" style="#{(nipoRefSearchParameterDto.taishoKikanCd=='MONTH') == true  ? '' : 'display:none;'}">
+					<select m:value="#{nipoRefSearchParameterDto.kikanYM}"
+							m:items="#{nipoRefConditionDto.kikanYMList}"
+							m:id="kikanYM"
+							m:itemValue="code"
+							m:itemLabel="name"/></div>
+				<div id="div_kikanSitei" class="div_kikanSitei" style="#{(nipoRefSearchParameterDto.taishoKikanCd=='DAYS') == true  ? '' : 'display:none;'}">
+					<table style="border-width:0px;padding:0px;border-collapse:collapse;">
+								<tr><td style="border-width:0px;padding:0px;">
+						<select m:value="#{nipoRefSearchParameterDto.kikanFrom}"
+								m:items="#{nipoRefConditionDto.kikanFromList}"
+								m:id="kikanFrom"
+								m:itemValue="code"
+								m:itemLabel="name"/></td>
+					<td style="border-width:0px;padding:0px;">～</td>
+					<td style="border-width:0px;padding:0px;"><select m:value="#{nipoRefSearchParameterDto.kikanTo}"
+								m:items="#{nipoRefConditionDto.kikanToList}"
+								m:id="kikanTo"
+								m:itemValue="code"
+								m:itemLabel="name"/></td>
+					</tr></table></div>
+			    <div id="div_gepocsv_oner" class="div_gepocsv_oner" style="#{(nipoRefSearchParameterDto.taishoKikanCd=='GEPOCSV') ? '' : 'display:none;'}">
+					<select m:value="#{nipoRefSearchParameterDto.kikanGepoYM}"
+							m:items="#{nipoRefConditionDto.kikanGepoYMList}"
+							m:itemValue="code"
+							m:itemLabel="name"/></div></div>
+		</td>
+	</tr>
+	</table>
+	</td>
+		<td valign="bottom">
+		<input type="button" m:value="#{nipoRefSearchParameterDto.researchFlg=='true'?'再検索':'実行'}" style="margin:2px;"
+		onclick="executeSearch();" ondblclick="return false;"/>
+		</td>
+	</tr>
+	</table>
+	<div class="scroll_padding_head">
+	<div m:rendered="#{netorderNipoRefResultDto.existDataFlg}"
+	     class="scroll_hidden" style="margin-bottom:4px;">
+	<!-- 条件部プルダウン印刷用 -->
+	<table class="element_print">
+		<tr>
+		<td>会社：<select m:passthrough="true"><option m:passthrough="true"><span m:converter="#{characterEncodingConverter}" m:value="#{nipoRefResultParameterDto.companyName}"/></option></select></td>
+		<td>前年データ種別：<select m:passthrough="true"><option m:passthrough="true"><span m:converter="#{characterEncodingConverter}" m:value="#{nipoRefResultParameterDto.zennenDataShubetuName}"/></option></select></td>
+		<td>対象期間：<select m:passthrough="true"><option m:passthrough="true"><span m:converter="#{characterEncodingConverter}" m:value="#{nipoRefResultParameterDto.labelTaishoKikan}"/></option></select></td>
+		<td>期間指定：<span m:rendered="#{nipoRefResultParameterDto.existKikanSiteiFrom}">
+						<select m:passthrough="true"><option m:passthrough="true"><span m:converter="#{characterEncodingConverter}" m:value="#{nipoRefResultParameterDto.labelKikanSiteiFrom}"/></option></select>
+						<span m:rendered="#{nipoRefResultParameterDto.taishoKikanCd=='KIBETU'}">年度</span>
+						<span m:rendered="#{nipoRefResultParameterDto.taishoKikanCd=='DAYS'}">～</span></span>
+					  <span m:rendered="#{nipoRefResultParameterDto.existKikanSiteiTo}">
+					  	<select m:passthrough="true"><option m:passthrough="true"><span m:converter="#{characterEncodingConverter}" m:inject="h:outputText" m:value="#{nipoRefResultParameterDto.labelKikanSiteiTo}" escape="false"/></option></select></span></td>
+		</tr>
+	</table>
+		<div style="width:98%;">
+		<table class="hiddenBody" style="width:100%;">
+			<tr><td>
+			<table class="body_table2" style="float:left;">
+				<th>対象店舗数</th>
+				<td width="110px"
+				    class="body_num"><span m:value="#{netorderNipoRefResultDto.tenpoCount}"
+				                           m:converter="#{numericConverter}"/></td>
+			</table></td>
+			<td>
+			<table class="hiddenBody element_browser">
+				<th valign="bottom"><font size="2">※検索条件を変更した場合は、再検索ボタンを押下してください。</font></th>
+			</table>
+			</td>
+			<td align="right">
+			<table class="hiddenBody element_browser" style="float:right;">
+				<tr>
+					<td><input type="button" style="margin-right:5px;"
+				                onclick="downloadCsv();" value="ダウンロード"/></td>
+				    <td><input type="checkbox" m:id="newwin"
+				                checked="#{netorderNipoRefOnerConfirmAction.newWindowFlg}"/>別ウィンドウに表示</td>
+				</tr>
+			</table></td>
+			</tr>
+		</table>
+		</div>
+	</div>
+	</div>
+	<div style="clear:both;"/>
+	<!-- サブタグ -->
+	<table m:rendered="#{!(netorderNipoRefResultDto.existDataFlg==false && 'GEPOCSV'==nipoRefResultParameterDto.taishoKikanCd)}"
+	       class="element_browser"
+	       cellspacing="0" cellpadding="0">
+		<tr>
+			<td width="150px" class="body_non_active_tab element_browser">
+				<a href="javascript:void(0);"
+				    onClick="callScreenTab('eigyonipo');return false;" onDblClick="return false;">
+					営業日報</a></td>
+			<td width="150px" class="body_non_active_tab">
+				<a href="javascript:void(0);"
+				    onClick="callScreenTab('takuhai');return false;" onDblClick="return false;">
+					宅配売上</a></td>
+			<td width="150px" class="body_non_active_tab">
+				<a href="javascript:void(0);"
+				    onClick="callScreenTab('yago');return false;" onDblClick="return false;">
+					屋号別売上</a></td>
+			<td width="150px" class="body_non_active_tab" m:rendered="#{nipoRefConditionDto.accessMoscard && nipoRefResultParameterDto.mosCompany}">
+				<a href="javascript:void(0);"
+				    onClick="callScreenTab('moscard');return false;" onDblClick="return false;">
+					MOS CARD</a>
+			</td>
+			<td width="150px" class="body_active_tab element_browser">ネット注文</td>
+		</tr>
+	</table>
+ 	<input type="hidden" m:value="#{nipoRefResultParameterDto.windowId}"/>
+	<input type="hidden" m:value="#{nipoRefResultParameterDto.companyCd}"/>
+	<input type="hidden" m:value="#{nipoRefResultParameterDto.companyName}"/>
+ 	<input type="hidden" m:value="#{nipoRefResultParameterDto.tenpoShubetuCd}"/>
+	<input type="hidden" m:value="#{nipoRefResultParameterDto.shukeiKbnCd}"/>
+	<input type="hidden" m:value="#{nipoRefResultParameterDto.taishoTenpoCd}"/>
+	<input type="hidden" m:value="#{nipoRefResultParameterDto.taishoKikanCd}"/>
+	<input type="hidden" m:value="#{nipoRefResultParameterDto.zenDataZennenCd}"/>
+	<input type="hidden" m:value="#{nipoRefResultParameterDto.zenDataZennenOthCd}"/>
+	<input type="hidden" m:value="#{nipoRefResultParameterDto.kikanNipo}"/>
+	<input type="hidden" m:value="#{nipoRefResultParameterDto.kikanCurrMonth}"/>
+	<input type="hidden" m:value="#{nipoRefResultParameterDto.kikanYM}"/>
+	<input type="hidden" m:value="#{nipoRefResultParameterDto.kikanYear}"/>
+	<input type="hidden" m:value="#{nipoRefResultParameterDto.kikanKibetu}"/>
+	<input type="hidden" m:value="#{nipoRefResultParameterDto.kikanFrom}"/>
+	<input type="hidden" m:value="#{nipoRefResultParameterDto.kikanTo}"/>
+	<input type="hidden" m:id="subTagKbn" m:value="#{nipoRefResultParameterDto.subTagKbn}"/>
+	<!-- 結果情報 -->
+	<input type="hidden" m:value="#{netorderNipoRefResultDto.existDataFlg}"/>
+	<input type="hidden" m:value="#{netorderNipoRefResultDto.kansanFlg}"/>
+	<span m:rendered="#{netorderNipoRefResultDto.existDataFlg}">
+	<div class="scroll_padding_head">
+	<div class="scroll_hidden element_browser margin_bottom_28">
+    	<table cellspacing="0" cellpadding="0" class="data_table_width">
+      		<tr style="height:5px;"><td class="tab_area"></td></tr>
+      	</table>
+     </div>
+     </div>
+		<table class="margin_top_net">
+		     	  <tr></tr>
+		     	  <tr>
+					<td><th><a href="#" onclick="downloadCsv();return false;">[ネット注文CSVダウンロード]</a> &nbsp;</th></td>
+				  </tr>
+				</table>
+	</span>
+	<input type="text" m:id="dummyEnter" style="display:none"/>
+</form>
+</div>
+</body>
+</html>
