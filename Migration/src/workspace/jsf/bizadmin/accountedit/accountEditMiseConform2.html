@@ -1,0 +1,62 @@
+<html xmlns:m="http://www.seasar.org/maya" m:extends="/jsf/layout/layoutNoNavi.html">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Windows-31j" />
+<title>アカウント情報変更(店舗) ユーザ管理者</title>
+</head>
+<body>
+<span m:converter="#{characterEncodingConverter}" m:inject="f:param" m:name="layoutTitle" m:value="#{accounteditDto.gamenTitle}（確認画面）"/>
+<span m:inject="s:insert" m:name="bodyTitleName">■アカウント情報変更（確認画面）</span>
+<span m:inject="f:param" m:name="viewIdValue" m:value="BBA001V13"/>
+<span m:inject="s:insert" m:name="body">
+<form m:id="accountMiseComform">
+	<input type="hidden" m:id="viewId" m:value="#{viewIdValue}"/>
+	<input type="hidden" m:id="initMenuId" m:value="#{menuAction.initMenuId}"/>
+	<input type="hidden" m:id="initSubMenuId" m:value="#{menuAction.initSubMenuId}"/>
+	<input type="hidden" m:id="windowId" m:value="#{accounteditReqDto.windowId}"/>
+	<input type="hidden" m:id="sessionKey" m:value="#{accounteditReqDto.sessionKey}"/>
+	<input type="button" value="戻る" m:action="#{accounteditRenewAction.back}" />&nbsp;&nbsp;
+	<input type="button" value="登録" m:action="#{accounteditRenewAction.update}" />
+	<div style="clear:both;line-height:4px;"><br/></div>
+	<table class="body_table2" style="width:98%;">
+		<col width="180px;" class="width_190_s"/>
+		<col style="width:310px;"/>
+		<col style="width:155px;"/>
+		<col style="width:*;"/>
+		<tr>
+			<th>ユーザータイプ </th>
+			<td colspan="3">店舗スタッフ</td>
+		</tr>
+		<tr>
+			<th>ユーザーID (アカウント)</th>
+			<td colspan="3"><span m:inject="h:outputText" m:value="#{accounteditDto.uIUser.userId}" /></td>
+		</tr>
+		<tr>
+			<th>ご利用者名</th>
+			<td><span m:converter="#{characterEncodingConverter}" m:inject="h:outputText" m:value="#{accounteditDto.uIUser.userNameKj}" /></td>
+			<th>ご利用者名(カナ)</th>
+			<td><span m:converter="#{characterEncodingConverter}" m:inject="h:outputText" m:value="#{accounteditDto.uIUser.userNameKana}" /></td>
+		</tr>
+		<tr>
+			<th>店コード</th>
+			<td colspan="3">
+			  <span m:inject="h:outputText" m:value="#{accounteditDto.userMise.miseCd}" />
+               &nbsp;<span m:converter="#{characterEncodingConverter}" m:inject="h:outputText" m:value="#{accounteditDto.userMise.miseNameKj}" /></td>
+		</tr>
+
+		<tr>
+			<th>お申込日</th>
+			<td colspan="3"><span m:inject="h:outputText" m:value="#{accounteditDto.uIUser.appliedDt}" m:converter="#{dateConverterYMD}"/></td>
+		</tr>
+		<tr>
+			<th>メールアドレス</th>
+			<td><span m:inject="h:outputText" m:value="#{accounteditDto.uIUser.mailAdd}"/> </td>
+			<th>ご利用停止</th>
+			<td>利用停止<span m:inject="h:outputText" m:value="#{accounteditDto.labelStopFlg}" /></td>
+		</tr>
+	</table>
+	<input type="text" m:id="dummyEnter" style="display:none"/>
+</form>
+</span>
+
+</body>
+</html>

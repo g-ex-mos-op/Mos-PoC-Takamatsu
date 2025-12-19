@@ -1,0 +1,81 @@
+<html xmlns:m="http://www.seasar.org/maya" m:action="#{svTantouSibuTantouMiseConfirmAction.initialize}" m:extends="/jsf/layout/layoutNoNavi.html">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Windows-31j"/>
+<meta http-equiv="Content-Style-Type" content="text/css"/>
+<title>SV担当店登録（確認画面）</title>
+</head>
+<body>
+<span m:inject="f:param" m:name="layoutTitle" m:value="SV担当店登録（確認画面）"/>
+<span m:inject="s:insert" m:name="bodyTitleName">■SV担当店登録（確認画面）</span>
+<span m:inject="f:param" m:name="onLoadName" m:value="bodyLoad()"/>
+<span m:inject="f:param" m:name="viewIdValue" m:value="BBA004V04"/>
+<div m:inject="s:insert" m:name="body">
+<style type="text/css">
+<!--
+.scroll_area{
+    width:958px;
+    height:440px;
+}
+.body_table2 {
+    width:940px;
+} 
+-->
+</style>
+<script type="text/javascript">
+<!--
+function bodyLoad() {
+}
+
+function execute() {
+}
+//-->
+</script>
+
+<form m:id="svTantouSibuRemoteSibuConfirm">
+<input type="hidden" m:id="viewId" m:value="#{viewIdValue}"/>
+<input type="hidden" m:id="initMenuId" m:value="#{menuAction.initMenuId}"/>
+<input type="hidden" m:id="initSubMenuId" m:value="#{menuAction.initSubMenuId}"/>
+<input type="hidden" m:id="windowId" m:value="#{svTantouSibuDto.windowId}"/>
+
+<!-- 画面操作エリア -->
+<input type="button" class="operation_button" value="戻る" m:action="#{svTantouSibuTantouMiseConfirmAction.back}"/>
+<input type="button" class="operation_button" value="登録" m:action="#{svTantouSibuTantouMiseConfirmAction.confirm}" m:disabled="#{svTantouSibuDto.processError}"/>
+<span style="font-weight:bold;">
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;※以下の内容で更新します。問題なければ「登録」ボタンをクリックして下さい。
+</span>
+
+<!-- 条件エリア -->
+
+<!-- 編集エリア -->
+<table class="body_table2" style="margin-top:4px;">
+    <col width="180px"/>
+    <col width="90px"/>
+    <col width="*"/>
+    <col width="290px"/>
+    <tr class="header_row">
+        <th>支部</th>
+        <th>ブロック</th>
+        <th>店舗</th>
+        <th>担当SV</th>
+    </tr>
+</table>
+<div class="scroll_area">
+<table class="body_table2" style="border-top-width:0px;">
+    <col width="180px"/>
+    <col width="90px"/>
+    <col width="*"/>
+    <col width="290px"/>
+    <div m:inject="s:forEach" m:items="#{svTantouSibuDto.listUploadData}" m:var="e" m:varindex="i">
+    <tr class="#{i==0?'non_top_border':''}">
+        <td><span m:converter="#{characterEncodingConverter}" m:value="#{e.sibuName}"/></td>
+        <td><span m:converter="#{characterEncodingConverter}" m:value="#{e.blockName}"/></td>
+        <td><span m:value="#{e.miseCd}"/>&nbsp;<span m:value="#{e.miseNameKj}"/><span m:rendered="#{e.closeDt < svTantouSibuDto.sysDate}">(CLOSE)</span></td>
+        <td><span m:converter="#{characterEncodingConverter}" m:value="#{e.svCd}"/>&nbsp;<span m:converter="#{characterEncodingConverter}" m:value="#{e.userNameKj}"/></td>
+    </tr>
+    </div>
+</table>
+</div>
+</form>
+</div>
+</body>
+</html>

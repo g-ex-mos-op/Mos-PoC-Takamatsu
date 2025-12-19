@@ -1,0 +1,140 @@
+<html xmlns:m="http://www.seasar.org/maya" m:action="#{blockMainteConditionAction.initialize}" m:extends="/jsf/layout/layoutNoNavi.html">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Windows-31j" />
+<title>ブロックメンテナンス</title>
+<span m:inject="f:param" m:name="layoutTitle" m:value="ブロックメンテナンス"/>
+<span m:inject="s:insert" m:name="bodyTitleName">■ブロックメンテナンス</span>
+<span m:inject="f:param" m:name="viewIdValue" m:value="BBA003V01"/>
+<span m:inject="f:param" m:name="onLoadName" m:value="load()"/>
+</head>
+<body>
+<span m:inject="s:insert" m:name="body" >
+<script type="text/javascript">
+<!--
+	/**
+	 * 画面表示完了時初期化処理
+	 */
+	function load(){
+		document.conditionForm.elements['conditionForm:loadingFlg'].value = "";
+		focusElement("conditionForm");
+	}
+	/**
+	 * 会社プルダウンリスト変更時処理
+	 *
+	 * 会社プルダウンの値毎に
+	 * 対象支部プルダウンの内容を変更する。
+	 */
+	function changeCompany(){
+		if(returnLoadingStatus()){
+			setJokenData();
+			document.conditionForm.elements['conditionForm:__link_clicked__'].value='conditionForm:changeCompany';
+			document.conditionForm.submit();
+		}
+	}
+	/**
+	 * 条件項目を対象支部を正規パラメーター値へ設定する。
+	 *
+	 */
+	function setJokenData(){
+		//対象支部コードを設定
+		var elementCompany = document.conditionForm.elements['conditionForm:targetCompanyCd'];
+		var companyCdIndex = elementCompany.selectedIndex;
+		var targetClassName = "sibuCd"+companyCdIndex;
+		var objs = document.conditionForm.getElementsByTagName("select");
+		for (i = 0; i < objs.length; i++) {
+			if (objs[i].className == targetClassName) {
+		      var sibuIndex = objs[i].selectedIndex;
+		      var sibuCd = objs[i].options[sibuIndex].value;
+		      document.conditionForm.elements['conditionForm:targetSibuCd'].value = sibuCd;
+		      break;
+		    }else{
+		    }
+		}
+	}
+	/**
+	 * 検索ボタン押下時処理
+	 *
+	 */
+	function search(){
+		if(returnLoadingStatus()){
+			setJokenData();
+			document.conditionForm.elements['conditionForm:__link_clicked__'].value='conditionForm:search';
+			document.conditionForm.submit();
+		}
+	}
+	/**
+	 * ウィンドウロードステータス取得処理
+	 */
+	function returnLoadingStatus(){
+		if(isLoadingFlgOFF()) {
+			setLoadingFlg();
+			return true;
+		}
+		return false;
+	}
+	/**
+	 * ウィンドウロードステータス取得処理
+	 */
+	function isLoadingFlgOFF(){
+		return (document.conditionForm.elements['conditionForm:loadingFlg'].value != "ON");
+	}
+	/**
+	 * ウィンドウロードフラグ設定処理
+	 */
+	function setLoadingFlg() {
+		document.conditionForm.elements['conditionForm:loadingFlg'].value = "ON";
+	}
+
+//-->
+</script>
+
+<form m:id="conditionForm" onKeyDown="return setDefaultSubmitButton('conditionForm','executeBt');">
+    <input type="hidden" m:id="viewId" m:value="#{viewIdValue}" />
+	<input type="hidden" m:id="initMenuId" m:value="#{menuAction.initMenuId}"/>
+	<input type="hidden" m:id="initSubMenuId" m:value="#{menuAction.initSubMenuId}"/>
+	<input type="hidden" m:id="windowId" m:value="#{blockMainteReqDto.windowId}"/>
+	<input type="hidden" id="loadingFlg" value="" m:passthrough="true"/>
+	<a id="search" m:action="#{blockMainteConditionAction.search}"/>
+	<a id="changeCompany" m:action="#{blockMainteConditionAction.changeCompany}"/>
+	<table class="hiddenBody">
+	<tr><td>
+	<table class="body_table">
+		<tr>
+			<th>会社</th>
+			<td>
+		    <div class="hideArea">
+				<select class="condition_field"
+						m:id="targetCompanyCd"
+						m:value="#{blockMainteReqDto.targetCompanyCd}"
+						m:items="#{blockMainteSesDto.listCompany}"
+						m:itemValue="companyCd"
+						m:itemLabel="companyName"
+						m:onchange="changeCompany()">
+					<option value="00">モスフードサービス</option>
+					<option value="01">トモス</option>
+					<option value="02">四季菜</option>
+				</select>
+			</div>
+			</td>
+			<th nowrap=" nowrap">対象支部</th>
+			<td nowrap=" nowrap">
+			<div class="hideArea">
+				<select m:id="targetSibuCd"
+						m:value="#{blockMainteReqDto.targetSibuCd}"
+						m:items="#{blockMainteSesDto.listSibu}"
+						m:itemValue="sibuCd"
+						m:itemLabel="sibuName"
+						>
+				</select>
+			</div></td>
+		</tr>
+	</table></td>
+	<td>
+	<input type="submit" value="実行" name="executeBt" style="margin-left:3px;"
+	        onClick="search(); return false;" onDblClick="return false;"/></td>
+	</tr>
+	</table>
+</form>
+</span>
+</body>
+</html>

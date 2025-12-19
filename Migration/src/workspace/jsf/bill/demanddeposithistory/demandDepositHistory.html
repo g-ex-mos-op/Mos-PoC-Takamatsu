@@ -1,0 +1,266 @@
+<html xmlns:m="http://www.seasar.org/maya" m:action="#{demandDepositHistoryAction.initialize}" m:extends="/jsf/layout/layoutNoNavi.html">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Windows-31j" />
+<title>ご請求ご入金履歴</title>
+</head>
+<body>
+<span m:inject="f:param" m:name="layoutTitle" m:value="ご請求ご入金履歴"/>
+<span m:inject="f:param" m:name="onLoadName" m:value="bodyLoad();"/>
+<span m:inject="s:insert" m:name="bodyTitleName">■ご請求ご入金履歴</span>
+<span m:inject="f:param" m:name="viewIdValue" m:value="BBS009V02"/>
+<span m:inject="s:insert" m:name="body">
+<STYLE type="text/css" media="screen">
+</STYLE>
+<script type="text/javascript">
+<!--
+  function bodyLoad() {
+  }
+
+//-->
+</script>
+<style type="text/css">
+<!--
+	table.body_table2 tr th {
+		text-align:center;
+	}
+    .scroll_area {
+        width:100%;
+        height:390px;
+    }
+-->
+</style>
+<form m:id="form1" onkeydown="return setDefaultSubmitButton('form1', 'btnExecute');">
+<input type="hidden" m:id="viewId" m:value="#{viewIdValue}"/>
+<input type="hidden" m:id="initMenuId" m:value="#{menuAction.initMenuId}"/>
+<input type="hidden" m:id="initSubMenuId" m:value="#{menuAction.initSubMenuId}"/>
+  <!-- ボタンエリア -->
+  <!-- 本部ユーザのみ「再検索部分」表示 -->
+  <table m:rendered="#{demandDepositHistoryDto.userType == '01'}"
+         class="hiddenBody" style="margin-bottom:4px;">
+  	<tr>
+  		<td>
+	<table class="body_table">
+	    <tr>
+	      <th>オーナーコード
+	        <input type="button" value="検索"
+                    m:action="#{demandDepositHistoryAction.callOnerForm}"/>
+	      </th>
+	      <td>
+		      <input type="text" class="imenotuse" m:id="condOnerCd" m:value="#{demandDepositHistoryDto.onerCd}" m:maxlength="5" m:size="10" m:converter="#{hanyoAppCodeConverter5}"/>
+	      </td>
+	    </tr>
+	  </table>
+		</td>
+	      <td>
+	        <input type="button" m:id="btnExecute" style="margin-left:3px;"
+	               m:value="#{demandDepositHistoryDto.saisinTabListSize > 0 ? '再検索' : '実行'}"
+	               m:action="#{demandDepositHistoryAction.searchAgain}"/>
+	      </td>
+	    </tr>
+	  </table>
+  <span m:rendered="#{demandDepositHistoryDto.saisinTabListSize > 0}"><!-- 最新タブ０件以上の時表示(開始) -->
+	<input m:id="downloadBt" type="button" value="ダウンロード" m:action="#{downloadSeikyuMeisaiCsvOutputAction.downloadCsv}" class="operation_button" />
+	<span style="font-weight:bold;">ご請求額をクリックするとご請求内訳が表示されます。</span>
+	<table class="element_browser"
+	       cellpadding="0" cellspacing="0" style="margin-top:4px;">
+		<tr>
+	<!-- タブエリア -->
+    <td style="width:120px;"
+          class="body_active_cell tab_change_area_0"
+		  onClick="changeTabArea('0');"
+		  onMouseOver="this.style.cursor='pointer';">最新</td>
+    <td style="width:120px;"
+          class="body_non_active_cell tab_change_area_1"
+          onClick="changeTabArea('1');"
+          onMouseOver="this.style.cursor='pointer';">履歴</td>
+    	</tr>
+    </table>
+	<!--タブ帯-->
+	<div style="clear:both;width:97.5%;line-height:5px;margin-bottom:-2px;" class="body_caption">&nbsp;</div>
+
+	<div style="line-height:5px;"><br/></div>
+	<div class="scroll_area">
+	  <!--最新タブ 開始 -->
+	  <div class="visible_tab tab_change_area_0">
+		  <span class="element_print">【最新】</span>
+		  <!-- 1レコード分 開始 -->
+		  <div m:inject="s:forEach" m:items="#{demandDepositHistoryDto.saisinTabList}" m:var="e" m:varindex="i">
+		  <table class="body_table" style="border-bottom-width:0px;">
+		    <tr>
+		      <th width="100" style="border-bottom-width:0px;">ご請求先</th>
+		      <td width="320" style="border-bottom-width:0px;">
+		        <span m:value="#{e.urikakeCd}" />&nbsp;&nbsp;
+		        <span m:converter="#{characterEncodingConverter}" m:value="#{e.onerNameKj}"/>&nbsp;殿
+		      </td>
+		    </tr>
+		  </table>
+		  <table width="95%" class="body_table2">
+		    <tr>
+		      <th width="25%">日付</TH>
+		      <th width="15%">前回ご請求額</TH>
+		      <th width="15%">ご入金額</TH>
+		      <th width="15%">繰越残高</TH>
+		      <th width="15%">今回お買上額</TH>
+		      <th width="15%">今回ご請求額</TH>
+		    </tr>
+		    <tr>
+		      <td>
+		        <span m:value="#{e.seikyuNyukinDt}" /><span m:value="#{e.hakkoDt}" />
+		      </td>
+		      <td style="text-align:right;">
+		        <span m:value="#{e.seikyuZen}" m:converter="#{numericConverter}"/>
+		      </td>
+		      <td style="text-align:right;">
+		        <span m:value="#{e.nyukinGaku}" m:converter="#{numericConverter}"/>
+		      </td>
+		      <td style="text-align:right;">
+		        <span m:value="#{e.kuriZan}" m:converter="#{numericConverter}"/>
+		      </td>
+		      <td style="text-align:right;">
+		        <span m:value="#{e.kaiageGaku}" m:converter="#{numericConverter}"/>
+		      </td>
+		      <td style="text-align:right;">
+		        <a m:action="#{demandDepositHistoryAction.selectDetail}"  target="_blank">
+		          <span m:value="#{e.seikyuKon}" m:converter="#{numericConverter}"/>
+		          <span m:inject="f:param" m:name="seikyushoId" m:value="#{e.seikyushoId}"/>
+		          <span m:inject="f:param" m:name="urikakeCd" m:value="#{e.urikakeCd}"/>
+		        </a>
+		      </td>
+		    </tr>
+		  </table>
+<!-- add 2023/04/14 USI金 begin-->
+		</div>
+		<div m:inject="s:forEach" m:items="#{demandDepositHistoryDto.saisinTabList}" m:var="e0" m:varindex="i0">
+		<span m:rendered="#{e0.utiwakeKbn == 0}">
+<!-- add 2023/04/14 USI金 end-->
+		  <table width="51%" class="body_table2" style="margin-bottom:4px;">
+		  <caption class="body_title width_percent_71_41">■今回お買上額内訳</caption>
+		    <tr>
+		      <th width="34%">課税合計額</TH>
+		      <th width="33%">消費税額</TH>
+		      <th width="33%">税込・非課税額</TH>
+		    </tr>
+		    <tr>
+<!-- modify 2023/04/14 USI金 begin-->
+		      <!-- <td style="text-align:right;"><span m:value="#{e.kazeiGaku}" m:converter="#{numericConverter}"/></TD>
+		      <td style="text-align:right;"><span m:value="#{e.taxKei}" m:converter="#{numericConverter}"/></TD>
+		      <td style="text-align:right;"><span m:value="#{e.hizeiGaku}" m:converter="#{numericConverter}"/></TD> -->
+			  <td style="text-align:right;"><span m:value="#{e0.kazeiGaku}" m:converter="#{numericConverter}"/></TD>
+		      <td style="text-align:right;"><span m:value="#{e0.taxKei}" m:converter="#{numericConverter}"/></TD>
+		      <td style="text-align:right;"><span m:value="#{e0.hizeiGaku}" m:converter="#{numericConverter}"/></TD>
+<!-- modify 2023/04/14 USI金 end-->
+		    </tr>
+		  </table>
+		  <!-- add 2023/04/14 USI金 begin-->
+		</span>
+		<!-- add 2023/04/14 USI金 end-->
+
+		  </div>
+<!-- add 2023/04/14 USI金 begin-->
+	<div m:inject="s:forEach" m:items="#{demandDepositHistoryDto.tenPercentList}" m:var="e1" m:varindex="i">
+    <div m:inject="s:forEach" m:items="#{demandDepositHistoryDto.gennZeiList}" m:var="e2" m:varindex="i2">
+    <div m:inject="s:forEach" m:items="#{demandDepositHistoryDto.keikaSotiList}" m:var="e3" m:varindex="i3">
+    <div m:inject="s:forEach" m:items="#{demandDepositHistoryDto.hiKazeiList}" m:var="e4" m:varindex="i4">
+    <span m:rendered="#{e1.utiwakeKbn == 1}">
+    <table width="51%" class="body_table2">
+    <caption class="body_title width_percent_71_41">■今回お買上額内訳</caption>
+    <tr>
+      <th width="34%" style="text-align:center;">税抜金額合計</th>
+      <th width="33%" style="text-align:center;">消費税額</th>
+      <th width="33%" style="text-align:center;">非課税</th>
+    </tr>
+    <tr>
+      <td style="text-align:right;"><span m:value="#{e1.taxkbn1_kazei + e2.taxkbn2_kazei + e3.taxkbn3_kazei + e1.taxkbn1_uri + e2.taxkbn2_uri + e3.taxkbn3_uri}" m:converter="#{numericConverter}" /></td>
+      <td style="text-align:right;"><span m:value="#{e1.taxkbn1_inv + e2.taxkbn2_inv + e3.taxkbn3_inv}" m:converter="#{numericConverter}" /></td>
+      <td style="text-align:right;"><span m:value="#{e4.taxkbn4_hizei}" m:converter="#{numericConverter}" /></td>
+    </tr>
+    </table>
+	</span>
+	</div>
+	</div>
+	</div>
+	</div>
+<!-- add 2023/04/14 USI金 end-->
+		  <!-- 1レコード分 終了 -->
+
+	  </div>
+	  <!-- 最新タブ 終了 -->
+
+	  <!-- 履歴タブ 開始 -->
+	  <div class="invisible_tab tab_change_area_1">
+		  <span class="element_print">【履歴】</span>
+		  <div m:inject="s:forEach" m:items="#{demandDepositHistoryDto.rirekiTabList}" m:var="e" m:varindex="i">
+
+		    <!-- ヘッダ部分 開始 -->
+		    <div m:inject="s:forEach" m:items="#{e}" m:var="ei" m:varindex="i2"><!-- 内ループ１開始 -->
+		    <span m:rendered="#{i2 == 0}">
+		      <table class="body_table" style="border-bottom-width:0px;">
+		        <tr>
+		          <th width="100" style="border-bottom-width:0px;">ご請求先</th>
+		          <td width="320" style="border-bottom-width:0px;">
+		            <span m:value="#{ei.urikakeCd}" />&nbsp;&nbsp;
+		            <span m:converter="#{characterEncodingConverter}" m:value="#{ei.onerNameKj}" />&nbsp;殿
+		          </td>
+		        </tr>
+		      </table>
+		    </span>
+		    </div><!-- 内ループ１終了 -->
+		    <!-- ヘッダ部分 終了 -->
+
+		    <table style="margin-bottom:4px;" width="95%" class="body_table2">
+		        <tr>
+		          <th width="7%" >種別</th>
+		          <th width="25%">日付</th>
+		          <th width="14%">繰越残高</th>
+		          <th width="14%">今回お買上額</th>
+		          <th width="14%">ご請求額</th>
+		          <th width="14%">ご入金額</th>
+		          <th width="14%">残高</th>
+		        </tr>
+			    <!-- データ部分 -->
+			    <div m:inject="s:forEach" m:items="#{e}" m:var="et" m:varindex="i2"><!-- 内ループ２開始 -->
+			        <tr>
+			          <td width="7%" style="text-align:center;">
+			            <span m:rendered="#{et.seikyuNyukinKbn == '1'}">ご請求</span>
+			            <span m:rendered="#{et.seikyuNyukinKbn == '2'}">ご入金</span>
+			          </td>
+			          <td width="25%">
+			            <span m:value="#{et.seikyuNyukinDt}" /><span m:value="#{et.hakkoDt}" />
+			          </td>
+			          <td width="14%" style="text-align:right;">
+			             <span m:value="#{et.kuriZan}" m:converter="#{numericConverter}"/>
+			          </td>
+			          <td width="14%" style="text-align:right;">
+			            <span m:value="#{et.kaiageGaku}" m:converter="#{numericConverter}"/>
+			          </td>
+			          <td width="14%" style="text-align:right;">
+			            <span m:rendered="#{et.seikyuNyukinKbn == '1'}">
+			              <a m:action="#{demandDepositHistoryAction.selectDetail}" target="_blank">
+			                <span m:value="#{et.seikyuKon}" m:converter="#{numericConverter}"/>
+			                <span m:inject="f:param" m:name="seikyushoId" m:value="#{et.seikyushoId}"/>
+							<span m:inject="f:param" m:name="urikakeCd" m:value="#{et.urikakeCd}"/>
+			              </a>
+			            </span>
+			          </td>
+			          <td width="14%" style="text-align:right;">
+			            <span m:rendered="#{et.seikyuNyukinKbn == '1'}">0</span>
+			            <span m:rendered="#{et.seikyuNyukinKbn == '2'}">
+			              <span m:value="#{et.nyukinGaku}" m:converter="#{numericConverter}"/>
+			            </span>
+			          </td>
+			          <td width="14%" style="text-align:right;">
+			            <span m:value="#{et.zandaka}" m:converter="#{numericConverter}"/>
+			          </td>
+			        </tr>
+			    </div>
+		    </table>
+		  </div><!-- 外ループ終了 -->
+	  </div>
+	  <!--履歴タブ 終了 -->
+	</div>
+  </span><!-- 最新タブ０件以上の時表示(終了) -->
+<input type="text" m:id="dummyEnter" style="display:none"/>
+</form>
+</span>
+</body>
+</html>

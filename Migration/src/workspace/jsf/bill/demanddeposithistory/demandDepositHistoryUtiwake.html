@@ -1,0 +1,307 @@
+<html xmlns:m="http://www.seasar.org/maya" m:action="#{demandDepositHistoryUtiwakeAction.initialize}" m:extends="/jsf/layout/layoutNoNavi.html">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Windows-31j" />
+<title>ご請求内訳</title>
+</head>
+<body>
+<span m:inject="f:param" m:name="layoutTitle" m:value="ご請求内訳"/>
+<span m:inject="f:param" m:name="onLoadName" m:value="bodyLoad();"/>
+<span m:inject="s:insert" m:name="bodyTitleName">■ご請求内訳</span>
+<span m:inject="f:param" m:name="viewIdValue" m:value="BBS009V03"/>
+<span m:inject="s:insert" m:name="body">
+<STYLE type="text/css" media="screen">
+</STYLE>
+<script type="text/javascript">
+<!--
+  function bodyLoad() {
+  }
+
+//-->
+</script>
+<style type="text/css">
+<!--
+    .scroll_area {
+        width:100%;
+        height:455px;
+    }
+/*add 2023/04/14 USI金 begin */
+    .slash_style{
+        margin-left:0;
+        margin-top:0;
+        box-sizing:border-box;
+        border:1px solid #808080;
+        transform: rotate(-7.5deg);
+        transform-origin: center;
+    }
+/*add 2023/04/14 USI金 end */
+-->
+</style>
+
+<form m:id="form1">
+<input type="hidden" m:id="viewId" m:value="#{viewIdValue}"/>
+<input type="hidden" m:id="initMenuId" m:value="#{menuAction.initMenuId}"/>
+<input type="hidden" m:id="initSubMenuId" m:value="#{menuAction.initSubMenuId}"/>
+  <!-- タブエリア -->
+  <table class="element_browser"
+	     width="98%" cellspacing="0" cellpadding="0">
+    <tr style="line-height:19px;">
+      <td class="body_active_cell tab_change_area_0"
+		  onClick="changeTabArea('0');" width="120px"
+		  onMouseOver="this.style.cursor='pointer';">内訳</td>
+      <td class="body_non_active_cell tab_change_area_1"
+		  onClick="changeTabArea('1');" width="120px"
+		  onMouseOver="this.style.cursor='pointer';">商品分類別</td>
+      <td width="*">&nbsp;</td>
+    </tr>
+    <tr style="height:5px;"><td class="body_caption" colspan="3"></td></tr>
+  </table>
+  <div style="line-height:5px;"><br/></div>
+
+  <!--内訳タブ 開始 -->
+  <div class="visible_tab tab_change_area_0">
+  <div class="scroll_area">
+  <span class="element_print">【内訳】</span>
+  <!-- エリア１ (開始)-->
+  <div m:inject="s:forEach" m:items="#{demandDepositHistoryDto.utiwakeBillList}" m:var="e" m:varindex="i">
+  <span m:rendered="#{i == 0}">
+  <table class="body_table" style="border-bottom-width:0px;">
+    <tr>
+      <th width="100" style="border-bottom-width:0px;">ご請求先</th>
+      <td width="320" style="border-bottom-width:0px;">
+        <span m:value="#{e.urikakeCd}" />&nbsp;&nbsp;
+        <span m:converter="#{characterEncodingConverter}" m:value="#{e.onerNameKj}"/>&nbsp;殿
+      </td>
+    </tr>
+  </table>
+  <table width="95%" class="body_table2">
+    <tr>
+      <th width="25%" style="text-align:center;">日付</th>
+      <th width="15%" style="text-align:center;">前回ご請求額</th>
+      <th width="15%" style="text-align:center;">ご入金額</th>
+      <th width="15%" style="text-align:center;">繰越残高</th>
+      <th width="15%" style="text-align:center;">今回お買上額</th>
+      <th width="15%" style="text-align:center;">今回ご請求額</th>
+    </tr>
+    <tr>
+      <td><span m:value="#{e.seikyuNyukinDt}"/></TD>
+      <td style="text-align:right;"><span m:value="#{e.seikyuZen}"  m:converter="#{numericConverter}"/></TD>
+      <td style="text-align:right;"><span m:value="#{e.nyukinGaku}" m:converter="#{numericConverter}"/></TD>
+      <td style="text-align:right;"><span m:value="#{e.kuriZan}"    m:converter="#{numericConverter}"/></TD>
+      <td style="text-align:right;"><span m:value="#{e.kaiageGaku}" m:converter="#{numericConverter}"/></TD>
+      <td style="text-align:right;"><span m:value="#{e.seikyuKon}"  m:converter="#{numericConverter}"/></TD>
+    </tr>
+  </table>
+<!-- add 2023/04/14 USI金 begin-->
+  </span>
+  </div>
+  <div m:inject="s:forEach" m:items="#{demandDepositHistoryDto.utiwakeBillList}" m:var="e0" m:varindex="i0">
+  <span m:rendered="#{e0.utiwakeKbn == 0}">
+<!-- add 2023/04/14 USI金 end-->
+  <table width="51%" class="body_table2">
+    <caption class="body_title width_percent_71_41">■今回お買上額内訳</caption>
+    <tr>
+      <th width="34%" style="text-align:center;">課税合計額</th>
+      <th width="33%" style="text-align:center;">消費税額</th>
+      <th width="33%" style="text-align:center;">税込・非課税額</th>
+    </tr>
+    <tr>
+<!-- modify 2023/04/14 USI金 begin-->
+<!--       <td style="text-align:right;"><span m:value="#{e.kazeiGaku}" m:converter="#{numericConverter}"/></td>
+      <td style="text-align:right;"><span m:value="#{e.taxKei}"    m:converter="#{numericConverter}"/></td>
+      <td style="text-align:right;"><span m:value="#{e.hizeiGaku}" m:converter="#{numericConverter}"/></td> -->
+      <td style="text-align:right;"><span m:value="#{e0.kazeiGaku}" m:converter="#{numericConverter}"/></td>
+      <td style="text-align:right;"><span m:value="#{e0.taxKei}"    m:converter="#{numericConverter}"/></td>
+      <td style="text-align:right;"><span m:value="#{e0.hizeiGaku}" m:converter="#{numericConverter}"/></td>
+<!-- add 2023/04/14 USI金 end-->
+    </tr>
+  </table>
+  </span>
+  </div>
+<!-- add 2023/04/14 USI金 begin-->
+  <div m:inject="s:forEach" m:items="#{demandDepositHistoryDto.tenPercentList}" m:var="e1" m:varindex="i">
+  <div m:inject="s:forEach" m:items="#{demandDepositHistoryDto.gennZeiList}" m:var="e2" m:varindex="i2">
+  <div m:inject="s:forEach" m:items="#{demandDepositHistoryDto.keikaSotiList}" m:var="e3" m:varindex="i3">
+  <div m:inject="s:forEach" m:items="#{demandDepositHistoryDto.hiKazeiList}" m:var="e4" m:varindex="i4">
+  <span m:rendered="#{e1.utiwakeKbn == 1}">
+  <table width="51%" class="body_table2">
+    <caption class="body_title width_percent_71_41">■今回お買上額内訳</caption>
+    <tr>
+      <th width="34%" style="text-align:center;">税抜金額合計</th>
+      <th width="33%" style="text-align:center;">消費税額</th>
+      <th width="33%" style="text-align:center;">非課税</th>
+    </tr>
+    <tr>
+      <td style="text-align:right;"><span m:value="#{e1.taxkbn1_kazei + e2.taxkbn2_kazei + e3.taxkbn3_kazei + e1.taxkbn1_uri + e2.taxkbn2_uri + e3.taxkbn3_uri}" m:converter="#{numericConverter}" /></td>
+      <td style="text-align:right;"><span m:value="#{e1.taxkbn1_inv + e2.taxkbn2_inv + e3.taxkbn3_inv}" m:converter="#{numericConverter}" /></td>
+      <td style="text-align:right;"><span m:value="#{e4.taxkbn4_hizei}" m:converter="#{numericConverter}" /></td>
+    </tr>
+  </table>
+   <table width="75%" class="body_table2">
+    <caption class="body_caption" style="line-height:20px;">■税率別の内訳</caption>
+    <tr>
+      <th width="12%" style="text-align:center;">税率</th>
+      <th width="18%" style="text-align:center;">外税商品合計額</th>
+      <th width="18%" style="text-align:center;">税込商品合計額</th>
+      <th width="18%" style="text-align:center;">税抜金額合計額</th>
+      <th width="18%" style="text-align:center;">消費税額</th>
+      <th width="16%" style="text-align:center;">合計</th>
+    </tr>
+    <tr>
+      <th width="10%" style="text-align:left;">10%</th>
+      <td style="text-align:right;"><span m:value="#{e1.taxkbn1_kazei}" m:converter="#{numericConverter}"/></td>
+<!-- modify 2023/04/27 USI金 begin-->
+<!--       <td style="text-align:right;"><span m:value="#{e1.taxkbn1_zeiko + e1.taxkbn1_kazei}" m:converter="#{numericConverter}"/>&nbsp;<br/>(<span m:value="#{e1.taxkbn1_uri}" m:converter="#{numericConverter}"/>)</td> -->
+      <td style="text-align:right;"><span m:value="#{e1.taxkbn1_zeiko + e1.taxkbn1_zeiko_tax}" m:converter="#{numericConverter}"/>&nbsp;<br/>(<span m:value="#{e1.taxkbn1_uri}" m:converter="#{numericConverter}"/>)</td>
+<!-- modify 2023/04/27 USI金 end-->
+      <td style="text-align:right;"><span m:value="#{e1.taxkbn1_kazei + e1.taxkbn1_uri}" m:converter="#{numericConverter}"/></td>
+      <td style="text-align:right;"><span m:value="#{e1.taxkbn1_inv}" m:converter="#{numericConverter}"/></td>
+      <td style="text-align:right;"><span m:value="#{e1.taxkbn1_kazei + e1.taxkbn1_uri + e1.taxkbn1_inv}" m:converter="#{numericConverter}"/></td>
+    </tr>
+    <tr>
+      <th width="10%" style="text-align:left;">8%軽減税</th>
+      <td style="text-align:right;"><span m:value="#{e2.taxkbn2_kazei}" m:converter="#{numericConverter}"/></td>
+<!-- modify 2023/04/27 USI金 begin-->
+<!-- <td style="text-align:right;"><span m:value="#{e2.taxkbn2_zeiko + e2.taxkbn2_kazei}" m:converter="#{numericConverter}"/>&nbsp;<br/>(<span m:value="#{e2.taxkbn2_uri}" m:converter="#{numericConverter}"/>)</td> -->
+      <td style="text-align:right;"><span m:value="#{e2.taxkbn2_zeiko + e2.taxkbn2_zeiko_tax}" m:converter="#{numericConverter}"/>&nbsp;<br/>(<span m:value="#{e2.taxkbn2_uri}" m:converter="#{numericConverter}"/>)</td>
+<!-- modify 2023/04/27 USI金 end-->
+      <td style="text-align:right;"><span m:value="#{e2.taxkbn2_kazei + e2.taxkbn2_uri}" m:converter="#{numericConverter}"/></td>
+      <td style="text-align:right;"><span m:value="#{e2.taxkbn2_inv}" m:converter="#{numericConverter}"/></td>
+      <td style="text-align:right;"><span m:value="#{e2.taxkbn2_kazei + e2.taxkbn2_uri + e2.taxkbn2_inv}" m:converter="#{numericConverter}"/></td>
+    </tr>
+    <tr>
+      <th width="10%" style="text-align:left;">経過措置</th>
+      <td style="text-align:right;"><span m:value="#{e3.taxkbn3_kazei}" m:converter="#{numericConverter}"/></td>
+<!-- modify 2023/04/27 USI金 begin-->
+<!--       <td style="text-align:right;"><span m:value="#{e3.taxkbn3_zeiko + e3.taxkbn3_kazei}" m:converter="#{numericConverter}"/>&nbsp;<br/>(<span m:value="#{e3.taxkbn3_uri}" m:converter="#{numericConverter}"/>)</td> -->
+      <td style="text-align:right;"><span m:value="#{e3.taxkbn3_zeiko + e3.taxkbn3_zeiko_tax}" m:converter="#{numericConverter}"/>&nbsp;<br/>(<span m:value="#{e3.taxkbn3_uri}" m:converter="#{numericConverter}"/>)</td>
+<!-- modify 2023/04/27 USI金 end-->
+      <td style="text-align:right;"><span m:value="#{e3.taxkbn3_kazei + e3.taxkbn3_uri}" m:converter="#{numericConverter}"/></td>
+      <td style="text-align:right;"><span m:value="#{e3.taxkbn3_inv}" m:converter="#{numericConverter}"/></td>
+      <td style="text-align:right;"><span m:value="#{e3.taxkbn3_kazei + e3.taxkbn3_uri + e3.taxkbn3_inv}" m:converter="#{numericConverter}"/></td>
+    </tr>
+    <tr>
+      <th width="10%" style="text-align:left;padding:9px 0 9px 0;">非課税</th>
+      <td><div class = "slash_style"></div></td>
+      <td><div class = "slash_style"></div></td>
+      <td><div class = "slash_style"></div></td>
+      <td><div class = "slash_style"></div></td>
+      <td style="text-align:right;"><span m:value="#{e4.taxkbn4_hizei}" m:converter="#{numericConverter}"/></td>
+    </tr>
+    </table>
+  </span>
+  </div>
+  </div>
+  </div>
+  </div>
+<!-- add 2023/04/14 USI金 end-->
+  <!-- エリア１ (終了)-->
+
+  <div style="line-height:5px;"><br/></div>
+
+  <!-- エリア２ (開始)-->
+  <span m:rendered="#{demandDepositHistoryDto.miseSeikyuListSize > 0}">
+  <table width="85%" class="body_table2">
+    <tr>
+      <th width="10%" style="text-align:center;">店コード</th>
+      <th width="41%" style="text-align:center;">店舗名</th>
+      <th width="17%" style="text-align:center;">課税合計額</th>
+      <th width="17%" style="text-align:center;">税込・非課税額</th>
+    </tr>
+
+    <div m:inject="s:forEach" m:items="#{demandDepositHistoryDto.miseSeikyuList}" m:var="e" m:varindex="i">
+    <tr>
+      <td ><span m:value="#{e.miseCd}"/></td>
+      <td ><span m:converter="#{characterEncodingConverter}" m:value="#{e.miseNameKj}"/></td>
+      <td style="text-align:right;"><span m:value="#{e.taxyKin}" m:converter="#{numericConverter}"/></td>
+      <td style="text-align:right;"><span m:value="#{e.zeikomiHikazei}" m:converter="#{numericConverter}"/></td>
+    </tr>
+    </div>
+  </table>
+  </span>
+  <!-- エリア２ (終了)-->
+
+  </div>
+  </div>
+  <!-- 内訳タブ 終了 -->
+
+  <!-- 商品分類別タブ 開始 -->
+  <div class="invisible_tab tab_change_area_1">
+  <div class="scroll_area">
+  <span class="element_print"><p/>【商品分類別】</span>
+  <!-- エリア(オーナー分) -->
+  <div m:inject="s:forEach" m:items="#{demandDepositHistoryDto.onerSeikyuBnruiList}" m:var="e" m:varindex="i">
+    <span m:rendered="#{i == 0}">
+      <table class="body_table" style="border-bottom-width:0px;">
+        <tr>
+          <th width="100" style="border-bottom-width:0px;">ご請求先</th>
+          <td width="320" style="border-bottom-width:0px;">
+            <span m:value="#{e.onerCd}" />&nbsp;&nbsp;
+            <span m:converter="#{characterEncodingConverter}" m:value="#{e.onerNameKj}"/>&nbsp;殿
+          </td>
+        </tr>
+      </table>
+    </span>
+  </div>
+
+  <table width="70%" class="body_table2">
+    <div m:inject="s:forEach" m:items="#{demandDepositHistoryDto.onerSeikyuBnruiList}" m:var="e" m:varindex="i">
+      <tr m:rendered="#{i == 0}">
+        <th width="36%" style="text-align:center;">商品分類</th>
+        <th width="17%" style="text-align:center;">課税対象</th>
+        <th width="17%" style="text-align:center;">税込・非課税</th>
+      </tr>
+      <tr>
+        <td width="36%">
+          <span m:converter="#{characterEncodingConverter}" m:value="#{e.seikyuBnruiKigo}" />&nbsp;&nbsp;
+          <span m:converter="#{characterEncodingConverter}" m:value="#{e.seBnrName}" />
+        </td>
+        <td width="17%" style="text-align:right;"><span m:value="#{e.sotoKin}" m:converter="#{numericConverter}"/></td>
+        <td width="17%" style="text-align:right;"><span m:value="#{e.utiKin}" m:converter="#{numericConverter}"/></td>
+      </tr>
+    </div><!-- ループ終了 -->
+  </table>
+
+  <!-- エリア(店舗分) -->
+  <div m:inject="s:forEach" m:items="#{demandDepositHistoryDto.miseSeikyuBnruiList}" m:var="e" m:varindex="i"><!-- 外ループ開始 -->
+  <div m:inject="s:forEach" m:items="#{e}" m:var="e2" m:varindex="i2">
+    <span m:rendered="#{i2 == 0}">
+      <table class="body_table" style="border-bottom-width:0px;">
+        <tr >
+          <th style="border-bottom-width:0px;" width="100">対象店舗</th>
+          <td style="border-bottom-width:0px;" width="320">
+            <span m:value="#{e2.miseCd}" />&nbsp;&nbsp;
+            <span m:converter="#{characterEncodingConverter}" m:value="#{e2.miseNameKj}"/>&nbsp;殿
+          </td>
+        </tr>
+      </table>
+    </span>
+  </div>
+
+  <table width="70%" style="margin-bottom:4px;" class="body_table2">
+    <div m:inject="s:forEach" m:items="#{e}" m:var="e2" m:varindex="i2">
+      <tr m:rendered="#{i2 == 0}">
+        <th width="36%" style="text-align:center;">商品分類</th>
+        <th width="17%" style="text-align:center;">課税対象</th>
+        <th width="17%" style="text-align:center;">税込・非課税</th>
+      </tr>
+      <tr>
+        <td width="36%">
+          <span m:converter="#{characterEncodingConverter}" m:value="#{e2.seikyuBnruiKigo}" />&nbsp;&nbsp;
+          <span m:converter="#{characterEncodingConverter}" m:value="#{e2.seBnrName}" />
+        </td>
+        <td width="17%" style="text-align:right;"><span m:value="#{e2.sotoKin}" m:converter="#{numericConverter}"/></td>
+        <td width="17%" style="text-align:right;"><span m:value="#{e2.utiKin}" m:converter="#{numericConverter}"/></td>
+      </tr>
+    </div><!-- 内ループ終了 -->
+  </table>
+
+  </div><!-- 外ループ終了 -->
+  </div>
+  </div>
+  <!--商品分類別タブ 終了 -->
+<input type="text" m:id="dummyEnter" style="display:none"/>
+
+</form>
+</span>
+</body>
+</html>

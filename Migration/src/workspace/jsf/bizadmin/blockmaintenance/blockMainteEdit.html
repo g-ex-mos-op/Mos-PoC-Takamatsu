@@ -1,0 +1,294 @@
+<html xmlns:m="http://www.seasar.org/maya" m:action="#{blockMainteEditAction.initialize}" m:extends="/jsf/layout/layoutNoNavi.html">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Windows-31j" />
+<title>ブロックメンテナンス</title>
+<span m:inject="f:param" m:name="layoutTitle" m:value="ブロックメンテナンス(編集画面)"/>
+<span m:inject="s:insert" m:name="bodyTitleName">■ブロックメンテナンス(編集画面)</span>
+<span m:inject="f:param" m:name="viewIdValue" m:value="BBA003V02"/>
+<span m:inject="f:param" m:name="onLoadName" m:value="load()"/>
+</head>
+<body>
+<span m:inject="s:insert" m:name="body" >
+<STYLE type="text/css">
+<!--
+.data_table_width{
+  width				: 900px;
+}
+table.body_table2 tr td.moveData{
+  background-color      : #FFC0A0;
+}
+table.body_table2 tr td.notMoveData{
+  background-color      : #C0C0C0;
+}
+.scroll_area {
+	height				: 323px;
+	width				: 920px;
+}
+@media print {
+.scroll_area {
+}
+table.body_table2{
+  width				: 100%;
+}
+}
+
+//-->
+</STYLE>
+<script type="text/javascript">
+<!--
+var userTypeHONBU = "01";
+var userTypeONER = "02";
+var userTypeMISE = "03";
+
+/**
+ * ウィンドウロードステータス取得処理
+ *
+ */
+function returnLoadingStatus(){
+	if(isLoadingFlgOFF()) {
+		setLoadingFlg();
+		return true;
+	}
+	return false;
+}
+/**
+ * ウィンドウロードステータス取得処理
+ *
+ */
+function isLoadingFlgOFF(){
+	return (document.editForm.elements['editForm:loadingFlg'].value != "ON");
+}
+
+
+/**
+ * ウィンドウロードフラグ設定処理
+ *
+ *
+ */
+function setLoadingFlg() {
+	document.editForm.elements['editForm:loadingFlg'].value = "ON";
+}
+
+	/**
+	 * 画面表示完了時初期化処理
+	 */
+	function load(){
+		var elementName = document.focusElementForm.elements["FOCUS_ELEMENT"].value;
+		if(elementName == "") {
+			focusRegistdata();
+		}
+		focusElement("editForm");
+	}
+/**
+ * 対象ブロックプルダウンリスト変更時処理
+ *
+ * 対象ブロックプルダウンの値毎に
+ * 表示内容を変更する。
+ */
+function changeDispBlock(){
+	document.editForm.elements['editForm:__link_clicked__'].value='editForm:changeDispBlock';
+	document.editForm.submit();
+}
+/**
+ * 選択した店舗を移動ボタン押下時処理
+ *
+ */
+function moveBlock(){
+	document.editForm.elements['editForm:__link_clicked__'].value='editForm:moveBlock';
+	document.editForm.submit();
+}
+/**
+ * 移動をリセットボタン押下時処理
+ */
+function resetBlock(){
+	document.editForm.elements['editForm:__link_clicked__'].value='editForm:resetBlock';
+	document.editForm.submit();
+}
+/**
+ * すべてONボタン押下時処理
+ */
+function allON(){
+  var objs = document.editForm.getElementsByTagName('input');
+  for (i = 0; i < objs.length; i++) {
+    if (objs[i].className == "selectObj") {
+    	if(!objs[i].checked){
+      		objs[i].click();
+      	}
+    }else{
+    }
+  }
+}
+/**
+ * すべてOFFボタン押下時処理
+ */
+function allOFF(){
+  var objs = document.editForm.getElementsByTagName('input');
+  for (i = 0; i < objs.length; i++) {
+    if (objs[i].className == "selectObj") {
+    	if(objs[i].checked){
+      		objs[i].click();
+      	}
+    }else{
+    }
+  }
+}
+	/**
+	 *  変更対象の先頭の店舗へフォーカス処理
+	 *
+	 * 「選択した店舗を移動」クリック後、変更した店舗が
+	 *  表示枠内に入らないデータはスクロールで移動しないと変更されたかわかりづらいため。
+	 *  変更対象の店舗で一番先頭の店舗へフォーカスをあてる。
+	 */
+	function focusRegistdata(){
+		var focusIndex= document.focusForm.elements['focusForm:focusIndex'].value;
+  		//メニュー開始インデックスを取得する。
+		var focusInitIndex= document.focusForm.elements['focusForm:focusInitIndex'].value;
+		if(focusIndex > 0 || (focusIndex != focusInitIndex)) {
+			//一番下の店舗へフォーカスを当てる。
+			var focusInitParamName= targetElementName('editForm','select', focusInitIndex);
+			document.editForm.elements[focusInitParamName].focus();
+			//編集された店舗へフォーカスを当てる。
+			var focusParamName= targetElementName('editForm','select', focusIndex);
+			document.editForm.elements[focusParamName].focus();
+		}
+	}
+
+/**
+ * 戻るボタン押下時処理
+ *
+ */
+function execBack(confirmMsg){
+	//実行前に確認アラートを出力
+	if(confirm(confirmMsg)){
+		document.editForm.elements['editForm:__link_clicked__'].value='editForm:execBack';
+		document.editForm.submit();
+	}
+}
+/**
+ * 実行ボタン押下時処理
+ *
+ */
+function execConfirm(){
+	document.editForm.elements['editForm:__link_clicked__'].value='editForm:execConfirm';
+	document.editForm.submit();
+}
+
+//-->
+</script>
+<form id="focusForm">
+	<input type="hidden" m:id="focusIndex" m:value="#{blockMainteReqDto.focusIndex}"/>
+	<input type="hidden" m:id="focusInitIndex" m:value="#{blockMainteReqDto.focusInitIndex}"/>
+</form>
+<form m:id="editForm" onKeyDown="return setDefaultSubmitButton('editForm','executeBt');">
+    <input type="hidden" m:id="viewId" m:value="#{viewIdValue}" />
+	<input type="hidden" m:id="initMenuId" m:value="#{menuAction.initMenuId}"/>
+	<input type="hidden" m:id="initSubMenuId" m:value="#{menuAction.initSubMenuId}"/>
+	<input type="hidden" m:id="windowId" m:value="#{blockMainteReqDto.windowId}"/>
+	<input type="hidden" m:id="targetCompanyCd" m:value="#{blockMainteReqDto.targetCompanyCd}"/>
+	<input type="hidden" m:id="targetSibuCd" m:value="#{blockMainteReqDto.targetSibuCd}"/>
+	<input type="hidden" id="loadingFlg" value="" m:passthrough="true"/>
+	<a id="changeDispBlock" m:action="#{blockMainteEditAction.changeDispBlock}"/>
+	<a id="moveBlock" m:action="#{blockMainteEditAction.moveBlock}"/>
+	<a id="resetBlock" m:action="#{blockMainteEditAction.resetBlock}"/>
+	<a id="execBack" m:action="#{blockMainteEditAction.back}"/>
+	<a id="execConfirm" m:action="#{blockMainteEditAction.confirm}"/>
+	<input type="button" class="operation_button" value="戻る" onClick="execBack('編集中の内容がある場合は破棄されます。よろしいですか？');" onDblClick="return false" style="margin-right:6px;"/>
+	<input type="button" class="operation_button" value="確認" onClick="execConfirm();" onDblClick="return false" name="editForm:executeBt"/>
+	<table class="body_table" style="margin-top:4px;">
+		<tr>
+			<th>会社</th>
+			<td ><span m:converter="#{characterEncodingConverter}" m:value="#{blockMainteSesDto.targetCompanyName}"/>&nbsp;</td>
+			<th>対象支部</th>
+			<td ><span m:converter="#{characterEncodingConverter}" m:value="#{blockMainteSesDto.targetSibuName}"/>&nbsp;</td>
+		</tr>
+	</table>
+	<div style="margin:4px 0px;margin-top:5px;font-weight:bold;">
+	※最後に「確認」ボタンを押して確認画面へ進んでください。</div>
+	<table class="hiddenBody">
+		<tr><td>
+		<table class="body_table2" style="border-bottom-width:0px;display:;">
+			<tr style="line-height:20px;">
+				<th width="96px" style="border-bottom:0px;">対象ブロック</th>
+				<td width="85px" style="border-bottom:0px;">
+			    <div class="hideArea">
+					<select class="condition_field"
+							m:id="dispBlockCd"
+							m:value="#{blockMainteReqDto.dispBlockCd}"
+							m:items="#{blockMainteSesDto.listDispBlock}"
+							m:itemValue="blockCd"
+							m:itemLabel="blockName"
+							m:onchange="changeDispBlock()">
+						<option value="ALL">すべて</option>
+						<option value="000">未登録</option>
+						<option value="001">Aブロック</option>
+						<option value="002">Bブロック</option>
+					</select>
+				</div>
+				</td>
+				<th style="width:51px;border-bottom:0px;">移動先</th>
+				<td width="86px" style="border-bottom:0px;">
+			    <div class="hideArea">
+					<select class="condition_field"
+							m:id="moveBlockCd"
+							m:value="#{blockMainteReqDto.moveBlockCd}"
+							m:items="#{blockMainteSesDto.listBlock}"
+							m:itemValue="blockCd"
+							m:itemLabel="blockName"
+							>
+						<option value="001">Aブロック</option>
+						<option value="002">Bブロック</option>
+					</select>
+				</div>
+				</td>
+			</tr>
+		</table></td>
+		<td><input type="button" style="margin-left:3px;"
+		           value="選択した店舗を移動"
+	               onClick="moveBlock();" onDblClick="return false"/></td>
+	 	</tr>
+	</table>
+
+	<table class="body_table2 data_table_width">
+        <tr class="header_row">
+          <th width="40px">選択</th>
+          <th width="140px">現ブロック</th>
+          <th width="140px">新ブロック</th>
+          <th width="*">店舗</th>
+        </tr>
+	</table>
+	<div class="scroll_area">
+		<table class="body_table2 data_table_width" style="border-top-width:0px;">
+			<span m:inject="s:forEach" m:items="#{blockMainteSesDto.listSearchData}" m:var="e" m:varindex="i">
+				<span m:rendered="#{e.dispFlg}">
+			      <tr class="non_top_border">
+			      	<td class="#{e.move == true ? 'moveData' : (e.change == false ? 'notMoveData' : '')}" width="40px" align="center">
+			        	<span m:rendered="#{e.change}">
+		          		<input class="selectObj" type="checkbox" m:id="select" m:value="#{e.select}"/>
+		          		</span>
+			        </td>
+			        <td class="#{e.move == true ? 'moveData' : (e.change == false ? 'notMoveData' : '')}" width="140px">
+			          <span m:converter="#{characterEncodingConverter}" m:value="#{e.blockName}"/>
+			        </td>
+			        <td class="#{e.move == true ? 'moveData' : (e.change == false ? 'notMoveData' : '')}" width="140px">
+			          <span m:converter="#{characterEncodingConverter}" m:value="#{e.moveBlockName}"/>
+			        </td>
+			        <td class="#{e.move == true ? 'moveData' : (e.change == false ? 'notMoveData' : '')}" width="*">
+			          <span m:converter="#{characterEncodingConverter}" m:value="#{e.miseCd}"/>&nbsp;<span m:converter="#{characterEncodingConverter}" m:value="#{e.miseNameKj}"/><span m:converter="#{characterEncodingConverter}" m:value="#{e.closeMj}"/>
+			        </td>
+			      </tr>
+		      	</span>
+			</span>
+		</table>
+	</div>
+	<table class="hiddenBody data_table_width" style="margin-top:10px;">
+		<tr>
+			<td><input type="button" class="operation_button" value="すべてON" onClick="allON();" onDblClick="return false"/>
+			&nbsp;&nbsp;&nbsp;<input type="button" class="operation_button" value="すべてOFF" onClick="allOFF();" onDblClick="return false"/></td>
+			<td align="right"><input type="button" class="operation_button" value="移動をリセット" onClick="resetBlock();" onDblClick="return false"/></td>
+		</tr>
+	</table>
+	<input type="text" m:id="dummyEnter" style="display:none"/>
+</form>
+</span>
+</body>
+</html>

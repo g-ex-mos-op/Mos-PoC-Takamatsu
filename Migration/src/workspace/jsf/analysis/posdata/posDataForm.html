@@ -1,0 +1,104 @@
+<html xmlns:m="http://www.seasar.org/maya" m:action="#{posDataFormAction.initialize}" m:extends="/jsf/layout/layoutNoNavi.html">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Windows-31j"/>
+<title>ＰＯＳ集信データ提供</title>
+</head>
+<body>
+<span m:inject="f:param" m:name="layoutTitle" m:value="ＰＯＳ集信データ提供"/>
+<span m:inject="s:insert" m:name="bodyTitleName">■ＰＯＳ集信データ提供</span>
+<span m:inject="f:param" m:name="viewIdValue" m:value="BDT001V01"/>
+<span m:inject="f:param" m:name="onLoadName" m:value="bodyLoad();"/>
+<div m:inject="s:insert" m:name="body">
+
+<script type="text/javascript">
+<!--
+// リロード
+function bodyLoad() {
+	// ダウンロードを行う前に一度画面をリロードする
+	//var flg = document.posDataForm.elements['posDataForm:loadFlg'].value;
+	//if(flg == 'true'){
+	//	document.posDataForm.elements['posDataForm:loadFlg'].value = "false";
+	//	document.posDataForm.target = "_self";
+	//	document.forms['posDataForm'].elements['posDataForm:__link_clicked__'].value='posDataForm:dataDownload';
+	//	document.forms['posDataForm'].submit();
+	//}
+
+	var type = document.posDataForm.elements['posDataForm:typeCd'].value;
+	if(type == '01'){
+		document.posDataForm.elements['posDataForm:onerId'].focus();
+	}
+}
+-->
+</script>
+<form m:id="posDataForm" onKeyDown="return setDefaultSubmitButton('posDataForm','btnExecute');">
+<input type="hidden" m:id="viewId" 	m:value="#{viewIdValue}"/>
+<input type="hidden" m:id="initMenuId" m:value="#{menuAction.initMenuId}"/>
+<input type="hidden" m:id="initSubMenuId" m:value="#{menuAction.initSubMenuId}"/>
+<input type="hidden" m:id="windowId" m:value="#{posDataFormDto.windowId}"/>
+<input type="hidden" m:id="typeCd" 	m:value="#{posDataFormDto.birdUserInfo.mstUser.userTypeCd}"/>
+<input type="hidden" m:id="loadFlg" m:value="#{posDataFormDto.downloadFlag}"/>
+<input type="hidden" m:id="onerIdFlg" m:value="#{posDataFormDto.onerIdFlg}"/>
+<a m:id="dataDownload" m:action="#{posDataFormAction.dataDownload}"/>
+	<div style="margin-bottom:4px;">※前月１日まで遡って検索することができます。<br/>
+			データ保持期間内は何度でも集信できます。</div>
+			<!-- 条件部プルダウン(本部用) -->
+<table m:rendered="#{posDataFormDto.birdUserInfo.mstUser.userTypeCd == '01'}"
+  class="hiddenBody">
+	<tr><td>
+<table class="body_table">
+<tr>
+	<th style="border-right-width:0px;">オーナー</th>
+	<th style="border-left-width:0px;">
+		<input type="submit" m:action="#{posDataFormAction.search}" value="検索"/></th>
+	<td>
+		<input maxlength="5" type="text" m:id="onerId" size="10"
+			    style="ime-mode:disabled" m:value="#{posDataFormDto.onerId}"/>
+	</td>
+	<th width="100px">データ集信日</th>
+	<td>
+		<div class="hideArea">
+				<select m:value="#{posDataFormDto.posDataDt}"
+						m:items="#{posDataFormDto.posDataDtList}"
+						m:itemValue="code"
+						m:itemLabel="name"/>
+		</div>
+	</td>
+	</tr>
+	</table>
+	</td>
+	<td style="padding-left:3px;">
+		<input type="submit"  m:id="btnExecute" m:action="#{posDataFormAction.cvsDownload}" value="実行"/>
+	</td>
+</tr>
+</table>
+
+<!-- 条件部プルダウン(オーナー用) -->
+<table m:rendered="#{posDataFormDto.birdUserInfo.mstUser.userTypeCd == '02'}"
+       class="hiddenBody">
+	<tr><td>
+		<table class="body_table">
+		<tr>
+			<th width="100px">データ集信日</th>
+			<td>
+				<div class="hideArea">
+						<select m:value="#{posDataFormDto.posDataDt}"
+								m:items="#{posDataFormDto.posDataDtList}"
+								m:itemValue="code"
+								m:itemLabel="name"/>
+				</div>
+			</td>
+			</tr>
+			</table>
+	</td>
+	<td width="60px" align="center" valign="bottom">
+		<input type="submit" m:action="#{posDataFormAction.cvsDownload}" value="実行"/>
+	</td>
+</tr>
+</table>
+<p/>
+
+<a href="#" m:action="#{posDataPdfDownlodAction.download}">集信データレイアウト</a>　[ＰＤＦ]
+</form>
+</div>
+</body>
+</html>

@@ -1,0 +1,795 @@
+<html xmlns:m="http://www.seasar.org/maya" m:action="#{menuBetuRefViewAction.initialize}" m:extends="/jsf/layout/layoutNoNavi.html">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Windows-31j" />
+<title>メニュー別売上</title>
+<span m:inject="f:param" m:name="layoutTitle" m:value="メニュー別売上"/>
+<span m:inject="s:insert" m:name="bodyTitleName">■メニュー別売上</span>
+<span m:inject="f:param" m:name="viewIdValue" m:value="#{menuBetuRefReqDto.viewId}"/>
+<span m:inject="f:param" m:name="userTypeCd" m:value="#{menuBetuRefSesDto.userTypeCd}"/>
+<span m:inject="f:param" m:name="onLoadName" m:value="load()"/>
+<span m:inject = "f:param" m:name = "msg" m:value="結果が表示されるまでに時間がかかります。よろしいですか？"/>
+</head>
+<body>
+<span m:inject="s:insert" m:name="body" >
+<STYLE type="text/css">
+<!--
+	/* テーブルヘッダデフォルト設定 パターン１*/
+	table.body_table2 tr th{
+	  text-align            : center;
+	}
+table.body_table2 tr td{
+  text-align            : right;
+}
+/* テーブル枠の設定 */
+table.body_table2 tr td.leftArea{
+  text-align            : left;
+}
+/* 表：比率項目表示 */
+.hiritu_red{
+  background-color      : #C0FFC0;
+  color                 : red;
+}
+.hiritu{
+  background-color      : #C0FFC0;
+}
+
+/* 表：合計欄表示（タイプ１） */
+.body_sum1, table tr.body_sum1 td{
+  background-color      : #FFD2E9;
+}
+/* 表：合計欄表示（タイプ５） */
+.body_sum5, table tr.body_sum5 td{
+  background-color      : #FFC0A0;
+}
+.menuFeeld {
+  text-align  : left;
+	text-decoration: underline;
+	text-underline-position: below;
+}
+.data_table_width {
+    width:98%;
+}
+.width_Menu {
+    width:*px;
+}
+.width_Tanka {
+    width:50px;
+}
+.width_TenpoCnt {
+    width:45px;
+}
+.width_Kingaku {
+    width:100px;
+}
+.width_kosu {
+    width:70px;
+}
+.width_KoseiHi {
+	width:52px;
+}
+.width_Hiritu {
+    width:57px;
+}
+//-->
+</STYLE>
+<script type="text/javascript">
+<!--
+var userTypeHONBU = "01";
+var userTypeONER = "02";
+var userTypeMISE = "03";
+
+function load(){
+	if(document.conditionForm != null && document.conditionForm.elements['conditionForm:windowId'] != null) {
+		document.conditionForm.elements['conditionForm:loadingFlg'].value = "";
+		if(document.conditionForm.elements['downloadBt'] != null) {
+			document.conditionForm.elements['downloadBt'].disabled = "";
+		}
+	    var taishoJokenElmt = document.conditionForm.elements['conditionForm:taishoJoken'];
+	    //対象期間のプルダウンの値を対象条件により変更します。
+	    settingTaishoKikanPullDown(taishoJokenElmt);
+	    var taishoJoken = taishoJokenElmt.options[taishoJokenElmt.selectedIndex].value;
+	    if ("SIBU" == taishoJoken) {
+			changeBlock();
+	    }
+  	}
+  	loadScroll("menubetuScroll", 360);
+  	focusElement('conditionForm');
+}
+/**
+ * 対象条件プルダウンリスト変更時処理
+ *
+ * 対象条件プルダウンの値毎に
+ * 表示対象プルダウンの内容を変更される。
+ */
+function changeTaishoJoken(changeElement){
+    //選択した対象条件の値を取得します。
+    var selectedCode = changeElement.options[changeElement.selectedIndex].value;
+    //対象条件別表示対象プルダウン設定処理
+    changeDisplay("select", "pdwn_taishoJoken_", selectedCode);
+	var kikanList = document.conditionForm.elements['conditionForm:taishoKikan'];
+	//対象期間のプルダウンの値を対象条件により変更します。
+	settingTaishoKikanPullDown(changeElement);
+    //選択している期間指定の値を取得します。
+    var taishoKikan = kikanList.options[kikanList.selectedIndex].value;
+   	changeDisplay("td", "link1_",selectedCode+taishoKikan);
+    changeDisplay("td", "link2_",taishoKikan);
+	//表示対象プルダウンリストエレメント取得処理
+	var	elementPullDown = getElement("select", "pdwn_taishoJoken_", selectedCode);
+	if(elementPullDown != null) {
+		elementPullDown.selectedIndex=0;
+	}
+	if(isUserType(userTypeHONBU)) {
+		if("MISE" == selectedCode) {
+		    document.getElementById("conditionForm:miseCd").style.display="inline";
+			document.getElementById("conditionForm:miseSchBt").style.display="inline";
+			document.conditionForm.elements['conditionForm:honbuBlockCd'].style.display="none";
+			focusElement("conditionForm");
+    		document.getElementById("csvlink3_MEYASU").style.display = "inline";
+    		changeDisplay("span","pdwn_taishoKikan_DAY_","MONTH");
+		} else if("SIBU" == selectedCode) {
+			document.getElementById("conditionForm:miseCd").style.display="none";
+			document.getElementById("conditionForm:miseSchBt").style.display="none";
+			changeBlock();
+		} else {
+			document.getElementById("conditionForm:miseCd").style.display="none";
+			document.getElementById("conditionForm:miseSchBt").style.display="none";
+			document.conditionForm.elements['conditionForm:honbuBlockCd'].style.display="none";
+    		document.getElementById("csvlink3_MEYASU").style.display = "inline";
+    		changeDisplay("span","pdwn_taishoKikan_DAY_","MONTH");
+		}
+	}
+}
+
+/**
+ * ブロックプルダウンリスト変更処理
+ *
+ * 全ブロック以外の場合、時間帯別CSVダウンロード以外の
+ * メニューを非表示にする
+ */
+function changeBlock(){
+    //選択した対象条件の値を取得します。
+    var selectedCode = document.conditionForm.elements['conditionForm:honbuBlockCd'].value;
+    //選択している期間指定の値を取得します。
+	var kikanList = document.conditionForm.elements['conditionForm:taishoKikan'];
+    var taishoKikan = kikanList.options[kikanList.selectedIndex].value;
+    //選択している対象条件の値を取得します。
+	var elementTarget = document.conditionForm.elements['conditionForm:taishoJoken'];
+    var taishoJoken = elementTarget.options[elementTarget.selectedIndex].value;
+
+    if ("SIBU" == taishoJoken && "MONTH" == taishoKikan) {
+    	document.conditionForm.elements['conditionForm:honbuBlockCd'].style.display="inline";
+	    if (selectedCode != null && selectedCode != "" ) {
+	    	// 時間帯CSVダウンロード以外を非表示
+		   	changeDisplay("td", "link1_",taishoJoken+taishoKikan);
+		    changeDisplay("td", "link2_","NONE");
+	    	document.getElementById("csvlink3_MEYASU").style.display = "none";
+	    	// 検索ボタンを非表示
+	    	changeDisplay("span","pdwn_taishoKikan_DAY_","NONE");
+	    } else {
+		   	changeDisplay("td", "link1_",taishoJoken+taishoKikan);
+		    changeDisplay("td", "link2_",taishoKikan);
+	    	document.getElementById("csvlink3_MEYASU").style.display = "inline";
+	    	changeDisplay("span","pdwn_taishoKikan_DAY_","MONTH");
+	    }
+    } else {
+    	document.conditionForm.elements['conditionForm:honbuBlockCd'].style.display="none";
+	   	changeDisplay("td", "link1_",taishoJoken+taishoKikan);
+	    changeDisplay("td", "link2_",taishoKikan);
+    	document.getElementById("csvlink3_MEYASU").style.display = "inline";
+    	changeDisplay("span","pdwn_taishoKikan_DAY_","MONTH");
+    }
+
+}
+/**
+ * 対象期間プルダウンリスト変更時処理
+ *
+ * 対象期間プルダウンの値毎に
+ * 期間指定プルダウンの内容を変更される。
+ */
+function changeTaishoKikan(changeElement){
+    //選択した対象期間の値を取得します。
+    var selectedCode = changeElement.options[changeElement.selectedIndex].value;
+
+    //対象期間別期間指定プルダウン設定処理
+    changeDisplay("table", "pdwn_taishoKikan_", selectedCode);
+	//期間指定プルダウンリストエレメント取得処理
+	var	elementPullDown = getElement("select", "pdwn_taishoKikan_", selectedCode);
+	if(elementPullDown != null) {
+		elementPullDown.selectedIndex=0;
+	}
+    //選択した対象条件の値を取得します。
+	var elementTarget = document.conditionForm.elements['conditionForm:taishoJoken'];
+    var taishoJoken = elementTarget.options[elementTarget.selectedIndex].value;
+    if("KIKAN"==selectedCode) {
+    	changeDisplay("td", "csvlink","KIKAN");
+    }else{
+   		changeDisplay("td", "csvlink1_",taishoJoken+selectedCode);
+    	changeDisplay("td", "csvlink2_",selectedCode);
+   	}
+
+   	if (isUserType(userTypeHONBU) && "SIBU" == taishoJoken) {
+		changeBlock();
+   	}
+
+}
+/**
+ * 検索ボタン押下時処理
+ *
+ */
+function search(){
+	if(returnLoadingStatus()){
+		setJokenData();
+	    //選択した対象期間の値を取得します。
+	    var elementTarget = document.conditionForm.elements['conditionForm:taishoKikan'];
+	    var taishoKikan = elementTarget.options[elementTarget.selectedIndex].value;
+		if("KIKAN"==taishoKikan) {
+			document.conditionForm.elements['conditionForm:loadingFlg'].value = "";
+			document.conditionForm.elements['conditionForm:__link_clicked__'].value='conditionForm:downloadMeyasu';
+			//自画面へリクエストする場合。
+			document.conditionForm.target ="_self";
+		}
+		else {
+			document.conditionForm.elements['conditionForm:__link_clicked__'].value='conditionForm:search';
+			if(document.conditionForm.elements['conditionForm:newWindowFlg'].value=='true') {
+				//別ウィンドウフラグがチェックされている場合。
+				document.conditionForm.target ="_blank";
+				document.conditionForm.elements['conditionForm:loadingFlg'].value = "";
+			}else{
+				//自画面へリクエストする場合。
+				document.conditionForm.target ="_self";
+				var resultArea = getElement("div", "pane_result", "");
+				if(resultArea != null) {
+				  	resultArea.style.display = "none";
+				}
+				document.getElementById("conditionForm:pane_waitmsg").style.display = "inline";
+			}
+		}
+		document.conditionForm.submit();
+	}
+}
+/**
+ * 集約メニューリンク押下時処理
+ */
+function linkUp(menuCd) {
+}
+/**
+ * ウィンドウロードステータス取得処理
+ *
+ */
+function returnLoadingStatus(){
+	if(isLoadingFlgOFF()) {
+		setLoadingFlg();
+		return true;
+	}
+	return false;
+}
+/**
+ * ウィンドウロードステータス取得処理
+ *
+ */
+function isLoadingFlgOFF(){
+	return (document.conditionForm.elements['conditionForm:loadingFlg'].value != "ON");
+}
+/**
+ * 実行ボタン押下時処理
+ *
+ */
+function callMiseForm(){
+	if(returnLoadingStatus()){
+		setJokenData();
+		document.conditionForm.elements['conditionForm:__link_clicked__'].value='conditionForm:callMiseForm';
+		document.conditionForm.target ="_self";
+		document.conditionForm.submit();
+	}
+}
+
+/**
+ * ダウンローﾄﾞボタン押下時処理
+ *
+ */
+function downLoadCsv(){
+    viewWaitMsgCsv();
+    setJokenData();
+}
+
+/**
+ * ユーザータイプ判別処理
+ *
+ */
+function isUserType(code){
+	var userType = document.conditionForm.elements['conditionForm:userTypeCd'].value;
+	return (code == userType);
+}
+/**
+ * ウィンドウロードフラグ設定処理
+ *
+ *
+ */
+function setLoadingFlg() {
+	document.conditionForm.elements['conditionForm:loadingFlg'].value = "ON";
+}
+/**
+ * 検索条件値設定処理
+ *
+ */
+function setJokenData(){
+	var targetForm = document.conditionForm;
+	//表示対象設定
+	var elementTarget = targetForm.elements['conditionForm:taishoJoken'];
+    var taishoJoken = elementTarget.options[elementTarget.selectedIndex].value;
+    //プルダウンリストエレメント取得処理
+    var hyojiTaisho = "";
+    var blockCd = "";
+    if("ALL"==taishoJoken) {
+    	hyojiTaisho = "";
+    }
+    else if(isUserType(userTypeHONBU) && "MISE"==taishoJoken) {
+    	hyojiTaisho = targetForm.elements["conditionForm:miseCd"].value;
+    }
+    else {
+		var elementPullDown = getElement("select", "pdwn_taishoJoken_", taishoJoken);
+		hyojiTaisho = elementPullDown.options[elementPullDown.selectedIndex].value;
+    }
+	targetForm.elements['conditionForm:hyojiTaisho'].value=hyojiTaisho;
+
+	if(isUserType(userTypeHONBU) && "SIBU"==taishoJoken) {
+    	blockCd = targetForm.elements['conditionForm:honbuBlockCd'].value;
+    }
+	targetForm.elements['conditionForm:blockCd'].value=blockCd;
+
+    //選択した対象期間の値を取得します。
+    elementTarget = targetForm.elements['conditionForm:taishoKikan'];
+    var taishoKikan = elementTarget.options[elementTarget.selectedIndex].value;
+	//期間指定プルダウンリストエレメント取得処理
+	var	elementPullDown = getElement("select", "pdwn_taishoKikan_", taishoKikan);
+	var kikanSitei = "";
+	if(elementPullDown != null) {
+		kikanSitei = elementPullDown.options[elementPullDown.selectedIndex].value;
+	}
+	targetForm.elements['conditionForm:kikanSitei'].value=kikanSitei;
+	if("KIKAN"==taishoKikan) {
+		elementPullDown = getElement("select", "pdwn_taishoKikan_", taishoKikan+"TO");
+		if(elementPullDown != null) {
+			kikanSitei = elementPullDown.options[elementPullDown.selectedIndex].value;
+		}
+		targetForm.elements['conditionForm:kikanSiteiTo'].value=kikanSitei;
+	}
+}
+/**
+ * エレメント取得処理
+ */
+function getElement(targetTag, firstCalssNm, targetCode) {
+	var objsDiv = document.conditionForm.getElementsByTagName(targetTag);
+	for (i = 0; i < objsDiv.length; i++) {
+		var classNm = objsDiv[i].className;
+		if(classNm.indexOf(firstCalssNm) >= 0){
+			if(classNm.indexOf(targetCode) >= 0) {
+				return elementPullDown = objsDiv[i];
+			}
+		}
+	}
+	return null;
+}
+/*
+ * 条件フォーム用表示ステータス変更処理
+ */
+function changeDisplay(targetTag, firstCalssNm, lastClassNm) {
+	var objs = document.conditionForm.getElementsByTagName(targetTag);
+	for (i = 0; i < objs.length; i++) {
+		var classNm = objs[i].className;
+		if(classNm.indexOf(firstCalssNm) >= 0){
+			if("" != lastClassNm && classNm.indexOf(lastClassNm) >= 0) {
+				objs[i].style.display     = "inline";
+			}else{
+				objs[i].style.display   = "none";
+			}
+		}
+	}
+}
+function listChangeDisplay(lastClassName) {
+	var objs = document.conditionForm.getElementsByTagName("tr");
+	var targetClassName = "sumMenu_"+lastClassName;
+	var chageFlg = false;
+	for (i = 0; i < objs.length; i++) {
+		var classNm = objs[i].className;
+		if(classNm.indexOf(targetClassName) >= 0){
+			if (isDisp(objs[i])) {
+				objs[i].style.display    = "none";
+			}
+			else {
+				objs[i].style.display    = "";
+			}
+			chageFlg = true;
+		}
+		else if(chageFlg){
+			break;
+		}
+	}
+}
+function isDisp(targetElement) {
+	return (targetElement.style.display == "");
+}
+function viewWaitMsgCsv() {
+    return;
+	var resultArea = getElement("div", "pane_result", "");
+	if(resultArea != null) {
+	  	resultArea.style.display = "none";
+	}
+	document.getElementById("conditionForm:cond_pane").style.display = "none";
+    document.getElementById("conditionForm:pane_waitmsg_csv").style.display = "inline";
+}
+function viewResult() {
+	var resultArea = getElement("div", "pane_result", "");
+	if(resultArea != null) {
+	  	resultArea.style.display = "inline";
+	}
+	document.getElementById("conditionForm:cond_pane").style.display = "inline";
+    document.getElementById("conditionForm:pane_waitmsg_csv").style.display = "none";
+}
+/**
+ * 本部ユーザーのみ対象期間のプルダウンリストへ
+ * 『期間指定』値を設定したり、削除したりする処理を行います。
+ *
+ */
+function settingTaishoKikanPullDown(taishoJokenElmt) {
+	//『期間指定』値を設定したり、削除したりする処理を行います。
+    //選択した対象条件の値を取得します。
+	var taishoJoken = taishoJokenElmt.options[taishoJokenElmt.selectedIndex].value;
+	var kikanList = document.conditionForm.elements['conditionForm:taishoKikan'];
+	var lastIndex = kikanList.length-1;
+    if("MISE"!=taishoJoken) {
+    	if("KIKAN"==kikanList.options[lastIndex].value) {
+    		//個店以外選択時に対象期間のプルダウン内に『期間指定』値が存在している場合は、
+    		//プルダウンリストから『期間指定』値を削除します。
+    		var lastSelectedIndex = kikanList.selectedIndex;
+			//削除
+			kikanList.options[lastIndex] = null;
+			if(lastIndex==lastSelectedIndex) {
+				//かつ直前に『期間指定』が選択されていた場合は、
+				//『期日指定』を選択済みに設定します。
+				kikanList.selectedIndex = 1;
+				changeTaishoKikan(kikanList);
+			}
+		}
+    }else if("KIKAN"!=kikanList.options[lastIndex].value) {
+    	//個店選択時に対象期間のプルダウン内に『期間指定』値が存在しない場合は、
+		//『期間指定』値を追加します。
+		kikanList.options[lastIndex+1] = new Option(document.conditionForm.kikanSiteiName.value,"KIKAN");
+    }
+}
+//-->
+</script>
+<span m:rendered="#{menuBetuRefSesDto.listCompany != null}">
+	<form m:id="conditionForm" onKeyDown="return setDefaultSubmitButton('conditionForm','btnExecute');">
+		<input type="hidden" id="viewId" m:value="#{menuBetuRefReqDto.viewId}" />
+		<input type="hidden" m:id="initMenuId" m:value="#{menuAction.initMenuId}"/>
+		<input type="hidden" m:id="initSubMenuId" m:value="#{menuAction.initSubMenuId}"/>
+		<input type="hidden" id="windowId" m:value="#{menuBetuRefReqDto.windowId}"/>
+		<input type="hidden" name="kikanSiteiName" m:value="期間指定" m:passthrough="true"/>
+		<input type="hidden" id="userTypeCd" m:value="#{menuBetuRefReqDto.userTypeCd}" m:passthrough="true"/>
+		<input type="hidden" id="loadingFlg" value=""/>
+		<input type="hidden" id="companyCd" m:value="#{menuBetuRefReqDto.companyCd}"/>
+	    <input type="hidden" id="jyokenMsg" m:value="#{msg}" m:passthrough="true"/>
+		<a id="callMiseForm" m:action="#{menuBetuRefViewAction.callMiseForm}"/>
+		<a id="search" m:action="#{menuBetuRefViewAction.search}"/>
+		<table class="hiddenBody element_browser" m:id="cond_pane">
+		<tr>
+			<td>
+		<table class="body_table">
+		    <tr>
+				<th>対象条件</th>
+				<td>
+					<div class="hideArea">
+					<select class="condition_field"
+							m:id="taishoJoken"
+							m:value="#{menuBetuRefReqDto.taishoJoken}"
+							m:items="#{menuBetuRefReqDto.listTaishoJoken}"
+							m:itemValue="key"
+							m:itemLabel="keyName"
+							m:onchange="changeTaishoJoken(this)"
+							>
+							<option value="ALL">全店</option>
+							<option value="SIBU">支部</option>
+							<option value="MISE">個店</option>
+						</select></div>
+				</td>
+				<th nowrap style="border-right-width:0px;">表示対象</th>
+				<th style="border-left-width:0px;"><input id="miseSchBt" type="button" value="検索"
+					       onClick="callMiseForm();" onDblClick="return false;"
+					       class="button_in_table"
+					       style="#{('01'==menuBetuRefReqDto.userTypeCd && 'MISE'==menuBetuRefReqDto.taishoJoken) == true ? '' : 'display:none;'}"/>
+				 </th>
+				 <td  style="min-width:1px;">
+                    <div style="width:1px; font-size:0px;margin:0px; "></div>
+					<div class="hideArea">
+					<span m:inject="s:forEach" m:items="#{menuBetuRefReqDto.listTaishoJoken}" m:var="listInfo" m:varindex="i">
+						<select m:rendered="#{listInfo.listData !=null}" class="pdwn_taishoJoken_#{listInfo.key}"
+							style="#{(listInfo.key==menuBetuRefReqDto.taishoJoken) == true ? '' : 'display:none;'}"
+							m:value="#{menuBetuRefReqDto.hyojiTaisho}"
+							m:items="#{listInfo.listData}"
+							m:itemValue="hyojitaishoCd"
+							m:itemLabel="hyojitaishoNameAddClose"
+							>
+						    <option value="011">北海道支部</option>
+						    <option value="012">東北支部</option>
+						    <option value="020">新潟・群馬・栃木支部</option>
+						    <option value="022">埼玉支部</option>
+						    <option value="023">千葉・茨城支部</option>
+						    <option value="031">東京支部</option>
+						    <option value="041">神奈川支部</option>
+						    <option value="045">甲信支部</option>
+						    <option value="046">静岡支部</option>
+						    <option value="051">中京北陸支部</option>
+						    <option value="061">関西支部</option>
+						    <option value="071">中・四国支部</option>
+						    <option value="072">九州支部</option>
+						    <option value="075">沖縄支部</option>
+						    <option value="076">東北販社</option>
+						    <option value="077">北関東販社</option>
+						    <option value="078">南関東販社</option>
+						    <option value="079">関西販社</option>
+						    <option value="080">九州販社</option>
+						    <option value="081">直営本部</option>
+						    <option value="082">ＭＬ事業本部ＦＣ支部</option>
+						    <option value="083">ＭＬ事業本部直営支部</option>
+						    <option value="084">第一業態開発グループ</option>
+						    <option value="085">第二業態開発グループ</option>
+						    <option value="092">部門</option>
+						    <option value="093">子会社トモス</option>
+						    <option value="094">子会社なか卯</option>
+						    <option value="095">子会社その他</option>
+						    <option value="096">外販事業</option>
+						    <option value="097">関連事業</option>
+						    <option value="098">その他１</option>
+						    <option value="099">その他２</option>
+						    <option value="100">ちりめん亭ＦＣ</option>
+						    <option value="101">ちりめん亭ＲＣ</option>
+						    <option value="102">四季菜ＦＣ</option>
+						    <option value="103">四季菜ＲＣ</option>
+						</select>
+					</span>
+					<select class="condition_field"
+							m:rendered="#{('01'==menuBetuRefReqDto.userTypeCd)}"
+							style="#{('01'==menuBetuRefReqDto.userTypeCd && 'SIBU'==menuBetuRefReqDto.taishoJoken) == true ? '' : 'display:none;'}"
+							m:id="honbuBlockCd"
+							m:value="#{menuBetuRefReqDto.blockCd}"
+							m:items="#{menuBetuRefReqDto.blockList}"
+							m:itemValue="blockCd"
+							m:itemLabel="blockName"
+							m:onchange="changeBlock()"
+							m:nulllabel="全ブロック">
+						<option value=""></option>
+						<option value="001">Ａブロック</option>
+						<option value="002">Ｂブロック</option>
+						<option value="003">Ｃブロック</option>
+						<option value="004">Ｄブロック</option>
+						<option value="005">Ｅブロック</option>
+						<option value="006">Ｆブロック</option>
+						<option value="007">Ｇブロック</option>
+						<option value="008">Ｈブロック</option>
+						<option value="009">Ｉブロック</option>
+						<option value="010">Ｊブロック</option>
+						<option value="011">Ｋブロック</option>
+						<option value="012">Ｌブロック</option>
+						<option value="013">Ｍブロック</option>
+						<option value="014">Ｎブロック</option>
+						<option value="015">Ｏブロック</option>
+					</select>
+					<input m:rendered="#{('01'==menuBetuRefReqDto.userTypeCd)}"
+					       type="text" id="miseCd" m:value="#{'MISE'==menuBetuRefReqDto.taishoJoken?menuBetuRefReqDto.hyojiTaisho:''}"
+					       size="10" maxlength="5"
+					       class="imenotuse height_11"
+					       style="#{'MISE'==menuBetuRefReqDto.taishoJoken? '' : 'display:none;'}" m:passthrough="true"/>
+					</div>
+				</td>
+				<th>対象期間</th>
+				<td>
+				<div class="hideArea">
+					<select class="condition_field"
+							m:id="taishoKikan"
+							m:value="#{menuBetuRefReqDto.taishoKikan}"
+							m:items="#{menuBetuRefReqDto.listTaishoKikan}"
+							m:itemValue="key"
+							m:itemLabel="keyName"
+							m:onchange="changeTaishoKikan(this)">
+						<option value="MONTH">月別</option>
+						<option value="DAY">期日指定</option>
+					</select></div>
+				</td>
+				<th>期間指定</th>
+				<td>
+					<div class="hideArea">
+						<span m:inject="s:forEach" m:items="#{menuBetuRefReqDto.listTaishoKikan}" m:var="listInfo" m:varindex="i">
+							<table class="pdwn_taishoKikan_#{listInfo.key}" style="border-width:0px;padding:0px;border-collapse:collapse;#{(listInfo.key==menuBetuRefReqDto.taishoKikan) == true ? '' : 'display:none;'}">
+								<tr><td style="border-width:0px;padding:0px;">
+							<select class="pdwn_taishoKikan_#{listInfo.key}"
+								m:value="#{menuBetuRefReqDto.kikanSitei}"
+								m:items="#{listInfo.listData}"
+								m:itemValue="code"
+								m:itemLabel="name">
+								<option value="20080501">2008/05</option>
+								<option value="20080401">2008/04</option>
+								<option value="20080301">2008/03</option>
+								<option value="20080201">2008/02</option>
+								<option value="20080101">2008/01</option>
+							</select></td>
+							<!--期間指定の場合-->
+							<td m:rendered="#{'KIKAN'==listInfo.key}"
+							    style="border-width:0px;padding:0px;">～</td>
+							<td m:rendered="#{'KIKAN'==listInfo.key}" style="border-width:0px;padding:0px;">
+								<select class="pdwn_taishoKikan_#{listInfo.key}TO"
+								m:value="#{menuBetuRefReqDto.kikanSiteiTo}"
+								m:items="#{listInfo.listData}"
+								m:itemValue="code"
+								m:itemLabel="name">
+								<option value="20080501">2008/05</option>
+								<option value="20080401">2008/04</option>
+								<option value="20080301">2008/03</option>
+								<option value="20080201">2008/02</option>
+								<option value="20080101">2008/01</option>
+							</select></td>
+							</tr></table>
+						</span></div>
+				</td>
+		    </tr>
+		</table>
+		</td>
+		<td>
+			<span class="pdwn_taishoKikan_DAY_MONTH"
+			      style="#{('KIKAN'==menuBetuRefReqDto.taishoKikan)? 'display:none;' : ''}">
+		&nbsp;<input type="button"  name="conditionForm:btnExecute"
+		             m:value="#{menuBetuRefReqDto.searched==true?'再検索':'実行'}"
+		             class="operation_button"
+		             onClick="return search();" onDblClick="return false;"/></span></td>
+			<td m:rendered="#{menuBetuRefSesDto.userTypeCd=='01'}">
+				<span class="pdwn_taishoKikan_DAY_MONTH"
+				      style="float:right;#{('KIKAN'==menuBetuRefReqDto.taishoKikan)? 'display:none;' : ''}">
+				<input type="checkbox" m:value="#{menuBetuRefReqDto.newWindowFlg}"
+				       onClick="document.conditionForm.elements['conditionForm:newWindowFlg'].value=this.checked;"/>別ウィンドウに表示</span>
+			</td>
+		</tr>
+		<tr style="height:4px;"/>
+		</table>
+		<input type="hidden" id="newWindowFlg" m:value="#{menuBetuRefReqDto.newWindowFlg}"/>
+		<input type="hidden" id="hyojiTaisho" m:value="#{menuBetuRefReqDto.hyojiTaisho}"/>
+		<input type="hidden" id="blockCd" m:value="#{jikanBetuRefReqDto.blockCd}"/>
+		<input type="hidden" id="kikanSitei" m:value="#{menuBetuRefReqDto.kikanSitei}"/>
+		<input type="hidden" id="kikanSiteiTo" m:value="#{menuBetuRefReqDto.kikanSiteiTo}"/>
+		<input type="hidden" id="view_viewId" m:value="#{menuBetuRefViewDto.viewId}" />
+		<input type="hidden" id="view_windowId" m:value="#{menuBetuRefViewDto.windowId}"/>
+		<input type="hidden" id="view_companyCd" m:value="#{menuBetuRefViewDto.companyCd}"/>
+		<input type="hidden" id="view_taishoJoken" m:value="#{menuBetuRefViewDto.taishoJoken}"/>
+		<input type="hidden" id="view_hyojiTaisho" m:value="#{menuBetuRefViewDto.hyojiTaisho}"/>
+		<input type="hidden" id="view_taishoKikan" m:value="#{menuBetuRefViewDto.taishoKikan}"/>
+		<input type="hidden" id="view_kikanSitei" m:value="#{menuBetuRefViewDto.kikanSitei}"/>
+		<input type="hidden" id="view_kikanSiteiTo" m:value="#{menuBetuRefViewDto.kikanSiteiTo}"/>
+<div m:id="pane_waitmsg" style="display:none">
+<p/><span style="font-weight:bold;" m:value="検索しています。しばらくお待ち下さい・・・"/>
+</div>
+<div class="pane_result">
+	<div class="scroll_padding_head">
+	<div class="scroll_hidden margin_bottom_hidden">
+	<table class="hiddenBody" style="width:98%;margin-bottom:4px;">
+	   	<tr m:rendered="#{menuBetuRefViewDto.existSearchedData}">
+			<td>
+				<table class="body_table2">
+					<tr>
+						<th nowrap="nowrap">対象期間</th>
+						<td><span m:inject="h:outputText"
+						          m:value="#{menuBetuRefViewDto.kikanSitei}"
+						          m:converter="#{menuBetuRefViewDto.taishoKikan =='MONTH'? dateCnvtKjYM:dateConverterYMD}"/></td>
+						<th nowrap="nowrap">表示対象</th>
+						<td nowrap="nowrap">
+							<span m:inject="h:outputText" m:rendered="#{menuBetuRefViewDto.hyojiTaisho != null && menuBetuRefViewDto.hyojiTaisho != ''}">
+								<span m:value="#{menuBetuRefViewDto.hyojiTaisho}"/>
+							</span>
+						    <span m:converter="#{characterEncodingConverter}" m:inject="h:outputText" m:value="#{menuBetuRefViewDto.hyojiTaishoName}"/></td>
+					</tr>
+				</table>
+			</td>
+			<td m:rendered="#{menuBetuRefSesDto.userTypeCd!='01'}">
+				<span class="pdwn_taishoKikan_DAY_MONTH"
+				      style="float:right;#{('KIKAN'==menuBetuRefReqDto.taishoKikan)? 'display:none;' : ''}">
+				<input type="checkbox" m:value="#{menuBetuRefReqDto.newWindowFlg}"
+				       onClick="document.conditionForm.elements['conditionForm:newWindowFlg'].value=this.checked;"/>別ウィンドウに表示</span>
+			</td>
+		</tr>
+	</table>
+	<table class="hiddenBody element_browser" width="98%">
+		<tr><td align="#{menuBetuRefViewDto.existSearchedData?'right':'left'}">
+	  <table class="hiddenBody" style="margin-bottom:4px;">
+		<tr>
+	    	<td>ダウンロード：</td>
+	    	<td class="csvlink2_MONTHDAY"
+			 style="#{('MISE'==menuBetuRefReqDto.taishoJoken && 'KIKAN'== menuBetuRefReqDto.taishoKikan) ? 'display:none;' : ''}">
+				<a onClick="downLoadCsv();" onDblClick="return false" m:action="#{menuBetuRefViewAction.downloadAbcSMenu}">
+						<font title="メニュー別・ABC分析表【集約】CSVファイルのダウンロードを行います。">[メニュー別・ABC分析表【集約】]</font></a>&nbsp;
+				<a onClick="downLoadCsv();" onDblClick="return false" m:action="#{menuBetuRefViewAction.downloadAbc}">
+					<font title="メニュー別・ABC分析表【単品】CSVファイルのダウンロードを行います。">[メニュー別・ABC分析表【単品】]</font></a>&nbsp;
+				<a onClick="downLoadCsv();" onDblClick="return false" m:action="#{menuBetuRefViewAction.downloadShubetu}">
+					<font title="種別CSVファイルのダウンロードを行います。">[種別]</font></a>&nbsp;&nbsp;
+			</td>
+			<td class="csvlink1_ALLMONTH_SIBUMONTH_MISEMONTH"
+				m:style="#{('SIBU'!=menuBetuRefReqDto.taishoJoken && 'MONTH'== menuBetuRefReqDto.taishoKikan) ? '' : 'display:none;'}">
+				<a onClick="downLoadCsv();" onDblClick="return false" m:action="#{menuBetuRefViewAction.downloadJikanbetu}">
+					<font title="時間帯別CSVファイルのダウンロードを行います。">[時間帯別]</font></a>&nbsp;&nbsp;
+			</td>
+			<td id="csvlink3_MEYASU">
+				<a id="downloadMeyasu" onClick="downLoadCsv();" onDblClick="return false" m:action="#{menuBetuRefViewAction.downloadMeyasu}">
+					<font title="食材準備目安表用CSVファイルのダウンロードを行います。">[食材準備目安表用]</font></a>
+			</td>
+	    </tr>
+	</table>
+    </td></tr></table>
+	<table m:rendered="#{menuBetuRefViewDto.existSearchedData}" class="body_table2 data_table_width">
+		<tr>
+			<th rowspan="2" class="width_Menu">メニュー名</th>
+			<th colspan="4" class="">
+				<span m:rendered="#{'MONTH'==menuBetuRefViewDto.taishoKikan}"
+				      m:value="#{menuBetuRefViewDto.kikanSitei}" m:converter="#{dateCnvtKjYM}"/>
+				<span m:rendered="#{'DAY'==menuBetuRefViewDto.taishoKikan}"
+				      m:value="指定日"/></th>
+			<th m:rendered="#{'MONTH'==menuBetuRefViewDto.taishoKikan}" colspan="3">
+				<span m:value="#{menuBetuRefViewDto.kikanSiteiLastMonth}"
+				      m:converter="#{dateCnvtKjYM}"/></th>
+			<th colspan="3" class="">
+				<span m:converter="#{characterEncodingConverter}" m:value="#{menuBetuRefViewDto.zennenDataShubetuName}"/></th>
+		</tr>
+		<tr class="smallArea">
+			<th class="width_TenpoCnt" style="font-size:10pt;">店舗数</th>
+			<th class="width_kosu">販売個数</th>
+			<th class="width_Kingaku">売上金額</th>
+			<th class="width_KoseiHi">構成比</th>
+			<th class="width_kosu">販売個数</th>
+			<th class="width_Kingaku">売上金額</th>
+			<th class="width_KoseiHi">構成比</th>
+			<th m:rendered="#{'MONTH'==menuBetuRefViewDto.taishoKikan}" class="width_kosu">販売個数</th>
+			<th m:rendered="#{'MONTH'==menuBetuRefViewDto.taishoKikan}" class="width_Kingaku">売上金額</th>
+			<th m:rendered="#{'MONTH'==menuBetuRefViewDto.taishoKikan}" class="width_KoseiHi">構成比</th>
+		</tr>
+	</table>
+	</div>
+	</div>
+	<div class="scroll_padding_data_no">
+	<div m:rendered="#{menuBetuRefViewDto.existSearchedData}"
+	     id="menubetuScroll" class="scroll_complete" style="height:360px;">
+	<table class="body_table2 data_table_width" style="border-top-width:0px">
+	    <span m:inject="s:forEach" m:items="#{menuBetuRefViewDto.listSearchData}" m:var="ui" m:varindex="e">
+	      <tr class="#{ui.menuCd == null? '':'sumMenu_'}#{ui.menuBunrui}#{ui.sumMenuCd} #{ui.trCssClass}#{e==0?' non_top_border':''} font_size_13"
+	          style="#{'MENU'==ui.rowType? 'display:none;':''}">
+				  <td class="leftArea width_Menu #{'SMENU'==ui.rowType? 'link_text menuFeeld':''}"
+				      style="font-weight:bold;">
+					  <font style="#{'SMENU'==ui.rowType? 'cursor:pointer;':''}" onClick="#{'SMENU' == ui.rowType? 'listChangeDisplay(\'':''}#{ui.menuBunrui}#{ui.sumMenuCd}#{'SMENU' == ui.rowType? '\');':''}">
+					  	<span m:rendered="#{'MENU'==ui.rowType}">&nbsp;&nbsp;&nbsp;</span><span m:value="#{ui.menuNameKj}"/></font>
+				  </td>
+		          <td class="width_TenpoCnt"><span m:inject="h:outputText" m:value="#{ui.rowType == 'TOTAL' || ui.rowType == 'MBUNRUI'? '':ui.hanbaiTenpoCnt}" m:converter="#{numConverter}"/></td>
+				  <td class="width_kosu"><span m:inject="h:outputText" m:value="#{ui.kosu}" m:converter="#{numConverter}"/></td>
+				  <td class="width_Kingaku"><span m:inject="h:outputText" m:value="#{ui.kingaku}" m:converter="#{numConverter}" /></td>
+				  <td class="width_KoseiHi #{ui.trCssClass=='default_bkgColor'?'body_num_n':''}"><span m:inject="h:outputText" m:value="#{ui.kingakuKouseiHi}"/></td>
+				  <td m:rendered="#{'MONTH'==menuBetuRefViewDto.taishoKikan}" class="width_kosu"><span m:inject="h:outputText" m:value="#{ui.kosuZenGetu}" m:converter="#{numConverter}"/></td>
+				  <td m:rendered="#{'MONTH'==menuBetuRefViewDto.taishoKikan}" class="width_Kingaku"><span m:inject="h:outputText" m:value="#{ui.kingakuZenGetu}" m:converter="#{numConverter}" /></td>
+				  <td m:rendered="#{'MONTH'==menuBetuRefViewDto.taishoKikan}" class="width_KoseiHi #{ui.trCssClass=='default_bkgColor'?'body_num_n':''}"><span m:inject="h:outputText" m:value="#{ui.kingakuKouseiHiZenGetu}"/></td>
+				  <td class="width_kosu"><span m:inject="h:outputText" m:value="#{ui.kosuZenNen}" m:converter="#{numConverter}"/></td>
+				  <td class="width_Kingaku"><span m:inject="h:outputText" m:value="#{ui.kingakuZenNen}" m:converter="#{numConverter}" /></td>
+				  <td class="width_KoseiHi #{ui.trCssClass=='default_bkgColor'?'body_num_n':''}"><span m:inject="h:outputText" m:value="#{ui.kingakuKouseiHiZenNen}"/></td>
+			</tr>
+		</span>
+	</table>
+	</div>
+	</div>
+</div>
+<div m:id="pane_waitmsg_csv" style="display:none">
+	<p/>
+	<span style="font-weight:bold;">
+		ダウンロードデータの準備をしています。<br/>
+		そのまましばらくお待ち下さい。<br/>
+		ダウンロード完了後、下記のボタンを押して下さい。<p/>
+		<span ><input type="button" onclick="return viewResult();" value="戻る"/></span>
+	</span>
+</div>
+		<input type="text" m:id="dummyEnter" style="display:none"/>
+	</form>
+</span>
+</span>
+</body>
+</html>

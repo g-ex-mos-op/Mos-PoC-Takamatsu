@@ -1,0 +1,281 @@
+<html xmlns:m="http://www.seasar.org/maya" m:action="#{kakouriageAction.initialize}" m:extends="/jsf/layout/layoutNoNavi.html">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Windows-31j"/>
+<meta http-equiv="Content-Style-Type" content="text/css"/>
+<meta http-equiv="Content-Script-Type" content="text/javascript"/>
+<title>過去売上</title>
+</head>
+<body>
+<span m:inject="f:param" m:name="layoutTitle" m:value="過去売上"/>
+<span m:inject="s:insert" m:name="bodyTitleName">■過去売上</span>
+<span m:inject="f:param" m:name="viewIdValue" m:value="BDT005V01"/>
+<span m:inject="f:param" m:name="onLoadName" m:value="onLoadFunction()"/>
+<span m:inject="f:param" m:name="userType" m:value="#{kakouriageDto.userTypeCd}"/>
+<div m:inject="s:insert" m:name="body">
+<style type="text/css">
+<!--
+/* テーブルヘッダデフォルト設定 パターン２*/
+table.body_table2 tr td {
+	text-align            : right;
+}
+table.body_table2 tr td.eigyoDtArea {
+	text-align            : left;
+}
+.data_table_width {
+  width: 950px;
+}
+table.body_table2 tr td.hirituTd {
+  background-color      : #C0FFC0;
+  color                 : black;
+}
+-->
+</style>
+
+<script type="text/javascript">
+<!--
+function onLoadFunction() {
+  switchTaishoJoken();
+  focusElement('kakouriage');
+}
+function switchTenpoShu() {
+}
+function switchTaishoJoken() {
+  var objForm = document.forms['kakouriage'];
+  var taishoJokenIndex = objForm.elements['kakouriage:condTaishoJoken'].selectedIndex;
+
+  if (objForm.elements['kakouriage:userType'].value == '01') {
+    document.getElementById('kakouriage:condHyojiTaishoMise').style.display = 'none';
+    document.getElementById('kakouriage:doSearchMiseBtn').style.display = 'none';
+    if (objForm.elements['kakouriage:condTaishoJoken'].options[taishoJokenIndex].value == 'MISE') {
+      document.getElementById('kakouriage:condHyojiTaishoMise').style.display = 'inline';
+      document.getElementById('kakouriage:doSearchMiseBtn').style.display = 'inline';
+    }
+  }
+  else if (objForm.elements['kakouriage:userType'].value == '02') {
+    document.getElementById('kakouriage:condHyojiTaishoOnerMise').style.display = 'none';
+    if (objForm.elements['kakouriage:condTaishoJoken'].options[taishoJokenIndex].value == 'MISE') {
+      document.getElementById('kakouriage:condHyojiTaishoOnerMise').style.display = 'inline';
+    }
+  }
+}
+function execute() {
+  if (document.getElementById('kakouriage:newWindowFlgDisp') != null
+        && document.kakouriage.elements['kakouriage:newWindowFlgDisp'].checked) {
+    document.kakouriage.elements['kakouriage:newWindowFlg'].value
+        = document.kakouriage.elements['kakouriage:newWindowFlgDisp'].checked
+    document.kakouriage.target = "_blank";
+  }
+  else {
+    document.kakouriage.target = "_self";
+  }
+
+  dispWaitMsg();
+  document.kakouriage.elements['kakouriage:__link_clicked__'].value='kakouriage:actionExecute';
+  document.kakouriage.submit();
+}
+function executeCsvDownload() {
+  document.kakouriage.target = "_self";
+  document.kakouriage.elements['kakouriage:__link_clicked__'].value='kakouriage:actionCsvDownload';
+  document.kakouriage.submit();
+}
+function callMiseForm() {
+  document.kakouriage.target = "_self";
+  document.kakouriage.elements['kakouriage:__link_clicked__'].value='kakouriage:actionMiseSearch';
+  document.kakouriage.submit();
+}
+function dispWaitMsg() {
+	if (document.kakouriage.target == "_self") {
+	    document.kakouriage.elements["kakouriage:doExecuteBtn"].disabled = true;
+	    document.getElementById("kakouriage:pane_result").style.display = "none";
+	    document.getElementById("kakouriage:pane_waitmsg").style.display = "inline";
+	}
+}
+function changeTab(mode) {
+  document.kakouriage.elements['kakouriage:tabMode'].value=mode;
+}
+-->
+</script>
+
+<form m:id="kakouriage" onkeydown="setDefaultSubmitButton('kakouriage', 'doExecuteBtn');" target="_self">
+<input type="hidden" m:id="viewId" m:value="#{viewIdValue}" />
+<input type="hidden" m:id="initMenuId" m:value="#{menuAction.initMenuId}"/>
+<input type="hidden" m:id="initSubMenuId" m:value="#{menuAction.initSubMenuId}"/>
+<input type="hidden" m:id="windowId" m:value="#{kakouriageReqDto.windowId}"/>
+<input type="hidden" id="loadingFlg" value=""/>
+<input type="hidden" m:id="userType" m:value="#{userType}"/>
+<input type="hidden" m:id="newWindowFlg" m:value="#{kakouriageReqDto.newWindowFlg}"/>
+<input type="hidden" m:id="view_companyCd" m:value="#{kakouriageViewDto.companyCd}"/>
+<input type="hidden" m:id="view_taishoJoken" m:value="#{kakouriageViewDto.taishoJoken}"/>
+<input type="hidden" m:id="view_hyojiTaisho" m:value="#{kakouriageViewDto.hyojiTaisho}"/>
+<input type="hidden" m:id="view_kikan" m:value="#{kakouriageViewDto.taishoKikan}"/>
+<input type="hidden" m:id="view_newWindowFlg" m:value="#{kakouriageViewDto.newWindowFlg}"/>
+<input type="hidden" m:id="view_taishoTenpoCnt" m:value="#{kakouriageViewDto.taishoTenpoCnt}"/>
+<input type="hidden" m:id="view_hyojiTaishoDisp" m:value="#{kakouriageViewDto.hyojiTaishoDisp}"/>
+<input type="hidden" m:id="view_taishoKikanDisp" m:value="#{kakouriageViewDto.taishoKikanDisp}"/>
+<input type="hidden" m:id="tabMode" m:value="#{kakouriageViewDto.tabMode}"/>
+
+<a m:action="#{kakouriageAction.execute}" m:id="actionExecute"/>
+<a m:action="#{kakouriageAction.downloadCsv}" m:id="actionDay"/>
+<a m:action="#{kakouriageAction.callMiseForm}" m:id="actionMiseSearch"/>
+<a m:action="#{kakouriageAction.downloadCsv}" m:id="actionCsvDownload"/>
+
+<table class="hiddenBody element_browser"
+       style="margin-bottom:4px;">
+<tr>
+<td>
+<table class="body_table">
+  <tr>
+    <th>対象条件</th>
+    <td>
+        <div class="hideArea">
+        <select class="condition_field"
+                m:value="#{kakouriageReqDto.taishoJoken}"
+                m:items="#{kakouriageDto.listTaishoJoken}"
+                m:id="condTaishoJoken"
+                m:itemValue="value"
+                m:itemLabel="label"
+                m:onchange="switchTaishoJoken();"/>
+        </div>
+    </td>
+    <th>表示対象<input m:rendered="#{kakouriageDto.userTypeCd=='01'}"
+                       type="button" m:id="doSearchMiseBtn"
+                       value="検索"
+                       onclick="callMiseForm();" ondblclick="return false;"
+                       class="button_in_table"
+                       m:style="#{kakouriageReqDto.taishoJoken == 'MISE' ? 'display:inline;' : 'display:none;'}"/></th>
+    <td style="width:20px">
+        <div class="hideArea">
+        <select m:rendered="#{kakouriageDto.userTypeCd=='02'}"
+                m:style="#{kakouriageReqDto.taishoJoken == 'MISE' ? 'display:inline;' : 'display:none;'}"
+                m:value="#{kakouriageReqDto.hyojiTaisho}"
+                m:items="#{kakouriageDto.listHyojiTaisho}"
+                m:id="condHyojiTaishoOnerMise"
+                m:itemValue="hyojitaishoCd"
+                m:itemLabel="hyojitaishoNameAddClose"/>
+        </div>
+        <input m:rendered="#{kakouriageDto.userTypeCd=='01'}"
+               type="text" m:id="condHyojiTaishoMise"
+               class="imenotuse height_11"
+               m:style="#{kakouriageReqDto.taishoJoken == 'MISE' ? 'display:inline;' : 'display:none;'}"
+               m:value="#{kakouriageReqDto.hyojiTaisho}"
+               maxlength="5" m:size="10"
+               m:converter="#{kakouriageCodeConv}"/>
+    </td>
+    <th>対象期間</th>
+    <td>
+        <div class="hideArea">
+        <select m:value="#{kakouriageReqDto.taishoKikan}"
+                m:items="#{kakouriageDto.listTaishoKikan}"
+                m:id="condKikan"
+                m:itemValue="value"
+                m:itemLabel="label"/>
+        </div>
+    </td>
+  </tr>
+</table>
+</td>
+<td><input type="button" style="margin-left:3px;"
+           value="#{kakouriageReqDto.reSearchFlg ? '再検索' : '実行'}"
+		   m:name="kakouriage:doExecuteBtn" onclick="execute();"/>
+</td>
+</tr>
+</table>
+<div m:id="pane_result">
+<span m:rendered="#{kakouriageReqDto.listData != null}">
+<table class="hiddenBody" style="width:98%;margin-bottom:4px;">
+<tr>
+	<td>
+	<table class="body_table2">
+	  <tr>
+	    <th style="width:69px">対象店舗</th>
+	    <td style="margin-left:-1px"><span m:value="#{kakouriageViewDto.hyojiTaishoDisp}"/>&nbsp;</td>
+	    <th style="width:69px">対象期間</th>
+	    <td><span m:value="#{kakouriageViewDto.taishoKikanDisp}"/>&nbsp;</td>
+	    <th style="width:90px">取得店舗数</th>
+	    <td class="body_num" width="35px">&nbsp;<span m:value="#{kakouriageViewDto.taishoTenpoCnt}" m:converter="#{kakouriageDigit0Con}"/></td>
+	  </tr>
+	</table>
+	</td>
+
+	<td m:rendered="#{kakouriageReqDto.listData != null}"
+	    class="element_browser" align="right">
+		<table class="hiddenBody" style="margin-left:3px;">
+		<tr>
+			<td><input type="button" m:id="btnCsvDownload"
+			           value="ダウンロード"
+			           onclick="executeCsvDownload();" ondblclick="return false;"/></td>
+			<td><input type="checkbox" m:id="newWindowFlgDisp"
+			           m:value="#{kakouriageReqDto.newWindowFlg}"/></td>
+			<td style="font-size:smaller">別ウィンドウに表示</td>
+		</tr>
+		</table>
+	</td></tr></table>
+<span class="element_browser">
+<!--タブエリア-->
+<table cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="body_active_cell tab_change_area_0" width="120px">
+      <a href="javascript:changeTabArea('0');changeTab('0');" m:passthrough="true">売上</a>
+    </td>
+    <td class="body_non_active_cell tab_change_area_1" width="120px">
+      <a href="javascript:changeTabArea('1');changeTab('1');" m:passthrough="true">客数</a>
+    </td>
+  </tr>
+</table>
+ <div class="data_table_width body_caption" style="height:5px;"/>
+</span>
+<div class="visible_tab tab_change_area_0">
+<span class="element_print">【売上】</span>
+<table class="body_table2 data_table_width" style="border-top-width:0px;">
+  <tr class="header_row">
+    <span m:inject="s:forEach" m:items="#{kakouriageReqDto.listHeader}" m:var="e" m:varindex="i">
+    <th style="width:#{i==0?'10':'15'}%;border-bottom-width:2px;"><span m:converter="#{characterEncodingConverter}" m:value="#{e}"/></th>
+    </span>
+  </tr>
+  <span m:inject="s:forEach" m:items="#{kakouriageReqDto.listData}" m:var="e" m:varindex="i">
+  <tr class="#{i==0 ? 'body_sum5' : ''}">
+    <td m:class="eigyoDtArea #{i==1 ? 'hirituTd' : ''}" m:style="font-weight:bold;"><span m:value="#{e.month}"/></td>
+    <td m:class="#{e.nendo2Cls}"><span m:value="#{e.nendo2}" m:converter="#{i == 1 ? kakouriageDigit2Con : kakouriageDigit0Con}"/></td>
+    <td m:class="#{e.nendo3Cls}"><span m:value="#{e.nendo3}" m:converter="#{i == 1 ? kakouriageDigit2Con : kakouriageDigit0Con}"/></td>
+    <td m:class="#{e.nendo4Cls}"><span m:value="#{e.nendo4}" m:converter="#{i == 1 ? kakouriageDigit2Con : kakouriageDigit0Con}"/></td>
+    <td m:class="#{e.nendo5Cls}"><span m:value="#{e.nendo5}" m:converter="#{i == 1 ? kakouriageDigit2Con : kakouriageDigit0Con}"/></td>
+    <td m:class="#{e.nendo6Cls}"><span m:value="#{e.nendo6}" m:converter="#{i == 1 ? kakouriageDigit2Con : kakouriageDigit0Con}"/></td>
+    <td m:class="#{e.nendo7Cls}"><span m:value="#{e.nendo7}" m:converter="#{i == 1 ? kakouriageDigit2Con : kakouriageDigit0Con}"/></td>
+  </tr>
+  </span>
+</table>
+</div>
+
+<div class="invisible_tab tab_change_area_1">
+<span class="element_print">【客数】</span>
+<table class="body_table2 data_table_width" style="border-top-width:0px;">
+  <tr class="header_row">
+    <span m:inject="s:forEach" m:items="#{kakouriageReqDto.listHeader}" m:var="e" m:varindex="i">
+    <th style="width:#{i==0?'10':'15'}%;border-bottom-width:2px;"><span m:converter="#{characterEncodingConverter}" m:value="#{e}"/></th>
+    </span>
+  </tr>
+  <span m:inject="s:forEach" m:items="#{kakouriageReqDto.listData}" m:var="e" m:varindex="i">
+  <tr class="#{i==0 ? 'body_sum5' : ''}">
+    <td m:class="eigyoDtArea #{i==1 ? 'hirituTd' : ''}" m:style="font-weight:bold;"><span m:value="#{e.month}"/></td>
+    <td m:class="#{e.nendo2KyakusuCls}"><span m:value="#{e.nendo2Kyakusu}" m:converter="#{i == 1 ? kakouriageDigit2Con : kakouriageDigit0Con}"/></td>
+    <td m:class="#{e.nendo3KyakusuCls}"><span m:value="#{e.nendo3Kyakusu}" m:converter="#{i == 1 ? kakouriageDigit2Con : kakouriageDigit0Con}"/></td>
+    <td m:class="#{e.nendo4KyakusuCls}"><span m:value="#{e.nendo4Kyakusu}" m:converter="#{i == 1 ? kakouriageDigit2Con : kakouriageDigit0Con}"/></td>
+    <td m:class="#{e.nendo5KyakusuCls}"><span m:value="#{e.nendo5Kyakusu}" m:converter="#{i == 1 ? kakouriageDigit2Con : kakouriageDigit0Con}"/></td>
+    <td m:class="#{e.nendo6KyakusuCls}"><span m:value="#{e.nendo6Kyakusu}" m:converter="#{i == 1 ? kakouriageDigit2Con : kakouriageDigit0Con}"/></td>
+    <td m:class="#{e.nendo7KyakusuCls}"><span m:value="#{e.nendo7Kyakusu}" m:converter="#{i == 1 ? kakouriageDigit2Con : kakouriageDigit0Con}"/></td>
+  </tr>
+  </span>
+</table>
+</div>
+
+</span>
+</div>
+
+<div m:id="pane_waitmsg" style="display:none;font-weight:bold;">
+<p/>検索しています。しばらくお待ち下さい・・・</div>
+<input type="text" value="dummy" style="display:none;"/>
+
+</form>
+</div>
+</body>
+</html>

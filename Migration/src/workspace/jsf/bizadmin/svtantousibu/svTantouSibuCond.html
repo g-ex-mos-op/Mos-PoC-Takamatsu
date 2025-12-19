@@ -1,0 +1,201 @@
+<html xmlns:m="http://www.seasar.org/maya" m:action="#{svTantouSibuCondAction.initialize}" m:extends="/jsf/layout/layoutNoNavi.html">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Windows-31j"/>
+<meta http-equiv="Content-Style-Type" content="text/css"/>
+<title>リモート閲覧支部・SV担当店登録</title>
+</head>
+<body>
+<span m:inject="f:param" m:name="layoutTitle" m:value="リモート閲覧支部・SV担当店登録"/>
+<span m:inject="s:insert" m:name="bodyTitleName">■リモート閲覧支部・SV担当店登録</span>
+<span m:inject="f:param" m:name="onLoadName" m:value="bodyLoad()"/>
+<span m:inject="f:param" m:name="viewIdValue" m:value="BBA004V01"/>
+<div m:inject="s:insert" m:name="body">
+<style type="text/css">
+<!--
+-->
+</style>
+<script type="text/javascript">
+<!--
+function bodyLoad() {
+	// フォーカス設定
+	if (document.forms['focusElementForm'].elements['FOCUS_ELEMENT'].value != '') {
+    	focusElement("svTantouSibuCond");
+    }
+	else {
+	    var f = document.forms['svTantouSibuCond'];
+	    if (f.elements['svTantouSibuCond:processMode'][0].checked) {
+	        f.elements['svTantouSibuCond:processMode'][0].focus();
+	    }
+	    else if (f.elements['svTantouSibuCond:processMode'][1].checked) {
+	        f.elements['svTantouSibuCond:processMode'][1].focus();
+	    }
+	    else if (f.elements['svTantouSibuCond:processMode'][2].checked) {
+	        f.elements['svTantouSibuCond:processMode'][2].focus();
+	    }
+    }
+}
+
+function changeMode(mode) {
+    if(mode == 1) {
+	    document.getElementById('svTantouSibuCond:cond1_area').style.display="inline";
+	    document.getElementById('svTantouSibuCond:cond2_area').style.display="none";
+	    document.getElementById('svTantouSibuCond:cond3_area').style.display="none";
+	    document.getElementById('svTantouSibuCond:btnExecute1').style.display="inline";
+	    document.getElementById('svTantouSibuCond:btnExecute2').style.display="none";
+	}
+    else if(mode == 2) {
+	    document.getElementById('svTantouSibuCond:cond1_area').style.display="none";
+	    document.getElementById('svTantouSibuCond:cond2_area').style.display="inline";
+	    document.getElementById('svTantouSibuCond:cond3_area').style.display="none";
+	    document.getElementById('svTantouSibuCond:btnExecute1').style.display="none";
+	    document.getElementById('svTantouSibuCond:btnExecute2').style.display="inline";
+	}
+    else if(mode == 3) {
+	    document.getElementById('svTantouSibuCond:cond1_area').style.display="none";
+	    document.getElementById('svTantouSibuCond:cond2_area').style.display="none";
+	    document.getElementById('svTantouSibuCond:cond3_area').style.display="inline";
+	    document.getElementById('svTantouSibuCond:btnExecute1').style.display="inline";
+	    document.getElementById('svTantouSibuCond:btnExecute2').style.display="none";
+	}
+}
+
+function setDefaultSubmitButton(formName, btnID) {
+	var theEvent = window.event || arguments.callee.caller.arguments[0];
+	var srcobj;
+	var key;
+	var isMsie = (document.all) ? true : false;
+	if (isMsie) { // IE
+        key = theEvent.keyCode;
+        srcobj=theEvent.srcElement;
+    }
+    else { // IE以外
+        key = theEvent.which;
+        srcobj=theEvent.target;
+    }
+    
+	if (key == 13) {
+		if (srcobj.type == 'text' ||
+				srcobj.type == 'radio' ||
+				srcobj.type == 'checkbox' ||
+				srcobj.type == 'password')
+		{
+    	    var f = document.forms['svTantouSibuCond'];
+    	    if (f.elements['svTantouSibuCond:processMode'][0].checked) {
+    	        document.all(formName + ':btnExecute1').click();
+    	    }
+	        else if (f.elements['svTantouSibuCond:processMode'][1].checked) {
+    			document.all(formName + ':btnExecute2').click();
+    		}
+    		else if (f.elements['svTantouSibuCond:processMode'][2].checked) {
+	    	    //var filename = f.elements['svTantouSibuCond:uploadedFile'].value;
+	    	    //if (filename.indexOf('\\') < 0) {
+	    	    //    return false;
+	    	    //}
+        		document.all(formName + ':btnExecute1').click();
+    		}
+	    	return false;
+		} else if (srcobj.type == 'file') {
+			theEvent.srcobj.click();
+			return false;
+		}
+	}
+	return true;
+}
+
+//-->
+</script>
+
+<form m:id="svTantouSibuCond" enctype="multipart/form-data"
+      onkeydown="return setDefaultSubmitButton('svTantouSibuCond', 'btnExecute1');">
+<input type="hidden" m:id="viewId" m:value="#{viewIdValue}"/>
+<input type="hidden" m:id="initMenuId" m:value="#{menuAction.initMenuId}"/>
+<input type="hidden" m:id="initSubMenuId" m:value="#{menuAction.initSubMenuId}"/>
+<input type="hidden" m:id="windowId" m:value="#{svTantouSibuDto.windowId}"/>
+
+<!-- 画面操作エリア -->
+<!-- 固定条件エリア -->
+<table class="hiddenBody">
+<tr>
+	<td>
+		<span m:inject="s:selectOneRadio2"
+		      m:id="processMode" m:value="#{svTantouSibuDto.processMode}">
+		<table class="body_table">
+		    <tr>
+		        <th>処理選択</th>
+		        <td nowrap style="border-right-width:0px;padding-right:15px;">
+		            <input type="radio" onclick="changeMode(1);"
+		                   m:id="processMode1" m:value="1"/>リモート閲覧支部登録</td>
+		        <td nowrap style="border-left-width:0px;border-right-width:0px;padding-right:15px;">
+		            <input type="radio" onclick="changeMode(2);"
+		                   m:id="processMode2" m:value="2"/>SV担当店ダウンロード</td>
+		        <td nowrap style="border-left-width:0px;padding-right:15px;">
+		            <input type="radio" onclick="changeMode(3);"
+		                   m:id="processMode3" m:value="3"/>SV担当店アップロード登録</td>
+		    </tr>
+		</table>
+		</span>
+	</td>
+	<td style="padding-left:3px;">
+		<input type="submit" m:id="btnExecute1"
+		       m:style="display:#{(svTantouSibuDto.processMode != '2') ? 'inline' : 'none'};"
+		       m:action="#{svTantouSibuCondAction.execute}" value="実行" />
+		<input type="submit" m:id="btnExecute2"
+		       m:style="display:#{(svTantouSibuDto.processMode == '2') ? 'inline' : 'none'};"
+		       m:action="#{svTantouSibuCsvAction.download}" value="実行" />
+	</td>
+</tr>
+</table>
+
+<p/>
+<!-- 可変条件エリア -->
+<div m:id="cond1_area"
+      m:style="display:#{(svTantouSibuDto.processMode == '1') ? 'inline' : 'none'};">
+    <table class="body_table">
+        <tr>
+            <th nowrap style="border-right-width:0px;">ユーザID</th>
+            <th nowrap style="border-left-width:0px;">
+            	<input type="button" value="検索"
+            	       m:action="#{svTantouSibuCondAction.callUserSearch}"/></th>
+            <td><input type="text" m:id="userId"
+                       class="imenotuse" m:value="#{svTantouSibuDto.userId}"
+                       m:maxlength="8" m:size="10"/></td>
+        </tr>
+    </table>
+</div>
+<div m:id="cond2_area"
+      m:style="display:#{(svTantouSibuDto.processMode == '2') ? 'inline' : 'none'};">
+    <table class="body_table">
+        <tr>
+            <th>対象条件</th>
+            <td style="border-right-width:0px;">
+				<select m:id="sibuCd"
+                        m:value="#{svTantouSibuDto.sibuCd}"
+                        m:items="#{svTantouSibuDto.listSibu}"
+                        m:itemValue="sibuCd"
+                        m:itemLabel="sibuName">
+                    <option value="011">北海道支部</option>
+                    <option value="012">東北支部</option>
+                    <option value="020">新潟・群馬・栃木支部</option>
+                    <option value="022">埼玉支部</option>
+                </select>
+            </td>
+            <td style="border-left-width:0px;">
+                <input type="checkbox" m:value="#{svTantouSibuDto.flgMisettei}"/>SV未設定店のみ&nbsp;
+            </td>
+        </tr>
+    </table>
+</div>
+<div m:id="cond3_area"
+      m:style="display:#{(svTantouSibuDto.processMode == '3') ? 'inline' : 'none'};">
+    <table class="body_table">
+        <tr>
+            <th>CSVファイル</th>
+            <td><span m:inject="x:inputFileUpload" style="width:450px;"
+                      id="uploadedFile" m:value="#{svTantouSibuDto.uploadedFile}"/></td>
+        </tr>
+    </table>
+</div>
+</form>
+</div>
+</body>
+</html>
