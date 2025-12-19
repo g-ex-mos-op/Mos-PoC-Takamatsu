@@ -1,0 +1,205 @@
+<html xmlns:m="http://www.seasar.org/maya" m:action="#{togouserRegistEditAction.initialize}" m:extends="/jsf/layout/layoutNoNaviTogo.html">
+	<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=Windows-31j" />
+	<title>本部ユーザー登録</title>
+	<SCRIPT LANGUAGE="javascript">
+
+    </SCRIPT>
+	</head>
+	<body onLoad="load();">
+		<span m:inject="f:param" m:name="layoutTitle" m:value="本部ユーザー登録"/>
+		<span m:inject="s:insert" m:name="bodyTitleName">■本部ユーザー登録(編集画面)</span>
+		<span m:inject="f:param" m:name="viewIdValue" m:value="BUR001V02"/>
+		<span m:inject="f:param" m:name="onLoadName" m:value="load()"/>
+		<span m:inject="s:insert" m:name="naviarea" m:src="/jsf/togouser/common/menuLink.html"/>
+		<span m:inject="s:insert" m:name="body" >
+			<SCRIPT LANGUAGE="javascript">
+			<!--
+			function initBumonList(){
+			    //部門選択
+				document.forms['togouserRegistEdit'].elements['togouserRegistEdit:__link_clicked__'].value='togouserRegistEdit:loadBumonList';
+				document.forms['togouserRegistEdit'].submit();
+				return false;
+			}
+
+			function clipboardClear() {
+				clipboardData.setData("Text", "");
+			}
+			function pasteKinshi() {
+				if ((event.keyCode == 86 && event.ctrlKey) || (event.keyCode == 45 && event.shiftKey)){
+					 return false;
+				}
+			}
+			function load() {
+                formobj=document.forms['togouserRegistEdit'];
+			    for (i = 0; i < document.forms['togouserRegistEdit'].elements.length; i++) {
+			        if (document.forms['togouserRegistEdit'].elements[i].type == "text"
+			         || document.forms['togouserRegistEdit'].elements[i].type == "password")
+			        {
+						document.togouserRegistEdit.elements[i].focus();
+						return ;
+			        }
+			    }
+			}
+			// -->
+			</SCRIPT>
+
+			<STYLE type="text/css" media="screen">
+			</STYLE>
+
+			<form m:id="togouserRegistEdit" onKeyDown="return setDefaultSubmitButton('togouserRegistEdit','btnConfirm');" >
+				<input type="hidden" m:id="viewId" m:value="#{viewIdValue}"/>
+				<p/>
+				<input type="button" value="戻る" m:action="#{togouserRegistEditAction.cancel}"/>&nbsp;
+				<input type="button" m:id="btnConfirm" value="確認" m:action="#{togouserRegistEditAction.regist}"/>&nbsp;
+				<br/><br/>
+
+				<table class="body_table2 font_size_14" width="830">
+					  <!-- ========================================================== -->
+					  <tr>
+					    <th width="150px">変更区分</th>
+					    <td colspan="3">
+					  	  <span m:rendered="#{uiTogoUserDto.henkoKbn == '0'}"> 新規 </span>
+					  	  <span m:rendered="#{uiTogoUserDto.henkoKbn == '1'}"> 変更 </span>
+					  	  <span m:rendered="#{uiTogoUserDto.henkoKbn == '2'}"> 参照 </span>
+					    </td>
+					  </tr>
+					  <!-- ========================================================== -->
+					  <tr>
+					    <th>ユーザーID</th>
+					    <td colspan="3">
+					  	  <div>
+					        <span m:rendered="#{uiTogoUserDto.henkoKbn == '0'}"
+					               m:value="#{uiTogoUserDto.inputUserId}"/>
+					  	  </div>
+					  	  <div>
+					        <span m:rendered="#{uiTogoUserDto.henkoKbn == '1' || uiTogoUserDto.henkoKbn == '2' }"
+					              m:value="#{uiTogoUserDto.uiBirdUser.userId}"/>
+					      </div>
+					    </td>
+					  </tr>
+					  <!-- ========================================================== -->
+
+					  <tr>
+					    <th>ユーザー名</th>
+					    <td width="180px">
+					  	  <div>
+					        <input m:rendered="#{uiTogoUserDto.henkoKbn == '0' || uiTogoUserDto.henkoKbn == '1'}"
+					               m:id="userNameKj" class="imeon" type="text"
+					               m:value="#{uiTogoUserDto.inputUserNameKJ}"
+					               m:maxlength="15"
+					               m:size="40"/>
+					  	  </div>
+					  	  <div>
+					  	    <span m:rendered="#{uiTogoUserDto.henkoKbn == '2' }"
+					  	          m:value="#{uiTogoUserDto.uiBirdUser.userNameKj}"/>
+					      </div>
+					    </td>
+					    <th width="150px">ユーザー名(ｶﾅ)</th>
+					    <td>
+					  	  <div>
+					        <input m:rendered="#{uiTogoUserDto.henkoKbn == '0' || uiTogoUserDto.henkoKbn == '1'}"
+					               m:id="userNameKana"
+					               class="imeon"
+					               type="text"
+					               m:value="#{uiTogoUserDto.inputUserNameKana}"
+					               m:maxlength="15"
+					               m:size="40"/>
+					  	  </div>
+					  	  <div>
+					  	    <span m:rendered="#{uiTogoUserDto.henkoKbn == '2' }"
+					  	          m:value="#{uiTogoUserDto.uiBirdUser.userNameKana}"/>
+					      </div>
+					    </td>
+					  </tr>
+					  <!-- ========================================================== -->
+					  <tr>
+					    <th>会社</th>
+					    <td>
+					         <select m:rendered="#{uiTogoUserDto.henkoKbn == '0' || uiTogoUserDto.henkoKbn == '1'}"
+					                 m:id="inputUserCompanyCode"
+					                 m:value="#{uiTogoUserDto.inputUserCompanyCode}"
+					                 m:items="#{codCompanyDto.compList}"
+					                 m:itemValue="companyCd"
+					                 m:itemLabel="companyName"
+					                 m:onChange="initBumonList()">
+					         </select>
+					         <a id="loadBumonList" m:action="#{togouserRegistEditAction.loadBumonList}" />
+ 					  	     <span m:rendered="#{uiTogoUserDto.henkoKbn == '2' }"
+ 					  	           m:value="#{uiTogoUserDto.uiUserCompany.rCompanyName}"/>
+
+					    </td>
+					    <th width="100px">部門</th>
+					    <td>
+					        <select m:rendered="#{uiTogoUserDto.henkoKbn == '0' || uiTogoUserDto.henkoKbn == '1'}"
+					                m:id="inputUserBumon"
+					                m:value="#{uiTogoUserDto.inputUserBumon}"
+					                m:items="#{codBumonDto.bumonList}"
+					                m:itemValue="bumonCd"
+					                m:itemLabel="bumonName">
+					        </select>
+					  	    <dev m:rendered="#{uiTogoUserDto.henkoKbn == '2' }">
+					  	        <span m:value="#{uiTogoUserDto.uiBirdUser.bumonCd}"/> ：
+                                <span m:converter="#{characterEncodingConverter}" m:value="#{uiTogoUserDto.uiBirdUser.bumonName}"/>
+                            </dev>
+					    </td>
+					  </tr>
+					  <!-- ========================================================== -->
+					  <tr>
+					    <th>メールアドレス</th>
+					    <td colspan="3">
+					  	  <div>
+					        <input m:rendered="#{uiTogoUserDto.henkoKbn == '0' || uiTogoUserDto.henkoKbn == '1'}"
+					               m:id="mailAdd1" class="imeon" type="text"
+					               style="ime-mode:disabled"
+					               m:value="#{uiTogoUserDto.inputMailAdd1}"
+					               m:maxlength="60"
+					               m:size="40"/>
+					  	  </div>
+					  	  <div>
+					  	    <span m:rendered="#{uiTogoUserDto.henkoKbn == '2' }"
+					  	          m:value="#{uiTogoUserDto.inputMailAdd1}"/>
+					      </div>
+					    </td>
+					  </tr>
+					  <!-- ========================================================== -->
+					  <tr>
+					  	<th class="font_size_12">パスワード<span m:rendered="#{uiTogoUserDto.henkoKbn == '1' || uiTogoUserDto.henkoKbn == '2'}">リセット</span></th>
+					    <td>
+					      <input id="password"
+					             type="password"
+					             m:size="20"
+					             m:value="#{uiTogoUserDto.inputPassword}"
+					             oncontextmenu="return false" onkeydown="pasteKinshi()" onfocus="clipboardClear()" />
+					    </td>
+					    <th>確認用パスワード</th>
+					    <td>
+					      <input id="password2"
+					             type="password"
+					             m:size="20"
+					             m:value="#{uiTogoUserDto.inputPasswordConfirm}"
+					             oncontextmenu="return false" onkeydown="pasteKinshi()" onfocus="clipboardClear()" />
+					    </td>
+					  </tr>
+					  <!-- ========================================================== -->
+					  <tr>
+					    <th width="150px">退職日</th>
+					    <td colspan="3">
+					        <input m:rendered="#{uiTogoUserDto.henkoKbn == '0' || uiTogoUserDto.henkoKbn == '1'}"
+					               m:id="taishokuDt"
+					               class="imenotuse"
+					               type="text"
+					               m:value="#{uiTogoUserDto.inputTaishokuDt}"
+					               m:maxlength="10"
+					               m:size="20"
+					               m:converter="#{taishokuDateConverter}"/>
+					  	    <span m:rendered="#{uiTogoUserDto.henkoKbn == '2' }"
+					  	          m:value="#{uiTogoUserDto.uiBirdUser.taishokuDt}"
+					  	          m:converter="#{taishokuDateConverter}"/>
+					    </td>
+					  </tr>
+				</table>
+			</form>
+		</span>
+	</body>
+</html>
