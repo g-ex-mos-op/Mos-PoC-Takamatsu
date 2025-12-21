@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="Shift_JIS"?>
+<!DOCTYPE components PUBLIC
+    "-//SEASAR//DTD S2Container 2.3//EN"
+    "http://www.seasar.org/dtd/components23.dtd">
+<components namespace="miseHistoryExtract">
+	<include path="dao.dicon"/>
+	<include path="jp/co/isid/mos/bird/common/dicon/birdCommon.dicon"/>
+	<include path="jp/co/isid/mos/bird/framework/dicon/birdInterceptor.dicon"/>
+
+	<!-- インターセプターを自動登録 -->
+	<component class="org.seasar.framework.container.autoregister.AspectAutoRegister">
+	    <property name="interceptor">birdInterceptor.actionInterceptorChain</property>
+	    <initMethod name="addClassPattern">
+	        <arg>"jp.co.isid.mos.bird"</arg>
+	        <arg>".*ActionImpl"</arg>
+	    </initMethod>
+	    <initMethod name="registerAll"/>
+	</component>
+	<component class="org.seasar.framework.container.autoregister.AspectAutoRegister">
+	    <property name="interceptor">birdInterceptor.logicInterceptorChain</property>
+	    <initMethod name="addClassPattern">
+	        <arg>"jp.co.isid.mos.bird"</arg>
+	        <arg>".*LogicImpl"</arg>
+	    </initMethod>
+	    <initMethod name="registerAll"/>
+	</component>
+
+	<!-- DAO -->
+	<component name="mstMiSeRiRekiJohoDao" class="jp.co.isid.mos.bird.storemanage.misehistoryextract.dao.MstMiSeRiRekiJohoDao">
+		<aspect>dao.interceptor</aspect>
+	</component>
+	<component name="tintaTenpoSyuBetuJohoDao" class="jp.co.isid.mos.bird.storemanage.misehistoryextract.dao.TintaTenpoSyuBetuJohoDao">
+		<aspect>dao.interceptor</aspect>
+	</component>
+	<component name="mstChintaiDao" class="jp.co.isid.mos.bird.storemanage.misehistoryextract.dao.MstChintaiDao">
+		<aspect>dao.interceptor</aspect>
+	</component>
+
+	<!-- DTO -->
+	<component name="miseHistoryExtractDto" class="jp.co.isid.mos.bird.storemanage.misehistoryextract.dto.MiseHistoryExtractDto" instance="session">
+	</component>
+	<component name="miseSearchDto" class="jp.co.isid.mos.bird.commonform.misesearch.dto.MiseSearchDto" instance="session"/>
+
+	<!-- LOGIC -->
+	<component name="miseHistoryExtractCsvLogic" class="jp.co.isid.mos.bird.storemanage.misehistoryextract.logic.impl.MiseHistoryExtractCsvLogicImpl"/>
+	<component name="excelOutputLogic" class="jp.co.isid.mos.bird.storemanage.misehistoryextract.logic.impl.MiseHistoryExtractExcelLogicImpl"/>
+
+	<!-- ACTION -->
+	<component name="miseHistoryExtractAction" class="jp.co.isid.mos.bird.storemanage.misehistoryextract.action.impl.MiseHistoryExtractActionImpl" instance="request">
+		<property name="miseHistoryExtractDto">miseHistoryExtractDto</property>
+		<property name="excelOutputLogic">excelOutputLogic</property>
+	</component>
+</components>

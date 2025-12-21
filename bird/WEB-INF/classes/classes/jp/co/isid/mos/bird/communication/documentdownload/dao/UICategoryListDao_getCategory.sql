@@ -1,0 +1,49 @@
+select distinct
+	rtrim(BT03.REG_DATE) as REG_DATE,
+	rtrim(BT03.SEQ) as SEQ,
+	rtrim(BT03.CATE_ID) as CATE_ID,
+	rtrim(BM02IFCT.CATE_NAME) as CATE_NAME,
+	rtrim(BT03.SUB_CATE_ID) as SUB_CATE_ID,
+	rtrim(BM17SBCT.SUB_CATE_NAME) as SUB_CATE_NAME,
+	rtrim(BT14.KOBETSU_FLG) as KOBETSU_FLG,
+	rtrim(BT14.MISE_FLG) as MISE_FLG,
+	rtrim(BT14.GYOTAI_KBN) as GYOTAI_KBN, 
+	BM02IFCT.SORT_KEY as CATE_SORT_KEY
+from 
+ 	BT03DOCM BT03
+    inner join BM02IFCT on BT03.CATE_ID = BM02IFCT.CATE_ID 
+                      and BM02IFCT.INFO_SHU = /*infoShu*/'03'
+    inner join BM17SBCT on BT03.CATE_ID = BM17SBCT.CATE_ID 
+                      and BT03.SUB_CATE_ID = BM17SBCT.SUB_CATE_ID 
+                      and BM17SBCT.INFO_SHU = /*infoShu*/'03'
+    left join BR01USER on BT03.PUB_USER = BR01USER.USER_ID
+   ,BT12IACP BT12
+   ,BT13IASZ BT13
+   ,BT14IAGT BT14
+   ,BM03USCP BM03
+   ,BM05USGT BM05
+   ,BM13SHKM BM13
+where
+    BT03.SAKUJO_FLG <> '1'
+and BT03.PUB_DATE_FROM <= /*sysDate*/'20060701'
+and BT03.PUB_DATE_TO >= /*sysDate*/'20060701'
+and BT12.INFO_SHU = /*infoShu*/'03'
+and BT03.REG_DATE = BT12.REG_DATE
+and BT03.SEQ = BT12.SEQ
+and BT13.INFO_SHU = /*infoShu*/'03'
+and BT03.REG_DATE = BT13.REG_DATE
+and BT03.SEQ = BT13.SEQ
+and BT14.INFO_SHU = /*infoShu*/'03'
+and BT03.REG_DATE = BT14.REG_DATE
+and BT03.SEQ = BT14.SEQ
+and BT12.R_COMPANY_CD = BM03.R_COMPANY_CD
+and BT13.SHOZOKU_KBN = BM13.SHOZOKU_KBN
+and BT14.GYOTAI_KBN = BM05.GYOTAI_KBN
+and BM03.USER_ID = /*userId*/'99990003'
+and BM13.USER_ID = /*userId*/'99990003'
+and BM05.USER_ID = /*userId*/'99990003'
+order by
+    rtrim(BT03.CATE_ID),
+    rtrim(BT03.SUB_CATE_ID),
+    rtrim(BT03.REG_DATE),
+    rtrim(BT03.SEQ)    

@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="Shift_JIS"?>
+<!DOCTYPE components PUBLIC "-//SEASAR//DTD S2Container 2.3//EN"
+    "http://www.seasar.org/dtd/components23.dtd">
+<components namespace="moscardSuiiRef">
+    <include path="dao.dicon"/>
+	<include path="jp/co/isid/mos/bird/framework/dicon/birdInterceptor.dicon"/>
+	<include path="jp/co/isid/mos/bird/common/dicon/birdCommon.dicon"/>
+	<include path="jp/co/isid/mos/bird/bizreport/common/dicon/bizreportCommon.dicon" />
+	<include path="jp/co/isid/mos/bird/bizreport/common/suiiref/dicon/suiiRef.dicon" />
+	
+	<component
+	  class="org.seasar.framework.container.autoregister.AspectAutoRegister">
+	    <property name="interceptor">birdInterceptor.actionInterceptorChain</property>
+	    <initMethod name="addClassPattern">
+	        <arg>"jp.co.isid.mos.bird"</arg>
+	        <arg>".*ActionImpl"</arg>
+	    </initMethod>
+	    <initMethod name="registerAll"/>
+	</component> 
+	
+	<component
+	  class="org.seasar.framework.container.autoregister.AspectAutoRegister">
+	    <property name="interceptor">birdInterceptor.logicInterceptorChain</property>
+	    <initMethod name="addClassPattern">
+	        <arg>"jp.co.isid.mos.bird"</arg>
+	        <arg>".*LogicImpl"</arg>
+	    </initMethod>
+	    <initMethod name="registerAll"/>
+	</component>
+
+	<component class="jp.co.isid.mos.bird.framework.control.BirdUserInfo" instance="session"/>
+	<component class="jp.co.isid.mos.bird.framework.control.BirdDateInfo" instance="session"/>
+
+	<!-- DAO -->
+	<component name="moscardSuiiRefUIMiseCntDao" class="jp.co.isid.mos.bird.bizreport.moscardsuiiref.dao.UIMiseCntDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="moscardSuiiRefUIMoscardDao" class="jp.co.isid.mos.bird.bizreport.moscardsuiiref.dao.UIMoscardDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<!-- Logic -->
+	<component name="moscardSuiiRefSearchLogic" class="jp.co.isid.mos.bird.bizreport.moscardsuiiref.logic.impl.SearchLogicImpl">
+		<property name="moscardSuiiRefUIMiseCntDao">moscardSuiiRefUIMiseCntDao</property>
+		<property name="moscardSuiiRefUIMoscardDao">moscardSuiiRefUIMoscardDao</property>
+	</component>
+	<component name="moscardSuiiRefCsvOutputLogic" class="jp.co.isid.mos.bird.bizreport.moscardsuiiref.logic.impl.CsvOutputLogicImpl">
+		<property name="moscardSuiiRefSearchLogic">moscardSuiiRefSearchLogic</property>
+	</component>
+	<!-- DTO -->
+	<component name="pullDownMenuDto" class="jp.co.isid.mos.bird.framework.dto.PullDownMenuDto" autoBinding="none" instance="session"/>
+	<component name="miseSearchDto" class="jp.co.isid.mos.bird.commonform.misesearch.dto.MiseSearchDto" instance="session">
+		<property name="RCompanyCdList">null</property>
+	</component>
+	<component name="moscardSuiiRefResultMapDto" class="jp.co.isid.mos.bird.bizreport.common.suiiref.dto.SuiiRefResultMapDto" instance="session"/>
+	<component name="moscardSuiiRefResultDto" class="jp.co.isid.mos.bird.bizreport.common.suiiref.dto.SuiiRefResultDto" instance="request">
+		<property name="listUITabData">new java.util.ArrayList(0)</property>
+		<property name="listFocusTabResult">null</property>
+		<property name="mapMonthTab">new java.util.HashMap()</property>
+	</component>
+	
+	<!-- Action -->
+	<component name="moscardSuiiRefAction" class="jp.co.isid.mos.bird.bizreport.moscardsuiiref.action.impl.MoscardSuiiRefActionImpl" instance="request">
+		<property name="suiiRefConditionLogic">suiiRef.suiiRefConditionLogic</property>
+		<property name="suiiRefConditionDto">suiiRef.suiiRefConditionDto</property>
+		<property name="suiiRefSearchParameterDto">suiiRef.suiiRefSearchParameterDto</property>
+		<property name="suiiRefResultParameterDto">suiiRef.suiiRefResultParameterDto</property>
+		<property name="moscardSuiiRefResultMapDto">moscardSuiiRefResultMapDto</property>
+		<property name="moscardSuiiRefResultDto">moscardSuiiRefResultDto</property>
+		<property name="moscardSuiiRefSearchLogic">moscardSuiiRefSearchLogic</property>
+		<property name="csvOutputLogic">moscardSuiiRefCsvOutputLogic</property>
+		<property name="csvOutputDto">suiiRef.suiiRefResultParameterDto</property>
+	</component>
+
+	<!-- CONVERTER -->	
+	<component name="numericConverter" class="jp.co.isid.mos.bird.framework.text.converter.NumericConverter" instance="request"/>
+	<component name="moscardSuiiReHirituConverter" class="jp.co.isid.mos.bird.bizreport.moscardsuiiref.text.NumLimitConverter" instance="request">
+		<arg>"0.00"</arg><arg>true</arg>
+	</component>
+</components>

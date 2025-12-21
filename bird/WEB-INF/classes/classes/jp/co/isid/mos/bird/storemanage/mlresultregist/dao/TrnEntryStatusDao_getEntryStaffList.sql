@@ -1,0 +1,56 @@
+select 
+	BT23.ENTRY_CD,
+	BT23.ENTRY_YEAR,
+	BT23.ENTRY_KAI,
+	BT23.STAFF_ID,
+	BT23.COMPANY_CD,
+	BT23.ONER_CD,
+	BT23.EXAM_NO,
+	coalesce(VBT32.SUB1_RESULT, '') as SUB1_RESULT,
+	BM12.STAFF_L_NAME_KJ,
+	BM12.STAFF_F_NAME_KJ,
+	BM12.MISE_CD_1,
+	BM11.ONER_NAME_KJ,
+	BM01.MISE_NAME_KJ,
+    BM01.SIBU_CD,
+    BM10.SIBU_NAME, 
+    (case when VBT32.SUB1_RESULT = '0' THEN 'ïsçáäi'
+          when VBT32.SUB1_RESULT = '1' THEN 'çáäi'
+          when VBT32.SUB1_RESULT = '2' THEN 'ñ∆èú'
+          when VBT32.SUB1_RESULT = '9' THEN 'ñ¢éÛå±'
+          else 'ñ¢éÛå±'
+     end) as SUB1_RESULT_DISP 
+from
+	BT23MLEJ BT23
+	left join VBT32MLKR VBT32 
+	 on (BT23.STAFF_ID = VBT32.STAFF_ID 
+	     and BT23.ENTRY_YEAR = VBT32.TOTAL_LAST_YEAR 
+	     and BT23.ENTRY_KAI = VBT32.TOTAL_LAST_KAI), 
+	BM12STAF BM12,
+	BM01TENM BM01,
+	BM11ONER BM11,
+	BM10GSIB BM10
+where
+	BT23.ENTRY_CD   = /*entryCd*/'10' 
+and BT23.ENTRY_YEAR = /*entryYear*/'2006' 
+and BT23.ENTRY_kAI  = /*entryKai*/'001' 
+and BT23.COMPANY_CD = /*companyCd*/'00' 
+/*IF condType == "1"*/ 
+and BM10.SIBU_CD = /*sibuCd*/'031' 
+/*END*/
+/*IF condType == "2"*/ 
+and BM01.ONER_CD = /*onerCd*/'36478' 
+/*END*/
+/*IF condType == "3"*/ 
+and BM01.MISE_CD = /*miseCd*/'01776' 
+/*END*/
+and BT23.COMPANY_CD = BM12.COMPANY_CD  
+and BT23.STAFF_ID   = BM12.STAFF_ID
+and BT23.COMPANY_CD = BM11.COMPANY_CD
+and BT23.ONER_CD    = BM11.ONER_CD
+and BM12.COMPANY_CD = BM01.COMPANY_CD 
+and BM12.MISE_CD_1  = BM01.MISE_CD
+and BM01.COMPANY_CD = BM10.COMPANY_CD 
+and BM01.AREA_DAI   = BM10.SIBU_CD
+order by
+    BT23.STAFF_ID

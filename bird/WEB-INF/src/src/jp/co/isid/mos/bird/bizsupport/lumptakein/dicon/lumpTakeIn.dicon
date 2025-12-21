@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="Shift_JIS"?>
+<!DOCTYPE components PUBLIC "-//SEASAR//DTD S2Container 2.3//EN"
+    "http://www.seasar.org/dtd/components23.dtd">
+<components namespace="lumpTakeIn">
+    <include path="dao.dicon"/>
+	<include path="jp/co/isid/mos/bird/framework/dicon/birdInterceptor.dicon"/>
+
+	<component
+	  class="org.seasar.framework.container.autoregister.AspectAutoRegister">
+	    <property name="interceptor">birdInterceptor.actionInterceptorChain</property>
+	    <initMethod name="addClassPattern">
+	        <arg>"jp.co.isid.mos.bird"</arg>
+	        <arg>".*ActionImpl"</arg>
+	    </initMethod>
+	    <initMethod name="registerAll"/>
+	</component> 
+	<component
+	  class="org.seasar.framework.container.autoregister.AspectAutoRegister">
+	    <property name="interceptor">birdInterceptor.logicInterceptorChain</property>
+	    <initMethod name="addClassPattern">
+	        <arg>"jp.co.isid.mos.bird"</arg>
+	        <arg>".*LogicImpl"</arg>
+	    </initMethod>
+	    <initMethod name="registerAll"/>
+	</component>
+
+	<component class="jp.co.isid.mos.bird.framework.control.BirdUserInfo" instance="session"/>
+	<component class="jp.co.isid.mos.bird.framework.control.BirdDateInfo" instance="session"/>
+
+	<!-- DAO -->
+	<component name="trnPLInfoDao" class="jp.co.isid.mos.bird.bizsupport.lumptakein.dao.TrnPLInfoDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="trnPLAuthorInfoDao" class="jp.co.isid.mos.bird.bizsupport.lumptakein.dao.TrnPLAuthorInfoDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="trnPLLimitDao" class="jp.co.isid.mos.bird.bizsupport.lumptakein.dao.TrnPLLimitDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="trnMonthUriageInfoDao" class="jp.co.isid.mos.bird.bizsupport.lumptakein.dao.TrnMonthUriageInfoDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="mstUserMiseInfoDao" class="jp.co.isid.mos.bird.bizsupport.lumptakein.dao.MstUserMiseInfoDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="ctlPLLimitDao" class="jp.co.isid.mos.bird.bizsupport.common.dao.CtlPLLimitDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+
+	<!-- Logic -->
+	<component name="takePlInfoCsvLogic" class="jp.co.isid.mos.bird.bizsupport.lumptakein.logic.impl.TakePlInfoCsvLogicImpl">
+		<property name="dateParserList">dateParserList</property>
+	</component>
+	<component name="checkPLDataLogic" class="jp.co.isid.mos.bird.bizsupport.lumptakein.logic.impl.CheckPLDataLogicImpl"/>
+	<component name="registPLDataLogic" class="jp.co.isid.mos.bird.bizsupport.lumptakein.logic.impl.RegistPLDataLogicImpl"/>
+	<component name="getPLAuthorLogic" class="jp.co.isid.mos.bird.bizsupport.lumptakein.logic.impl.GetPLAuthorLogicImpl"/>
+	<component name="getPLMiseNameLogic" class="jp.co.isid.mos.bird.bizsupport.lumptakein.logic.impl.GetPLMiseNameLogicImpl"/>
+	<component name="lumpTakeInCsvOutputLogic" class="jp.co.isid.mos.bird.bizsupport.lumptakein.logic.impl.LumpTakeInCsvOutputLogicImpl"/>
+	<component name="getPLOwnerNameLogic" class="jp.co.isid.mos.bird.bizsupport.lumptakein.logic.impl.GetPLOwnerNameLogicImpl"/>
+	<component name="existOwnerCodeLogic" class="jp.co.isid.mos.bird.bizsupport.lumptakein.logic.impl.ExistOwnerCodeLogicImpl"/>
+	<component name="getPLInfoStatusLogic" class="jp.co.isid.mos.bird.bizsupport.lumptakein.logic.impl.GetPLInfoStatusLogicImpl"/>
+
+	<!-- DTO -->
+	<component name="lumpTakeInDto" class="jp.co.isid.mos.bird.bizsupport.lumptakein.dto.LumpTakeInDto" instance="session">
+		<property name="uploadedFile">null</property>
+		<property name="plDataList">null</property>
+		<property name="plDataErrorList">null</property>
+		<property name="plYmList">null</property>
+	</component>
+	<component name="pullDownMenuDto" class="jp.co.isid.mos.bird.framework.dto.PullDownMenuDto" autoBinding="none" instance="session"/>
+	<component name="ownerSearchDto" class="jp.co.isid.mos.bird.commonform.ownersearch.dto.OwnerSearchDto" autoBinding="none" instance="session"/>
+	<component name="plRegistDto" class="jp.co.isid.mos.bird.bizsupport.common.dto.PlRegistDto" autoBinding="none" instance="session"/>
+
+	<!-- Action -->
+	<component name="lumpTakeInConditionAction" class="jp.co.isid.mos.bird.bizsupport.lumptakein.action.impl.LumpTakeInConditionActionImpl" instance="request"/>
+	<component name="lumpTakeInResultAction" class="jp.co.isid.mos.bird.bizsupport.lumptakein.action.impl.LumpTakeInResultActionImpl" instance="request"/>
+	<component name="lumpTakeInCsvOutputAction" class="jp.co.isid.mos.bird.framework.action.impl.CsvOutputActionImpl" instance="request">
+		<property name="csvOutputLogic">lumpTakeInCsvOutputLogic</property>
+		<property name="csvOutputDto">lumpTakeInDto</property>
+	</component>
+
+	<!-- Converter -->
+	<component name="lumpTakeInOnerCdConverter" class="jp.co.isid.mos.bird.framework.text.converter.CodeConverter">
+		<property name="formatPattern">"00000"</property>
+	</component>
+	<component name="lumpTakeInPlYmConverter" class="jp.co.isid.mos.bird.framework.text.converter.DateConverter">
+		<arg>@jp.co.isid.mos.bird.framework.util.formatter.DateFormatter@DATE_TYPE_YM</arg>
+		<arg>@jp.co.isid.mos.bird.framework.util.formatter.DateFormatter@PATTERN_MONTH_SLASH</arg>
+	</component>
+	<component name="lumpTakeInAuthDtConverter" class="jp.co.isid.mos.bird.framework.text.converter.DateConverter">
+		<arg>@jp.co.isid.mos.bird.framework.util.formatter.DateFormatter@DATE_TYPE_YMD</arg>
+		<arg>@jp.co.isid.mos.bird.framework.util.formatter.DateFormatter@PATTERN_SLASH</arg>
+	</component>
+
+	<!-- Formatter -->
+	<component name="lumpTakeInMiseCdFormatter" class="jp.co.isid.mos.bird.framework.util.formatter.CodeFormatter">
+		<arg>5</arg>
+		<property name="formatPattern">"00000"</property>
+	</component>
+
+	<!-- Verifier -->
+    <component name="lumpTakeInPlYmVerifier" class="jp.co.isid.mos.bird.framework.util.verifier.DateVerifier">
+		<arg>@jp.co.isid.mos.bird.framework.util.verifier.DateVerifier@DATE_TYPE_YM</arg>
+	    <initMethod name="setNullable">
+	        <arg>false</arg>
+	    </initMethod>
+	</component>
+    <component name="lumpTakeInCodeVerifier" class="jp.co.isid.mos.bird.framework.util.verifier.CodeVerifier">
+		<arg>5</arg>
+		<arg>true</arg>
+	    <initMethod name="setNullable">
+	        <arg>false</arg>
+	    </initMethod>
+	</component>
+    <component name="lumpTakeInAuthDtVerifier" class="jp.co.isid.mos.bird.framework.util.verifier.DateVerifier">
+		<arg>@jp.co.isid.mos.bird.framework.util.verifier.DateVerifier@DATE_TYPE_YMD</arg>
+	    <initMethod name="setNullable">
+	        <arg>false</arg>
+	    </initMethod>
+	</component>
+    <component name="lumpTakeInPhoneVerifier" class="jp.co.isid.mos.bird.framework.util.verifier.PhoneVerifier">
+		<arg>15</arg>
+		<arg>true</arg>
+	    <initMethod name="setNullable">
+	        <arg>false</arg>
+	    </initMethod>
+	</component>
+    <component name="lumpTakeInJapaneseVerifier" class="jp.co.isid.mos.bird.framework.util.verifier.DefaultJapaneseVerifier"/>
+
+	<!-- 日付パーサ -->
+	<component name="dateParserList" class="java.util.ArrayList">
+		<initMethod name="add" >
+			<arg>
+				<!-- "200609"形式 -->
+				<component class="java.text.SimpleDateFormat">
+					<arg>"yyyyMM"</arg>
+					<initMethod>#self.setLenient(false)</initMethod>
+				</component>
+			</arg>
+		</initMethod>
+		<initMethod name="add" >
+			<arg>
+				<!-- "2006/09"形式 -->
+				<component class="java.text.SimpleDateFormat">
+					<arg>"yyyy/MM"</arg>
+					<initMethod>#self.setLenient(false)</initMethod>
+				</component>
+			</arg>
+		</initMethod>
+		<initMethod name="add" >
+			<arg>
+				<!-- "Sep-06"形式 -->
+				<component class="java.text.SimpleDateFormat">
+					<arg>"MMM-yy"</arg>
+					<arg>@java.util.Locale@US</arg>
+					<initMethod>#self.setLenient(false)</initMethod>
+				</component>
+			</arg>
+		</initMethod>
+		<initMethod name="add" >
+			<arg>
+				<!-- "06-Sep"形式 -->
+				<component class="java.text.SimpleDateFormat">
+					<arg>"yy-MMM"</arg>
+					<arg>@java.util.Locale@US</arg>
+					<initMethod>#self.setLenient(false)</initMethod>
+				</component>
+			</arg>
+		</initMethod>
+	</component>
+	<!-- 日付フォーマッタ -->
+	<component name="dateFormatter" class="java.text.SimpleDateFormat">
+		<arg>"yyyyMM"</arg>
+	</component>
+
+</components>

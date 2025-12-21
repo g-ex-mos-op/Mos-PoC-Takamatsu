@@ -1,0 +1,201 @@
+<html xmlns:m="http://www.seasar.org/maya" m:action="#{nationalRegistEditAction.initialize}" m:extends="/jsf/layout/layoutNoNavi.html">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Windows-31j"/>
+<meta http-equiv="Content-Style-Type" content="text/css"/>
+<title>全国大会マスタ登録(編集画面)</title>
+</head>
+<body>
+<span m:inject="f:param" m:name="layoutTitle" m:value="全国大会マスタ登録(編集画面)"/>
+<span m:inject="s:insert" m:name="bodyTitleName">■全国大会マスタ登録(編集画面)</span>
+<span m:inject="f:param" m:name="onLoadName" m:value="bodyLoad()"/>
+<span m:inject="f:param" m:name="viewIdValue" m:value="BEN014V02"/>
+<span m:inject="s:insert" m:name="body">
+<style type="text/css">
+<!--
+.disable_field {
+	background-color	: gainsboro;
+	color				: black;
+}
+.selection_index {
+	width		: 20px;
+	float		: left;
+	text-align	: right;
+}
+.selection2_name {
+	width		: 500px;
+	float		: left;
+	text-align	: left;
+}
+.selection_name {
+	width		: 240px;
+	float		: left;
+	text-align	: left;
+}
+.scroll_area {
+		width:	  980px;
+		height:	  460px;
+	}
+-->
+</style>
+<script type="text/javascript">
+<!--
+function bodyLoad() {
+	// フォーカス設定
+	focusElement("nationalRegistEdit");
+}
+//-->
+</script>
+
+<form m:id="nationalRegistEdit" onkeydown="return setDefaultSubmitButton('nationalRegistEdit', 'btnExecute');">
+<input type="hidden" m:id="viewId" m:value="#{viewIdValue}"/>
+<input type="hidden" m:id="initMenuId" m:value="#{menuAction.initMenuId}"/>
+<input type="hidden" m:id="initSubMenuId" m:value="#{menuAction.initSubMenuId}"/>
+<input type="hidden" m:id="windowId" m:value="#{nationalRegistDto.windowId}"/>
+
+<input type="submit" value="戻る" m:action="#{nationalRegistEditAction.back}"/>&nbsp;&nbsp;
+<input type="submit" value="確認" m:id="btnExecute" m:action="#{nationalRegistEditAction.confirm}"/>
+<div class="scroll_area">
+<table class="body_table2" style="width:960px;margin-top:4px;">
+	<col style="width:160px;"/>
+	<col style="width:320px;"/>
+	<col style="width:160px;"/>
+	<col style="width:320px;"/>
+	<tr>
+		<th>対象処理</th>
+		<td colspan="3">
+			<span m:converter="#{characterEncodingConverter}" m:value="#{nationalRegistDto.targetProcess}"/>
+		</td>
+	</tr>
+	<tr>
+		<th>開催日</th>
+		<td colspan="3">
+			<input type="text" m:id="openFrom" m:value="#{nationalRegistDto.uiEntryMst.openFrom}"
+			       m:readonly="#{nationalRegistDto.readOnly}" m:class="#{nationalRegistDto.readOnly ? 'disable_field' : ''} width_110"
+			       m:converter="#{dateConverter}" maxlength="10" style="ime-mode:disabled"/>
+			～
+			<input type="text" m:id="openTo" m:value="#{nationalRegistDto.uiEntryMst.openTo}"
+				   m:readonly="#{nationalRegistDto.readOnly}" m:class="#{nationalRegistDto.readOnly ? 'disable_field' : ''} width_110"
+			       m:converter="#{dateConverter}" maxlength="10" style="ime-mode:disabled"/>
+			YYYY/MM/DD
+		</td>
+	</tr>
+	<tr>
+		<th>イベント名称</th>
+		<td colspan="3">
+			<input type="text" style="width:640px;" m:id="entryTitle" m:value="#{nationalRegistDto.uiEntryMst.entryTitle}"
+			        maxlength="30" style="ime-mode:active;"/>
+		</td>
+	</tr>
+	<tr>
+		<th>オーナー：表示開始</th>
+		<td>
+			<input type="text" width="80px" m:id="onerDispFrom" m:value="#{nationalRegistDto.uiEntryMst.onerDispFrom}"
+		           m:readonly="#{nationalRegistDto.readOnly}" m:class="#{nationalRegistDto.readOnly ? 'disable_field' : ''} width_110"
+		           m:converter="#{dateConverter}" maxlength="10" style="ime-mode:disabled"/>YYYY/MM/DD
+		</td>
+		<th>本部：表示開始</th>
+		<td>
+			<input type="text" width="80px" m:id="honbuDispFrom" m:value="#{nationalRegistDto.uiEntryMst.honbuDispFrom}"
+			       m:readonly="#{nationalRegistDto.readOnly}" m:class="#{nationalRegistDto.readOnly ? 'disable_field' : ''} width_110"
+			       m:converter="#{dateConverter}" maxlength="10" style="ime-mode:disabled"/>YYYY/MM/DD
+		</td>
+	</tr>
+	<tr>
+		<th>オーナー：申込開始</th>
+		<td>
+			<input type="text" width="80px" m:id="onerEntryFrom" m:value="#{nationalRegistDto.uiEntryMst.onerEntryFrom}"
+			       m:readonly="#{nationalRegistDto.readOnly}" m:class="#{nationalRegistDto.readOnly ? 'disable_field' : ''} width_110"
+			       m:converter="#{dateConverter}"maxlength="10" style="ime-mode:disabled"/>YYYY/MM/DD
+		</td>
+		<th>本部：申込開始</th>
+		<td>
+			<input type="text" width="80px" m:id="honbuEntryFrom" m:value="#{nationalRegistDto.uiEntryMst.honbuEntryFrom}"
+			       m:readonly="#{nationalRegistDto.readOnly}" m:class="#{nationalRegistDto.readOnly ? 'disable_field' : ''} width_110"
+			       m:converter="#{dateConverter}" maxlength="10" style="ime-mode:disabled"/>YYYY/MM/DD
+		</td>
+	</tr>
+	<tr>
+		<th>オーナー：申込終了</th>
+		<td>
+			<input type="text" width="80px" m:id="onerEntryTo" m:value="#{nationalRegistDto.uiEntryMst.onerEntryTo}"
+			       m:converter="#{dateConverter}"maxlength="10" m:class="width_110" style="ime-mode:disabled"/>YYYY/MM/DD
+		</td>
+		<th>本部：申込終了</th>
+		<td><input type="text" width="80px" m:id="honbuEntryTo" m:value="#{nationalRegistDto.uiEntryMst.honbuEntryTo}"
+		           m:converter="#{dateConverter}"maxlength="10" m:class="width_110" style="ime-mode:disabled"/>YYYY/MM/DD
+		</td>
+	</tr>
+	<tr>
+		<th>オーナー：表示終了</th>
+		<td><input type="text" width="80px" m:id="onerDispTo" m:value="#{nationalRegistDto.uiEntryMst.onerDispTo}"
+		           m:converter="#{dateConverter}" maxlength="10" m:class="width_110" style="ime-mode:disabled"/>YYYY/MM/DD
+		</td>
+		<th>本部：表示終了</th>
+		<td><input type="text" width="80px" m:id="honbuDispTo" m:value="#{nationalRegistDto.uiEntryMst.honbuDispTo}"
+		           m:converter="#{dateConverter}" maxlength="10" m:class="width_110" style="ime-mode:disabled"/>YYYY/MM/DD
+		</td>
+	</tr>
+	<tr>
+		<th valign="top">申込区分</th>
+		<td colspan="3" width="780px">
+			<span m:inject="s:forEach" m:items="#{nationalRegistDto.entryKbnList}" m:var="e" m:varindex="i">
+				<div class="selection_index"><span m:converter="#{characterEncodingConverter}" m:value="#{i + 1}"/>:</div>
+				<div class="selection_name">
+					<input type="text" m:size="35" m:id="entryKbn" m:value="#{e.selectionName}"
+						   m:readonly="#{nationalRegistDto.readOnly}" maxlength="15" style="ime-mode:active;"
+						   m:class="#{nationalRegistDto.readOnly ? 'disable_field' : ''} width_190"/>
+				</div>
+			</span>
+		</td>
+	</tr>
+	<tr>
+		<th valign="top">オプショナル<br/>(宿泊関連)</th>
+		<td colspan="3" width="780px">
+			<span m:inject="s:forEach" m:items="#{nationalRegistDto.optionalList}" m:var="e" m:varindex="i">
+				<div m:rendered="#{(i<4)||(i>=10 && i<16)}">
+				<div class="selection_index"><span m:converter="#{characterEncodingConverter}" m:value="#{(i<4) ? (i+1) : (i-5)}"/>:</div>
+				<div class="selection_name">
+					<input type="text" m:size="35" m:id="optional" m:value="#{e.selectionName}"
+						   m:readonly="#{nationalRegistDto.readOnly}" maxlength="15" style="ime-mode:active;"
+						   m:class="#{nationalRegistDto.readOnly ? 'disable_field' : ''} width_190"/>
+				</div>
+				</div>
+			</span>
+		</td>
+	</tr>
+	<tr>
+		<th valign="top">オプショナル<br/>(ツアー関連)</th>
+		<td colspan="3" width="780px">
+			<span m:inject="s:forEach" m:items="#{nationalRegistDto.optionalList}" m:var="e" m:varindex="i">
+				<div m:rendered="#{i>=4 && i<10}">
+				<div class="selection_index"><span m:converter="#{characterEncodingConverter}" m:value="#{i -3}"/>:</div>
+				<div class="selection_name">
+					<input type="text" m:size="35" m:id="optional" m:value="#{e.selectionName}"
+						   m:readonly="#{nationalRegistDto.readOnly}" maxlength="15" style="ime-mode:active;"
+						   m:class="#{nationalRegistDto.readOnly ? 'disable_field' : ''} width_190"/>
+				</div>
+				</div>
+			</span>
+		</td>
+	</tr>
+	<tr>
+		<th valign="top">オプショナル<br/>(その他)</th>
+		<td colspan="3" width="780px">
+			<span m:inject="s:forEach" m:items="#{nationalRegistDto.optionalList}" m:var="e" m:varindex="i">
+				<div m:rendered="#{i>=20}">
+				<div class="selection_index"><span m:converter="#{characterEncodingConverter}" m:value="#{i + 1 -20}"/>:</div>
+				<div class="selection_name">
+					<input type="text" m:size="35" m:id="optional" m:value="#{e.selectionName}"
+						   m:readonly="#{nationalRegistDto.readOnly}" maxlength="15" style="ime-mode:active;"
+						   m:class="#{nationalRegistDto.readOnly ? 'disable_field' : ''} width_190"/>
+				</div>
+				</div>
+			</span>
+		</td>
+	</tr>
+</table>
+</div>
+</form>
+</span>
+</body>
+</html>

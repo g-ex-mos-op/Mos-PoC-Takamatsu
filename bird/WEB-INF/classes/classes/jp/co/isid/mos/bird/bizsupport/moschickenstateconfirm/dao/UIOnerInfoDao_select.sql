@@ -1,0 +1,7 @@
+SELECT DISTINCT ONER_CD
+   ,            COMPANY_CD
+   ,            RTRIM(CHAR(REPLACE(ONER_NAME_KJ , '  ', '  '), 40))  AS ONER_NAME_KJ
+   ,            RTRIM(CHAR(REPLACE(ONER_NAME_KNA , '  ', '  '), 40))  AS ONER_NAME_KNA
+FROM   BM11ONER
+WHERE ONER_CD = /*onerCd*/'36001' 
+AND COMPANY_CD = /*companyCd*/'00'

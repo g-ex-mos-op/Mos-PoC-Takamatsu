@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="Shift_JIS"?>
+<!DOCTYPE components PUBLIC "-//SEASAR//DTD S2Container 2.3//EN"
+    "http://www.seasar.org/dtd/components23.dtd">
+<components namespace="sibuaverage">
+    <include path="dao.dicon"/>
+    <include path="jp/co/isid/mos/bird/common/dicon/birdCommon.dicon"/>
+	<include path="jp/co/isid/mos/bird/framework/dicon/birdInterceptor.dicon"/>
+
+	<component
+	  class="org.seasar.framework.container.autoregister.AspectAutoRegister">
+	    <property name="interceptor">birdInterceptor.actionInterceptorChain</property>
+	    <initMethod name="addClassPattern">
+	        <arg>"jp.co.isid.mos.bird"</arg>
+	        <arg>".*ActionImpl"</arg>
+	    </initMethod>
+	    <initMethod name="registerAll"/>
+	</component> 
+	<component
+	  class="org.seasar.framework.container.autoregister.AspectAutoRegister">
+	    <property name="interceptor">birdInterceptor.logicInterceptorChain</property>
+	    <initMethod name="addClassPattern">
+	        <arg>"jp.co.isid.mos.bird"</arg>
+	        <arg>".*LogicImpl"</arg>
+	    </initMethod>
+	    <initMethod name="registerAll"/>
+	</component>
+
+	<!-- DAO -->
+	<component name="sibuaverageOnerInfoDao" class="jp.co.isid.mos.bird.analysis.sibuaverage.dao.UIOnerInfoDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="sibuaverageSuiiDataDao" class="jp.co.isid.mos.bird.analysis.sibuaverage.dao.UISuiiDataDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<!-- LOGIC -->
+	<component name="sibuaverageConditionLogic" class="jp.co.isid.mos.bird.analysis.sibuaverage.logic.impl.ConditionInfoLogicImpl"/>
+	<component name="sibuaverageSearchLogic" class="jp.co.isid.mos.bird.analysis.sibuaverage.logic.impl.GetSibuAverageLogicImpl"/>
+	<component name="sibuaverageCsvLogic" class="jp.co.isid.mos.bird.analysis.sibuaverage.logic.impl.SibuAverageCsvOutputLogicImpl"/>
+	<component name="sibuaverageChangeOnerLogic" class="jp.co.isid.mos.bird.analysis.sibuaverage.logic.impl.ChangeOnerLogicImpl"/>
+	
+	<!-- DTO -->
+	<component name="sibuaverageDto" class="jp.co.isid.mos.bird.analysis.sibuaverage.dto.SibuAverageDto" autoBinding="none" instance="session"/>
+	<component name="sibuaverageReqDto" class="jp.co.isid.mos.bird.analysis.sibuaverage.dto.SibuAverageReqDto" autoBinding="none" instance="request">
+		<property name="companyCd">'00'</property>
+	</component>
+	<component name="sibuaverageViewDto" class="jp.co.isid.mos.bird.analysis.sibuaverage.dto.SibuAverageReqDto" autoBinding="none" instance="request"/>
+	<component name="miseSearchDto" class="jp.co.isid.mos.bird.commonform.misesearch.dto.MiseSearchDto" instance="session">
+		<property name="RCompanyCdList">null</property>
+	</component>
+	<component name="ownerSearchDto" class="jp.co.isid.mos.bird.commonform.ownersearch.dto.OwnerSearchDto" instance="session">
+		<property name="RCompanyCdList">null</property>
+	</component>
+
+	<!-- ACTION -->
+	<component name="sibuaverageAction" class="jp.co.isid.mos.bird.analysis.sibuaverage.action.impl.SibuAverageActionImpl" instance="request"/>
+	<component name="sibuaverageCsvAction" class="jp.co.isid.mos.bird.framework.action.impl.CsvOutput2ActionImpl" instance="request">
+		<property name="csvOutputLogic">sibuaverageCsvLogic</property>
+		<property name="csvOutputDto">sibuaverageViewDto</property>
+	</component>
+	
+	<!-- Formatter -->
+
+	<!-- Converter -->
+	<component name="sibuaverageDigit0Con" class="jp.co.isid.mos.bird.analysis.sibuaverage.text.NumericConverter" instance="request">
+		<arg>0</arg>
+		<property name="formatPattern">"#,##0"</property>
+	</component>
+	<component name="sibuaverageDigit2Con" class="jp.co.isid.mos.bird.analysis.sibuaverage.text.NumericConverter" instance="request">
+		<arg>2</arg>
+		<property name="formatPattern">"#,##0.00"</property>
+	</component>
+	<component name="sibuaverageCodeConv" class="jp.co.isid.mos.bird.framework.text.converter.CodeConverter" instance="request"/>
+	<component name="sibuaverageDateConverter" class="jp.co.isid.mos.bird.framework.text.converter.DateConverter" instance="request">
+		<arg>@jp.co.isid.mos.bird.framework.util.formatter.DateFormatter@DATE_TYPE_YMD</arg>
+		<arg>"dd'日（'E'）'"</arg>
+	</component>
+	
+</components>

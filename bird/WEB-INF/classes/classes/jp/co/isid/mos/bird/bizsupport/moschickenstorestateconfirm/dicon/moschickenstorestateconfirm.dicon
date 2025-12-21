@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE components PUBLIC "-//SEASAR//DTD S2Container 2.3//EN"
+	"http://www.seasar.org/dtd/components23.dtd">
+<components namespace="moschickenstorestateconfirm">
+	<include path="dao.dicon"/>
+	<include path="jp/co/isid/mos/bird/common/dicon/birdCommon.dicon"/>
+	<include path="jp/co/isid/mos/bird/framework/dicon/birdInterceptor.dicon"/>
+	
+	<!-- インターセプターを自動登録 -->
+	<component class="org.seasar.framework.container.autoregister.AspectAutoRegister">
+	    <property name="interceptor">birdInterceptor.actionInterceptorChain</property>
+	    <initMethod name="addClassPattern">
+	        <arg>"jp.co.isid.mos.bird"</arg>
+	        <arg>".*ActionImpl"</arg>
+	    </initMethod>
+	    <initMethod name="registerAll"/>
+	</component> 
+	<component class="org.seasar.framework.container.autoregister.AspectAutoRegister">
+	    <property name="interceptor">birdInterceptor.logicInterceptorChain</property>
+	    <initMethod name="addClassPattern">
+	        <arg>"jp.co.isid.mos.bird"</arg>
+	        <arg>".*LogicImpl"</arg>
+	    </initMethod>
+	    <initMethod name="registerAll"/>  
+	</component>
+	<!-- DTO -->
+	<component name="pullDownMenuDto" class="jp.co.isid.mos.bird.framework.dto.PullDownMenuDto" autoBinding="none" instance="session"/>
+	<component name="mosChickenStoreStateConfirmDto" class="jp.co.isid.mos.bird.bizsupport.moschickenstorestateconfirm.dto.MosChickenStoreStateConfirmDto" instance="session" />
+
+	<!-- DAO -->
+	<component name="mosChickenMstKanriKikanDao" class="jp.co.isid.mos.bird.bizsupport.common.dao.MstKanriKikanDao">
+		<aspect>dao.interceptor</aspect>
+	</component>
+	<component name="mosChickenStoreStateConfirmCodShokuhouListDao" class="jp.co.isid.mos.bird.bizsupport.moschickenstorestateconfirm.dao.CodShokuhouzaiListDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="mosChickenStoreStateConfirmCodSibuListDao" class="jp.co.isid.mos.bird.bizsupport.moschickenstorestateconfirm.dao.CodSibuListDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="mosChickenStoreUIMCStatusInfoDao" class="jp.co.isid.mos.bird.bizsupport.moschickenstorestateconfirm.dao.UIMCStatusInfoDao">
+		<aspect>dao.interceptor</aspect>
+	</component>
+	<!-- LOGIC -->
+	<component name="mosChickenStoreStateConfirmConditionLogic" class="jp.co.isid.mos.bird.bizsupport.moschickenstorestateconfirm.logic.impl.ConditionLogicImpl"/>
+	<component name="mosChickenStoreStateConfirmChangeTitleLogic" class="jp.co.isid.mos.bird.bizsupport.moschickenstorestateconfirm.logic.impl.ChangeTitleLogicImpl"/>
+	<component name="mosChickenStoreStateConfirmSearchLogic" class="jp.co.isid.mos.bird.bizsupport.moschickenstorestateconfirm.logic.impl.SearchLogicImpl"/>
+
+	<!-- ACTION -->
+	<component name="mosChickenStoreStateConfirmConditionAction" class="jp.co.isid.mos.bird.bizsupport.moschickenstorestateconfirm.action.impl.ConditionActionImpl" instance="request" />
+	<!-- CONVERTER -->
+	<component name="dateConverter" class="jp.co.isid.mos.bird.framework.text.converter.DateConverter" instance="request">
+		<arg>@jp.co.isid.mos.bird.framework.util.formatter.DateFormatter@DATE_TYPE_YMD</arg>
+		<arg>@jp.co.isid.mos.bird.framework.util.formatter.DateFormatter@PATTERN_SLASH</arg>
+	</component>
+	<component name="numConverter" class="jp.co.isid.mos.bird.framework.text.converter.NumericConverter" instance="request">
+	</component>
+</components>

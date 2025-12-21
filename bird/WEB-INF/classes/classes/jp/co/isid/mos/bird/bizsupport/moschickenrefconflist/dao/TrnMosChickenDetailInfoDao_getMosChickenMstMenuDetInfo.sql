@@ -1,0 +1,31 @@
+SELECT DISTINCT
+       BT71.MENU_CD as MENU_CD
+  ,    rtrim(MENU_NAME_KJ) as MENU_NAME_KJ
+  ,    RESERVE_AMT
+  ,    SEQ_NO
+  ,  MENU_GROUP
+  ,  SUM_GROUP
+FROM BT71CRSD BT71
+INNER JOIN (SELECT MENU_CD
+                ,  CKANRI_NO
+                ,  MENU_GROUP
+                ,  SUM_GROUP
+             FROM  BM41CMNU
+             WHERE CKANRI_NO = /*ckanriNo*/'200601') BM41
+  ON (BT71.MENU_CD = BM41.MENU_CD
+  AND BT71.CKANRI_NO = BM41.CKANRI_NO) 
+INNER JOIN (SELECT MISE_CD 
+              ,    MENU_CD
+              ,    MENU_NAME_KJ
+            FROM   BM38MMNU
+            WHERE  COMPANY_CD =/*companyCd*/'00'
+            AND    MISE_CD  = /*miseCd*/'01057') BM38
+   ON (BT71.MENU_CD = BM38.MENU_CD)
+WHERE BT71.CKANRI_NO = BM41.CKANRI_NO
+AND   BT71.COMPANY_CD = '00'
+AND   BT71.MISE_CD = BM38.MISE_CD
+AND   BT71.SEQ_NO = /*seqNo*/2
+ORDER BY MENU_GROUP
+      ,  SUM_GROUP
+      ,  BT71.MENU_CD
+           

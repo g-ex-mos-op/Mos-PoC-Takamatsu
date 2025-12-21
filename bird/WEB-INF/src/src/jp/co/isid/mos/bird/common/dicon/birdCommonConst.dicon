@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="Shift_JIS"?>
+<!DOCTYPE components PUBLIC "-//SEASAR//DTD S2Container 2.3//EN"
+    "http://www.seasar.org/dtd/components23.dtd">
+<components namespace="birdCommonConst">
+	<component name="userTypeCdHonbu" class="java.lang.String">"01"</component>
+	<component name="userTypeCdOner" class="java.lang.String">"02"</component>
+	<component name="userTypeCdMise" class="java.lang.String">"03"</component>
+</components>

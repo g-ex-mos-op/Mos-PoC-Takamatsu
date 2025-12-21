@@ -1,0 +1,6 @@
+DELETE
+FROM BT42MSYD
+WHERE YOSAN_DT BETWEEN /*fromDate*/'200609' AND /*toDate*/'200703'
+  AND COMPANY_CD = /*companyCd*/'00'
+  AND MISE_CD in /*lstMise*/('00014','00015')
+  AND SAKUJO_KBN = '1'

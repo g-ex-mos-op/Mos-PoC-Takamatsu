@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="Shift_JIS"?>
+<!DOCTYPE components PUBLIC "-//SEASAR//DTD S2Container//EN"
+	"http://www.seasar.org/dtd/components.dtd">
+<components>
+	<!-- ※ 機能選択用ダミー ロール別アクセス権限設定を実装する場合は削除する -->
+	<include path="jp/co/isid/mos/bird/sysadmin/roleacterregist/dicon/roleacterregist.dicon"/>
+	<include path="jp/co/isid/mos/bird/sysadmin/userroleregist/dicon/userRoleRegist.dicon"/>
+	<include path="jp/co/isid/mos/bird/sysadmin/userregist/dicon/userRegist.dicon"/>
+	<include path="jp/co/isid/mos/bird/sysadmin/useractregist/dicon/useractregist.dicon"/>
+	<include path="jp/co/isid/mos/bird/sysadmin/help/dicon/help.dicon"/>
+</components>

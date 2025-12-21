@@ -1,0 +1,85 @@
+<html xmlns:m="http://www.seasar.org/maya" m:action="#{sumMenuRegistCondAction.initialize}" m:extends="/jsf/layout/layoutNoNavi.html">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Windows-31j"/>
+<meta http-equiv="Content-Style-Type" content="text/css"/>
+<meta http-equiv="Content-Script-Type" content="text/javascript"/>
+<title>メニュー集約マスタ設定</title>
+</head>
+<body>
+<span m:inject="f:param" m:name="layoutTitle" m:value="メニュー集約マスタ設定"/>
+<span m:inject="s:insert" m:name="bodyTitleName">■メニュー集約マスタ設定</span>
+<span m:inject="f:param" m:name="viewIdValue" m:value="BCF009V01"/>
+<span m:inject="f:param" m:name="onLoadName" m:value="onLoadFunction()"/>
+<div m:inject="s:insert" m:name="body">
+<style type="text/css">
+<!--
+.scroll_area {
+	width:	  520px;
+	height:   425px;
+	overflow: auto;
+}
+@media print {
+}
+-->
+</style>
+
+<script type="text/javascript">
+<!--
+function onLoadFunction() {
+}
+-->
+</script>
+
+<form m:id="condForm" target="_self">
+	<input type="hidden" m:id="viewId" m:value="#{viewIdValue}" />
+	<input type="hidden" m:id="initMenuId" m:value="#{menuAction.initMenuId}"/>
+	<input type="hidden" m:id="initSubMenuId" m:value="#{menuAction.initSubMenuId}"/>
+	<input type="hidden" m:id="sessionKey" m:value="#{sumMenuRegistReqDto.sessionKey}"/>
+	
+	<input type="button" 
+	       m:id="executeBtn" value="集約先メニュー新規登録" 
+	       m:action="#{sumMenuRegistCondAction.newEdit}"
+	       ondblclick="return false;"/>
+	&nbsp;<input type="button" 
+	       m:id="downloadCsvBtn" value="集約設定一覧のダウンロード" 
+	       m:action="#{sumMenuRegistCondAction.downloadCsv}"
+	       m:rendered="#{sumMenuRegistDto.listSumMenu != null}"
+	       ondblclick="return false;"/>
+	
+	<div style="clear:both;line-height:25%;"><br/></div>
+	<span m:rendered="#{sumMenuRegistDto.listSumMenu == null}">
+		<b>※集約未設定です。</b>
+	</span>
+	<span m:rendered="#{sumMenuRegistDto.listSumMenu != null}">
+		<b>※現在親メニューとして登録されているメニューは以下のとおりです。</b>
+		<table class="body_table2" style="width:500px;border-bottom:0px;">
+		 <tr class="header_row">
+		  <th>集約先メニュー</th>
+		 </tr>
+		</table>
+		<div class="scroll_area">
+			<table class="body_table2" style="width:500px;border-top:0px;">
+			 <colgroup>
+			  <col style="width:65px;"/>
+			  <col style="width:*;"/>
+			  <col style="width:50px;"/>
+			 </colgroup>
+			<span m:inject="s:forEach" m:items="#{sumMenuRegistDto.listSumMenu}" m:var="e" m:varindex="i">
+			 <tr>
+			   <td><span m:inject="h:outputText" m:value="#{e.sumMenuCd}"/></td>
+			   <td style="border-right:0px;"><span m:converter="#{characterEncodingConverter}" m:inject="h:outputText" m:value="#{e.sumMenuName}"/></td>
+			   <td style="text-align:right;border-left:0px;">
+			     <a m:action="#{sumMenuRegistCondAction.edit}" onDblClick="return false">[編集]
+			       <span m:inject="f:param" m:name="sumMenuCd" m:value="#{e.sumMenuCd}"/>
+			     </a>
+			   </td>
+			 </tr>
+			</span>
+			</table>
+		</div>
+	</span>
+	<input type="text" m:id="dummyEnter" style="display:none"/>
+</form>
+</div>
+</body>
+</html>

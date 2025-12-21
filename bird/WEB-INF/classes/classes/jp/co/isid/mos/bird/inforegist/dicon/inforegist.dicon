@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="Shift_JIS"?>
+<!DOCTYPE components PUBLIC "-//SEASAR//DTD S2Container//EN"
+	"http://www.seasar.org/dtd/components.dtd">
+<components>
+	<include path="jp/co/isid/mos/bird/inforegist/documentregist/dicon/documentRegist.dicon"/>
+	<include path="jp/co/isid/mos/bird/inforegist/contactregist/dicon/contactRegist.dicon"/>
+	<include path="jp/co/isid/mos/bird/inforegist/informregist/dicon/informRegist.dicon"/>
+	<include path="jp/co/isid/mos/bird/inforegist/notificationregist/dicon/notificationRegist.dicon"/>
+</components>

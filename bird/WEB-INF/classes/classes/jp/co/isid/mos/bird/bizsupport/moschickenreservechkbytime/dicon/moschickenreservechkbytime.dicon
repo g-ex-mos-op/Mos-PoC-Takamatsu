@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="Shift_JIS"?>
+<!DOCTYPE components PUBLIC "-//SEASAR//DTD S2Container 2.3//EN"
+    "http://www.seasar.org/dtd/components23.dtd">
+<components namespace="moschickenreservechkbytime">
+    <include path="dao.dicon"/>
+    <include path="jp/co/isid/mos/bird/common/dicon/birdCommon.dicon"/>
+	<include path="jp/co/isid/mos/bird/framework/dicon/birdInterceptor.dicon"/>
+
+	<component class="org.seasar.framework.container.autoregister.AspectAutoRegister">
+	    <property name="interceptor">birdInterceptor.actionInterceptorChain</property>
+	    <initMethod name="addClassPattern">
+	        <arg>"jp.co.isid.mos.bird"</arg>
+	        <arg>".*ActionImpl"</arg>
+	    </initMethod>
+	    <initMethod name="registerAll"/>
+	</component> 
+	<component 
+	  class="org.seasar.framework.container.autoregister.AspectAutoRegister">
+	    <property name="interceptor">birdInterceptor.logicInterceptorChain</property>
+	    <initMethod name="addClassPattern">
+	        <arg>"jp.co.isid.mos.bird"</arg>
+	        <arg>".*LogicImpl"</arg>
+	    </initMethod>
+	    <initMethod name="registerAll"/>  
+	</component>
+	
+	<!-- OTHER -->
+	<component class="jp.co.isid.mos.bird.framework.control.BirdUserInfo" instance="session"/>
+	<component class="jp.co.isid.mos.bird.framework.control.BirdDateInfo" instance="session"/>
+
+	<!-- DAO -->
+	<component name="uiTitleInfoDao" class="jp.co.isid.mos.bird.bizsupport.moschickenreservechkbytime.dao.UITitleInfoDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="uiReserveInfoDao" class="jp.co.isid.mos.bird.bizsupport.moschickenreservechkbytime.dao.UIReserveInfoDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="uiReserveTimeInfoDao" class="jp.co.isid.mos.bird.bizsupport.moschickenreservechkbytime.dao.UIReserveTimeInfoDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="uiReserveSumInfoDao" class="jp.co.isid.mos.bird.bizsupport.moschickenreservechkbytime.dao.UIReserveSumInfoDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="uiMiseInfoDao" class="jp.co.isid.mos.bird.bizsupport.moschickenreservechkbytime.dao.UIMiseInfoDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	
+	<!-- LOGIC -->
+	<component name="getMosChickenByTimeTitleInfoLogic" class="jp.co.isid.mos.bird.bizsupport.moschickenreservechkbytime.logic.impl.GetTitleInfoLogicImpl"/>
+	<component name="getMosChickenByTimeMiseInfoLogic" class="jp.co.isid.mos.bird.bizsupport.moschickenreservechkbytime.logic.impl.GetMiseInfoLogicImpl"/>
+	<component name="getReserveCsvInfoLogic" class="jp.co.isid.mos.bird.bizsupport.moschickenreservechkbytime.logic.impl.GetReserveCsvInfoLogicImpl"/>
+	<component name="getReservePDFInfoLogic" class="jp.co.isid.mos.bird.bizsupport.moschickenreservechkbytime.logic.impl.GetReservePdfInfoLogicImpl"/>
+
+	<!-- DTO -->
+	<component name="pullDownMenuDto" class="jp.co.isid.mos.bird.framework.dto.PullDownMenuDto" autoBinding="none" instance="session"/>
+	<component name="ownerSearchDto" class="jp.co.isid.mos.bird.commonform.ownersearch.dto.OwnerSearchDto" autoBinding="none" instance="session"/>
+	<component name="mosChickenReserveChkBytimeDto" class="jp.co.isid.mos.bird.bizsupport.moschickenreservechkbytime.dto.MosChickenReserveChkBytimeDto" autoBinding="none" instance="session"/>	
+
+	<!-- ACTION -->
+	<component name="mosChickenReserveChkBytimeAction" class="jp.co.isid.mos.bird.bizsupport.moschickenreservechkbytime.action.impl.MosChickenReserveChkBytimeActionImpl" instance="request">
+		<property name="mosChickenReserveChkBytimeDto">mosChickenReserveChkBytimeDto</property>
+	</component>
+	<component name="mosReserveChkCsvOutputAction" class="jp.co.isid.mos.bird.framework.action.impl.CsvOutputActionImpl" instance="request">
+		<property name="csvOutputDto">mosChickenReserveChkBytimeDto</property>
+		<property name="csvOutputLogic">getReserveCsvInfoLogic</property>
+	</component>
+	<component name="mosReserveChkPdfOutputAction" class="jp.co.isid.mos.bird.framework.action.impl.PdfOutputActionImpl" instance="request">
+		<property name="pdfOutputDto">mosChickenReserveChkBytimeDto</property>
+		<property name="pdfOutputLogic">getReservePDFInfoLogic</property>
+	</component>
+</components>

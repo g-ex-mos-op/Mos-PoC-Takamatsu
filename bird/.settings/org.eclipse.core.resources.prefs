@@ -1,0 +1,13 @@
+eclipse.preferences.version=1
+encoding//WEB-INF/src/convention.dicon=MS932
+encoding//WEB-INF/src/j2ee.dicon=MS932
+encoding//WEB-INF/src/jp/co/isid/mos/bird/bizadmin/accountref/dicon/accountref.dicon=UTF-8
+encoding//WEB-INF/src/jp/co/isid/mos/bird/bizreport/dicon/bizreport.dicon=UTF-8
+encoding//WEB-INF/src/jp/co/isid/mos/bird/bizsupport/budgethalfreplace/dicon/budgetHalfReplace.dicon=UTF-8
+encoding//WEB-INF/src/jp/co/isid/mos/bird/bizsupport/moschickenmastregist/dicon/moschickenmastregist.dicon=UTF-8
+encoding//WEB-INF/src/jta.dicon=MS932
+encoding//WEB-INF/src/teedaCustomize.dicon=MS932
+encoding//WEB-INF/src/teedaErrorPage.dicon=MS932
+encoding/<project>=MS932
+encoding/build-jarlist.properties=UTF-8
+encoding/build.properties=UTF-8

@@ -1,0 +1,48 @@
+<html xmlns:m="http://www.seasar.org/maya" m:action="#{minisiteLoginAction.initialize}">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=Windows-31j" />
+		<meta http-equiv="Pragma" content="no-cache">
+		<meta http-equiv="Expires" content="-1">
+		<meta http-equiv="Content-Style-Type" content="text/css">
+		<link rel="stylesheet" type="text/css" href="#{request.contextPath}/css/trident/body.css?#{minisiteLoginAction.requestTime}"/>
+		<link rel="stylesheet" type="text/css" href="#{request.contextPath}/css/trident/main.css?#{minisiteLoginAction.requestTime}"/>
+		<title>ログイン</title>
+		<script type="text/javascript">
+			<!--
+		-->
+		</script>
+	</head>
+
+	<body m:onLoad="#{minisiteLoginAction.error==false?'callScreen();':''}">
+		<span m:inject="f:param" m:name="viewIdValue" m:value="MNI000V01"/>
+		<span m:inject="f:param" m:name="targetKey" m:value="#{minisiteLoginAction.key}"/>
+		<div align="center" style="margin-top:150px;margin-bottom:50px;">
+		<img style="margin:10px" m:inject="h:graphicImage" m:url="/images/bird.gif"/></div>
+		<!--エラーメッセージ表示部-->
+		<div m:rendered="#{minisiteLoginAction.error}"
+		     align="center" valign="middle" style="line-height:18px;list-style-position: inside;">
+		  <font style="font-weight:bold;color:red;"><span m:inject="h:messages" m:globalOnly="false" m:showDetail="false"/></font>
+		  <font style="font-weight:bold;color:red;"><span m:converter="#{characterEncodingConverter}" m:value="#{loginDto.msgSessionError}"/></font>
+		</div>
+		<span m:rendered="#{minisiteLoginAction.error==false}">
+			<form id="loginForm">
+				<input type="hidden" name="key"
+				       m:value="#{targetKey}" m:passthrough="true"/>
+				<a id="login" m:action="#{minisiteLoginAction.login}"/>
+			</form>
+			<div align="center">ログイン中です・・・<br/>しばらくお待ちください。</div>
+			<script type="text/javascript">
+			<!--
+			/**
+			  * ログイン処理アクションと
+			  * リクエスト画面への遷移処理
+			  */
+			function callScreen() {
+				document.loginForm.elements['loginForm:__link_clicked__'].value='loginForm:login';
+				document.loginForm.submit();
+			}
+			//-->
+			</script>
+		</span>
+	</body>
+</html>

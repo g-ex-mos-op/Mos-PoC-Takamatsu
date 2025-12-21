@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="Shift_JIS"?>
+<!DOCTYPE components PUBLIC "-//SEASAR//DTD S2Container//EN"
+	"http://www.seasar.org/dtd/components.dtd">
+<components namespace="bizadmin">
+	<include path="jp/co/isid/mos/bird/bizadmin/accountedit/dicon/accountedit.dicon" />
+	<include path="jp/co/isid/mos/bird/bizadmin/accountref/dicon/accountref.dicon" />
+	<include path="jp/co/isid/mos/bird/bizadmin/common/dicon/accounteditcommon.dicon"/> 
+	<include path="jp/co/isid/mos/bird/bizadmin/blockmaintenance/dicon/blockmaintenance.dicon"/> 
+	<include path="jp/co/isid/mos/bird/bizadmin/svtantousibu/dicon/svTantouSibu.dicon"/> 
+	<include path="jp/co/isid/mos/bird/bizadmin/accountlist/dicon/AccountList.dicon"/> 
+</components>

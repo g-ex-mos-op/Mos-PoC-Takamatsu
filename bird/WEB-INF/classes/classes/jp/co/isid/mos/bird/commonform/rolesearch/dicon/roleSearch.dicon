@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="Shift_JIS"?>
+<!DOCTYPE components PUBLIC "-//SEASAR//DTD S2Container 2.3//EN"
+    "http://www.seasar.org/dtd/components23.dtd">
+<components namespace="roleSearch">
+    <include path="dao.dicon"/>
+	<include path="jp/co/isid/mos/bird/framework/dicon/birdInterceptor.dicon"/>
+
+	<component
+	  class="org.seasar.framework.container.autoregister.AspectAutoRegister">
+	    <property name="interceptor">birdInterceptor.actionInterceptorChain</property>
+	    <initMethod name="addClassPattern">
+	        <arg>"jp.co.isid.mos.bird"</arg>
+	        <arg>".*ActionImpl"</arg>
+	    </initMethod>
+	    <initMethod name="registerAll"/>
+	</component> 
+	<component
+	  class="org.seasar.framework.container.autoregister.AspectAutoRegister">
+	    <property name="interceptor">birdInterceptor.logicInterceptorChain</property>
+	    <initMethod name="addClassPattern">
+	        <arg>"jp.co.isid.mos.bird"</arg>
+	        <arg>".*LogicImpl"</arg>
+	    </initMethod>
+	    <initMethod name="registerAll"/>
+	</component>
+
+	<component name="ctlRoleBunruiDao" class="jp.co.isid.mos.bird.commonform.rolesearch.dao.CtlRoleBunruiDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="uiRoleDao" class="jp.co.isid.mos.bird.commonform.rolesearch.dao.UIRoleDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="uiUserRoleDao" class="jp.co.isid.mos.bird.commonform.rolesearch.dao.UIUserRoleDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+
+	<component name="searchRoleBunruiLogic" class="jp.co.isid.mos.bird.commonform.rolesearch.logic.impl.SearchRoleBunruiLogicImpl"/>
+	<component name="searchRoleLogic" class="jp.co.isid.mos.bird.commonform.rolesearch.logic.impl.SearchRoleLogicImpl"/>
+	<component name="searchRoleCsvUserListLogic" class="jp.co.isid.mos.bird.commonform.rolesearch.logic.impl.CsvUserListLogicImpl"/>
+
+	<component class="java.util.HashSet" instance="session"/>
+	<component class="java.util.ArrayList" instance="session"/>
+
+	<component name="roleSearchDto" class="jp.co.isid.mos.bird.commonform.rolesearch.dto.RoleSearchDto" instance="session"/>
+	<component name="roleSearchRoleListDto" class="jp.co.isid.mos.bird.commonform.rolesearch.dto.RoleSearchRoleListDto" instance="session"/>
+	<component name="roleSearchUserListDto" class="jp.co.isid.mos.bird.commonform.rolesearch.dto.RoleSearchUserListDto" instance="session"/>
+
+	<component name="roleSearchAction" class="jp.co.isid.mos.bird.commonform.rolesearch.action.impl.RoleSearchActionImpl" instance="request"/>
+	<component name="roleSearchCsvAction" class="jp.co.isid.mos.bird.commonform.rolesearch.action.impl.CsvActionImpl" instance="request">
+		<property name="csvOutputDto">roleSearchUserListDto</property>
+		<property name="csvOutputLogic">searchRoleCsvUserListLogic</property>
+	</component>
+</components>

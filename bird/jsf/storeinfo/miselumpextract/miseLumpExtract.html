@@ -1,0 +1,116 @@
+<html xmlns:m="http://www.seasar.org/maya" m:action="#{miseLumpExtractAction.initialize}" m:extends="/jsf/layout/layoutNoNavi.html">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Windows-31j" />
+<title>個店情報一括抽出</title>
+</head>
+<body>
+<span m:inject="f:param" m:name="layoutTitle" m:value="個店情報一括抽出"/>
+<span m:inject="f:param" m:name="onLoadName" m:value="init();"/>
+<span m:inject="s:insert" m:name="bodyTitleName">■個店情報一括抽出</span>
+<span m:inject="f:param" m:name="viewIdValue" m:value="BSI003V01"/>
+<span m:inject="s:insert" m:name="body">
+<SCRIPT LANGUAGE="javascript">
+<!--
+function init(){
+}
+
+function loadSibuList(){
+	document.forms['miseLumpExtractRef'].elements['miseLumpExtractRef:__link_clicked__'].value='miseLumpExtractRef:loadSibuList';
+	document.forms['miseLumpExtractRef'].submit();
+	return false;
+}
+//-->
+</SCRIPT>
+
+<form m:id="miseLumpExtractRef" onKeyDown="return setDefaultSubmitButton('miseLumpExtractRef','btnDownload');">
+<input type="hidden" m:id="viewId" m:value="#{viewIdValue}"/>
+<table width="550px" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="body_caption">検索条件</td>
+  </tr>
+</table>
+
+<table class="body_table" width="550">
+    <div m:inject="s:selectOneRadio2" m:value="#{miseLumpExtractDto.closeFlg}">
+    <tr>
+        <th width="100">会社</th>
+        <td>
+			<div class="hideArea">
+            <select style="width:160px;" m:id="companyCd"
+                    m:value="#{miseLumpExtractDto.companyCd}"
+                    m:items="#{miseLumpExtractDto.listCompany}"
+                    m:itemValue="companyCd"
+                    m:itemLabel="companyName"
+                    m:onchange="loadSibuList()">
+                <option value="">モスフードサービス</option>
+                <option value="">四季菜</option>
+            </select>
+            </div>
+            <a id="loadSibuList" m:action="#{miseLumpExtractAction.loadSibuList}"/>
+        </td>
+        <th width="80">支部</th>
+        <td>
+			<div class="hideArea">
+            <select  style="width:170px;" m:name="sibuCd"
+                    m:value="#{miseLumpExtractDto.sibuCd}"
+                    m:items="#{miseLumpExtractDto.listPullSibu}"
+                    m:itemValue="sibuCd"
+                    m:itemLabel="sibuName"
+                    m:nullLabel=" ">
+                <option value="">選択</option>
+                <option value="">MOS</option>
+            </select>
+            </div>
+        </td>
+    </tr>
+	<tr>
+		<th>クローズ店</th>
+		<td colspan=3>
+			<input type="radio" name="close" m:value="outClose" />含まない&nbsp;
+			<input type="radio" name="close" m:value="inClose"  />含む
+		</td>
+	</tr>
+	</div> 
+</table>
+
+<br/>
+※ダウンロードしたい対象データを選択して下さい。
+
+<table class="body_table2">
+    <tr >
+        <th style="text-align:center" width="40">選択</th>
+        <th style="text-align:center" width="500">対象データ</th>      
+    </tr>
+</table>
+
+<span m:converter="#{characterEncodingConverter}" m:inject="s:selectOneRadio2" m:value="#{miseLumpExtractDto.index}" m:required="true">
+<table class="body_table2" style="border-top-width:0px">
+
+	<div m:inject="s:forEach" m:items="#{miseLumpExtractDto.titleList}" m:var="e" m:varindex="i">
+	<tr class="non_top_border">
+		<td align="center" width="40">
+		    <input type="radio" m:value="#{i}"/>
+		</td>
+		<td  width="500"><span m:converter="#{characterEncodingConverter}" m:value="#{e}" /></td>	
+	</tr>
+	</div>
+</table>
+</span>
+
+<br/>
+
+<input type="button" class="operation_button" value="ダウンロード" 
+        m:id="btnDownload" 
+        m:action="#{miseLumpExtractAction.downloadCsv}"/>&nbsp;&nbsp;
+
+<input type="text" m:id="dummyEnter" style="display:none"/>
+</form>
+<script type="text/javascript">
+<!--
+	focusElement("miseLumpExtractRef");
+-->
+</script>
+
+</span>
+</body>
+</html>

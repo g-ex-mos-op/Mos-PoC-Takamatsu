@@ -1,0 +1,260 @@
+select    count(distinct MISE_MST.MISE_CD) AS COUNT
+,         MISE_MST.COMPANY_CD
+/*IF companyCd.equals("00") && shukeiKbn.equals("AREA_DAI_CD") == false*/
+,         MISE_MST.HONBU_CD
+,         MISE_MST.HONBU_NAME
+,         MISE_MST.JIGYOU_CD
+,         MISE_MST.JIGYOU_NAME
+,         MISE_MST.SLAREA_CD
+,         MISE_MST.SLAREA_NAME
+/*END*/
+,         RTRIM(MISE_MST.SIBU_CD) AS SIBU_CD
+,         RTRIM(MISE_MST.SIBU_NAME) AS SIBU_NAME
+,         DATA.MOSG_KBN
+,         BM44.YAGO_DETAIL_NAME AS YAGO_DTL_NAME
+,         SUM(DATA.URIAGE) AS URIAGE
+,         SUM(DATA.URIAGE_ZEN) AS URIAGE_ZEN
+,         SUM(DATA.YOSAN) AS URI_YOSAN
+,         SUM(DATA.KYAKUSU) AS KYAKUSU
+,         SUM(DATA.KYAKUSU_ZEN) AS KYAKUSU_ZEN
+,         SUM(TENPO_COUNT_NET) AS TENPO_COUNT_NET   	
+,         SUM(URIAGE_NET) AS URIAGE_NET
+,         SUM(KYAKUSU_NET) AS KYAKUSU_NET
+,         SUM(URIAGE_ZEN_NET) AS URIAGE_ZEN_NET
+,         SUM(KYAKUSU_ZEN_NET) AS KYAKUSU_ZEN_NET
+FROM (
+	SELECT    BM01.COMPANY_CD
+	,         BM10.HONBU_CD
+	,         BM10.HONBU_NAME
+	,         BM10.JIGYOU_CD
+	,         BM10.JIGYOU_NAME
+	,         BM10.SLAREA_CD
+	,         BM10.SLAREA_NAME
+	,         BM10.SIBU_CD
+	,         BM10.SIBU_NAME
+	,         (CASE WHEN length(ltrim(rtrim(BM01.BLOCK_CD))) = 0 then '001' else BM01.BLOCK_CD END) AS BLOCK_CD
+	,         (CASE WHEN length(ltrim(rtrim(BM01.BLOCK_CD))) = 0 then '' else BC23.BLOCK_NAME END) AS BLOCK_NAME
+	,         BM01.MISE_CD
+	,         BM01.MISE_NAME_KJ
+	FROM BM01TENM AS BM01
+	LEFT JOIN BC23BLCK AS BC23
+	          ON (BM01.BLOCK_CD = BC23.BLOCK_CD)
+	,    BM10GSIB AS BM10
+	WHERE  BM01.COMPANY_CD = /*companyCd*/'00'
+	AND    BM01.COMPANY_CD = BM10.COMPANY_CD
+/*IF shukeiKbn.equals("AREA_DAI_CD")*/
+    AND    BM01.AREA_DAI= BM10.SIBU_CD
+-- ELSE
+    AND    BM01.SIBU_CD = BM10.SIBU_CD
+/*END*/
+
+/*IF shukeiKbn.equals("AREA_DAI_CD")*/
+    AND    BM10.AREA_DAI_FLG = '1'
+/*END*/
+/*IF limitFlg == true*/
+	AND       BM01.SIBU_CD IN (
+	                SELECT   BM51.SIBU_CD
+	                FROM     BM51SVSB AS BM51
+	                WHERE    BM51.COMPANY_CD = /*companyCd*/'00'
+	                AND      BM51.SV_CD      = /*userId*/'00000921'
+	                GROUP BY BM51.SIBU_CD
+	                          )
+/*END*/
+
+/*IF !taishoTenpo.equals("ALL")*/
+       /*IF taishoTenpo.equals("FC")*/
+	AND       BM01.MISE_KBN like '_1_'
+       -- ELSE
+	AND       BM01.MISE_KBN like '_2_'
+       /*END*/
+/*END*/
+) AS MISE_MST
+,    (
+	SELECT (CASE WHEN BT60.COMPANY_CD IS NOT NULL THEN BT60.COMPANY_CD 
+	             ELSE YOSAN_BT45.COMPANY_CD END) AS COMPANY_CD
+	,      (CASE WHEN BT60.MISE_CD IS NOT NULL THEN BT60.MISE_CD 
+	             ELSE YOSAN_BT45.MISE_CD END) AS MISE_CD
+	,      (CASE WHEN BT60.MISE_CD IS NOT NULL THEN BT60.TENPO_SHUBETU ELSE YOSAN_BT45.TENPO_SHUBETU END) AS TENPO_SHUBETU
+	,      (CASE WHEN BT60.MISE_CD IS NOT NULL THEN BT60.MOSG_KBN ELSE YOSAN_BT45.MOSG_KBN END) AS MOSG_KBN
+	,      (CASE WHEN BT60.MISE_CD IS NOT NULL THEN BT60.URIAGE ELSE 0 END) AS URIAGE
+	,      (CASE WHEN BT60.MISE_CD IS NOT NULL THEN BT60.YOSAN ELSE 0 END) AS YOSAN
+	,      (CASE WHEN BT60.MISE_CD IS NOT NULL THEN BT60.URIAGE_ZEN ELSE 0 END) AS URIAGE_ZEN
+	,      (CASE WHEN BT60.MISE_CD IS NOT NULL THEN BT60.KYAKUSU ELSE 0 END) AS KYAKUSU
+	,      (CASE WHEN BT60.MISE_CD IS NOT NULL THEN BT60.KYAKUSU_ZEN ELSE 0 END) AS KYAKUSU_ZEN
+,          (CASE WHEN BT60.MISE_CD IS NOT NULL THEN OPEN_KBN_ZEN_NET ELSE 0 END) AS TENPO_COUNT_NET   	
+,          (CASE WHEN BT60.MISE_CD IS NOT NULL THEN URIAGE_NET ELSE 0 END) AS URIAGE_NET
+,          (CASE WHEN BT60.MISE_CD IS NOT NULL THEN KYAKUSU_NET ELSE 0 END) AS KYAKUSU_NET
+,          (CASE WHEN BT60.MISE_CD IS NOT NULL THEN URIAGE_ZEN_NET ELSE 0 END) AS URIAGE_ZEN_NET
+,          (CASE WHEN BT60.MISE_CD IS NOT NULL THEN KYAKUSU_ZEN_NET ELSE 0 END) AS KYAKUSU_ZEN_NET
+	FROM   (
+		SELECT BT45.COMPANY_CD
+		,      BT45.MISE_CD
+		,      BN01.KBN1 AS TENPO_SHUBETU
+		,      BN01.KBN16 AS MOSG_KBN
+		,      SUM(BT45.YOSAN) AS YOSAN
+		FROM  BT45DSJY AS BT45
+        ,     BN01DTEN AS BN01
+		WHERE BT45.COMPANY_CD = /*companyCd*/'00'
+        AND   BT45.COMPANY_CD   = BN01.COMPANY_CD
+		AND   BT45.YOSAN <> 0
+		AND   BT45.MISE_CD = BN01.MISE_CD
+	/*IF !taishoTenpo.equals("ALL")*/
+   	    /*IF taishoTenpo.equals("FC")*/
+		AND       BT45.FC_RC = '1'
+       -- ELSE
+		AND       BT45.FC_RC = '2'
+       /*END*/
+	/*END*/
+	/*IF taishoKikan.equals("DAY1")*/ 
+		AND   BT45.YOSAN_DT = /*kikanFrom*/'20060405'
+	/*END*/
+
+	/*IF taishoKikan.equals("DAYS") || taishoKikan.equals("APPMONTH") */ 
+		AND   BT45.YOSAN_DT between /*kikanFrom*/'20060401' AND /*kikanTo*/'20060430'
+	/*END*/
+        AND     BT45.YOSAN_DT   = BN01.EIGYO_DT
+	/*IF limitFlg == true*/
+		AND   BT45.SIBU_CD in (
+		         SELECT   BM51.SIBU_CD
+		         FROM     BM51SVSB BM51
+		         WHERE  BM51.COMPANY_CD = /*companyCd*/'00'
+		         AND    BM51.SV_CD      = /*userId*/'9999000a'
+		         GROUP BY BM51.SIBU_CD
+		    )
+	/*END*/
+	                                       
+
+	/*IF !tenpoShubetu.equals("ALL")*/
+	   /*IF tenpoShubetu.equals("2")*/
+		AND   (BT45.TENPO_SHU = '1' or BT45.TENPO_SHU = '2')
+	   -- ELSE
+		AND   BT45.TENPO_SHU = /*tenpoShubetu*/'1'
+	   /*END*/
+	/*END*/
+        AND   BN01.KBN1 = BT45.TENPO_SHU
+
+		GROUP BY BT45.COMPANY_CD
+		,        BT45.MISE_CD
+        ,        BN01.KBN1 
+		,        BN01.KBN16
+	/*END*/
+	) YOSAN_BT45
+	full outer join (
+		select  BT60.COMPANY_CD
+		,       BT60.MISE_CD
+	    ,       BN01.KBN1 AS TENPO_SHUBETU
+	    ,       BN01.KBN16 AS MOSG_KBN
+		,       MAX(BT60.TENKO_KBN) AS TENKO_KBN
+		,       SUM(BT60.URIAGE) AS URIAGE
+	/*IF userTypeCd.equals("01") */
+		,       SUM(BT60.URI_YOSAN) AS YOSAN
+	--ELSE
+		,       SUM(BT60.ONER_YOSAN) AS YOSAN
+	/*END*/
+		,       SUM(BT60.KYAKUSU) AS KYAKUSU
+		,       MAX(BT60.OPEN_KBN) AS OPEN_KBN
+		,       SUM(BT60.EIGYO_DAYS) AS EIGYO_DAYS
+	/*IF zennenDataShubetu.equals("DOGETU")*/
+		,       MAX(BT60.TENKO_KBN_ZEN_DOGETU)  AS TENKO_KBN_ZEN
+		,       SUM(BT60.URIAGE_ZEN_DOGETU)     AS URIAGE_ZEN
+		,       SUM(BT60.KYAKUSU_ZEN_DOGETU)    AS KYAKUSU_ZEN
+		,       MAX(BT60.OPEN_KBN_ZEN_DOGETU)   AS OPEN_KBN_ZEN
+		,       SUM(BT60.EIGYO_DAYS_ZEN_DOGETU) AS EIGYO_DAYS_ZEN
+	/*END*/
+	/*IF zennenDataShubetu.equals("DOYO")*/
+		,       MAX(BT60.TENKO_KBN_ZEN_DOYO)  AS TENKO_KBN_ZEN
+		,       SUM(BT60.URIAGE_ZEN_DOYO)     AS URIAGE_ZEN
+		,       SUM(BT60.KYAKUSU_ZEN_DOYO)    AS KYAKUSU_ZEN
+		,       MAX(BT60.OPEN_KBN_ZEN_DOYO)   AS OPEN_KBN_ZEN
+		,       SUM(BT60.EIGYO_DAYS_ZEN_DOYO) AS EIGYO_DAYS_ZEN
+	/*END*/
+	/*IF zennenDataShubetu.equals("HOSEI") */
+		,       MAX(BT60.TENKO_KBN_ZEN_DOGETU)  AS TENKO_KBN_ZEN
+		,       SUM(BT60.URIAGE_ZEN_DOGETU)     AS URIAGE_ZEN
+		,       SUM(BT60.KYAKUSU_ZEN_DOGETU)    AS KYAKUSU_ZEN
+		,       MAX(BT60.OPEN_KBN_ZEN_DOGETU)   AS OPEN_KBN_ZEN
+		,       SUM(BT60.EIGYO_DAYS_ZEN_DOGETU) AS EIGYO_DAYS_ZEN	
+	/*END*/
+		,       SUM(CASE WHEN (BT60.OPEN_KBN_ZEN_DOGETU = 1 AND BT60.URIAGE_ZEN_DOGETU > 0)
+		                 THEN BT60.URIAGE
+		                 ELSE 0 END) AS URIAGE_NET
+		,       SUM(CASE WHEN (BT60.OPEN_KBN_ZEN_DOGETU = 1 AND BT60.URIAGE_ZEN_DOGETU > 0)
+		                 THEN BT60.KYAKUSU
+		                 ELSE 0 END) AS KYAKUSU_NET
+		,       SUM(CASE WHEN (BT60.OPEN_KBN_ZEN_DOGETU = 1 AND BT60.URIAGE > 0)
+		                 THEN BT60.URIAGE_ZEN_DOGETU
+		                 ELSE 0 END)     AS URIAGE_ZEN_NET
+		,       SUM(CASE WHEN (BT60.OPEN_KBN_ZEN_DOGETU = 1 AND BT60.URIAGE > 0)
+		                 THEN BT60.KYAKUSU_ZEN_DOGETU
+		                 ELSE 0 END)    AS KYAKUSU_ZEN_NET
+		,       MAX(CASE WHEN (BT60.OPEN_KBN_ZEN_DOGETU = 1 AND BT60.URIAGE > 0)
+		                 THEN BT60.OPEN_KBN_ZEN_DOGETU
+		                 ELSE 0 END)   AS OPEN_KBN_ZEN_NET
+		,       SUM(CASE WHEN (BT60.OPEN_KBN_ZEN_DOGETU = 1 AND BT60.URIAGE > 0)
+		                 THEN BT60.EIGYO_DAYS_ZEN_DOGETU
+		                 ELSE 0 END) AS EIGYO_DAYS_ZEN_NET
+		FROM    BT60ZNIP AS BT60
+		,       BN01DTEN AS BN01
+		WHERE   BT60.COMPANY_CD = /*companyCd*/'00'
+		AND     BT60.COMPANY_CD = BN01.COMPANY_CD
+		AND     BT60.MISE_CD    = BN01.MISE_CD
+		AND     BT60.OLDM_FLG   = '0'
+	/*IF taishoKikan.equals("DAY1")*/ 
+		AND     BT60.EIGYO_DT   = /*kikanFrom*/'20060704'
+	/*END*/
+	/*IF taishoKikan.equals("DAYS") || taishoKikan.equals("APPMONTH") */ 
+		AND     BT60.EIGYO_DT between /*kikanFrom*/'20060401' AND /*kikanTo*/'20060430'
+	/*END*/
+		AND     BT60.EIGYO_DT   = BN01.EIGYO_DT
+
+	/*IF tenpoShubetu.equals("ALL")*/
+		AND     (BT60.OPEN_KBN = 1 or BT60.OPEN_KBN_ZEN_DOGETU = 1) 
+	-- ELSE
+		AND     BT60.OPEN_KBN = 1
+	    /*IF tenpoShubetu.equals("2")*/
+		AND     (BN01.KBN1 = '1' or BN01.KBN1 = '2')
+	    -- ELSE
+		AND     BN01.KBN1 = /*tenpoShubetu*/'1'
+	    /*END*/
+	/*END*/
+		GROUP BY BT60.COMPANY_CD
+		,        BT60.MISE_CD
+		,        BN01.KBN1
+    	,        BN01.KBN16 
+	) AS BT60
+	ON (    BT60.COMPANY_CD     = YOSAN_BT45.COMPANY_CD
+			AND BT60.MISE_CD        = YOSAN_BT45.MISE_CD
+			AND BT60.TENPO_SHUBETU  = YOSAN_BT45.TENPO_SHUBETU
+			AND BT60.MOSG_KBN       = YOSAN_BT45.MOSG_KBN
+	   )
+) DATA
+, BM44YDMS BM44
+
+WHERE DATA.COMPANY_CD     = MISE_MST.COMPANY_CD
+AND   DATA.MISE_CD        = MISE_MST.MISE_CD
+AND   BM44.YAGO_DETAIL_CD = DATA.MOSG_KBN 
+GROUP BY MISE_MST.COMPANY_CD
+/*IF companyCd.equals("00") && shukeiKbn.equals("AREA_DAI_CD") == false*/
+,         MISE_MST.HONBU_CD
+,         MISE_MST.HONBU_NAME
+,         MISE_MST.JIGYOU_CD
+,         MISE_MST.JIGYOU_NAME
+,         MISE_MST.SLAREA_CD
+,         MISE_MST.SLAREA_NAME
+/*END*/
+,         MISE_MST.SIBU_CD
+,         MISE_MST.SIBU_NAME
+,         DATA.MOSG_KBN
+,         BM44.YAGO_DETAIL_NAME
+order by  MISE_MST.COMPANY_CD
+/*IF companyCd.equals("00") && shukeiKbn.equals("AREA_DAI_CD") == false*/
+,         MISE_MST.HONBU_CD
+,         MISE_MST.HONBU_NAME
+,         MISE_MST.JIGYOU_CD
+,         MISE_MST.JIGYOU_NAME
+,         MISE_MST.SLAREA_CD
+,         MISE_MST.SLAREA_NAME
+/*END*/
+,         MISE_MST.SIBU_CD
+,         MISE_MST.SIBU_NAME
+,         DATA.MOSG_KBN

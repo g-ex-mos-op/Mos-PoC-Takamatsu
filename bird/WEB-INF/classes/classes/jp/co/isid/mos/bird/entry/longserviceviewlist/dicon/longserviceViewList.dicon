@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE components PUBLIC "-//SEASAR//DTD S2Container 2.3//EN"
+	"http://www.seasar.org/dtd/components23.dtd">
+<components namespace="longserviceViewList">
+    <include path="dao.dicon"/>
+    <include path="jp/co/isid/mos/bird/common/dicon/birdCommon.dicon"/>
+	<include path="jp/co/isid/mos/bird/framework/dicon/birdInterceptor.dicon"/>
+	
+	<!-- インターセプターを自動登録 -->
+	<component class="org.seasar.framework.container.autoregister.AspectAutoRegister">
+	    <property name="interceptor">birdInterceptor.actionInterceptorChain</property>
+		    <initMethod name="addClassPattern">
+		        <arg>"jp.co.isid.mos.bird"</arg>
+		        <arg>".*ActionImpl"</arg>
+		    </initMethod>
+	    <initMethod name="registerAll"/>
+	</component> 
+	<component class="org.seasar.framework.container.autoregister.AspectAutoRegister">
+	    <property name="interceptor">birdInterceptor.logicInterceptorChain</property>
+		    <initMethod name="addClassPattern">
+		        <arg>"jp.co.isid.mos.bird"</arg>
+		        <arg>".*LogicImpl"</arg>
+		    </initMethod>
+	    <initMethod name="registerAll"/>  
+	</component>
+	
+	<!-- DAO -->
+	<component name="uILongServiceViewListTableDao" class="jp.co.isid.mos.bird.entry.longserviceviewlist.dao.UILongServiceViewListTableDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="uILSViewListOnerApplyCsvDao" class="jp.co.isid.mos.bird.entry.longserviceviewlist.dao.UILSViewListCsvDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="uILSViewListSibuDao" class="jp.co.isid.mos.bird.entry.longserviceviewlist.dao.UILSViewListSibuDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="uILSViewListEventDao" class="jp.co.isid.mos.bird.entry.longserviceviewlist.dao.UILSViewListEventDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+
+	<!-- LOGIC -->
+	<component name="longserviceViewListConditionLogic" class="jp.co.isid.mos.bird.entry.longserviceviewlist.logic.impl.LongserviceViewListConditionLogicImpl"/>
+	<component name="longserviceViewListResultLogic" class="jp.co.isid.mos.bird.entry.longserviceviewlist.logic.impl.LongserviceViewListResultLogicImpl"/>
+	<component name="longserviceViewListCsvLogic" class="jp.co.isid.mos.bird.entry.longserviceviewlist.logic.impl.LongserviceViewListCsvLogicImpl"/>
+	
+	<!-- DTO -->
+	<component name="longserviceViewListSessionDto" class="jp.co.isid.mos.bird.entry.longserviceviewlist.dto.LongserviceViewListSessionDto" instance="session">
+		<property name="maxSize">5</property>
+	</component>
+	<component name="longserviceViewListRequestDto" class="jp.co.isid.mos.bird.entry.longserviceviewlist.dto.LongserviceViewListRequestDto" instance="request"/>
+	<component name="eventListDto" class="jp.co.isid.mos.bird.entry.eventlist.dto.EventListDto" autoBinding="none" instance="session"/>
+	<component name="newSvSearchDto" class="jp.co.isid.mos.bird.commonform.svsearchnew.dto.SvSearchDto" autoBinding="none" instance="session">
+			<property name="rCompanyCdList">null</property>
+	</component>
+	
+
+	<!-- ACTION -->
+	<component name="longserviceViewListConditionAction" class="jp.co.isid.mos.bird.entry.longserviceviewlist.action.impl.LongserviceViewListConditionActionImpl" instance="request"/>
+	<component name="longserviceViewListCsvAction" class="jp.co.isid.mos.bird.entry.longserviceviewlist.action.impl.CsvDownloadActionImpl" instance="request">
+		<property name="csvOutputDto">longserviceViewListRequestDto</property>
+		<property name="csvOutputLogic">longserviceViewListCsvLogic</property>
+	</component>
+	
+	<!-- CONVERTER -->
+	<component name="longserviceViewListConverter1" class="jp.co.isid.mos.bird.framework.text.converter.DateConverter" instance="request">
+		<arg>@jp.co.isid.mos.bird.framework.util.formatter.DateFormatter@DATE_TYPE_YMD</arg>
+		<arg>"yyyy'/'MM'/'dd'（'E'）'"</arg>
+	</component>
+	<component name="longserviceViewListConverter2" class="jp.co.isid.mos.bird.framework.text.converter.DateConverter" instance="request">
+		<arg>@jp.co.isid.mos.bird.framework.util.formatter.DateFormatter@DATE_TYPE_YMD</arg>
+		<arg>"yyyy'/'MM'/'dd"</arg>
+	</component>
+	<component name="longserviceViewListNumericConverter" class="jp.co.isid.mos.bird.framework.text.converter.NumericConverter" instance="request"/>
+</components>

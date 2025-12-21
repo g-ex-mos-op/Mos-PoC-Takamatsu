@@ -1,0 +1,2426 @@
+﻿<?xml version="1.0"?>
+
+<!DOCTYPE faces-config PUBLIC
+  "-//Sun Microsystems, Inc.//DTD JavaServer Faces Config 1.0//EN"
+  "http://java.sun.com/dtd/web-facesconfig_1_0.dtd">
+
+<!-- =========== FULL CONFIGURATION FILE ================================== -->
+
+<faces-config>
+
+    <application>
+    	<message-bundle>BRDMessages</message-bundle>
+    	<locale-config>
+        	<default-locale>en</default-locale>
+        	<supported-locale>ja</supported-locale>
+    	</locale-config>
+	</application>
+
+	<converter>
+		<converter-for-class>java.util.Date</converter-for-class>
+		<converter-class>org.seasar.jsf.convert.S2DateTimeConverter</converter-class>
+	</converter>
+
+
+<!-- ポータル -->
+	<!-- ログイン -->
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BPO000V01</from-outcome>
+			<to-view-id>/jsf/portal/login/login.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BPO000V02</from-outcome>
+			<to-view-id>/jsf/portal/login/matrix.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BPO000V03</from-outcome>
+			<to-view-id>/jsf/portal/login/matrix_regist.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BPO000V04</from-outcome>
+			<to-view-id>/jsf/portal/login/password.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>PPO000V05</from-outcome>
+			<to-view-id>/jsf/portal/login/callsite.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+
+	<!-- トップ画面 -->
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BPO001V01</from-outcome>
+			<to-view-id>/jsf/portal/top/portal.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BPO001V02</from-outcome>
+			<to-view-id>/jsf/portal/top/calenderInfo.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BPO001V04</from-outcome>
+			<to-view-id>/jsf/portal/top/allianceInfo.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+
+	<!-- お知らせ詳細画面 -->
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BPO001V02</from-outcome>
+			<to-view-id>/jsf/portal/top/whatsNew.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+
+	<!-- ヘルプライン画面 -->
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BPO001V03</from-outcome>
+			<to-view-id>/jsf/portal/top/helpline.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+
+	<!-- 出張ステーションバナーのリンク先変更 -->
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BPO001V05</from-outcome>
+			<to-view-id>/jsf/portal/top/shuccho_station.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+
+	<!-- 外部リンク起動リダイレクト画面 -->
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>XXX000V01</from-outcome>
+			<to-view-id>/jsf/portal/top/outLinkRedirect.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+
+		<!-- 外部リンク起動リダイレクト画面 -->
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>AAA000V01</from-outcome>
+			<to-view-id>/jsf/portal/top/outLinkRedirect.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+
+    <!-- ログアウト -->
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>LOGOUT</from-outcome>
+			<to-view-id>/jsf/portal/login/login.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+
+<!-- 情報共有 -->
+	<!-- 連絡照会 -->
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BCM001V01</from-outcome>
+			<to-view-id>/jsf/communication/contactreference/contactReference.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+
+	<!-- 通達照会 -->
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BCM002V01</from-outcome>
+			<to-view-id>/jsf/communication/notificationreference/viewTutatu.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<!-- メニュー -->
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BPO004V01</from-outcome>
+			<to-view-id>/jsf/pmossles/sentaku/viewSentaku.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<!-- 文書公開 -->
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BCM003V01</from-outcome>
+			<to-view-id>/jsf/communication/documentdownload/viewBunsho.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<!-- 文書・フォーム -->
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BCM004V01</from-outcome>
+			<to-view-id>/jsf/communication/docform/viewDocForm.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+
+<!-- 情報登録 -->
+	<!-- 連絡登録 -->
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BIF001V01</from-outcome>
+			<to-view-id>/jsf/inforegist/contactregist/contactRegistSearch.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BIF001V02</from-outcome>
+			<to-view-id>/jsf/inforegist/contactregist/contactRegistEdit.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BIF001V03</from-outcome>
+			<to-view-id>/jsf/inforegist/contactregist/contactRegistConfirm.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<!-- 文書登録 -->
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BIF003V01</from-outcome>
+			<to-view-id>/jsf/inforegist/documentregist/bunshoForm.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BIF003V02</from-outcome>
+			<to-view-id>/jsf/inforegist/documentregist/bunshoConfig.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BIF003V03</from-outcome>
+			<to-view-id>/jsf/inforegist/documentregist/bunshoConfirm.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BIF003V04</from-outcome>
+			<to-view-id>/jsf/inforegist/documentregist/bunshoRank.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<!-- 通達登録 -->
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BIF002V01</from-outcome>
+			<to-view-id>/jsf/inforegist/notificationregist/tutatuForm.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BIF002V02</from-outcome>
+			<to-view-id>/jsf/inforegist/notificationregist/tutatuEdit.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BIF002V03</from-outcome>
+			<to-view-id>/jsf/inforegist/notificationregist/tutatuConfirm.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+
+	<!-- お知らせ登録 -->
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BIF004V01</from-outcome>
+			<to-view-id>/jsf/inforegist/informregist/informSearchForm.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BIF004V02</from-outcome>
+			<to-view-id>/jsf/inforegist/informregist/informEditForm.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BIF004V03</from-outcome>
+			<to-view-id>/jsf/inforegist/informregist/informConfirmForm.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+
+<!-- 申請管理 -->
+	<!-- ベーシック研修マスタ登録 -->
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BEN001V01</from-outcome>
+			<to-view-id>/jsf/entry/basicregist/basicRegistSelect.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BEN001V02</from-outcome>
+			<to-view-id>/jsf/entry/basicregist/basicRegistEdit.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BEN001V03</from-outcome>
+			<to-view-id>/jsf/entry/basicregist/basicRegistConfirm.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+
+	<!-- 汎用研修マスタ登録 -->
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BEN004V01</from-outcome>
+			<to-view-id>/jsf/entry/hanyoregist/hanyoRegistSelect.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BEN004V02</from-outcome>
+			<to-view-id>/jsf/entry/hanyoregist/hanyoRegistEdit.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BEN004V03</from-outcome>
+			<to-view-id>/jsf/entry/hanyoregist/hanyoRegistConfirm.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+
+	<!-- ベーシック研修申込状況照会 -->
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BEN003V01</from-outcome>
+			<to-view-id>/jsf/entry/basicviewlist/basicViewListSelect.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BEN003V02</from-outcome>
+			<to-view-id>/jsf/entry/basicviewlist/basicViewListConfirm.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+
+	<!-- 汎用研修申込状況照会 -->
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BEN006V01</from-outcome>
+			<to-view-id>/jsf/entry/hanyoviewlist/hanyoViewListSelect.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BEN006V02</from-outcome>
+			<to-view-id>/jsf/entry/hanyoviewlist/hanyoViewListConfirm.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+
+	<!-- 汎用研修参加申込 -->
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BEN005V01</from-outcome>
+			<to-view-id>/jsf/entry/hanyoapplication/hanyoApplicationSelect.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BEN005V02</from-outcome>
+			<to-view-id>/jsf/entry/hanyoapplication/hanyoApplicationEdit.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BEN005V03</from-outcome>
+			<to-view-id>/jsf/entry/hanyoapplication/hanyoApplicationConfirm.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+
+	<!-- マスタライセンスマスタ登録 -->
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BEN007V01</from-outcome>
+			<to-view-id>/jsf/entry/mlregist/mlRegistSelect.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BEN007V02</from-outcome>
+			<to-view-id>/jsf/entry/mlregist/mlRegistEdit.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BEN007V03</from-outcome>
+			<to-view-id>/jsf/entry/mlregist/mlRegistConfirm.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+
+	<!-- 永年勤続マスタ登録 -->
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BEN017V01</from-outcome>
+			<to-view-id>/jsf/entry/longserviceregist/longserviceRegistSelect.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BEN017V02</from-outcome>
+			<to-view-id>/jsf/entry/longserviceregist/longserviceRegistEdit.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BEN017V03</from-outcome>
+			<to-view-id>/jsf/entry/longserviceregist/longserviceRegistConfirm.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+
+	<!-- 永年勤続申請 -->
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BEN018V01</from-outcome>
+			<to-view-id>/jsf/entry/longserviceoffer/longserviceOfferEdit.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BEN018V02</from-outcome>
+			<to-view-id>/jsf/entry/longserviceoffer/longserviceOfferConfirm.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+
+	<!-- 永年勤続申請状況確認 -->
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BEN019V01</from-outcome>
+			<to-view-id>/jsf/entry/longserviceviewlist/longserviceViewListCondition.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+
+	<!-- ベーシック参加申込 -->
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BEN002V01</from-outcome>
+			<to-view-id>/jsf/entry/basicentry/basicEntrySelect.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BEN002V02</from-outcome>
+			<to-view-id>/jsf/entry/basicentry/basicEntryEdit.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BEN002V03</from-outcome>
+			<to-view-id>/jsf/entry/basicentry/basicEntryConfirm.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+
+	<!-- マスターライセンス受験申込 -->
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BEN008V01</from-outcome>
+			<to-view-id>/jsf/entry/mlentry/mlEntrySelect.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BEN008V02</from-outcome>
+			<to-view-id>/jsf/entry/mlentry/mlEntryEdit.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BEN008V03</from-outcome>
+			<to-view-id>/jsf/entry/mlentry/mlEntryConfirm.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+
+	<!-- マスターライセンス申込状況照会 -->
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BEN009V01</from-outcome>
+			<to-view-id>/jsf/entry/mlviewlist/mlViewListSelect.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BEN009V02</from-outcome>
+			<to-view-id>/jsf/entry/mlviewlist/mlViewListConfirm.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+
+	<!-- 申請管理共通 イベント申込一覧 -->
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BEN091V01</from-outcome>
+			<to-view-id>/jsf/entry/eventlist/eventListEntry.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BEN092V01</from-outcome>
+			<to-view-id>/jsf/entry/eventlist/eventListRef.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+
+	<!-- 申請管理共通 スタッフ選択 -->
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BEN093V01</from-outcome>
+			<to-view-id>/jsf/entry/commonform/entrystaffsearch/entrystaffsearch.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+
+	<!-- 事業方針説明会マスタ登録 -->
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BEN010V01</from-outcome>
+			<to-view-id>/jsf/entry/projectplanmstregist/projectPlanMstRegistSelect.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BEN010V02</from-outcome>
+			<to-view-id>/jsf/entry/projectplanmstregist/projectPlanMstRegistEdit.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BEN010V03</from-outcome>
+			<to-view-id>/jsf/entry/projectplanmstregist/projectPlanMstRegistConfirm.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<!-- 事業方針説明会申込 -->
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BEN011V01</from-outcome>
+			<to-view-id>/jsf/entry/projectplanoffer/projPlanOfferEdit.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BEN011V02</from-outcome>
+			<to-view-id>/jsf/entry/projectplanoffer/projPlanOfferIninEdit.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BEN011V03</from-outcome>
+			<to-view-id>/jsf/entry/projectplanoffer/projPlanOfferConfirm.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+
+	<!-- 事業方針説明会申込状況確認 -->
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BEN012V01</from-outcome>
+			<to-view-id>/jsf/entry/projectplanstatusinfo/projectPlanStatusInfoCondition.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BEN012V02</from-outcome>
+			<to-view-id>/jsf/entry/projectplanstatusinfo/projectPlanStatusInfoAttendance.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BEN012V03</from-outcome>
+			<to-view-id>/jsf/entry/projectplanstatusinfo/projectPlanStatusInfoLodger.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+
+	<!-- 全国大会マスタ登録 -->
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BEN014V01</from-outcome>
+			<to-view-id>/jsf/entry/nationalregist/nationalRegistSelect.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BEN014V02</from-outcome>
+			<to-view-id>/jsf/entry/nationalregist/nationalRegistEdit.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BEN014V03</from-outcome>
+			<to-view-id>/jsf/entry/nationalregist/nationalRegistConfirm.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+
+	<!-- 全国大会申込 -->
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BEN015V01</from-outcome>
+			<to-view-id>/jsf/entry/nationalentry/nationalEntryEdit.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BEN015V02</from-outcome>
+			<to-view-id>/jsf/entry/nationalentry/nationalEntryConfirm.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+
+	<!-- 全国大会申込状況確認 -->
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BEN016V01</from-outcome>
+			<to-view-id>/jsf/entry/nationalviewlist/nationalViewListCondition.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BEN016V02</from-outcome>
+			<to-view-id>/jsf/entry/nationalviewlist/nationalViewListConfirm.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+
+	<!-- 全国店長勉強会マスタ登録 -->
+	<!--
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BEN020V01</from-outcome>
+			<to-view-id>/jsf/entry/manageregist/manageRegistSelect.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BEN020V02</from-outcome>
+			<to-view-id>/jsf/entry/manageregist/manageRegistEdit.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BEN020V03</from-outcome>
+			<to-view-id>/jsf/entry/manageregist/manageRegistConfirm.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	-->
+	<!-- オーナー間異動登録 -->
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BEN023V01</from-outcome>
+			<to-view-id>/jsf/entry/ownerchange/ownerChangeCondition.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BEN023V02</from-outcome>
+			<to-view-id>/jsf/entry/ownerchange/ownerChangeSetUp.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BEN023V03</from-outcome>
+			<to-view-id>/jsf/entry/ownerchange/ownerChangeEdit.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BEN023V04</from-outcome>
+			<to-view-id>/jsf/entry/ownerchange/ownerChangeConfirm.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+
+<!-- 業績管理 -->
+	<!-- グループ各社売上推移表（日＆月次） -->
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BBR002V01</from-outcome>
+			<to-view-id>/jsf/bizreport/groupsuiiref/groupSuiiRef.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BBR002V02</from-outcome>
+			<to-view-id>/jsf/bizreport/groupsuiiref/groupSuiiRef.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<!-- 宅配売上推移表 -->
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BBR004V01</from-outcome>
+			<to-view-id>/jsf/bizreport/takuhaisuiiref/takuhaiSuiiRef.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BBR004V02</from-outcome>
+			<to-view-id>/jsf/bizreport/takuhaisuiiref/takuhaiSuiiRefMise.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<!-- MOSCARD推移表 -->
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BBR016V01</from-outcome>
+			<to-view-id>/jsf/bizreport/moscardsuiiref/view.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<!-- ネット注文売上推移表 -->
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BBR018V01</from-outcome>
+			<to-view-id>/jsf/bizreport/netordersuiiref/netordersuiiref.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<!-- ネット注文帳票 -->
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BBR019V01</from-outcome>
+			<to-view-id>/jsf/bizreport/netorderreport/netorderReport.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+<!-- 業務支援 -->
+	<!-- P/Lデータ入力 -->
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BBS001V01</from-outcome>
+			<to-view-id>/jsf/bizsupport/plregist/plRegistSelect.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BBS001V02</from-outcome>
+			<to-view-id>/jsf/bizsupport/plregist/plRegistEdit.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BBS001V03</from-outcome>
+			<to-view-id>/jsf/bizsupport/plregist/plRegistConfirm.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<!-- P/LデータCSV一括取込 -->
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BBS002V01</from-outcome>
+			<to-view-id>/jsf/bizsupport/lumptakein/lumpTakeInCondition.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BBS002V02</from-outcome>
+			<to-view-id>/jsf/bizsupport/lumptakein/lumpTakeInResult.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<!-- P/L内容確認 -->
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BBS003V01</from-outcome>
+			<to-view-id>/jsf/bizsupport/plcontentconfirm/plContentForm.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BBS003V02</from-outcome>
+			<to-view-id>/jsf/bizsupport/plcontentconfirm/plContentConfirm.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<!-- P/L入力状況確認 -->
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BBS004V01</from-outcome>
+			<to-view-id>/jsf/bizsupport/noinputoner/noInputOner.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<!-- P/L照会 -->
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BBS006V01</from-outcome>
+			<to-view-id>/jsf/bizsupport/plinfoview/plInfoViewCond.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BBS006V02</from-outcome>
+			<to-view-id>/jsf/bizsupport/plinfoview/plInfoViewResult.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BBS006V03</from-outcome>
+			<to-view-id>/jsf/bizsupport/plinfoview/plInfoViewGenkaResult.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BBS006V04</from-outcome>
+			<to-view-id>/jsf/bizsupport/plinfoview/plInfoViewResultRC.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<!-- P/L一括抽出 -->
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BBS007V01</from-outcome>
+			<to-view-id>/jsf/bizsupport/pllumpextract/plLumpExtractCondition.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<!-- 類似店検索 -->
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BBS008V01</from-outcome>
+			<to-view-id>/jsf/bizsupport/similarshop/ruijitenRefCond.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BBS008V02</from-outcome>
+			<to-view-id>/jsf/bizsupport/similarshop/ruijitenRef.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<!-- ご請求ご入金履 -->
+	<!--<navigation-rule>
+		<navigation-case>
+			<from-outcome>BBS009V01</from-outcome>
+			<to-view-id>/jsf/bill/demanddeposithistory/demandDepositHistoryCond.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>-->
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BBS009V01</from-outcome>
+			<to-view-id>/jsf/bill/demanddeposithistory/demandDepositHistory.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BBS009V02</from-outcome>
+			<to-view-id>/jsf/bill/demanddeposithistory/demandDepositHistory.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BBS009V03</from-outcome>
+			<to-view-id>/jsf/bill/demanddeposithistory/demandDepositHistoryUtiwake.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<!-- ご請求明細ダウンロード -->
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BBS010V01</from-outcome>
+			<to-view-id>/jsf/bill/detailbilldownload/detailBillDownloadList.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<!-- P/L登録状況確認 -->
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BBS014V01</from-outcome>
+			<to-view-id>/jsf/bizsupport/common/plRegistStateConfirm.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<!-- モスチキン管理マスタ登録 -->
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BBS015V01</from-outcome>
+			<to-view-id>/jsf/bizsupport/moschickenmastregist/moschickenmastRegistCond.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BBS015V02</from-outcome>
+			<to-view-id>/jsf/bizsupport/moschickenmastregist/moschickenmastRegistEdit.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BBS015V03</from-outcome>
+			<to-view-id>/jsf/bizsupport/moschickenmastregist/moschickenmastRegistMenuSelect.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BBS015V04</from-outcome>
+			<to-view-id>/jsf/bizsupport/moschickenmastregist/moschickenmastRegistShokuhouSelect.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BBS015V05</from-outcome>
+			<to-view-id>/jsf/bizsupport/moschickenmastregist/moschickenmastRegistConfirm.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<!-- モスチキン予約入力 -->
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BBS016V01</from-outcome>
+			<to-view-id>/jsf/bizsupport/moschickenreservation/mosChekenRevSelect.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BBS016V02</from-outcome>
+			<to-view-id>/jsf/bizsupport/moschickenreservation/mosChickenRevEdit.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BBS016V03</from-outcome>
+			<to-view-id>/jsf/bizsupport/moschickenreservation/regmoschickenMenuadd.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<!-- モスチキン販売状況一覧 -->
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BBS017V01</from-outcome>
+			<to-view-id>/jsf/bizsupport/moschickensalestateview/moschickenSaleStateViewCondForm.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BBS017V02</from-outcome>
+			<to-view-id>/jsf/bizsupport/moschickensalestateview/moschickenSaleStateViewResultForm.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<!-- 予約・在庫状況確認 -->
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BBS018V01</from-outcome>
+			<to-view-id>/jsf/bizsupport/moschickenstateconfirm/stateConfirmCond.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BBS018V02</from-outcome>
+			<to-view-id>/jsf/bizsupport/moschickenstateconfirm/stateConfirm.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<!-- 時間帯別予約確認表 -->
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BBS019V01</from-outcome>
+			<to-view-id>/jsf/bizsupport/moschickenreservchkbytime/moschickenReserveChkByTimeForm.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<!-- 時間帯別予約確認表（全店用） -->
+	<!--
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BBS051V01</from-outcome>
+			<to-view-id>/jsf/bizsupport/moschickenreservchkbytime2/moschickenReserveChkByTimeForm.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	-->
+	<!-- 予約販売確認表 -->
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BBS020V01</from-outcome>
+			<to-view-id>/jsf/bizsupport/moschickenrefconflist/mosChekenConfReflistSelect.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<!-- 予約販売確認表(全店用) -->
+	<!--
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BBS050V01</from-outcome>
+			<to-view-id>/jsf/bizsupport/moschickenrefconflist2/mosChekenConfReflistSelect.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	-->
+	<!-- 予約・在庫状況確認 -->
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BBS021V01</from-outcome>
+			<to-view-id>/jsf/bizsupport/moschickenstorestateconfirm/storeStateConfirmCond.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BBS021V02</from-outcome>
+			<to-view-id>/jsf/bizsupport/moschickenstorestateconfirm/storeStateConfirm.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<!-- 予算登録 -->
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BBS022V01</from-outcome>
+			<to-view-id>/jsf/bizsupport/budgetregist/budgetRegistCondition.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<!-- 事業計画予算確認 -->
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BBS023V01</from-outcome>
+			<to-view-id>/jsf/bizsupport/budgetref/budgetRef.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+
+	<!-- 仮店舗置換えメンテナンス -->
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BBS025V01</from-outcome>
+			<to-view-id>/jsf/bizsupport/tempstorereplace/tempStoreReplaceCondition.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BBS025V02</from-outcome>
+			<to-view-id>/jsf/bizsupport/tempstorereplace/tempStoreReplaceEdit.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BBS025V03</from-outcome>
+			<to-view-id>/jsf/bizsupport/tempstorereplace/tempStoreReplaceConfirm.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+
+	<!-- バンズ自動設定数量変更 -->
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BBS026V01</from-outcome>
+			<to-view-id>/jsf/bizsupport/bunsautoamtregist/bunsAutoAmtRegistCondition.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BBS026V02</from-outcome>
+			<to-view-id>/jsf/bizsupport/bunsautoamtregist/bunsAutoAmtRegistEdit.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BBS026V03</from-outcome>
+			<to-view-id>/jsf/bizsupport/bunsautoamtregist/bunsAutoAmtRegistConfirm.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+
+	<!--キャンペーン設定数量確認-->
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BBS027V01</from-outcome>
+			<to-view-id>/jsf/bizsupport/campcheckamount/campCheckAmount.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+
+	<!-- スポット未受注店  -->
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BBS028V01</from-outcome>
+			<to-view-id>/jsf/bizsupport/spot/spotNotOrderShopForm.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+
+	<!-- バンズ倉庫別登録 -->
+		<navigation-rule>
+		<navigation-case>
+			<from-outcome>BBS029V01</from-outcome>
+			<to-view-id>/jsf/bizsupport/vansmastregist/vansmastRegistSelect.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BBS029V02</from-outcome>
+			<to-view-id>/jsf/bizsupport/vansmastregist/vansmastRegistEdit.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BBS029V03</from-outcome>
+			<to-view-id>/jsf/bizsupport/vansmastregist/vansmastRegistConfirm.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BBS030V01</from-outcome>
+			<to-view-id>/jsf/bizsupport/contractstatement/contractStatement.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<!-- バンズ倉庫別登録 -->
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BBS031V01</from-outcome>
+			<to-view-id>/jsf/bizsupport/codbalancelist/codBalanceListConfirm.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<!-- エネルギー使用量ダウンロード -->
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BBS032V01</from-outcome>
+			<to-view-id>/jsf/bizsupport/energyamount/energyAmount.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<!-- 店舗メーター管理状況メンテナンス -->
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BBS033V01</from-outcome>
+			<to-view-id>/jsf/bizsupport/energyinputitem/energyInputItemCond.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BBS033V02</from-outcome>
+			<to-view-id>/jsf/bizsupport/energyinputitem/energyInputItemEdit.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BBS033V03</from-outcome>
+			<to-view-id>/jsf/bizsupport/energyinputitem/energyInputItemConfirm.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BBS034V01</from-outcome>
+			<to-view-id>/jsf/bizsupport/tenantpaypdfregist/Condition.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BBS034V02</from-outcome>
+			<to-view-id>/jsf/bizsupport/tenantpaypdfregist/Edit.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BBS034V03</from-outcome>
+			<to-view-id>/jsf/bizsupport/tenantpaypdfregist/Confirm.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<!-- オーダー提供時間集計ダウンロード -->
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BBS035V01</from-outcome>
+			<to-view-id>/jsf/bizsupport/ordertimerequired/download.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+
+<!-- データ分析 -->
+	<!-- ＰＯＳ集信データ提供 -->
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BDT001V01</from-outcome>
+			<to-view-id>/jsf/analysis/posdata/posDataForm.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<!-- メニュー別売上 -->
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BDT002V01</from-outcome>
+			<to-view-id>/jsf/analysis/menubeturef/view.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<!-- 種別売上推移表 -->
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BDT003V01</from-outcome>
+			<to-view-id>/jsf/analysis/shubetusuiiref/shubetuSuiiRef.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<!-- 時間帯別売上 -->
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BDT004V01</from-outcome>
+			<to-view-id>/jsf/analysis/jikanbeturef/view.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<!-- 過去売上 -->
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BDT005V01</from-outcome>
+			<to-view-id>/jsf/analysis/kakouriage/kakoUriage.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<!-- 支部平均比較 -->
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BDT006V01</from-outcome>
+			<to-view-id>/jsf/analysis/sibuaverage/sibuAverage.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<!-- 支部平均比較 -->
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BDT007V01</from-outcome>
+			<to-view-id>/jsf/analysis/rankref/view.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+<!-- 業績管理 -->
+<!-- グループ営業日報 -->
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BBR001V01</from-outcome>
+			<to-view-id>/jsf/bizreport/groupeigyoniporef/groupEigyoNipoRefCondition.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BBR001V02</from-outcome>
+			<to-view-id>/jsf/bizreport/groupeigyoniporef/groupEigyoNipoRefSibuConfirm.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BBR001V03</from-outcome>
+			<to-view-id>/jsf/bizreport/groupeigyoniporef/groupEigyoNipoRefMiseConfirm.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BBR001V04</from-outcome>
+			<to-view-id>/jsf/bizreport/groupeigyoniporef/groupEigyoNipoRefOnerConfirm.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+
+	<!-- 宅配売上日報 -->
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BBR003V01</from-outcome>
+			<to-view-id>/jsf/bizreport/takuhainiporef/takuhaiNipoRefCondition.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<!-- 宅配売上日報 結果画面(支部) -->
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BBR003V02</from-outcome>
+			<to-view-id>/jsf/bizreport/takuhainiporef/takuhaiNipoRefSibu.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<!-- 宅配売上日報 結果画面(店舗) -->
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BBR003V03</from-outcome>
+			<to-view-id>/jsf/bizreport/takuhainiporef/takuhaiNipoRefMise.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<!-- 宅配売上日報 結果画面(オーナー店舗) -->
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BBR003V04</from-outcome>
+			<to-view-id>/jsf/bizreport/takuhainiporef/takuhaiNipoRefOnerMise.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+
+	<!-- 屋号別売上げ（日＆月次） -->
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BBR005V01</from-outcome>
+			<to-view-id>/jsf/bizreport/gyotaibetuniporef/gyotaibetuNipoRefCondition.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BBR005V02</from-outcome>
+			<to-view-id>/jsf/bizreport/gyotaibetuniporef/gyotaibetuNipoRefSibu.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BBR005V03</from-outcome>
+			<to-view-id>/jsf/bizreport/gyotaibetuniporef/gyotaibetuNipoRefMise.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+		<navigation-rule>
+		<navigation-case>
+			<from-outcome>BBR005V04</from-outcome>
+			<to-view-id>/jsf/bizreport/gyotaibetuniporef/gyotaibetuNipoRefOner.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<!-- POS速報 -->
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BBR006V01</from-outcome>
+			<to-view-id>/jsf/bizreport/posreportref/posReportRef.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BBR006V02</from-outcome>
+			<to-view-id>/jsf/bizreport/posreportref/posReportRefMise.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<!-- POS速報設定登録 -->
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BBR007V01</from-outcome>
+			<to-view-id>/jsf/bizreport/posreportregist/posReportRegist.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BBR007V02</from-outcome>
+			<to-view-id>/jsf/bizreport/posreportregist/posReportRegistConfirm.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<!-- 売上修正 -->
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BBR008V01</from-outcome>
+			<to-view-id>/jsf/bizreport/urimaintenance/uriMaintenanceCondition.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BBR008V02</from-outcome>
+			<to-view-id>/jsf/bizreport/urimaintenance/uriMaintenanceEdit.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BBR008V03</from-outcome>
+			<to-view-id>/jsf/bizreport/urimaintenance/uriMaintenanceConfirm.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BBR008V04</from-outcome>
+			<to-view-id>/jsf/bizreport/urimaintenance/kaikeiKbnEdit.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BBR008V05</from-outcome>
+			<to-view-id>/jsf/bizreport/urimaintenance/kaikeiKbnConfirm.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BBR008V06</from-outcome>
+			<to-view-id>/jsf/bizreport/urimaintenance/getKeigenTaxEdit.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BBR008V07</from-outcome>
+			<to-view-id>/jsf/bizreport/urimaintenance/getKeigenTaxConfirm.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<!-- 売上修正確認 -->
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BBR009V01</from-outcome>
+			<to-view-id>/jsf/bizreport/urimaintenanceview/uriMainteView.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BBR009V02</from-outcome>
+			<to-view-id>/jsf/bizreport/urimaintenanceview/kakinKbnView.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BBR009V03</from-outcome>
+			<to-view-id>/jsf/bizreport/urimaintenanceview/keigenTaxView.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<!-- 前年同曜設定 -->
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BBR010V01</from-outcome>
+			<to-view-id>/jsf/bizreport/zendougeturegist/zenDougetuRegistCond.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BBR010V02</from-outcome>
+			<to-view-id>/jsf/bizreport/zendougeturegist/zenDougetuRegistEdit.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BBR010V03</from-outcome>
+			<to-view-id>/jsf/bizreport/zendougeturegist/zenDougetuRegistConfirm.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<!-- キャンペーン日報 -->
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BBR011V01</from-outcome>
+			<to-view-id>/jsf/bizreport/campniporef/campNipoRefSibuList.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BBR011V02</from-outcome>
+			<to-view-id>/jsf/bizreport/campniporef/campNipoRefMiseList.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<!-- キャンペーン売上推移 -->
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BBR012V01</from-outcome>
+			<to-view-id>/jsf/bizreport/campsuiiref/campsuiirefCond.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<!-- キャンペーンベスト１００ -->
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BBR013V01</from-outcome>
+			<to-view-id>/jsf/bizreport/camprank/CampRank.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<!-- キャンペーン過去売上 -->
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BBR014V01</from-outcome>
+			<to-view-id>/jsf/bizreport/campkako/campKakoSibuList.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BBR014V02</from-outcome>
+			<to-view-id>/jsf/bizreport/campkako/campKakoMiseList.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BBR014V03</from-outcome>
+			<to-view-id>/jsf/bizreport/campkako/campSuiiList.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<!-- MOSCARD分析 -->
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BBR015V01</from-outcome>
+			<to-view-id>/jsf/bizreport/moscardniporef/moscardNipoRefCondition.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<!-- MOSCARD分析 結果画面(支部) -->
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BBR015V02</from-outcome>
+			<to-view-id>/jsf/bizreport/moscardniporef/moscardNipoRefSibuConfirm.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<!-- MOSCARD分析 結果画面(店舗) -->
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BBR015V03</from-outcome>
+			<to-view-id>/jsf/bizreport/moscardniporef/moscardNipoRefMiseConfirm.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<!-- MOSCARD分析 結果画面(オーナー店舗) -->
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BBR015V04</from-outcome>
+			<to-view-id>/jsf/bizreport/moscardniporef/moscardNipoRefOnerConfirm.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<!-- ネット注文分析 -->
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BBR017V01</from-outcome>
+			<to-view-id>/jsf/bizreport/netorderniporef/netorderNipoRefCondition.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<!-- ネット注文分析 結果画面(支部) -->
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BBR017V02</from-outcome>
+			<to-view-id>/jsf/bizreport/netorderniporef/netorderNipoRefSibuConfirm.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<!-- ネット注文分析 結果画面(店舗) -->
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BBR017V03</from-outcome>
+			<to-view-id>/jsf/bizreport/netorderniporef/netorderNipoRefMiseConfirm.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<!-- ネット注文分析 結果画面(オーナー店舗) -->
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BBR017V04</from-outcome>
+			<to-view-id>/jsf/bizreport/netorderniporef/netorderNipoRefOnerConfirm.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+<!-- 業務管理 -->
+	<!-- アカウント情報変更　-->
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BBA001V01</from-outcome>
+			<to-view-id>/jsf/bizadmin/accountedit/accountEditUserSelect.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BBA001V02</from-outcome>
+			<to-view-id>/jsf/bizadmin/accountedit/accountEditHonbuInput1.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BBA001V03</from-outcome>
+			<to-view-id>/jsf/bizadmin/accountedit/accountEditHonbuInput2.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BBA001V04</from-outcome>
+			<to-view-id>/jsf/bizadmin/accountedit/accountEditOnerInput1.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BBA001V05</from-outcome>
+			<to-view-id>/jsf/bizadmin/accountedit/accountEditOnerInput2.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BBA001V06</from-outcome>
+			<to-view-id>/jsf/bizadmin/accountedit/accountEditMiseInput1.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BBA001V07</from-outcome>
+			<to-view-id>/jsf/bizadmin/accountedit/accountEditMiseInput2.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BBA001V08</from-outcome>
+			<to-view-id>/jsf/bizadmin/accountedit/accountEditHonbuConform1.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BBA001V09</from-outcome>
+			<to-view-id>/jsf/bizadmin/accountedit/accountEditHonbuConform2.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BBA001V10</from-outcome>
+			<to-view-id>/jsf/bizadmin/accountedit/accountEditOnerConform1.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BBA001V11</from-outcome>
+			<to-view-id>/jsf/bizadmin/accountedit/accountEditOnerConform2.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BBA001V12</from-outcome>
+			<to-view-id>/jsf/bizadmin/accountedit/accountEditMiseConform1.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BBA001V13</from-outcome>
+			<to-view-id>/jsf/bizadmin/accountedit/accountEditMiseConform2.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<!-- アカウント情報照会　-->
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BBA002V01</from-outcome>
+			<to-view-id>/jsf/bizadmin/accountref/accountRefUserSelect.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BBA002V02</from-outcome>
+			<to-view-id>/jsf/bizadmin/accountref/accountRefOnerReference.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BBA002V03</from-outcome>
+			<to-view-id>/jsf/bizadmin/accountref/accountRefMiseReference.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BBA002V04</from-outcome>
+			<to-view-id>/jsf/bizadmin/accountref/accountRefHonbuReference.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<!-- ブロックメンテナンス　-->
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BBA003V01</from-outcome>
+			<to-view-id>/jsf/bizadmin/blockmaintenance/blockMainteCond.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BBA003V02</from-outcome>
+			<to-view-id>/jsf/bizadmin/blockmaintenance/blockMainteEdit.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BBA003V03</from-outcome>
+			<to-view-id>/jsf/bizadmin/blockmaintenance/blockMainteConfirm.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<!-- リモート閲覧支部・SV担当店登録 -->
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BBA004V01</from-outcome>
+			<to-view-id>/jsf/bizadmin/svtantousibu/svTantouSibuCond.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BBA004V02</from-outcome>
+			<to-view-id>/jsf/bizadmin/svtantousibu/svTantouSibuRemoteSibuEdit.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BBA004V03</from-outcome>
+			<to-view-id>/jsf/bizadmin/svtantousibu/svTantouSibuRemoteSibuConfirm.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BBA004V04</from-outcome>
+			<to-view-id>/jsf/bizadmin/svtantousibu/svTantouSibuTantouMiseConfirm.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<!-- お申込内容一覧 -->
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BBA005V01</from-outcome>
+			<to-view-id>/jsf/bizadmin/accountlist/accountList.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+
+<!-- 個店情報 -->
+	<!-- 個店情報ポータル -->
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BSI001V01</from-outcome>
+			<to-view-id>/jsf/storeinfo/miseref/miseRefCond.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BSI001V02</from-outcome>
+			<to-view-id>/jsf/storeinfo/miseref/miseRef.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<!-- オーナ情報照会 -->
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BSI002V01</from-outcome>
+			<to-view-id>/jsf/storeinfo/onerref/ownerInfoReference.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BSI002V02</from-outcome>
+			<to-view-id>/jsf/storeinfo/onerref/ownerInfoReferenceResult.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<!-- 個店情報一括抽出 -->
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BSI003V01</from-outcome>
+			<to-view-id>/jsf/storeinfo/miselumpextract/miseLumpExtract.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<!--加盟店スタッフ新規異動登録 -->
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BSM004V01</from-outcome>
+			<to-view-id>/jsf/storemanage/staffregist/staffRegistSelect.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BSM004V02</from-outcome>
+			<to-view-id>/jsf/storemanage/staffregist/staffRegistEdit.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<!-- 店舗衛生結果 -->
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BSI007V01</from-outcome>
+			<to-view-id>/jsf/storeinfo/eiseiref/view.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<!--
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BSM004V03</from-outcome>
+			<to-view-id>/jsf/storemanage/staffregist/staffRegistConfirm.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	-->
+<!-- 個店管理 -->
+	<!-- 個店情報メンテナンス -->
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BSM001V01</from-outcome>
+			<to-view-id>/jsf/storemanage/misemaintenance/miseMaintenanceCond.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BSM001V11</from-outcome>
+			<to-view-id>/jsf/storemanage/misemaintenance/miseMaintenanceEditMos.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BSM001V12</from-outcome>
+			<to-view-id>/jsf/storemanage/misemaintenance/miseMaintenanceEditOther.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BSM001V21</from-outcome>
+			<to-view-id>/jsf/storemanage/misemaintenance/miseMaintenanceConfirmMos.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BSM001V22</from-outcome>
+			<to-view-id>/jsf/storemanage/misemaintenance/miseMaintenanceConfirmOther.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<!-- 店マスタ履歴抽出-->
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BSI009V01</from-outcome>
+			<to-view-id>/jsf/storemanage/misehistoryextract/miseHistoryExtract.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<!-- 店マスタ情報一括抽出-->
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BSI008V01</from-outcome>
+			<to-view-id>/jsf/storeinfo/miseinformationextract/miseInfoExtract.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<!-- マスタライセンス保持者店舗別一覧 -->
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BSM005V01</from-outcome>
+			<to-view-id>/jsf/storemanage/mlholderlist/mlHolderListInform.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<!-- マスタライセンスの受験結果情報 -->
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BSM007V01</from-outcome>
+			<to-view-id>/jsf/storemanage/mlresultstatusref/mlResultStatusRefCondition.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BSM007V02</from-outcome>
+			<to-view-id>/jsf/storemanage/mlresultstatusref/mlResultStatusRef.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<!-- マスタライセンス研修修了登録 -->
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BSM006V01</from-outcome>
+			<to-view-id>/jsf/storemanage/mlcompletionregist/mLCompletionRegCond.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BSM006V02</from-outcome>
+			<to-view-id>/jsf/storemanage/mlcompletionregist/mLCompletionRegEdit.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BSM006V03</from-outcome>
+			<to-view-id>/jsf/storemanage/mlcompletionregist/mLCompletionRegConfirm.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<!-- マスターライセンス結果登録 -->
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BSM008V01</from-outcome>
+			<to-view-id>/jsf/storemanage/mlresultregist/mlResultRegistCond.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BSM008V02</from-outcome>
+			<to-view-id>/jsf/storemanage/mlresultregist/mlResultRegistAbilityCheckList.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BSM008V03</from-outcome>
+			<to-view-id>/jsf/storemanage/mlresultregist/mlResultRegistAbilityCheckEdit.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BSM008V04</from-outcome>
+			<to-view-id>/jsf/storemanage/mlresultregist/mlResultRegistAbilityCheckConfirm.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BSM008V05</from-outcome>
+			<to-view-id>/jsf/storemanage/mlresultregist/mlResultRegistInterviewEdit.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BSM008V06</from-outcome>
+			<to-view-id>/jsf/storemanage/mlresultregist/mlResultRegistInterviewConfirm.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BSM008V07</from-outcome>
+			<to-view-id>/jsf/storemanage/mlresultregist/mlResultRegistImportCsvCondition.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BSM008V08</from-outcome>
+			<to-view-id>/jsf/storemanage/mlresultregist/mlResultRegistImportCsvResult.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<!--売上金管理月報-->
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BSM013V01</from-outcome>
+			<to-view-id>/jsf/storemanage/proceedsmanagegepo/proceedsManageGepo.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BSM013V02</from-outcome>
+			<to-view-id>/jsf/storemanage/proceedsmanagegepo/proceedsManageGepoMeisai.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BSM013V03</from-outcome>
+			<to-view-id>/jsf/storemanage/proceedsmanagegepo/proceedsManageGepoUriageTaxMeisai.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<!--POS日報-->
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BSM014V01</from-outcome>
+			<to-view-id>/jsf/storemanage/posniporef/posNipoRef.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<!--POS集信エラー店舗一覧-->
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BSM015V01</from-outcome>
+			<to-view-id>/jsf/storemanage/poserrorref/posErrorRef.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<!--お客様の声-->
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BSM016V01</from-outcome>
+			<to-view-id>/jsf/storemanage/claimref/voiceList.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BSM016V02</from-outcome>
+			<to-view-id>/jsf/storemanage/claimref/voiceInfo.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<!--お客様の声分類別集計-->
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BSM017V01</from-outcome>
+			<to-view-id>/jsf/storemanage/claimtotal/claimTotal.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<!--あんしん点検結果報告-->
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BSM018V01</from-outcome>
+			<to-view-id>/jsf/storemanage/anshinreport/view.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+
+<!-- オフィス -->
+	<!--フォーム登録 -->
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BOF001V01</from-outcome>
+			<to-view-id>/jsf/office/formregist/formConditionForm.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BOF001V02</from-outcome>
+			<to-view-id>/jsf/office/formregist/formConfig.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BOF001V03</from-outcome>
+			<to-view-id>/jsf/office/formregist/formConfirm.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BOF001V04</from-outcome>
+			<to-view-id>/jsf/office/formregist/formRank.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<!--フォームダウンロード -->
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BOF002V01</from-outcome>
+			<to-view-id>/jsf/office/formdownload/viewForm.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<!-- 社内掲示板 -->
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BOF003V01</from-outcome>
+			<to-view-id>/jsf/office/bbsregist/bbsCondition.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BOF003V02</from-outcome>
+			<to-view-id>/jsf/office/bbsregist/bbsReference.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BOF003V03</from-outcome>
+			<to-view-id>/jsf/office/bbsregist/bbsEdit.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+
+<!-- 機能設定 -->
+	<!-- カテゴリ登録 -->
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BCF004V01</from-outcome>
+			<to-view-id>/jsf/config/categoryregist/categoryRegistCondition.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BCF004V02</from-outcome>
+			<to-view-id>/jsf/config/categoryregist/categoryRegistEdit.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BCF004V03</from-outcome>
+			<to-view-id>/jsf/config/categoryregist/categoryRegistConfirm.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+
+	<!-- P/L入力上下限設定 -->
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BCF005V01</from-outcome>
+			<to-view-id>/jsf/config/pllimitregist/plLimitRegistCondition.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BCF005V02</from-outcome>
+			<to-view-id>/jsf/config/pllimitregist/plLimitRegistEdit.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BCF005V03</from-outcome>
+			<to-view-id>/jsf/config/pllimitregist/plLimitRegistConfirm.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+
+	<!-- キャンペーンマスタ登録 -->
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BCF006V01</from-outcome>
+			<to-view-id>/jsf/config/campaignmasterregist/CampMasterRegistCond.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BCF006V02</from-outcome>
+			<to-view-id>/jsf/config/campaignmasterregist/CampMasterRegistEdit.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BCF006V03</from-outcome>
+			<to-view-id>/jsf/config/campaignmasterregist/CampMasterRegistConfirm.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<!-- 売上速報設定登録 -->
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BCF007V01</from-outcome>
+			<to-view-id>/jsf/config/urisokuregist/Condition.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BCF007V02</from-outcome>
+			<to-view-id>/jsf/config/urisokuregist/EditMiseCnt.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BCF007V03</from-outcome>
+			<to-view-id>/jsf/config/urisokuregist/EditTvcm.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BCF007V04</from-outcome>
+			<to-view-id>/jsf/config/urisokuregist/EditMenu.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BCF007V05</from-outcome>
+			<to-view-id>/jsf/config/urisokuregist/EditCamp.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BCF007V06</from-outcome>
+			<to-view-id>/jsf/config/urisokuregist/Confirm.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BCF007V03</from-outcome>
+			<to-view-id>/jsf/config/urisokuregist/Confirm.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<!-- 売上速報前月売上確定登録 -->
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BCF008V01</from-outcome>
+			<to-view-id>/jsf/config/zenurikakuteiregist/Edit.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BCF008V02</from-outcome>
+			<to-view-id>/jsf/config/zenurikakuteiregist/Confirm.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<!-- メニュー集約マスタ設定 -->
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BCF009V01</from-outcome>
+			<to-view-id>/jsf/config/summenuregist/sumMenuRegistCond.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BCF009V02</from-outcome>
+			<to-view-id>/jsf/config/summenuregist/sumMenuRegistEdit.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BCF009V03</from-outcome>
+			<to-view-id>/jsf/config/summenuregist/sumMenuRegistConfirm.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<!-- スケジュール登録 -->
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BCF010V01</from-outcome>
+			<to-view-id>/jsf/config/scheduleregist/scheduleRegistCond.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BCF010V02</from-outcome>
+			<to-view-id>/jsf/config/scheduleregist/scheduleRegistEdit.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BCF010V03</from-outcome>
+			<to-view-id>/jsf/config/scheduleregist/scheduleRegistConfirm.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+
+<!-- システム管理 -->
+	<!-- ユーザ登録 -->
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BSA006V01</from-outcome>
+			<to-view-id>/jsf/sysadmin/userregist/userRegistSelectUserType.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BSA006V02</from-outcome>
+			<to-view-id>/jsf/sysadmin/userregist/userRegistEditOwner.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BSA006V03</from-outcome>
+			<to-view-id>/jsf/sysadmin/userregist/userRegistConfirmOwner.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BSA006V04</from-outcome>
+			<to-view-id>/jsf/sysadmin/userregist/userRegistEditStore.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BSA006V05</from-outcome>
+			<to-view-id>/jsf/sysadmin/userregist/userRegistConfirmStore.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BSA006V06</from-outcome>
+			<to-view-id>/jsf/sysadmin/userregist/userRegistEditHonbu.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BSA006V07</from-outcome>
+			<to-view-id>/jsf/sysadmin/userregist/userRegistConfirmHonbu.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+
+
+	<!-- ロール別アクセス権限設定 -->
+	<!-- ※ 機能選択動作確認用ダミー ロール別アクセス権限設定を実装する際に削除してください -->
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BSA007V01</from-outcome>
+			<to-view-id>/jsf/sysadmin/roleacterregist/roleActCondition.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BSA007V02</from-outcome>
+			<to-view-id>/jsf/sysadmin/roleacterregist/roleActRegist.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<!-- ユーザ別アクセス権限設定 -->
+
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BSA012V01</from-outcome>
+			<to-view-id>/jsf/sysadmin/useractregist/userActCondition.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BSA012V02</from-outcome>
+			<to-view-id>/jsf/sysadmin/useractregist/userActRegist.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BSA012V03</from-outcome>
+			<to-view-id>/jsf/sysadmin/useractregist/userActConfirm.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+
+	<!-- 汎用画面ロール制御 -->
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BSA011V01</from-outcome>
+			<to-view-id>/jsf/sysadmin/userroleregist/userRoleCondition.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BSA011V03</from-outcome>
+			<to-view-id>/jsf/sysadmin/userroleregist/userRoleRegist.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+
+	<!-- ヘルプ機能 -->
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BSA009V01</from-outcome>
+			<to-view-id>/jsf/sysadmin/help/helpLayout.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+
+<!-- 共通フォーム -->
+	<!-- 関連文書選択 -->
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BCO001V01</from-outcome>
+			<to-view-id>/jsf/commonform/documentsearch/documentSearchForm.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<!-- ユーザー選択 -->
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BCO003V01</from-outcome>
+			<to-view-id>/jsf/commonform/usersearch/userSearchForm.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+
+	<!-- ロール選択 -->
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BCO004V01</from-outcome>
+			<to-view-id>/jsf/commonform/rolesearch/roleSearchForm.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+
+	<!-- 機能選択 -->
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BCO005V01</from-outcome>
+			<to-view-id>/jsf/commonform/functionsearch/functionSearchForm.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+
+	<!-- 公開対象選択 -->
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BCO002V01</from-outcome>
+			<to-view-id>/jsf/commonform/publictargetsearch/publicTargetSearchForm.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BCO002V02</from-outcome>
+			<to-view-id>/jsf/commonform/publictargetsearch/publicTargetSearchKobetuForm.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BCO002V03</from-outcome>
+			<to-view-id>/jsf/commonform/publictargetsearch/publicTargetSearchKotenForm.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+
+	<!-- オーナ選択 -->
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BCO006V01</from-outcome>
+			<to-view-id>/jsf/commonform/ownersearch/ownerSearchForm.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+
+	<!-- 業態選択 -->
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BCO007V01</from-outcome>
+			<to-view-id>/jsf/commonform/businesssearch/businessSearchForm.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+
+	<!-- 店選択 -->
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BCO008V01</from-outcome>
+			<to-view-id>/jsf/commonform/misesearch/miseSearchForm.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+
+	<!-- お買上明細照会 -->
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BBS012V01</from-outcome>
+			<to-view-id>/jsf/bill/buyinglistview/buyingListViewForm.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+
+	<!--　商品別合計：検索 -->
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BBS011V01</from-outcome>
+			<to-view-id>/jsf/bill/itemtotal/shobetuGoukeiForm.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+
+	<!-- 商品別合計：明細・履歴 -->
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BBS011V02</from-outcome>
+			<to-view-id>/jsf/bill/itemtotal/shobetuGoukeiDetailForm.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+
+
+
+	<!-- SV選択 -->
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BCO009V01</from-outcome>
+			<to-view-id>/jsf/commonform/svsearch/svSearchForm.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+
+	<!-- SV選択 -->
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BCO011V01</from-outcome>
+			<to-view-id>/jsf/commonform/svsearchnew/svSearchForm.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<!-- メニュー選択 -->
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BCO012V01</from-outcome>
+			<to-view-id>/jsf/commonform/menusearch/searchForm.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<!-- 画面メニュー検索 -->
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BCO013V01</from-outcome>
+			<to-view-id>/jsf/commonform/screensearch/searchForm.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<!-- 店・オーナー検索 -->
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BCO014V01</from-outcome>
+			<to-view-id>/jsf/commonform/miseonersearch/searchForm.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<!-- 会社検索 2012年05追加-->
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BCO015V01</from-outcome>
+			<to-view-id>/jsf/commonform/rcompanysearch/searchForm.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+
+	<!-- ポイントマスタメンテナンス 初期画面 2017年02追加-->
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BBS036V01</from-outcome>
+			<to-view-id>/jsf/bizsupport/pointmstregist/pointMstRegistRef.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<!-- ポイントマスタメンテナンス 編集画面 2017年02追加-->
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BBS036V02</from-outcome>
+			<to-view-id>/jsf/bizsupport/pointmstregist/pointMstRegistEdit.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+
+	<!-- ポイント情報取込 初期画面 2017年02追加-->
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BBS037V01</from-outcome>
+			<to-view-id>/jsf/bizsupport/pointinfotakein/pointInfoTakeinCond.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<!-- ポイント履歴出力画面 2017年02追加-->
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BBS038V01</from-outcome>
+			<to-view-id>/jsf/bizsupport/pointhistoryoutput/pointHistoryOutput.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+<!-- 統合ユーザ -->
+	<!-- ログイン画面 -->
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BUR000V01</from-outcome>
+			<to-view-id>/jsf/togouser/login/login.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<!-- 本部ユーザー登録条件画面 -->
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BUR001V01</from-outcome>
+			<to-view-id>/jsf/togouser/userregist/togouserRegistSelect.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<!-- 本部ユーザー登録編集画面 -->
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BUR001V02</from-outcome>
+			<to-view-id>/jsf/togouser/userregist/togouserRegistEdit.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<!-- 本部ユーザー確認画面 -->
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BUR001V03</from-outcome>
+			<to-view-id>/jsf/togouser/userregist/togouserRegistConfirm.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<!-- ユーザーフィルタリングメンテナンス画面 -->
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>BUR002V01</from-outcome>
+			<to-view-id>/jsf/togouser/filterregist/togouserFilterSet.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+
+<!-- P-mossles -->
+<!-- ログイン画面 -->
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>PPO000V01</from-outcome>
+			<to-view-id>/jsf/pmossles/login/login.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<!-- minisite -->
+<!-- ログイン画面 -->
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>MNI000V01</from-outcome>
+			<to-view-id>/jsf/minisite/loginoshirase.html</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+<!-- その他 -->
+	<!-- システムエラー -->
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>system.fatal</from-outcome>
+			<to-view-id>/jsf/layout/systemErr.html</to-view-id>
+			<redirect/>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>access.Err</from-outcome>
+			<to-view-id>/jsf/layout/accessErr.html</to-view-id>
+			<redirect/>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>browser.Err</from-outcome>
+			<to-view-id>/jsf/layout/browserErr.html</to-view-id>
+			<redirect/>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>operation.Err</from-outcome>
+			<to-view-id>/jsf/layout/operationErr.html</to-view-id>
+			<redirect/>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>session.Err</from-outcome>
+			<to-view-id>/jsf/layout/sessionErr.html</to-view-id>
+			<redirect/>
+		</navigation-case>
+	</navigation-rule>
+</faces-config>

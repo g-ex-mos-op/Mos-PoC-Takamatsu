@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="Shift_JIS"?>
+<!DOCTYPE components PUBLIC "-//SEASAR//DTD S2Container 2.3//EN" "http://www.seasar.org/dtd/components23.dtd">
+<components namespace="groupSuiiRef">
+	<include path="dao.dicon"/>
+	<include path="jp/co/isid/mos/bird/common/dicon/birdCommon.dicon"/>
+	<include path="jp/co/isid/mos/bird/framework/dicon/birdInterceptor.dicon"/>
+	<include path="jp/co/isid/mos/bird/bizreport/common/dicon/bizreportCommon.dicon" />
+	<!--推移表共通対応-->
+	<include path="jp/co/isid/mos/bird/bizreport/common/suiiref/dicon/suiiRef.dicon" />
+	
+	<!-- インターセプターを自動登録 -->
+	<component class="org.seasar.framework.container.autoregister.AspectAutoRegister">
+	    <property name="interceptor">birdInterceptor.actionInterceptorChain</property>
+	    <initMethod name="addClassPattern">
+	        <arg>"jp.co.isid.mos.bird"</arg>
+	        <arg>".*ActionImpl"</arg>
+	    </initMethod>
+	    <initMethod name="registerAll"/>
+	</component> 
+	<component class="org.seasar.framework.container.autoregister.AspectAutoRegister">
+	    <property name="interceptor">birdInterceptor.logicInterceptorChain</property>
+	    <initMethod name="addClassPattern">
+	        <arg>"jp.co.isid.mos.bird"</arg>
+	        <arg>".*LogicImpl"</arg>
+	    </initMethod>
+	    <initMethod name="registerAll"/>  
+	</component>
+
+	<!-- DTO -->
+	<component name="pullDownMenuDto" class="jp.co.isid.mos.bird.framework.dto.PullDownMenuDto" autoBinding="none" instance="session"/>
+	<component name="miseSearchDto" class="jp.co.isid.mos.bird.commonform.misesearch.dto.MiseSearchDto" instance="session">
+		<property name="RCompanyCdList">null</property>
+	</component>
+	<component name="groupSuiiRefResultDto" class="jp.co.isid.mos.bird.bizreport.common.suiiref.dto.SuiiRefResultDto" instance="request">
+		<property name="listUITabData">new java.util.ArrayList(0)</property>
+		<property name="listFocusTabResult">null</property>
+		<property name="mapMonthTab">new java.util.HashMap()</property>
+	</component>
+	<component name="groupSuiiRefResultMapDto" class="jp.co.isid.mos.bird.bizreport.common.suiiref.dto.SuiiRefResultMapDto" instance="session"></component>
+
+	<!-- DAO -->
+	<component name="groupSuiiRefUIMiseCntDao" class="jp.co.isid.mos.bird.bizreport.groupsuiiref.dao.UIMiseCntDao">
+		<aspect>dao.interceptor</aspect>
+	</component>
+	<component name="groupSuiiRefUISuiiNipoDao" class="jp.co.isid.mos.bird.bizreport.groupsuiiref.dao.UISuiiNipoDao">
+		<aspect>dao.interceptor</aspect>
+	</component>
+	<component name="groupSuiiRefUISuiiGepoDao" class="jp.co.isid.mos.bird.bizreport.groupsuiiref.dao.UISuiiGepoDao">
+		<aspect>dao.interceptor</aspect>
+	</component>
+	<component name="groupSuiiRefUISuiiNipoOnerDao" class="jp.co.isid.mos.bird.bizreport.groupsuiiref.dao.UISuiiNipoOnerDao">
+		<aspect>dao.interceptor</aspect>
+	</component>
+	<component name="groupSuiiRefUISuiiGepoOnerDao" class="jp.co.isid.mos.bird.bizreport.groupsuiiref.dao.UISuiiGepoOnerDao">
+		<aspect>dao.interceptor</aspect>
+	</component>
+
+	<!-- LOGIC -->
+	<component name="groupSuiiRefSearchLogic" class="jp.co.isid.mos.bird.bizreport.groupsuiiref.logic.impl.SearchLogicImpl">
+		<property name="groupSuiiRefUIMiseCntDao">groupSuiiRefUIMiseCntDao</property>
+		<property name="groupSuiiRefUISuiiNipoDao">groupSuiiRefUISuiiNipoDao</property>
+		<property name="groupSuiiRefUISuiiGepoDao">groupSuiiRefUISuiiGepoDao</property>
+		<property name="groupSuiiRefUISuiiNipoOnerDao">groupSuiiRefUISuiiNipoOnerDao</property>
+		<property name="groupSuiiRefUISuiiGepoOnerDao">groupSuiiRefUISuiiGepoOnerDao</property>
+	</component>
+	<component name="groupSuiiRefCsvDownLoadLogic" class="jp.co.isid.mos.bird.bizreport.groupsuiiref.logic.impl.CsvOutputLogicImpl"/>
+	<!-- ACTION -->
+	<component name="groupSuiiRefAction" class="jp.co.isid.mos.bird.bizreport.groupsuiiref.action.impl.GroupSuiiRefActionImpl" instance="request">
+		<property name="suiiRefConditionLogic">suiiRef.suiiRefConditionLogic</property>
+		<property name="suiiRefSearchParameterDto">suiiRef.suiiRefSearchParameterDto</property>
+		<property name="suiiRefResultParameterDto">suiiRef.suiiRefResultParameterDto</property>
+		<property name="csvOutputDto">suiiRef.suiiRefResultParameterDto</property>
+		<property name="csvOutputLogic">groupSuiiRefCsvDownLoadLogic</property>
+	</component>	
+	<!-- CONVERTER -->
+	<component name="groupSuiiRefNumericCnvt" class="jp.co.isid.mos.bird.framework.text.converter.NumericConverter" instance="request">
+		<arg>"#,##0"</arg><arg>true</arg>
+	</component>
+	<component name="numConverter" class="jp.co.isid.mos.bird.framework.text.converter.NumericConverter" instance="request"/>
+</components>

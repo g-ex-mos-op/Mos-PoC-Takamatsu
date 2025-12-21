@@ -1,0 +1,115 @@
+SELECT * 
+FROM (
+SELECT DISTINCT 
+       MENU.MENU_ID
+,      MENU.MENU_NAME
+,      MENU.SORT_SEQ
+,      MENU.SUB_MENU_ID 
+,      MENU.SUB_MENU_NAME 
+,      RANK() OVER(PARTITION BY MYMENU.VIEW_ID, MENU.SUB_MENU_NAME 
+                   ORDER BY MENU.MENU_ID, MENU.SORT_SEQ) DUPLICATE_CNT
+,      MENU.VIEW_ID AS SCREEN_ID
+,      MENU.MENU_DISP_KBN
+,      MENU.PARAM
+,      MYMENU.USER_ID
+,      MYMENU.VIEW_ID
+,      MYMENU.SAKUJO_FLG
+,      MYMENU.FIRST_USER
+,      MYMENU.FIRST_PGM
+,      MYMENU.FIRST_TMSP
+,      MYMENU.LAST_USER
+,      MYMENU.LAST_PGM
+,      MYMENU.LAST_TMSP
+FROM (
+		(
+		    SELECT DISTINCT BR02.MENU_ID
+		    ,      BR02.MENU_NAME
+		    ,      BR02.SORT_SEQ
+		    ,      BR02.SUB_MENU_ID 
+		    ,      BR02.SUB_MENU_NAME 
+		    ,      BR02.VIEW_ID 
+		    ,      BR02.INIT_VIEW_ID 
+		    ,      BR02.MENU_DISP_KBN
+		    ,      BR02.PARAM
+			
+			FROM BR05ACTR BR05
+			,    BR04USRL BR04
+			,    BR02BMNU BR02
+			,    BR54USAC BR54
+			WHERE BR05.EXTRA_FLG  = '1'
+			AND   BR05.ENABLE_FLG  = '0'
+			AND   BR02.MENU_DISP_KBN IN ('1')
+			AND   BR02.MENU_ID  != '00'
+			AND   BR54.USER_ID = /*userId*/'99990001'
+			AND   BR54.CUSTOMIZE_FLG = '1'
+			AND   BR02.MENU_ID     = BR54.MENU_ID 
+			AND   BR02.SUB_MENU_ID = BR54.SUB_MENU_ID 
+			AND   BR05.MENU_ID     = BR02.MENU_ID 
+			AND   BR05.SUB_MENU_ID = BR02.SUB_MENU_ID 
+			AND   BR04.ROLE_CD     = BR05.ROLE_CD
+			AND   BR04.USER_ID     = BR54.USER_ID
+		) 
+	UNION ALL
+		(
+		    SELECT DISTINCT BR02.MENU_ID
+		    ,      BR02.MENU_NAME
+		    ,      BR02.SORT_SEQ
+		    ,      BR02.SUB_MENU_ID 
+		    ,      BR02.SUB_MENU_NAME 
+		    ,      BR02.VIEW_ID 
+		    ,      BR02.INIT_VIEW_ID 
+		    ,      BR02.MENU_DISP_KBN
+		    ,      BR02.PARAM
+		
+		    FROM BR05ACTR BR05
+		    ,    BR04USRL BR04
+		    ,    BR02BMNU BR02
+		    LEFT JOIN (
+		          SELECT USER_ID 
+		          ,      MENU_ID
+		          ,      SUB_MENU_ID
+		          FROM BR54USAC 
+		          WHERE USER_ID = /*userId*/'99990001'
+		          AND   CUSTOMIZE_FLG='9') BR54
+			    ON (BR02.MENU_ID = BR54.MENU_ID AND BR02.SUB_MENU_ID = BR54.SUB_MENU_ID)
+		    WHERE BR05.EXTRA_FLG  = '1'
+		    AND   BR05.ENABLE_FLG  = '1'
+		    AND   BR02.MENU_DISP_KBN IN ('1')
+		    AND   BR02.MENU_ID  != '00'
+		    AND   BR04.USER_ID = /*userId*/'99990001'
+		    AND   BR05.MENU_ID     = BR02.MENU_ID 
+		    AND   BR05.SUB_MENU_ID = BR02.SUB_MENU_ID 
+		    AND   BR04.ROLE_CD     = BR05.ROLE_CD
+            AND   BR54.SUB_MENU_ID IS NULL
+		)
+    ) MENU  
+,    (SELECT DISTINCT CASE WHEN BR74.USER_ID IS NULL THEN /*userId*/'99990001' ELSE BR74.USER_ID END AS USER_ID
+        ,      CASE WHEN BR74.USER_ID IS NULL THEN BR75.VIEW_ID ELSE BR74.VIEW_ID END AS VIEW_ID
+        ,      CASE WHEN BR74.USER_ID IS NULL THEN '0' ELSE BR74.SAKUJO_FLG END AS SAKUJO_FLG
+        ,      BR74.FIRST_USER
+        ,      BR74.FIRST_PGM
+        ,      BR74.FIRST_TMSP
+        ,      BR74.LAST_USER
+        ,      BR74.LAST_PGM
+        ,      BR74.LAST_TMSP
+        FROM (
+        	SELECT USER_ID
+        	,      VIEW_ID
+        	,      SAKUJO_FLG
+        	,      FIRST_USER
+        	,      FIRST_PGM
+        	,      FIRST_TMSP
+        	,      LAST_USER
+        	,      LAST_PGM
+        	,      LAST_TMSP
+        	FROM BR74USMN
+        	WHERE USER_ID = /*userId*/'99990001'
+        	) AS BR74	
+        FULL OUTER JOIN BR75DFMN BR75
+        ON (BR75.VIEW_ID = BR74.VIEW_ID)
+) MYMENU
+WHERE  MYMENU.VIEW_ID = MENU.INIT_VIEW_ID
+) SUB
+WHERE DUPLICATE_CNT = 1
+ORDER BY MENU_ID
+,        SORT_SEQ

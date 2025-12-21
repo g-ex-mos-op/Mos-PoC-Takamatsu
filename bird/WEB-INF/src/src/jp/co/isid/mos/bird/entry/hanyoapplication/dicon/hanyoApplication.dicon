@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="Shift_JIS"?>
+<!DOCTYPE components PUBLIC
+    "-//SEASAR//DTD S2Container 2.3//EN"
+    "http://www.seasar.org/dtd/components23.dtd">
+<components namespace="entryHanyoApplication">
+    <include path="dao.dicon"/>
+    <include path="jp/co/isid/mos/bird/common/dicon/birdCommon.dicon"/>
+	<include path="jp/co/isid/mos/bird/framework/dicon/birdInterceptor.dicon"/>
+	<include path="jp/co/isid/mos/bird/entry/hanyoapplication/dicon/hanyoApplicationProperty.dicon"/>
+	
+	<component class="org.seasar.framework.container.autoregister.AspectAutoRegister">
+	    <property name="interceptor">birdInterceptor.actionInterceptorChain</property>
+	    <initMethod name="addClassPattern">
+	        <arg>"jp.co.isid.mos.bird"</arg>
+	        <arg>".*ActionImpl"</arg>
+	    </initMethod>
+	    <initMethod name="registerAll"/>
+	</component> 
+	<component 
+	  class="org.seasar.framework.container.autoregister.AspectAutoRegister">
+	    <property name="interceptor">birdInterceptor.logicInterceptorChain</property>
+	    <initMethod name="addClassPattern">
+	        <arg>"jp.co.isid.mos.bird"</arg>
+	        <arg>".*LogicImpl"</arg>
+	    </initMethod>
+	    <initMethod name="registerAll"/>  
+	</component>
+	
+	<!-- DAO -->
+	<component name="uiEntryMstHanyoApplicationDao" class="jp.co.isid.mos.bird.entry.hanyoapplication.dao.UIEntryMstDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="uiEntryDateHanyoApplicationDao" class="jp.co.isid.mos.bird.entry.hanyoapplication.dao.UIEntryDateDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="uIEntryOnerStatusDao" class="jp.co.isid.mos.bird.entry.hanyoapplication.dao.UIEntryOnerStatusDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="uiEntryOwnerHanyoAppDao" class="jp.co.isid.mos.bird.entry.hanyoapplication.dao.UIEntryOwnerDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="uiEntryStateHanyoAppDao" class="jp.co.isid.mos.bird.entry.hanyoapplication.dao.UIEntryStateDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="uiStaffHanyoAppDao" class="jp.co.isid.mos.bird.entry.hanyoapplication.dao.UIStaffDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="trnEntryResultHanyoApplicationDao" class="jp.co.isid.mos.bird.entry.hanyoapplication.dao.TrnEntryResultDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="codCompanyJohoHanyoApplicationDao" class="jp.co.isid.mos.bird.entry.hanyoapplication.dao.CodCompanyJohoDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="mstMiseHanyoAppDao" class="jp.co.isid.mos.bird.entry.hanyoapplication.dao.MstMiseDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="mstOwnerHanyoAppDao" class="jp.co.isid.mos.bird.entry.hanyoapplication.dao.MstOwnerDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="trnMasterResultHanyoAppDao" class="jp.co.isid.mos.bird.entry.hanyoapplication.dao.TrnMasterResultDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="licenseHojiStaffAppDao" class="jp.co.isid.mos.bird.entry.hanyoapplication.dao.TrnLicenseHojiStaffDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="mlCourseKanriHanyoAppDao" class="jp.co.isid.mos.bird.entry.hanyoapplication.dao.MlCourseKanriDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="entryNoticeDao" class="jp.co.isid.mos.bird.entry.hanyoapplication.dao.UIEntryNoticeDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+
+	<!-- LOGIC -->
+	<component name="hanyoAppCheckEntryLogic" class="jp.co.isid.mos.bird.entry.hanyoapplication.logic.impl.CheckEntryLogicImpl"/>
+	<component name="hanyoAppCheckEntryNumberLimitLogic" class="jp.co.isid.mos.bird.entry.hanyoapplication.logic.impl.CheckEntryNumberLimitLogicImpl"/>
+	<component name="searchEntryLogic" class="jp.co.isid.mos.bird.entry.hanyoapplication.logic.impl.SearchEntryLogicImpl"/>
+	<component name="hanyoApplicationCompanyJohoLogic" class="jp.co.isid.mos.bird.entry.hanyoapplication.logic.impl.CompanyJohoLogicImpl"/>
+	<component name="hanyoApplicationSearchStaffLogic" class="jp.co.isid.mos.bird.entry.hanyoapplication.logic.impl.SearchStaffLogicImpl"/>
+	<component name="hanyoAppSearchEntryInfoLogic" class="jp.co.isid.mos.bird.entry.hanyoapplication.logic.impl.SearchEntryInfoLogicImpl"/>
+	<component name="hanyoAppUserMiseJohoLogic" class="jp.co.isid.mos.bird.entry.hanyoapplication.logic.impl.UserMiseJohoLogicImpl"/>
+	<component name="hanyoAppUpdateEntryInfoLogic" class="jp.co.isid.mos.bird.entry.hanyoapplication.logic.impl.UpdateEntryInfoLogicImpl">
+		<aspect>j2ee.requiresNewTx</aspect>
+	</component>
+
+	<!-- DTO -->
+	<component name="pullDownMenuDto" class="jp.co.isid.mos.bird.framework.dto.PullDownMenuDto" instance="session"/>
+	<component name="hanyoApplicationDto" class="jp.co.isid.mos.bird.entry.hanyoapplication.dto.HanyoApplicationDto" instance="session"/>
+	<component name="hanyoApplicationSessionKeyDto" class="jp.co.isid.mos.bird.entry.hanyoapplication.dto.SessionKeyDto" instance="session"/>
+	<component name="miseSearchDto" class="jp.co.isid.mos.bird.commonform.misesearch.dto.MiseSearchDto" instance="session"/>
+	<component name="staffRegistIFDto" class="jp.co.isid.mos.bird.storemanage.staffregist.dto.StaffRegistIFDto" instance="session"/>
+
+	<!-- ACTION -->
+	<component name="hanyoApplicationSelectAction" class="jp.co.isid.mos.bird.entry.hanyoapplication.action.impl.HanyoApplicationSelectActionImpl" instance="request"/>
+	<component name="hanyoApplicationEditAction" class="jp.co.isid.mos.bird.entry.hanyoapplication.action.impl.HanyoApplicationEditActionImpl" instance="request"/>
+	<component name="hanyoAppConfirmAction" class="jp.co.isid.mos.bird.entry.hanyoapplication.action.impl.HanyoApplicationConfirmActionImpl" instance="request"/>
+
+	<!-- CONVERTER -->
+	<component name="hanyoApplicationDateConverter1" class="jp.co.isid.mos.bird.framework.text.converter.DateConverter" instance="request">
+		<arg>@jp.co.isid.mos.bird.framework.util.formatter.DateFormatter@DATE_TYPE_YM</arg>
+		<arg>@jp.co.isid.mos.bird.framework.util.formatter.DateFormatter@PATTERN_MONTH_SLASH</arg>
+	</component>
+	<component name="hanyoApplicationDateConverter2" class="jp.co.isid.mos.bird.framework.text.converter.DateConverter" instance="request">
+		<arg>@jp.co.isid.mos.bird.framework.util.formatter.DateFormatter@DATE_TYPE_YM</arg>
+		<arg>@jp.co.isid.mos.bird.framework.util.formatter.DateFormatter@PATTERN_MONTH_KANJI_YM</arg>
+	</component>
+	<component name="hanyoApplicationDateConverter3" class="jp.co.isid.mos.bird.framework.text.converter.DateConverter" instance="request">
+		<arg>@jp.co.isid.mos.bird.framework.util.formatter.DateFormatter@DATE_TYPE_YMD</arg>
+		<arg>"MM'/'dd'（'E'）'"</arg>
+	</component>
+	<component name="hanyoApplicationDateConverter4" class="jp.co.isid.mos.bird.framework.text.converter.DateConverter" instance="request">
+		<arg>@jp.co.isid.mos.bird.framework.util.formatter.DateFormatter@DATE_TYPE_YMD</arg>
+		<arg>@jp.co.isid.mos.bird.framework.util.formatter.DateFormatter@PATTERN_SLASH</arg>
+	</component>
+	<component name="hanyoApplicationNumericConverter" class="jp.co.isid.mos.bird.framework.text.converter.NumericConverter" instance="request"/>
+	<component name="hanyoApplicationCharacterEncodingConverter" class="jp.co.isid.mos.bird.framework.text.converter.CharacterEncodingConverter" instance="request"/>
+	<component name="hanyoApplicationZipConverter" class="jp.co.isid.mos.bird.framework.text.converter.MaskConverter" instance="request">
+		<arg>"###-####"</arg>
+	</component>
+	<component name="hanyoAppCodeConverter5" class="jp.co.isid.mos.bird.framework.text.converter.CodeConverter" instance="request">
+		<property name="formatPattern">"00000"</property>
+	</component>
+</components>

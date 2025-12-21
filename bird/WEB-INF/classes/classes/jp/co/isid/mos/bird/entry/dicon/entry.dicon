@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="Shift_JIS"?>
+<!DOCTYPE components PUBLIC
+    "-//SEASAR//DTD S2Container 2.3//EN"
+    "http://www.seasar.org/dtd/components23.dtd">
+<components namespace="entry">
+	<include path="jp/co/isid/mos/bird/entry/basicregist/dicon/basicRegist.dicon" />
+	<include path="jp/co/isid/mos/bird/entry/hanyoregist/dicon/hanyoRegist.dicon" />
+	<include path="jp/co/isid/mos/bird/entry/mlregist/dicon/mlRegist.dicon" />
+	<include path="jp/co/isid/mos/bird/entry/basicviewlist/dicon/basicViewList.dicon" />
+	<include path="jp/co/isid/mos/bird/entry/hanyoviewlist/dicon/hanyoViewList.dicon" />
+	<include path="jp/co/isid/mos/bird/entry/hanyoapplication/dicon/hanyoApplication.dicon" />
+	<include path="jp/co/isid/mos/bird/entry/basicentry/dicon/basicEntry.dicon" />
+	<include path="jp/co/isid/mos/bird/entry/mlviewlist/dicon/mlViewList.dicon" />
+	<include path="jp/co/isid/mos/bird/entry/mlentry/dicon/mlEntry.dicon" />
+    <include path="jp/co/isid/mos/bird/entry/ownerchange/dicon/ownerChange.dicon" />
+	<include path="jp/co/isid/mos/bird/entry/commonform/entrystaffsearch/dicon/entryStaffSearch.dicon" />
+	<include path="jp/co/isid/mos/bird/entry/eventlist/dicon/eventList.dicon" />
+	<include path="jp/co/isid/mos/bird/entry/projectplanmstregist/dicon/projectplanmstregist.dicon" />
+	<include path="jp/co/isid/mos/bird/entry/projectplanoffer/dicon/projectplanoffer.dicon" />
+	<include path="jp/co/isid/mos/bird/entry/projectplanstatusinfo/dicon/projectPlanStatusInfo.dicon" />
+	<include path="jp/co/isid/mos/bird/entry/nationalregist/dicon/nationalRegist.dicon" />
+	<include path="jp/co/isid/mos/bird/entry/longserviceregist/dicon/longserviceRegist.dicon" />
+	<include path="jp/co/isid/mos/bird/entry/nationalviewlist/dicon/nationalViewList.dicon" />
+	<include path="jp/co/isid/mos/bird/entry/nationalentry/dicon/nationalEntry.dicon" />
+	<include path="jp/co/isid/mos/bird/entry/longserviceviewlist/dicon/longserviceViewList.dicon" />
+	<include path="jp/co/isid/mos/bird/entry/longserviceoffer/dicon/longserviceOffer.dicon" />
+</components>

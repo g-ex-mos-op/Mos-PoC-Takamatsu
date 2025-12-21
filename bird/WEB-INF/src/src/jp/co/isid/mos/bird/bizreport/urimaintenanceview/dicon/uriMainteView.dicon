@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE components PUBLIC "-//SEASAR//DTD S2Container 2.3//EN"
+	"http://www.seasar.org/dtd/components23.dtd">
+<components namespace="uriMainteView">
+    <include path="dao.dicon"/>
+	<include path="jp/co/isid/mos/bird/framework/dicon/birdInterceptor.dicon"/>
+	<include path="jp/co/isid/mos/bird/common/dicon/birdCommon.dicon"/>
+	<include path="jp/co/isid/mos/bird/bizreport/common/dicon/bizreportCommon.dicon"/>
+	
+	<component
+	  class="org.seasar.framework.container.autoregister.AspectAutoRegister">
+	    <property name="interceptor">birdInterceptor.actionInterceptorChain</property>
+	    <initMethod name="addClassPattern">
+	        <arg>"jp.co.isid.mos.bird"</arg>
+	        <arg>".*ActionImpl"</arg>
+	    </initMethod>
+	    <initMethod name="registerAll"/>
+	</component> 
+	<component
+	  class="org.seasar.framework.container.autoregister.AspectAutoRegister">
+	    <property name="interceptor">birdInterceptor.logicInterceptorChain</property>
+	    <initMethod name="addClassPattern">
+	        <arg>"jp.co.isid.mos.bird"</arg>
+	        <arg>".*LogicImpl"</arg>
+	    </initMethod>
+	    <initMethod name="registerAll"/>
+	</component>
+
+	<component class="jp.co.isid.mos.bird.framework.control.BirdUserInfo" instance="session"/>
+	<component class="jp.co.isid.mos.bird.framework.control.BirdDateInfo" instance="session"/>
+
+	<!-- Converter -->
+	<component name="dateConverterYMD" class="jp.co.isid.mos.bird.framework.text.converter.DateConverter" instance="request">
+		<arg>@jp.co.isid.mos.bird.framework.util.formatter.DateFormatter@DATE_TYPE_YMD</arg>
+		<arg>@jp.co.isid.mos.bird.framework.util.formatter.DateFormatter@PATTERN_SLASH</arg>
+	</component>
+	<component name="dateConverterDE" class="jp.co.isid.mos.bird.framework.text.converter.DateConverter" instance="request">
+		<arg>@jp.co.isid.mos.bird.framework.util.formatter.DateFormatter@DATE_TYPE_YMD</arg>
+		<arg>"dd'日('E')'"</arg>
+	</component>
+	<component name="numericConverter" class="jp.co.isid.mos.bird.framework.text.converter.NumericConverter" instance="request"/>
+
+	<!-- DAO -->
+	<component name="uriMainteInfoDao" class="jp.co.isid.mos.bird.bizreport.urimaintenanceview.dao.UriMainteInfoDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="trnSyuseiAridakaDao" class="jp.co.isid.mos.bird.bizreport.urimaintenanceview.dao.TrnSyuseiAridakaDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="keigenTaxInfoDao" class="jp.co.isid.mos.bird.bizreport.urimaintenanceview.dao.KeigenTaxInfoDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+
+
+	<!-- Logic -->
+	<component name="uriMainteInfoLogic" class="jp.co.isid.mos.bird.bizreport.urimaintenanceview.logic.impl.UriMainteInfoLogicImpl"/>
+	<component name="uriMainteHeaderLogic" class="jp.co.isid.mos.bird.bizreport.common.urimaintenance.logic.impl.UriMainteHeaderLogicImpl">
+		<property name="ctlSyukeiKbnDao">birdCommon.ctlSyukeiKbnDao</property>
+	</component>
+	<component name="searchMeisaiLogic" class="jp.co.isid.mos.bird.bizreport.urimaintenanceview.logic.impl.SearchMeisaiLogicImpl"/>
+	<component name="conditionLogic" class="jp.co.isid.mos.bird.bizreport.urimaintenanceview.logic.impl.ConditionLogicImpl">
+		<property name="ctlSyukeiKbnDao">ctlSyukeiKbnDao</property>
+		<property name="ctlKaikeiKbnInfoDao">ctlKaikeiKbnInfoDao</property>
+	</component>
+	<component name="searchUriageMeisaiLogic" class="jp.co.isid.mos.bird.bizreport.urimaintenanceview.logic.impl.SearchUriageMeisaiLogicImpl"/>
+
+
+
+
+	<!-- DTO -->
+	<component name="pullDownMenuDto" class="jp.co.isid.mos.bird.framework.dto.PullDownMenuDto" autoBinding="none" instance="session"/>
+	<component name="uriMainteViewReqDto" class="jp.co.isid.mos.bird.bizreport.urimaintenanceview.dto.UriMainteViewReqDto" autoBinding="none" instance="request"/>
+	<component name="uriMainteViewSesDto" class="jp.co.isid.mos.bird.bizreport.urimaintenanceview.dto.UriMainteViewSesDto" autoBinding="none" instance="session">
+		<property name="maxSize">5</property>
+	</component>
+	<component name="uriMainteViewMeisaiJokenDto" class="jp.co.isid.mos.bird.bizreport.urimaintenanceview.dto.UriMainteViewMeisaiJokenDto" autoBinding="none" instance="request"/>
+	<component name="uriMainteViewMeisaiResultDto" class="jp.co.isid.mos.bird.bizreport.urimaintenanceview.dto.UriMainteViewMeisaiResultDto" autoBinding="none" instance="request"/>
+	
+	
+	<!-- Action -->
+	<component name="uriMainteViewAction" class="jp.co.isid.mos.bird.bizreport.urimaintenanceview.action.impl.UriMainteViewActionImpl" instance="request"/>
+	<component name="kaikeiKbnViewAction" class="jp.co.isid.mos.bird.bizreport.urimaintenanceview.action.impl.KaikeiKbnViewActionImpl" instance="request"/>
+	<component name="keigenTaxAction" class="jp.co.isid.mos.bird.bizreport.urimaintenanceview.action.impl.KeigenTaxActionImpl" instance="request"/>
+
+</components>

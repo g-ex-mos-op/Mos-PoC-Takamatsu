@@ -1,0 +1,7 @@
+SELECT
+    STAT_KBN
+FROM
+    BR48BSTA
+WHERE
+    PGM_ID = /*pgmId*/'MODHTORI' AND
+    PGM_KBN = /*pgmKbn*/'01'

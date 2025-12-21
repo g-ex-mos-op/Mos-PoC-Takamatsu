@@ -1,0 +1,88 @@
+<html xmlns:m="http://www.seasar.org/maya" m:action="#{mlResultRegistImportCsvResultAction.initialize}" m:extends="/jsf/layout/layoutNoNavi.html">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Windows-31j"/>
+<meta http-equiv="Content-Style-Type" content="text/css"/>
+<meta http-equiv="Content-Script-Type" content="text/javascript"/>
+<title>マスターライセンス結果登録</title>
+</head>
+<body>
+<span m:inject="f:param" m:name="layoutTitle" m:value="マスターライセンス結果登録"/>
+<span m:inject="s:insert" m:name="bodyTitleName">■マスターライセンス結果登録</span>
+<span m:inject="f:param" m:name="onLoadName" m:value="load()"/>
+
+<span m:inject="f:param" m:name="viewIdValue" m:value="BSM008V10"/>
+<div m:inject="s:insert" m:name="body">
+
+<style type="text/css">
+<!--
+.pane {
+	margin-top	: 5px;
+}
+table.body_table2 tr th{
+  text-align     : center;
+  border-style         : solid;
+  border-color         : #808080;
+
+  }
+.scroll_area {
+    width:100%;
+	height:	  420px;
+	overflow: auto;
+}
+-->
+</style>
+
+<script type="text/javascript">
+<!--
+
+function load(){
+
+ loadScroll("csvscroll", 415);
+
+ }
+-->
+</script>
+
+<form m:id="mlResultRegistImportCsvResult">
+	<input type="hidden" m:id="initMenuId" m:value="#{menuAction.initMenuId}"/>
+	<input type="hidden" m:id="initSubMenuId" m:value="#{menuAction.initSubMenuId}"/>
+	<input type="hidden" m:id="viewId" m:value="#{viewIdValue}" />
+	<input type="submit" m:value="#{mlResultRegistDto.existCsvError ? '戻る' : '終了'}" m:action="#{mlResultRegistImportCsvResultAction.back}"/>
+	<span m:rendered="#{!mlResultRegistDto.existCsvError}">正常に登録されました。</span>
+	<div m:rendered="#{mlResultRegistDto.existCsvError}" class="pane">
+	<div class="scroll_padding_head">
+	<div class="scroll_hidden margin_bottom_hidden">
+		<table class="body_table2" width="98%">
+			<caption class="body_title width_percent_98_98" style="text-align:left; padding:2px 0px;">登録エラー一覧</caption>
+
+		    <tr>
+		        <th style="width:50px;">行数</th>
+		        <th style="width:160px;">タイトル</th>
+		        <th style="width:280px;">詳細</th>
+		        <th style="width:*px;">入力データ</th>
+		    </tr>
+		</table>
+	</div>
+	</div>
+	<div class="scroll_padding_data">
+		<div id="csvscroll" class="scroll_hidden">
+			<table style="border-top-width:0px;" class="body_table2" width="98%">
+
+				<div m:inject="s:forEach" m:items="#{mlResultRegistDto.csvRecordList}" m:var="e" m:varindex="i">
+			    <tr class="non_top_border font_size_14" m:rendered="#{e.uiCsvErrorInfo.existError}">
+			        <td style="width:50px; text-align:right;"><span m:converter="#{characterEncodingConverter}" m:value="#{i + 1}"/></td>
+			        <td style="width:160px;"><span m:converter="#{characterEncodingConverter}" m:value="#{e.uiCsvErrorInfo.errorTitle}"/></td>
+			        <td style="width:280px;"><span m:converter="#{characterEncodingConverter}" m:value="#{e.uiCsvErrorInfo.errorMessage}"/></td>
+			        <td style="width:*px;"><span m:converter="#{characterEncodingConverter}" m:value="#{e.uiCsvErrorInfo.inputData}"/></td>
+			    </tr>
+			    </div>
+			</table>
+		</div>
+	</div>
+	</div>
+	<input type="text" m:id="dummyEnter" style="display:none"/>
+</form>
+
+</div>
+</body>
+</html>

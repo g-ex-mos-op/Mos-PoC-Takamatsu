@@ -1,0 +1,244 @@
+SELECT TAISHOTEMPO.BNR_L 
+,      TAISHOTEMPO.BNR_L_NAME 
+,      TAISHOTEMPO.BNR_M 
+,      TAISHOTEMPO.BNR_M_NAME 
+,      TAISHOTEMPO.LIMITMAX 
+,      TAISHOTEMPO.LIMIT_U 
+,      TAISHOTEMPO.LIMIT_U_100 
+,      (CASE TAISHOTEMPO.LIMIT_U WHEN 0 THEN 0 ELSE DECIMAL(ROUND(TAISHOTEMPO.LIMIT_U_100 * (DOUBLE(TAISHOTEMPO.ZEN_AVG)/DOUBLE(TAISHOTEMPO.LIMIT_U )),2),7,2) END ) AS ZEN_AVG_100 
+,      (CASE TAISHOTEMPO.LIMIT_U WHEN 0 THEN 0 ELSE DECIMAL(ROUND(TAISHOTEMPO.LIMIT_U_100 * (DOUBLE(TAISHOTEMPO.SIBU_AVG)/DOUBLE(TAISHOTEMPO.LIMIT_U)),2),7,2) END ) AS SIBU_AVG_100 
+,      (CASE TAISHOTEMPO.LIMIT_U WHEN 0 THEN 0 ELSE DECIMAL(ROUND(TAISHOTEMPO.LIMIT_U_100 * (DOUBLE(TAISHOTEMPO.SV_SIBU_AVG)/DOUBLE(TAISHOTEMPO.LIMIT_U)),2),7,2) END ) AS SV_SIBU_AVG_100 
+,      TAISHOTEMPO.COMPANY_CD 
+,      TAISHOTEMPO.ONER_CD 
+,      TAISHOTEMPO.ONER_NAME 
+,      (CASE TAISHOTEMPO.LIMIT_U WHEN 0 THEN 0 ELSE DECIMAL(ROUND(TAISHOTEMPO.LIMIT_U_100 * (DOUBLE(TAISHOTEMPO.TOKUTEN)/DOUBLE(TAISHOTEMPO.LIMIT_U)),2),7,2) END) AS TOKUTEN_100 
+FROM (
+	SELECT TEMPO_DATA.NENDO 
+	,      TEMPO_DATA.KAI 
+	,      TEMPO_DATA.BNR_L 
+	,      TEMPO_DATA.BNR_L_NAME 
+	,      TEMPO_DATA.BNR_M 
+	,      TEMPO_DATA.BNR_M_NAME 
+	,      LIMIT.LIMITMAX 
+	,      TEMPO_DATA.LIMIT_U 
+	,      (CASE LIMIT.LIMITMAX WHEN 0 THEN 0 ELSE DECIMAL(ROUND((DOUBLE(TEMPO_DATA.LIMIT_U)/DOUBLE(LIMIT.LIMITMAX))*100,2),7,2) END ) AS LIMIT_U_100 
+	,      TEMPO_DATA.ZEN_AVG 
+	,      TEMPO_DATA.SIBU_AVG 
+	,      TEMPO_DATA.SV_SIBU_AVG 
+	,      TEMPO_DATA.COMPANY_CD 
+	,      TEMPO_DATA.ONER_CD 
+	,      TEMPO_DATA.ONER_NAME 
+	,      SUM(TEMPO_DATA.TENPO_POINT_DATA) AS TOKUTEN 
+	
+	FROM ( 
+		SELECT HEIKIN.NENDO 
+		,      HEIKIN.KAI 
+		,      HEIKIN.BNR_L 
+		,      HEIKIN.BNR_L_NAME 
+		,      HEIKIN.BNR_M 
+		,      HEIKIN.BNR_M_NAME 
+		,      HEIKIN.LIMIT_U 
+		,      HEIKIN.ZEN_AVG 
+		,      HEIKIN.SIBU_AVG 
+		,      HEIKIN.SV_SIBU_AVG 
+		,      TEMPO.KOUMOKU_NO 
+		,      TEMPO.KOUMOKU_SUB 
+		,      TEMPO.COMPANY_CD 
+		,      TEMPO.ONER_CD 
+		,      TEMPO.ONER_NAME_KJ AS ONER_NAME 
+		,      TEMPO.TENPO_POINT_DATA 
+
+		FROM (
+			SELECT LIMIT_U_SUM.NENDO 
+			,      LIMIT_U_SUM.KAI 
+			,      LIMIT_U_SUM.BNR_L 
+			,      LIMIT_U_SUM.BNR_L_NAME 
+			,      LIMIT_U_SUM.BNR_M 
+			,      LIMIT_U_SUM.BNR_M_NAME 
+			,      LIMIT_U_SUM.LIMIT_U 
+			,      SUM(HEIKIN_SUM.ZEN_AVG) AS ZEN_AVG 
+			,      SUM(HEIKIN_SUM.SIBU_AVG) AS SIBU_AVG 
+			,      SUM(SV_AVG.HYOUKA_DATA) AS SV_SIBU_AVG 
+
+			FROM ( 
+				SELECT DISTINCT BM31.NENDO 
+				,      BM31.KAI 
+				,      BM31.BNR_L 
+				,      BM31.BNR_L_NAME 
+				,      BM31.BNR_M 
+				,      BM31.BNR_M_NAME 
+				,      SUM(BM31.LIMIT_U) LIMIT_U 
+				
+				FROM BM31MSPM BM31 
+
+				WHERE BM31.NENDO = /*nendo*/'' 
+				AND   BM31.KAI = /*kai*/''  
+				AND   BM31.COMPANY_CD = /*companyCd*/''  
+				AND   BM31.HYOUKA_KBN = '1'
+				AND   BM31.BNR_L <> '99' 
+
+				GROUP BY BM31.NENDO 
+				,        BM31.KAI 
+				,        BM31.BNR_L 
+				,        BM31.BNR_L_NAME 
+				,        BM31.BNR_M 
+				,        BM31.BNR_M_NAME 
+			) LIMIT_U_SUM 
+			,   (
+				SELECT BS04.NENDO    
+				,      BS04.KAI    
+				,      BS04.BNR_L    
+				,      BS04.BNR_M    
+				,      BS04.KOUMOKU_NO    
+				,      BS04.KOUMOKU_SUB    
+				,      BS04.ZEN_AVG    
+				,      BS04.SIBU_AVG    
+				FROM BS04MSPS BS04    
+				WHERE BS04.NENDO = /*nendo*/''     
+				AND   BS04.KAI = /*kai*/''     
+				AND   BS04.COMPANY_CD = /*companyCd*/'' 
+				AND   BS04.MISE_CD IN /*miseCd*/('')     
+				AND   BS04.HYOUKA_KBN = '1'    
+				AND   BS04.BNR_L <> '99'     
+				GROUP BY BS04.NENDO    
+				,        BS04.KAI    
+				,        BS04.BNR_L    
+				,        BS04.BNR_M    
+				,        BS04.KOUMOKU_NO    
+				,        BS04.KOUMOKU_SUB    
+				,        BS04.ZEN_AVG    
+				,        BS04.SIBU_AVG    
+
+			) HEIKIN_SUM 
+			, ( 
+				SELECT BS04.NENDO 
+				,      BS04.KAI 
+				,      BS04.KOUMOKU_NO 
+				,      BS04.KOUMOKU_SUB    
+				,      BS04.BNR_L    
+				,      BS04.BNR_M    
+				,      AVG(BS04.HYOUKA_DATA) AS HYOUKA_DATA    
+				FROM BS04MSPS BS04    
+				WHERE BS04.NENDO = /*nendo*/''     
+				AND   BS04.KAI = /*kai*/''     
+				AND   BS04.COMPANY_CD = /*companyCd*/'' 
+				AND   BS04.MISE_CD IN /*miseCd*/('')     
+				AND   BS04.HYOUKA_KBN = '1'    
+				AND   BS04.BNR_L <> '99'     
+				
+				GROUP BY BS04.NENDO    
+				,        BS04.KAI    
+				,        BS04.BNR_L    
+				,        BS04.BNR_M    
+				,        BS04.KOUMOKU_NO    
+				,        BS04.KOUMOKU_SUB    
+
+			) SV_AVG     
+			WHERE HEIKIN_SUM.BNR_L = LIMIT_U_SUM.BNR_L 
+			AND   HEIKIN_SUM.BNR_M = LIMIT_U_SUM.BNR_M 
+			AND   SV_AVG.NENDO = HEIKIN_SUM.NENDO    
+			AND   SV_AVG.KAI = HEIKIN_SUM.KAI    
+			AND   SV_AVG.KOUMOKU_NO = HEIKIN_SUM.KOUMOKU_NO    
+			AND   SV_AVG.KOUMOKU_SUB = HEIKIN_SUM.KOUMOKU_SUB    
+			AND   SV_AVG.BNR_L = HEIKIN_SUM.BNR_L    
+			AND   SV_AVG.BNR_M = HEIKIN_SUM.BNR_M    
+			GROUP BY LIMIT_U_SUM.NENDO 
+			,        LIMIT_U_SUM.KAI 
+			,        LIMIT_U_SUM.BNR_L 
+			,        LIMIT_U_SUM.BNR_L_NAME 
+			,        LIMIT_U_SUM.BNR_M 
+			,        LIMIT_U_SUM.BNR_M_NAME 
+			,        LIMIT_U_SUM.LIMIT_U 
+		) HEIKIN 
+		LEFT JOIN (
+			SELECT BS04.NENDO     
+			,      BS04.KAI     
+			,      BS04.COMPANY_CD 
+			,      BS04.ONER_CD     
+			,      BM11.ONER_NAME_KJ     
+			,      BS04.KOUMOKU_NO     
+			,      BS04.KOUMOKU_SUB     
+			,      BS04.BNR_L     
+			,      BS04.BNR_M     
+			,      AVG(BS04.HYOUKA_DATA) AS TENPO_POINT_DATA     
+			FROM BS04MSPS BS04     
+			,    BM11ONER BM11
+			WHERE BS04.NENDO = /*nendo*/''     
+			AND   BS04.KAI = /*kai*/''     
+			AND   BS04.COMPANY_CD = /*companyCd*/'' 
+			AND   BS04.MISE_CD IN /*miseCd*/('')     
+			AND   BS04.HYOUKA_KBN = '1'    
+			AND   BS04.BNR_L <> '99'     
+		    AND   BM11.COMPANY_CD = BS04.COMPANY_CD
+			AND   BM11.ONER_CD = BS04.ONER_CD     
+			GROUP BY BS04.NENDO     
+			,        BS04.KAI     
+			,        BS04.COMPANY_CD 
+			,        BS04.ONER_CD     
+			,        BM11.ONER_NAME_KJ     
+			,        BS04.BNR_L     
+			,        BS04.BNR_M     
+			,        BS04.KOUMOKU_NO     
+			,        BS04.KOUMOKU_SUB     
+		) TEMPO 
+		ON ( 
+			    TEMPO.NENDO = HEIKIN.NENDO 
+			AND TEMPO.KAI   = HEIKIN.KAI 
+			AND TEMPO.BNR_L = HEIKIN.BNR_L 
+			AND TEMPO.BNR_M = HEIKIN.BNR_M 
+		) 
+		GROUP BY HEIKIN.NENDO 
+		,        HEIKIN.KAI 
+		,        HEIKIN.BNR_L 
+		,        HEIKIN.BNR_L_NAME 
+		,        HEIKIN.BNR_M 
+		,        HEIKIN.BNR_M_NAME 
+		,        HEIKIN.LIMIT_U 
+		,        HEIKIN.ZEN_AVG 
+		,        HEIKIN.SIBU_AVG 
+		,        HEIKIN.SV_SIBU_AVG 
+		,        TEMPO.KOUMOKU_NO 
+		,        TEMPO.KOUMOKU_SUB 
+		,        TEMPO.COMPANY_CD 
+		,        TEMPO.ONER_CD 
+		,        TEMPO.ONER_NAME_KJ
+		,        TEMPO.TENPO_POINT_DATA 
+	) TEMPO_DATA 
+	, (
+		SELECT BM31.NENDO 
+		,      BM31.KAI 
+		,      SUM(BM31.LIMIT_U) AS LIMITMAX 
+		
+		FROM BM31MSPM BM31 
+		
+		WHERE BM31.NENDO = /*nendo*/'' 
+		AND   BM31.KAI = /*kai*/'' 
+		AND   BM31.COMPANY_CD = /*companyCd*/'' 
+		AND   BM31.HYOUKA_KBN = '1' 
+		AND   BM31.BNR_L <> '99' 
+		
+		GROUP BY BM31.NENDO 
+		,        BM31.KAI 
+	) LIMIT 
+
+	GROUP BY TEMPO_DATA.NENDO 
+	,        TEMPO_DATA.KAI 
+	,        TEMPO_DATA.BNR_L 
+	,        TEMPO_DATA.BNR_L_NAME 
+	,        TEMPO_DATA.BNR_M 
+	,        TEMPO_DATA.BNR_M_NAME 
+	,        LIMIT.LIMITMAX 
+	,        TEMPO_DATA.LIMIT_U 
+	,        TEMPO_DATA.ZEN_AVG 
+	,        TEMPO_DATA.SIBU_AVG 
+	,        TEMPO_DATA.SV_SIBU_AVG 
+	,        TEMPO_DATA.COMPANY_CD 
+	,        TEMPO_DATA.ONER_CD 
+	,        TEMPO_DATA.ONER_NAME 
+) TAISHOTEMPO 
+
+ORDER BY TAISHOTEMPO.BNR_L 
+,        TAISHOTEMPO.BNR_L_NAME 
+,        TAISHOTEMPO.BNR_M 
+,        TAISHOTEMPO.BNR_M_NAME 
+,        TAISHOTEMPO.ONER_CD 

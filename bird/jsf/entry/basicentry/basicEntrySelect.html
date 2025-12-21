@@ -1,0 +1,237 @@
+<html xmlns:m="http://www.seasar.org/maya" m:action="#{basicEntrySelectAction.initialize}" m:extends="/jsf/layout/layoutNoNavi.html">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Windows-31j" />
+<title></title>
+</head>
+<body>
+<span m:inject="f:param" m:name="layoutTitle" m:value="ベーシック研修参加申込"/>
+<span m:inject="s:insert" m:name="bodyTitleName">■ベーシック研修参加申込</span>
+
+<span m:inject="f:param" m:name="onLoadName" m:value="onLoadFunction()"/>
+<span m:inject="f:param" m:name="viewIdValue" m:value="BEN002V01"/>
+<span m:inject="s:insert" m:name="body">
+<style type="text/css">
+<!--
+table.body_table2 tr th {
+  text-align: center;
+}
+table.body_table2 tr td.align_center {
+  text-align: center;
+}
+table.body_table2 tr td.align_right {
+  text-align: right;
+}
+table.body_table2 tr.non_edit td {
+	background-color:#CCCCCC;
+}
+
+-->
+</style>
+<SCRIPT LANGUAGE="javascript">
+<!--
+
+
+function onLoadFunction() {
+
+loadScroll("basicEntryscroll",360);
+
+    //browserCheck();
+    dispSecurityInfo();
+	focusElement('basicEntrySelect');
+}
+
+function dispSecurityInfo() {
+  var f = document.forms['basicEntrySelect'];
+  var msg = f.elements['basicEntrySelect:infoMsg'].value;
+  if (f.elements['basicEntrySelect:dispSecurityInfo'].value == '1') {
+    if (msg != "") {
+      alert(msg);
+      f.elements['basicEntrySelect:btnExecute'].click();
+    }
+  }
+  return true;
+}
+
+function doAction() {
+	var f=document.forms['hanyoApplicationSelect'];
+	f.target='';
+	f.elements['hanyoApplicationSelect:__link_clicked__'].value='hanyoApplicationSelect:dummyAction';
+	f.submit();
+	return false;
+}
+function browserCheck(){
+	var an = navigator.appName;
+	var plat = navigator.platform;
+    var f = document.forms['basicEntrySelect'];
+    var msg = f.elements['basicEntrySelect:msgBrowserCheck'].value;
+    if (msg == "") {
+      return true;
+    }
+	if(an!="Microsoft Internet Explorer"){
+		f.elements['basicEntrySelect:btnExecute'].disabled = true;
+		alert(msg);
+		return false;
+	}else{
+		if(navigator.userAgent.indexOf("Opera") != -1){
+          f.elements['basicEntrySelect:btnExecute'].disabled = true;
+          alert(msg);
+          return false;
+		}
+	}
+	if(plat.indexOf("Win") == -1){
+      f.elements['basicEntrySelect:btnExecute'].disabled = true;
+      alert(msg);
+	}
+	return true;
+}
+//-->
+</SCRIPT>
+<form m:id="basicEntrySelect" m:onkeydown="return setDefaultSubmitButton('basicEntrySelect','btnExecute');">
+<input type="hidden" m:id="viewId" m:value="#{viewIdValue}"/>
+<input type="hidden" m:id="initMenuId" m:value="#{menuAction.initMenuId}"/>
+<input type="hidden" m:id="initSubMenuId" m:value="#{menuAction.initSubMenuId}"/>
+<input type="hidden" m:id="msgBrowserCheck" m:value="#{basicEntryDto.msgBrowserCheck}"/>
+<input type="hidden" m:id="infoMsg" m:value="#{basicEntryDto.msgOnerUserAlert}"/>
+<input type="hidden" m:id="dispSecurityInfo" m:value="#{basicEntryDto.dispSecurityInfo}"/>
+<input type="button" m:id="btnExecute" value="実行"
+       m:action="#{basicEntrySelectAction.regist}"
+       m:disabled="#{basicEntryDto.listBasicListDataInfo == null || basicEntryDto.selectIndex == -1 ? true : false}"
+       /><br/>
+
+<table m:rendered="#{basicEntryDto.userTypeCd == '01'}"
+       class="body_table" style="float:left; margin-top: 4px;">
+
+    <tr>
+      <th>会社&nbsp;</th>
+      <td>
+        <div class="hideArea">
+        <select class="condition_field"
+                m:id="condCompanyCd"
+                m:value="#{basicEntryDto.condCompanyCd}"
+                m:items="#{basicEntryDto.listCompany}"
+                m:itemValue="companyCd"
+                m:itemLabel="companyName">
+            <option value="">モスフードサービス</option>
+            <option value="">トモス</option>
+            <option value="">四季菜</option>
+        </select>
+        </div>
+      </td>
+      <th>対象店舗&nbsp;
+        <input type="button" value="選択" class="operation_button"
+               m:action="#{basicEntrySelectAction.callMiseForm}"/></th>
+      <td><input class="imenotuse" type="text"
+                 m:id="condMiseCd" m:value="#{basicEntryDto.condMiseCd}"
+                 m:maxlength="5" m:size="10" m:converter="#{hanyoAppCodeConverter5}"/></td>
+    </tr>
+</table>
+<div m:rendered="#{basicEntryDto.listBasicListDataInfo == null}">
+  <div align="center" style="font-weight:bold;">現在受付期間中のベーシック研修はありません。</div>
+</div>
+<div m:rendered="#{basicEntryDto.listBasicListDataInfo != null}">
+<div class="scroll_padding_head">
+<div class="scroll_hidden margin_bottom_hidden clear_float">
+ <table width="98%" class="body_table2" style="margin-top:4px;">
+    <col width="35"/>
+    <col width="260"/>
+    <col width="260"/>
+    <col width="126"/>
+    <col width="63"/>
+    <col width="63"/>
+    <col width="126"/>
+    <tr>
+      <th rowspan="3">対<br>象</th>
+      <th>ベーシック研修</th>
+      <th>臨店実習コース</th>
+      <div m:rendered="#{basicEntryDto.userTypeCd == '01'}">
+        <th colspan="2">本部：申込開始</th>
+        <th colspan="2">本部：申込終了</th>
+      </div>
+      <div m:rendered="#{basicEntryDto.userTypeCd == '02'}">
+        <th colspan="2" rowspan="2">申込開始</th>
+        <th colspan="2" rowspan="2">申込終了</th>
+      </div>
+    </tr>
+    <tr>
+      <th colspan="2">タイトル</th>
+      <div m:rendered="#{basicEntryDto.userTypeCd == '01'}">
+        <th colspan="2">オーナー：申込開始</th>
+        <th colspan="2">オーナー：申込終了</th>
+      </div>
+    </tr>
+    <tr>
+      <th colspan="2">備考</th>
+      <th>定員</th>
+      <th colspan="2">総申込人数</th>
+      <th cplspan="2">
+      	<span m:value="#{basicEntryDto.userTypeCd == '01'?'オーナー':'申込人'}"/>数</th>
+    </tr>
+  </table>
+  </div>
+  </div>
+
+<span m:converter="#{characterEncodingConverter}" m:inject="s:selectOneRadio2" m:value="#{basicEntryDto.selectIndex}">
+<div class="scroll_padding_data">
+<div id="basicEntryscroll" class="scroll_hidden font_size_14">
+<table width="98%" class="body_table2" style="border-top:0px;">
+    <col width="35"/>
+    <col width="260"/>
+    <col width="260"/>
+    <col width="126"/>
+    <col width="63"/>
+    <col width="63"/>
+    <col width="126"/>
+  <div m:inject="s:forEach" m:items="#{basicEntryDto.listBasicListDataInfo}" m:var="e" m:varindex="i">
+    <tr class="non_top_border font_size_14 #{e.editFlg == '1' ? '' : 'non_edit'}">
+      <td rowspan="3" class="align_center">
+        <input type="radio"
+               m:rendered="#{e.displayFlg == '1' || e.editFlg == '1'}"
+               m:id="indexFlg" m:onclick="setRadioIndex(#{i});" value="#{i}"/></td>
+      <td>
+        <span m:value="#{e.kaisaiDtFrom}" m:converter="#{basicEntryDateConverter1}"/> ～
+        <span m:value="#{e.kaisaiDtTo}" m:converter="#{basicEntryDateConverter1}"/></td>
+      <td>
+        <span m:value="#{e.rintenDtFrom}" m:converter="#{basicEntryDateConverter1}"/> ～
+        <span m:value="#{e.rintenDtTo}" m:converter="#{basicEntryDateConverter1}"/></td>
+      <td colspan="2" m:rowspan="#{basicEntryDto.userTypeCd == '01' ? 1 : 2}">
+        <span m:value="#{basicEntryDto.userTypeCd == '01'?e.honbuInputDtFrom:e.onerInputDtFrom}"
+              m:converter="#{basicEntryDateConverter2}"/></td>
+      <td colspan="2" m:rowspan="#{basicEntryDto.userTypeCd == '01' ? 1 : 2}">
+        <span m:value="#{basicEntryDto.userTypeCd == '01'?e.honbuInputDtTo:e.onerInputDtTo}"
+              m:converter="#{basicEntryDateConverter2}"/></td>
+    </tr>
+    <tr class="#{e.editFlg == '1' ? '' : 'non_edit'}">
+      <td colspan="2" class="align_center">
+        <span m:converter="#{characterEncodingConverter}" m:value="#{e.entryTitle}"/>&nbsp;</td>
+      <div m:rendered="#{basicEntryDto.userTypeCd == '01'}">
+        <td colspan="2">
+          <span m:value="#{e.onerInputDtFrom}" m:converter="#{basicEntryDateConverter2}"/></td>
+        <td colspan="2">
+          <span m:value="#{e.onerInputDtTo}" m:converter="#{basicEntryDateConverter2}"/></td>
+      </div>
+    </tr>
+    <tr class="#{e.editFlg == '1' ? '' : 'non_edit'}">
+      <td colspan="2"><span m:converter="#{characterEncodingConverter}" m:value="#{e.note}"/></td>
+      <td class="align_right">
+      		<span m:value="#{e.numberLimit}"
+      		      m:converter="#{basicEntryNumericConverter}"/></td>
+      <td class="align_right" colspan="2" m:rendered="#{!e.limitOnverSanka}">
+        <span m:value="#{e.somosikomiNum}" m:converter="#{basicEntryNumericConverter}"/></td>
+      <td class="align_center" colspan="2" m:rendered="#{e.limitOnverSanka}">満</td>
+      <td class="align_right">
+        <span m:converter="#{characterEncodingConverter}" m:value="#{basicEntryDto.userTypeCd == '01'?e.onerSu:e.mosikomiNum}"
+              m:converter="#{basicEntryNumericConverter}"/></td>
+    </tr>
+  </div>
+</table>
+</div>
+</div>
+</span>
+
+</div>
+
+</form>
+
+</span>
+</body>
+</html>

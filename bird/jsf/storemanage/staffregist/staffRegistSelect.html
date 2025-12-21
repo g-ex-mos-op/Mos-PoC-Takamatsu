@@ -1,0 +1,194 @@
+<html xmlns:m="http://www.seasar.org/maya" m:extends="/jsf/layout/layoutNoNavi.html" m:action="#{staffRegistSelectAction.initialize}">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Windows-31j" />
+<title>スタッフ情報登録・変更</title>
+</head>
+
+<body>
+<span m:inject="f:param" m:name="layoutTitle" m:value="スタッフ情報登録・変更"/>
+<span m:inject="s:insert" m:name="bodyTitleName">■スタッフ情報登録・変更</span>
+<span m:inject="f:param" m:name="onLoadName" m:value="load()"/>
+<span m:inject="f:param" m:name="onLoadName" m:value=""/>
+<span m:inject="f:param" m:name="viewIdValue" m:value="BSM004V01"/>
+<span m:inject="s:insert" m:name="body">
+
+<style type="text/css">
+<!--
+.col_radio{
+	width:30px;
+}
+.col_mise_name{
+	width:*px;
+}
+.col_staff_name{
+	width:130px;
+}
+.col_situation{
+	width:120px;
+}
+.col_biko{
+	width:300px;
+}
+.hideRow {
+	display:none;
+}
+-->
+</style>
+
+<script type="text/javascript">
+<!--
+
+function load(){
+loadScroll("staffregistscroll", 375);
+}
+
+function changeIncludeRetire(retireFlag) {
+	// 行表示切替
+	var rowElements = document.getElementsByTagName("tr");
+	for (var i = 0; i < rowElements.length; i++) {
+		var classes = rowElements[i].className.split(" ");
+		//classNameで退職者行の判断
+		if (classes.indexOf("row_retire2") >=0) {
+			// class指定で表示制御
+			if(retireFlag == 1){
+				rowElements[i].className = rowElements[i].className.replace("hideRow", "");
+			}
+			else if (classes.indexOf("hideRow") < 0) {
+				rowElements[i].className = rowElements[i].className+" hideRow";
+			}
+		}
+	}
+	// ラジオボタン選択状態制御
+	var radioElements = document.getElementsByTagName("input");
+	var flag = false;
+	for (var i = 0; i < radioElements.length; i++) {
+		// スタッフ選択ラジオ判定
+		if (radioElements[i].type == "radio" && radioElements[i].id.indexOf("selectStaff") >= 0) {
+			// 退職者を含む場合、先頭のスタッフを選択
+			if (retireFlag == 1) {
+				radioElements[i].checked = true;
+				flag = true;
+				break;
+			}
+			var classes = radioElements[i].className.split(" ");
+			// 退職者を含まない場合、退職者以外で先頭のスタッフを選択
+			if (classes.indexOf("row_retire2") <0) {
+				radioElements[i].checked = true;
+				flag = true;
+				break;
+			}
+		}
+	}
+	// 編集ボタン制御
+	if (document.staffRegistSelect.elements["staffRegistSelect:edit"] != null) {
+		document.staffRegistSelect.elements["staffRegistSelect:edit"].disabled = !flag;
+	}
+}
+//-->
+</script>
+
+<form m:id="staffRegistSelect" onKeyDown="return setDefaultSubmitButton('staffRegistSelect','btnExecute');">
+	<input type="hidden" m:id="initMenuId" m:value="#{menuAction.initMenuId}"/>
+	<input type="hidden" m:id="initSubMenuId" m:value="#{menuAction.initSubMenuId}"/>
+	<input type="hidden" m:id="viewId" m:value="#{viewIdValue}"/>
+	<input type="button" value="新規登録" m:action="#{staffRegistSelectAction.insert}"/>
+	<table cellspacing="0" cellpadding="0">
+	  <tr style="height:4px;"><td align="right"></td></tr>
+	  <tr>
+	  	<td>
+		<table class="body_table">
+			<tr>
+				<th>会社</th>
+				<td>
+		        	<div class="hideArea">
+					<select m:id="companyCd" m:value="#{staffRegistDto.companyCd}">
+						<option value="00">モスフードサービス</option>
+					</select>
+					</div>
+				</td>
+			<span m:rendered="#{birdUserInfo.mstUser.userTypeCd == '01'}">
+				<th>オーナー&nbsp;<input type="button" value="選択" m:action="#{staffRegistSelectAction.onerSearch}"/></th>
+				<td colspan="3">
+					<input type="text" m:id="onerCd" m:size="10" m:maxlength="5" class="imenotuse" m:value="#{staffRegistDto.onerCd}"/>
+
+				</td>
+			</span>
+				<th>退職者</th>
+				<td>
+			      	<span m:inject="s:selectOneRadio2" m:value="#{staffRegistDto.retireFlg}">
+			      	<input type="radio" value="1" onclick="changeIncludeRetire(1)"/>含む
+			      	<input type="radio" value="0" onclick="changeIncludeRetire(0)"/>含まない
+			      	</span>
+				</td>
+			</tr>
+		</table>
+		</td>
+		<td m:rendered="#{birdUserInfo.mstUser.userTypeCd == '01'}">
+			&nbsp;<input type="button" id="btnExecute" class="operation_button" value="検索" m:action="#{staffRegistSelectAction.search}" />
+		</td>
+		<td m:rendered="#{staffRegistIFDto.haveKyoikuRole}">
+			&nbsp;<input type="button" class="operation_button" value="一括ダウンロード" m:action="#{staffRegistSelectAction.downloadCsv}" />
+		</td>
+	  </tr>
+		<tr style="height:4px;"><td/></tr>
+  	</table>
+
+<div m:rendered="#{staffRegistDto.mstStaffListSize > 0}">
+	<div style="margin-bottom:4px;">
+	<input type="button" value="編集" m:id="edit"
+	       m:action="#{staffRegistSelectAction.edit}"
+	       m:disabled="#{staffRegistDto.retireFlg == '0' && !staffRegistDto.existExceptRetireStaff}"/>
+	</div>
+	<div class="scroll_padding_head">
+	<div class="scroll_hidden">
+	<table class="body_table2" style="width:98%;">
+		<tr class="header_row">
+			<th class="col_radio"></th>
+			<th class="col_mise_name">店舗名</th>
+			<th class="col_staff_name">氏名</th>
+			<th class="col_situation">活動状況</th>
+			<th class="col_biko">備考</th>
+		</tr>
+	</table>
+	</div>
+	</div>
+	<span m:converter="#{characterEncodingConverter}" m:inject="s:selectOneRadio2" m:value="#{staffRegistDto.staffIndex}">
+	<div class="scroll_padding_data">
+		<div id="staffregistscroll" class="scroll_standby">
+			<table class="body_table2" style="width:98%; border-top-width:0px;">
+				<div m:inject="s:forEach" m:items="#{staffRegistDto.mstStaffList}" m:var="e" m:varindex="i">
+				<tr class="non_top_border #{(e.situationKbn == '2' && staffRegistDto.retireFlg == '0') ? 'hideRow' : ''} row_retire#{e.situationKbn} font_size_14">
+					<td class="col_radio" align="center">
+						<input type="radio" m:id="selectStaff" m:value="#{i}"
+							        class="row_retire#{e.situationKbn}"/>
+					</td>
+					<td class="col_mise_name">
+						<span m:converter="#{characterEncodingConverter}" m:inject="h:outputText" m:value="#{e.miseNameKj}"/>
+						<span m:converter="#{characterEncodingConverter}" m:inject="h:outputText" m:value="#{e.closeDt <= birdDateInfo.sysDate?'(CLOSE)':''}"/></td>
+					<td class="col_staff_name">
+						<span m:converter="#{characterEncodingConverter}" m:inject="h:outputText" m:value="#{e.staffLNameKj}"/>　<span m:converter="#{characterEncodingConverter}" m:value="#{e.staffFNameKj}"/>
+					</td>
+					<td class="col_situation">
+						<span m:rendered="#{e.situationKbn == '0'}" style="color:red;">活動中</span>
+						<span m:rendered="#{e.situationKbn == '1'}">休職中</span>
+						<span m:rendered="#{e.situationKbn == '2'}">退職</span>
+					</td>
+					<td class="col_biko"><span m:converter="#{characterEncodingConverter}" m:inject="h:outputText" m:value="#{e.note}"/></td>
+				</tr>
+				</div>
+			</table>
+		</div>
+	</div>
+	</span>
+</div>
+
+<input type="text" m:id="dummyEnter" style="display:none"/>
+<script type="text/javascript">
+<!--
+	focusElement("staffRegistSelect");
+-->
+</script>
+</form>
+</span>
+</body>
+</html>

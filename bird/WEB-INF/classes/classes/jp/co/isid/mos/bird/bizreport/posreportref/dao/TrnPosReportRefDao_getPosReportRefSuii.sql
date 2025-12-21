@@ -1,0 +1,23 @@
+SELECT BT76.MISE_CD as MISE_CD
+   ,   SHU_SYS_TIME
+   ,   ALL_KEN
+   ,   ALL_KIN
+   ,   EAT_KEN
+   ,   TAKE_KEN
+   ,   TEL_KEN
+   ,   DRIVE_KEN
+   ,   OTHER_KEN
+   ,   EAT_KIN
+   ,   TAKE_KIN
+   ,   TEL_KIN
+   ,   DRIVE_KIN
+   ,   OTHER_KIN
+FROM   BT76SRAL BT76
+        INNER JOIN BM01TENM BM01
+                ON (BT76.COMPANY_CD = BM01.COMPANY_CD
+               AND  BT76.MISE_CD = BM01.MISE_CD) 
+WHERE  DATA_NUM <> '00'
+AND    BT76.COMPANY_CD  = /*companyCd*/'00'
+AND    BT76.MISE_CD = /*miseCd*/'2001'
+AND    SHU_SYS_DT = /*shuSysDate*/'20070202'
+ORDER BY SHU_SYS_TIME

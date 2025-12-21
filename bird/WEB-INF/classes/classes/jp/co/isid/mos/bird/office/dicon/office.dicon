@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="Shift_JIS"?>
+<!DOCTYPE components PUBLIC "-//SEASAR//DTD S2Container//EN"
+	"http://www.seasar.org/dtd/components.dtd">
+<components>
+	<include path="jp/co/isid/mos/bird/office/formregist/dicon/formRegist.dicon"/>
+	<include path="jp/co/isid/mos/bird/office/formdownload/dicon/formDownload.dicon"/>
+	<include path="jp/co/isid/mos/bird/office/bbsregist/dicon/KeijibanRegist.dicon"/>
+</components>

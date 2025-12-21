@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="Shift_JIS"?>
+<!DOCTYPE components PUBLIC
+    "-//SEASAR//DTD S2Container 2.3//EN"
+    "http://www.seasar.org/dtd/components23.dtd">
+<components namespace="seikyuBunruiKigouProperty">
+	<component name="seikyuBunruiList" class="java.util.ArrayList">
+		<initMethod name="add" >
+			<arg>
+				<component class="jp.co.isid.mos.bird.bill.common.dto.SeikyuBunruiKigouDto" >
+					<property name="bunrui">"001"</property>
+					<property name="kigou">"A"</property>
+					<property name="sort">"01"</property>
+				</component>
+			</arg>
+		</initMethod>
+		<initMethod name="add" >
+			<arg>
+				<component class="jp.co.isid.mos.bird.bill.common.dto.SeikyuBunruiKigouDto" >
+					<property name="bunrui">"002"</property>
+					<property name="kigou">"B"</property>
+					<property name="sort">"02"</property>
+				</component>
+			</arg>
+		</initMethod>
+		<initMethod name="add" >
+			<arg>
+				<component class="jp.co.isid.mos.bird.bill.common.dto.SeikyuBunruiKigouDto" >
+					<property name="bunrui">"003"</property>
+					<property name="kigou">"C"</property>
+					<property name="sort">"03"</property>
+				</component>
+			</arg>
+		</initMethod>
+		<initMethod name="add" >
+			<arg>
+				<component class="jp.co.isid.mos.bird.bill.common.dto.SeikyuBunruiKigouDto" >
+					<property name="bunrui">"004"</property>
+					<property name="kigou">"D"</property>
+					<property name="sort">"04"</property>
+				</component>
+			</arg>
+		</initMethod>
+		<initMethod name="add" >
+			<arg>
+				<component class="jp.co.isid.mos.bird.bill.common.dto.SeikyuBunruiKigouDto" >
+					<property name="bunrui">"005"</property>
+					<property name="kigou">"E"</property>
+					<property name="sort">"05"</property>
+				</component>
+			</arg>
+		</initMethod>
+		<initMethod name="add" >
+			<arg>
+				<component class="jp.co.isid.mos.bird.bill.common.dto.SeikyuBunruiKigouDto" >
+					<property name="bunrui">"006"</property>
+					<property name="kigou">"F"</property>
+					<property name="sort">"06"</property>
+				</component>
+			</arg>
+		</initMethod>
+		<initMethod name="add" >
+			<arg>
+				<component class="jp.co.isid.mos.bird.bill.common.dto.SeikyuBunruiKigouDto" >
+					<property name="bunrui">"007"</property>
+					<property name="kigou">"G"</property>
+					<property name="sort">"07"</property>
+				</component>
+			</arg>
+		</initMethod>
+		<initMethod name="add" >
+			<arg>
+				<component class="jp.co.isid.mos.bird.bill.common.dto.SeikyuBunruiKigouDto" >
+					<property name="bunrui">"008"</property>
+					<property name="kigou">"J"</property>
+					<property name="sort">"10"</property>
+				</component>
+			</arg>
+		</initMethod>
+		<initMethod name="add" >
+			<arg>
+				<component class="jp.co.isid.mos.bird.bill.common.dto.SeikyuBunruiKigouDto" >
+					<property name="bunrui">"009"</property>
+					<property name="kigou">""</property>
+					<property name="sort">""</property>
+				</component>
+			</arg>
+		</initMethod>
+		<initMethod name="add" >
+			<arg>
+				<component class="jp.co.isid.mos.bird.bill.common.dto.SeikyuBunruiKigouDto" >
+					<property name="bunrui">"010"</property>
+					<property name="kigou">"H"</property>
+					<property name="sort">"08"</property>
+				</component>
+			</arg>
+		</initMethod>
+		<initMethod name="add" >
+			<arg>
+				<component class="jp.co.isid.mos.bird.bill.common.dto.SeikyuBunruiKigouDto" >
+					<property name="bunrui">"011"</property>
+					<property name="kigou">"I"</property>
+					<property name="sort">"09"</property>
+				</component>
+			</arg>
+		</initMethod>
+		<initMethod name="add" >
+			<arg>
+				<component class="jp.co.isid.mos.bird.bill.common.dto.SeikyuBunruiKigouDto" >
+					<property name="bunrui">"012"</property>
+					<property name="kigou">"K"</property>
+					<property name="sort">"11"</property>
+				</component>
+			</arg>
+		</initMethod>
+		<initMethod name="add" >
+			<arg>
+				<component class="jp.co.isid.mos.bird.bill.common.dto.SeikyuBunruiKigouDto" >
+					<property name="bunrui">"013"</property>
+					<property name="kigou">"L"</property>
+					<property name="sort">"12"</property>
+				</component>
+			</arg>
+		</initMethod>
+		<initMethod name="add" >
+			<arg>
+				<component class="jp.co.isid.mos.bird.bill.common.dto.SeikyuBunruiKigouDto" >
+					<property name="bunrui">"014"</property>
+					<property name="kigou">"M"</property>
+					<property name="sort">"13"</property>
+				</component>
+			</arg>
+		</initMethod>
+		<initMethod name="add" >
+			<arg>
+				<component class="jp.co.isid.mos.bird.bill.common.dto.SeikyuBunruiKigouDto" >
+					<property name="bunrui">"015"</property>
+					<property name="kigou">"N"</property>
+					<property name="sort">"14"</property>
+				</component>
+			</arg>
+		</initMethod>
+
+	</component>
+</components>

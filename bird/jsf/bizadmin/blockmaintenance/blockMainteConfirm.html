@@ -1,0 +1,137 @@
+<html xmlns:m="http://www.seasar.org/maya" m:action="#{blockMainteConfirmAction.initialize}" m:extends="/jsf/layout/layoutNoNavi.html">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Windows-31j" />
+<title>ブロックメンテナンス</title>
+<span m:inject="f:param" m:name="layoutTitle" m:value="ブロックメンテナンス(確認画面)"/>
+<span m:inject="s:insert" m:name="bodyTitleName">■ブロックメンテナンス(確認画面)</span>
+<span m:inject="f:param" m:name="viewIdValue" m:value="BBA003V03"/>
+<span m:inject="f:param" m:name="onLoadName" m:value=""/>
+</head>
+<body>
+<span m:inject="s:insert" m:name="body" >
+<STYLE type="text/css">
+<!--
+table.body_table2{
+  width				: 900px;
+}
+.scroll_area {
+	height				: 382px;
+	width				: 920px;
+}
+@media print {
+}
+table.body_table2 tr td.notMoveData{
+  background-color      : #C0C0C0;
+}
+
+//-->
+</STYLE>
+<script type="text/javascript">
+<!--
+var userTypeHONBU = "01";
+var userTypeONER = "02";
+var userTypeMISE = "03";
+
+/**
+ * ウィンドウロードステータス取得処理
+ *
+ */
+function returnLoadingStatus(){
+	if(isLoadingFlgOFF()) {
+		setLoadingFlg();
+		return true;
+	}
+	return false;
+}
+/**
+ * ウィンドウロードステータス取得処理
+ *
+ */
+function isLoadingFlgOFF(){
+	return (document.conditionForm.elements['conditionForm:loadingFlg'].value != "ON");
+}
+
+
+/**
+ * ウィンドウロードフラグ設定処理
+ *
+ *
+ */
+function setLoadingFlg() {
+	document.conditionForm.elements['conditionForm:loadingFlg'].value = "ON";
+}
+/**
+ * 戻るボタン押下時処理
+ *
+ */
+function execBack(){
+	document.conditionForm.elements['conditionForm:__link_clicked__'].value='conditionForm:execBack';
+	document.conditionForm.submit();
+}
+/**
+ * 実行ボタン押下時処理
+ *
+ */
+function execRegist(){
+	document.conditionForm.elements['conditionForm:__link_clicked__'].value='conditionForm:execRegist';
+	document.conditionForm.submit();
+}
+
+//-->
+</script>
+
+<form m:id="conditionForm" onKeyDown="return setDefaultSubmitButton('conditionForm','executeBt');">
+    <input type="hidden" m:id="viewId" m:value="#{viewIdValue}" />
+	<input type="hidden" m:id="initMenuId" m:value="#{menuAction.initMenuId}"/>
+	<input type="hidden" m:id="initSubMenuId" m:value="#{menuAction.initSubMenuId}"/>
+	<input type="hidden" m:id="windowId" m:value="#{blockMainteReqDto.windowId}"/>
+	<input type="hidden" m:id="targetCompanyCd" m:value="#{blockMainteReqDto.targetCompanyCd}"/>
+	<input type="hidden" m:id="targetSibuCd" m:value="#{blockMainteReqDto.targetSibuCd}"/>
+	<input type="hidden" m:id="dispBlockCd" m:value="#{blockMainteReqDto.dispBlockCd}"/>
+	<input type="hidden" m:id="moveBlockCd" m:value="#{blockMainteReqDto.moveBlockCd}"/>
+	<input type="hidden" id="loadingFlg" value="" m:passthrough="true"/>
+
+	<a id="execBack" m:action="#{blockMainteConfirmAction.back}"/>
+	<a id="execRegist" m:action="#{blockMainteConfirmAction.regist}"/>
+	<input type="button" class="operation_button" value="戻る" onClick="execBack();" onDblClick="return false" style="margin-right:6px;"/>
+	<input type="button" class="operation_button" value="登録" onClick="execRegist();" onDblClick="return false" name="conditionForm:executeBt"/>
+
+	<table class="body_table" style="margin-top:4px;">
+		<tr>
+			<th>会社</th>
+			<td width="140px" class="width_144_s"><span m:converter="#{characterEncodingConverter}" m:value="#{blockMainteSesDto.targetCompanyName}"/></td>
+			<th>対象支部</th>
+			<td width="140px"><span m:converter="#{characterEncodingConverter}" m:value="#{blockMainteSesDto.targetSibuName}"/></td>
+		</tr>
+	</table>
+	<div style="margin-top:7px;margin-bottom:6px;font-weight:bold;">
+	※以下の内容で更新します。問題なければ「登録」ボタンをクリックして下さい。（背景色がグレーの店舗は移動後元に戻せません）</div>
+	<table class="body_table2" style="border-bottom:0px;">
+        <tr class="header_row">
+          <th width="140px">現ブロック</th>
+          <th width="140px">新ブロック</th>
+          <th width="*">店舗</th>
+        </tr>
+	</table>
+	<div class="scroll_area">
+		<table class="body_table2" style="border-top:0px;">
+			<span m:inject="s:forEach" m:items="#{blockMainteSesDto.listConfirmData}" m:var="e" m:varindex="i">
+		      <tr>
+		        <td class="#{e.moveBlockChange == false ? 'notMoveData' : ''}" width="140px">
+		          <span m:converter="#{characterEncodingConverter}" m:value="#{e.blockName}"/>
+		        </td>
+		        <td class="#{e.moveBlockChange == false ? 'notMoveData' : ''}" width="140px">
+		          <span m:converter="#{characterEncodingConverter}" m:value="#{e.moveBlockName}"/>
+		        </td>
+		        <td class="#{e.moveBlockChange == false ? 'notMoveData' : ''}" width="*">
+	          <span m:converter="#{characterEncodingConverter}" m:value="#{e.miseCd}"/>&nbsp;<span m:converter="#{characterEncodingConverter}" m:value="#{e.miseNameKj}"/><span m:converter="#{characterEncodingConverter}" m:value="#{e.closeMj}"/>
+		        </td>
+		      </tr>
+			</span>
+		</table>
+	</div>
+	<input type="text" m:id="dummyEnter" style="display:none"/>
+</form>
+</span>
+</body>
+</html>

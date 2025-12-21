@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="Shift_JIS"?>
+<!DOCTYPE components PUBLIC
+    "-//SEASAR//DTD S2Container 2.3//EN"
+    "http://www.seasar.org/dtd/components23.dtd">
+<components namespace='documentregist'>
+	<include path="dao.dicon"/>
+	<include path="jp/co/isid/mos/bird/common/dicon/birdCommon.dicon"/>
+	<include path="jp/co/isid/mos/bird/framework/dicon/birdInterceptor.dicon"/>
+	<!-- インターセプターを自動登録 -->
+	<component class="org.seasar.framework.container.autoregister.AspectAutoRegister">
+	    <property name="interceptor">birdInterceptor.actionInterceptorChain</property>
+	    <initMethod name="addClassPattern">
+	        <arg>"jp.co.isid.mos.bird"</arg>
+	        <arg>".*ActionImpl"</arg>
+	    </initMethod>
+	    <initMethod name="registerAll"/>
+	</component> 
+	<component class="org.seasar.framework.container.autoregister.AspectAutoRegister">
+	    <property name="interceptor">birdInterceptor.logicInterceptorChain</property>
+	    <initMethod name="addClassPattern">
+	        <arg>"jp.co.isid.mos.bird"</arg>
+	        <arg>".*LogicImpl"</arg>
+	    </initMethod>
+	    <initMethod name="registerAll"/>  
+	</component>
+
+	<!-- DAO -->
+	<component name="mstUserDao" class="jp.co.isid.mos.bird.framework.dao.MstUserDao">
+		<aspect>dao.interceptor</aspect>
+	</component>
+	<component name="mstCategoryInfoDao" class="jp.co.isid.mos.bird.common.dao.MstCategoryInfoDao">
+		<aspect>dao.interceptor</aspect>
+	</component>
+	<component name="mstSubCategoryInfoDao" class="jp.co.isid.mos.bird.common.dao.MstSubCategoryInfoDao">
+		<aspect>dao.interceptor</aspect>
+	</component>
+	<component name="uiBunshoInfoDao" class="jp.co.isid.mos.bird.inforegist.documentregist.dao.UIBunshoInfoDao">
+		<aspect>dao.interceptor</aspect>
+	</component>
+	<component name="codInfoLimitInfoDao" class="jp.co.isid.mos.bird.common.dao.CodInfoLimitInfoDao">
+		<aspect>dao.interceptor</aspect>
+	</component>
+
+	<!-- DTO -->
+	<component name="documentRegistConditionDto" class="jp.co.isid.mos.bird.inforegist.documentregist.dto.DocumentRegistConditionDto" instance="session"/>
+	<component name="documentRegistRegistFormDto" class="jp.co.isid.mos.bird.inforegist.documentregist.dto.DocumentRegistRegistFormDto" instance="session"/>
+	<component name="documentRegistRegistRankDto" class="jp.co.isid.mos.bird.inforegist.documentregist.dto.DocumentRegistRegistRankDto" instance="session"/>
+	<component name="publicTargetDto" class="jp.co.isid.mos.bird.common.dto.PublicTargetDto" instance="session"/>
+	<component name="publicTargetSearchDto" class="jp.co.isid.mos.bird.commonform.publictargetsearch.dto.PublicTargetSearchDto" instance="session"/>
+	<component name="pullDownMenuDto" class="jp.co.isid.mos.bird.framework.dto.PullDownMenuDto" instance="session"/>
+	<component name="documentSearchDto" class="jp.co.isid.mos.bird.commonform.documentsearch.dto.DocumentSearchDto" instance="session"/>
+	<!-- LOGIC -->
+	<component name="getCategoryLogic" class="jp.co.isid.mos.bird.common.logic.impl.GetCategoryLogicImpl"/>
+	<component name="getSubCategoryLogic" class="jp.co.isid.mos.bird.common.logic.impl.GetSubCategoryLogicImpl"/>
+	<component name="getBunshoInfoLogic" class="jp.co.isid.mos.bird.inforegist.documentregist.logic.impl.GetBunshoInfoLogicImpl"/>
+	<component name="getBunshoSortLogic" class="jp.co.isid.mos.bird.inforegist.documentregist.logic.impl.GetBunshoSortLogicImpl"/>
+	<component name="regBunshoLogic" class="jp.co.isid.mos.bird.inforegist.documentregist.logic.impl.RegBunshoLogicImpl">
+		<aspect>j2ee.requiresNewTx</aspect>
+	</component>
+	<component name="regBunshoSortLogic" class="jp.co.isid.mos.bird.inforegist.documentregist.logic.impl.RegBunshoSortLogicImpl">
+		<aspect>j2ee.requiresNewTx</aspect>
+	</component>
+	<component name="documentRegistDownloadLogic" class="jp.co.isid.mos.bird.inforegist.documentregist.logic.impl.DocumentRegistDownloadLogicImpl"/>
+	<component name="downloadLogicTenpu" class="jp.co.isid.mos.bird.inforegist.documentregist.logic.impl.DownloadTenpuLogicImpl"/>
+	<component name="downloadLogicRank" class="jp.co.isid.mos.bird.inforegist.documentregist.logic.impl.DownloadRankLogicImpl"/>
+	<component name="documentRegistDownloadKanrenLogic" class="jp.co.isid.mos.bird.inforegist.documentregist.logic.impl.DocumentRegistDownloadKanrenLogicImpl"/>
+	<component name="countBunshoLogic" class="jp.co.isid.mos.bird.inforegist.documentregist.logic.impl.CountBunshoLogicImpl"/>
+	<!--
+	<component name="getLimitKbnInfoLogic" class="jp.co.isid.mos.bird.common.logic.impl.GetLimitKbnInfoLogicImpl"/> 
+	-->
+	<component name="uploadLogic" class="jp.co.isid.mos.bird.inforegist.documentregist.logic.impl.UploadLogicImpl"/>
+	<component name="checkBunshoRegInfoLogic" class="jp.co.isid.mos.bird.inforegist.documentregist.logic.impl.CheckBunshoRegInfoLogicImpl"/>
+	<component name="getDefaultSubCategoryLogic" class="jp.co.isid.mos.bird.inforegist.documentregist.logic.impl.GetDefaultSubCategoryLogicImpl"/>
+	<component name="getKanrenBunshoInfoLogic" class="jp.co.isid.mos.bird.common.logic.impl.GetKanrenBunshoInfoLogicImpl"/>
+	<component name="regKanrenBunshoLogic" class="jp.co.isid.mos.bird.common.logic.impl.RegKanrenBunshoLogicImpl">
+		<aspect>j2ee.requiredTx</aspect>
+	</component>
+	<component name="checkKanrenBunshoLogic" class="jp.co.isid.mos.bird.inforegist.documentregist.logic.impl.CheckKanrenBunshoLogicImpl"/>
+
+	<!-- ENTITY -->
+	<component name="uiBunshoInfo" class="jp.co.isid.mos.bird.inforegist.documentregist.entity.UIBunshoInfo" instance="session"/>
+	<component class="jp.co.isid.mos.bird.framework.control.BirdUserInfo"/>
+	<component class="jp.co.isid.mos.bird.framework.control.BirdDateInfo"/>
+	
+	<!-- アクション -->
+	<component name="documentRegistConditionAction" class="jp.co.isid.mos.bird.inforegist.documentregist.action.impl.DocumentRegistConditionActionImpl" instance="request">
+		<property name="documentRegistConditionDto">documentRegistConditionDto</property>
+	</component>
+	<component name="documentRegistRegistAction" class="jp.co.isid.mos.bird.inforegist.documentregist.action.impl.DocumentRegistRegistActionImpl" instance="request">
+		<property name="documentRegistRegistFormDto">documentRegistRegistFormDto</property>
+		<property name="documentRegistConditionDto">documentRegistConditionDto</property>
+		<property name="uiBunshoInfo">uiBunshoInfo</property>
+		<property name="infoShu">"03"</property>
+	</component>
+	<component name="documentRegistConfirmAction" class="jp.co.isid.mos.bird.inforegist.documentregist.action.impl.DocumentRegistConfirmActionImpl" instance="request">
+		<property name="documentRegistRegistFormDto">documentRegistRegistFormDto</property>
+		<property name="uploadLogic">uploadLogic</property>
+	</component>
+	<component name="documentRegistRegistRankAction" class="jp.co.isid.mos.bird.inforegist.documentregist.action.impl.DocumentRegistRegistRankActionImpl" instance="request">
+		<property name="documentRegistRegistRankDto">documentRegistRegistRankDto</property>
+		<property name="documentRegistConditionDto">documentRegistConditionDto</property>
+	</component>
+	<component name="documentRegistDownloadAction" class="jp.co.isid.mos.bird.framework.action.impl.FileDownloadActionImpl" instance="request">
+		<property name="downloadDto">documentRegistConditionDto</property>
+		<property name="downloadLogic">documentRegistDownloadLogic</property>
+	</component>
+	<component name="documentRegistDownloadKanrenAction" class="jp.co.isid.mos.bird.framework.action.impl.FileDownloadActionImpl" instance="request">
+		<property name="downloadDto">documentRegistRegistFormDto</property>
+		<property name="downloadLogic">documentRegistDownloadKanrenLogic</property>
+	</component>
+	<component name="documentRegistDownloadActionTenpu" class="jp.co.isid.mos.bird.framework.action.impl.FileDownloadActionImpl" instance="request">
+		<property name="downloadDto">documentRegistConditionDto</property>
+		<property name="downloadLogic">downloadLogicTenpu</property>
+	</component>
+	<component name="documentRegistDownloadActionRank" class="jp.co.isid.mos.bird.framework.action.impl.FileDownloadActionImpl" instance="request">
+		<property name="downloadDto">documentRegistRegistRankDto</property>
+		<property name="downloadLogic">downloadLogicRank</property>
+	</component>
+	<component name="DocumentRegistCommonUploadAction" class="jp.co.isid.mos.bird.framework.action.impl.FileUploadActionImpl" instance="request"/>
+	<component name="documentregistCsvAction" class="jp.co.isid.mos.bird.framework.action.impl.CsvDownloadActionImpl" instance="request">
+		<property name="csvOutputDto">publicTargetDto</property>
+		<property name="csvOutputLogic">publicTargetMiseCsvOutputLogic</property>
+		<property name="initLogic">null</property>
+		<property name="finalLogic">null</property>
+	</component>	
+	<component name="DocumentRegistCommonDeleteAction" class="jp.co.isid.mos.bird.framework.action.impl.FileDeleteActionImpl" instance="request"/>
+
+	<!-- バリデーター -->
+	<component name="numericValidator" class="jp.co.isid.mos.bird.framework.text.validator.NumericValidator"  instance="request">
+		<arg>false</arg>
+		<arg>1</arg>
+	</component>
+	<component name="zenkakuValidator" class="jp.co.isid.mos.bird.framework.text.validator.ZenkakuValidator"  instance="request"/>
+	<component name="hankakuEisujiValidator" class="jp.co.isid.mos.bird.framework.text.validator.HankakuEisujiValidator"  instance="request"/>
+
+	<!-- コンバーター -->
+	<component name="dateConverter" class="jp.co.isid.mos.bird.framework.text.converter.DateConverter" instance="request">
+		<arg>@jp.co.isid.mos.bird.framework.util.formatter.DateFormatter@DATE_TYPE_YMD</arg>
+		<arg>@jp.co.isid.mos.bird.framework.util.formatter.DateFormatter@PATTERN_SLASH</arg>
+	</component>
+	<component name="changeLineEditConverter" class="jp.co.isid.mos.bird.framework.text.converter.ChangeLineEditConverter" instance="request"/>
+	<component name="changeLineRefConverter" class="jp.co.isid.mos.bird.framework.text.converter.ChangeLineRefConverter" instance="request"/>
+</components>

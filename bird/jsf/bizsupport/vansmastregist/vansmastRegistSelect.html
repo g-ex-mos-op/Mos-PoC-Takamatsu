@@ -1,0 +1,81 @@
+<html xmlns:m="http://www.seasar.org/maya" m:action="#{vansmastRegistSelectAction.initialize}" m:extends="/jsf/layout/layoutNoNavi.html">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Windows-31j"/>
+<title>バンズ倉庫別登録</title>
+</head>
+<body>
+<span m:inject="f:param" m:name="layoutTitle" m:value="バンズ倉庫別登録"/>
+<span m:inject="s:insert" m:name="bodyTitleName">■バンズ倉庫別登録</span>
+<span m:inject="f:param" m:name="onLoadName" m:value="bodyLoad();"/>
+<span m:inject="f:param" m:name="viewIdValue" m:value="BBS029V01"/>
+<div m:inject="s:insert" m:name="body">
+
+<script type="text/javascript">
+<!--
+// 初期設定
+function bodyLoad() {
+	focusElement("vansmastRegistSelectForm");
+}
+
+function enforcement(){
+	document.forms['vansmastRegistSelectForm'].elements['vansmastRegistSelectForm:__link_clicked__'].value='vansmastRegistSelectForm:enforcement';
+	document.forms['vansmastRegistSelectForm'].submit();
+	return false;
+}
+
+-->
+</script>
+<form m:id="vansmastRegistSelectForm">
+	<input type="hidden" m:id="viewId" m:value="#{viewIdValue}"/>
+	<input type="hidden" m:id="initMenuId" m:value="#{menuAction.initMenuId}"/>
+	<input type="hidden" m:id="initSubMenuId" m:value="#{menuAction.initSubMenuId}"/>
+	<input type="hidden" m:id="windowId" m:value="#{vansmastRegistDto.windowId}"/>
+	<a m:id="enforcement" m:action="#{vansmastRegistSelectAction.enforcement}"/>
+										
+	<table width = "100%">
+		<tr>
+			<td>
+				<!-- タブ　後の仕様でシートが増える場合がある-->
+				<table cellspacing="0" cellpadding="0">
+					<tr>						
+						<td width="150px" >
+							<div class="body_active_cell">バンズ倉庫別登録</div>
+						</td>
+					</tr>
+				</table>
+				<table width="98%" cellspacing="0" cellpadding="0">
+					<tr style="line-height:30%;">
+						<td class="body_caption">
+							<br/>
+						</td>
+					</tr>
+				</table>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<!-- 条件部プルダウン(本部用) -->
+				<table class="body_table">
+				<tr>
+					<th width="70px">対象倉庫</th>
+					<td>
+						<div class="hideArea">
+							<select class="condition_field" 
+									m:value="#{vansmastRegistDto.kanriMoto}"
+									m:items="#{vansmastRegistDto.uIVansSokoList}"
+									m:itemValue="kanriMoto"
+									m:itemLabel="sokoNameKj"/>
+						</div>
+					</td>
+					<td>
+						<input type="button" value="実行" class="operation_button" m:onclick="return enforcement()" onDblClick="return false"/>
+					</td>
+				</tr>
+				</table>
+			</td>		
+		</tr>
+	</table>
+</form>
+</div>
+</body>
+</html>

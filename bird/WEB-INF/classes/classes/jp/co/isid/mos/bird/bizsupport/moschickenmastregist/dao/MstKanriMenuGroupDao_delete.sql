@@ -1,0 +1,2 @@
+DELETE FROM BM40CMGP
+WHERE CKANRI_NO = /*ckanriNo*/''

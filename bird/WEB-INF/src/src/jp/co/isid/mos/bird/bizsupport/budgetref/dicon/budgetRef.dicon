@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="Shift_JIS"?>
+<!DOCTYPE components PUBLIC "-//SEASAR//DTD S2Container 2.3//EN"
+    "http://www.seasar.org/dtd/components23.dtd">
+<components namespace="budgetRef">
+    <include path="dao.dicon"/>
+	<include path="jp/co/isid/mos/bird/framework/dicon/birdInterceptor.dicon"/>
+
+	<component
+	  class="org.seasar.framework.container.autoregister.AspectAutoRegister">
+	    <property name="interceptor">birdInterceptor.actionInterceptorChain</property>
+	    <initMethod name="addClassPattern">
+	        <arg>"jp.co.isid.mos.bird"</arg>
+	        <arg>".*ActionImpl"</arg>
+	    </initMethod>
+	    <initMethod name="registerAll"/>
+	</component> 
+	<component
+	  class="org.seasar.framework.container.autoregister.AspectAutoRegister">
+	    <property name="interceptor">birdInterceptor.logicInterceptorChain</property>
+	    <initMethod name="addClassPattern">
+	        <arg>"jp.co.isid.mos.bird"</arg>
+	        <arg>".*LogicImpl"</arg>
+	    </initMethod>
+	    <initMethod name="registerAll"/>
+	</component>
+	<!--DTO-->
+	<component name="pullDownMenuDto" class="jp.co.isid.mos.bird.framework.dto.PullDownMenuDto" autoBinding="none" instance="session"/>
+	<component name="budgetRefCondDto" class="jp.co.isid.mos.bird.bizsupport.budgetref.dto.BudgetRefCondDto" autoBinding="none" instance="session"/>
+	<component name="budgetRefResultDto" class="jp.co.isid.mos.bird.bizsupport.budgetref.dto.BudgetRefResultDto" autoBinding="none" instance="session"/>
+	<component name="budgetRefYMDDto" class="jp.co.isid.mos.bird.bizsupport.budgetref.dto.BudgetRefYMDto" autoBinding="none" instance="session"/>
+	<!-- DAO -->
+	<component name="trnBudgetRegistDummyDao" class="jp.co.isid.mos.bird.bizsupport.budgetref.dao.TrnBudgetRegistDummyDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="budgedRefCodCompanyDao" class="jp.co.isid.mos.bird.bizsupport.common.dao.CodCompanyDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<!--LOGIC-->
+	<component name="budgetRefCondNendoLogic" class="jp.co.isid.mos.bird.bizsupport.budgetref.logic.impl.CondNendoLogicImpl"/>
+	<component name="budgetRefGetUserCompanyLogic" class="jp.co.isid.mos.bird.bizsupport.common.logic.impl.GetUserCompanyLogicImpl"/>
+	<component name="budgetRefInfoLogic" class="jp.co.isid.mos.bird.bizsupport.budgetref.logic.impl.BudgetRefInfoLogicImpl"/>
+	<component name="budgetRefInfoCsvLogic" class="jp.co.isid.mos.bird.bizsupport.budgetref.logic.impl.BudgetRefInfoCsvLogicImpl"/>
+	<component name="budgetRefInfoMesaiCsvLogic" class="jp.co.isid.mos.bird.bizsupport.budgetref.logic.impl.BudgetRefInfoMeisaiCsvLogicImpl"/>
+	<!-- Action -->
+	<component name="budgetRefConditionAction" class="jp.co.isid.mos.bird.bizsupport.budgetref.action.impl.ConditionActionImpl" instance="request"/>
+	<component name="budgetRefCsvAction" class="jp.co.isid.mos.bird.framework.action.impl.CsvOutputActionImpl" instance="request">
+		<property name="csvOutputDto">budgetRefResultDto</property>
+		<property name="csvOutputLogic">budgetRefInfoCsvLogic</property>
+	</component>
+	<component name="budgetRefMesaiCsvAction" class="jp.co.isid.mos.bird.framework.action.impl.CsvOutputActionImpl" instance="request">
+		<property name="csvOutputDto">budgetRefResultDto</property>
+		<property name="csvOutputLogic">budgetRefInfoMesaiCsvLogic</property>
+	</component>
+</components>

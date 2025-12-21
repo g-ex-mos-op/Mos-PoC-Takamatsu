@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="Shift_JIS"?>
+<!DOCTYPE components PUBLIC "-//SEASAR2.1//DTD S2Container//EN"
+	"http://www.seasar.org/dtd/components21.dtd">
+<components namespace="miseLumpExtract">
+    <include path="dao.dicon"/>
+    <include path="jp/co/isid/mos/bird/common/dicon/birdCommon.dicon"/>
+	<include path="jp/co/isid/mos/bird/framework/dicon/birdInterceptor.dicon"/>
+
+    <!-- インターセプターを自動登録 -->
+	<component class="org.seasar.framework.container.autoregister.AspectAutoRegister">
+	    <property name="interceptor">birdInterceptor.actionInterceptorChain</property>
+	    <initMethod name="addClassPattern">
+	        <arg>"jp.co.isid.mos.bird"</arg>
+	        <arg>".*ActionImpl"</arg>
+	    </initMethod>
+	    <initMethod name="registerAll"/>
+	</component> 
+	<component class="org.seasar.framework.container.autoregister.AspectAutoRegister">
+	    <property name="interceptor">birdInterceptor.logicInterceptorChain</property>
+	    <initMethod name="addClassPattern">
+	        <arg>"jp.co.isid.mos.bird"</arg>
+	        <arg>".*LogicImpl"</arg>
+	    </initMethod>
+	    <initMethod name="registerAll"/>  
+	</component>
+    
+  	<!-- DAO -->
+  	<component name="codCompanyJohoDao" class="jp.co.isid.mos.bird.storeinfo.miselumpextract.dao.CodCompanyJohoDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+  	<component name="mstChintaiDao" class="jp.co.isid.mos.bird.storeinfo.miselumpextract.dao.MstChintaiDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+  	<component name="mstEventStatusDao" class="jp.co.isid.mos.bird.storeinfo.miselumpextract.dao.MstEventStatusDao">
+  	    <aspect>dao.interceptor</aspect>
+	</component>
+    <component name="mstHDCDao" class="jp.co.isid.mos.bird.storeinfo.miselumpextract.dao.MstHDCDao">
+  	    <aspect>dao.interceptor</aspect>
+	</component>  	
+    <component name="mstInsentiveDao" class="jp.co.isid.mos.bird.storeinfo.miselumpextract.dao.MstInsentiveDao">
+  	  	<aspect>dao.interceptor</aspect>
+	</component>
+    <component name="mstMiseYobiDao" class="jp.co.isid.mos.bird.storeinfo.miselumpextract.dao.MstMiseYobiDao">
+  	  	<aspect>dao.interceptor</aspect>
+	</component>
+    <component name="mstStaffDao" class="jp.co.isid.mos.bird.storeinfo.miselumpextract.dao.MstStaffDao">
+  	    <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="trnURLDao" class="jp.co.isid.mos.bird.storeinfo.miselumpextract.dao.TrnURLDao">
+  	    <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="codSibuDao" class="jp.co.isid.mos.bird.commonform.common.dao.CodSibuDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="uiTakuhaiMijissiDao" class="jp.co.isid.mos.bird.storeinfo.miselumpextract.dao.UITakuhaiMijissiDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="miseLumpExtractGasAirconDao" class="jp.co.isid.mos.bird.storeinfo.miselumpextract.dao.GasAirconDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+
+    <!-- LOGIC -->
+    <component name="companyJohoLogic" class="jp.co.isid.mos.bird.storeinfo.miselumpextract.logic.impl.CompanyJohoLogicImpl"/>
+    <component name="miseLumpExtractLogic" class="jp.co.isid.mos.bird.storeinfo.miselumpextract.logic.impl.MiseLumpExtractLogicImpl"/>
+	<component name="miseLumpExtractCsvLogic" class="jp.co.isid.mos.bird.storeinfo.miselumpextract.logic.impl.MiseLumpExtractCsvLogicImpl"/>
+	<component name="getSibuLogic" class="jp.co.isid.mos.bird.commonform.common.logic.impl.GetSibuLogicImpl"/>
+	
+	<!-- DTO -->
+	<component name="pullDownMenuDto" class="jp.co.isid.mos.bird.framework.dto.PullDownMenuDto" autoBinding="none" instance="session"/>
+	<component name="miseLumpExtractDto" class="jp.co.isid.mos.bird.storeinfo.miselumpextract.dto.MiseLumpExtractDto" instance="session"/>
+
+	<!-- OTHER -->
+	<component class="jp.co.isid.mos.bird.framework.control.BirdUserInfo" instance="session"/>
+	<component class="jp.co.isid.mos.bird.framework.control.BirdDateInfo" instance="session"/>
+
+	<!-- ACTION -->
+	<component name="miseLumpExtractAction" class="jp.co.isid.mos.bird.storeinfo.miselumpextract.action.impl.MiseLumpExtractActionImpl" instance="request">
+		<property name="miseLumpExtractDto">miseLumpExtractDto</property>
+	</component>
+	<component name="miseLumpExtractCsvOutputAction" class="jp.co.isid.mos.bird.framework.action.impl.CsvOutputActionImpl" instance="request">
+		<property name="csvOutputDto">miseLumpExtractDto</property>
+		<property name="csvOutputLogic">miseLumpExtractCsvLogic</property>
+	</component>
+
+	<!-- CONVERTER -->
+
+</components>

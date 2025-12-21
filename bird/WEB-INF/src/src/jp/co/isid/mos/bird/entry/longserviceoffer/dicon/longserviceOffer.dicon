@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE components PUBLIC "-//SEASAR//DTD S2Container 2.3//EN"
+	"http://www.seasar.org/dtd/components23.dtd">
+<components namespace="longserviceoffer">
+	<include path="dao.dicon"/>
+	<include path="jp/co/isid/mos/bird/common/dicon/birdCommon.dicon"/>
+	<include path="jp/co/isid/mos/bird/framework/dicon/birdInterceptor.dicon"/>
+	
+	<!-- インターセプターを自動登録 -->
+	<component class="org.seasar.framework.container.autoregister.AspectAutoRegister">
+	    <property name="interceptor">birdInterceptor.actionInterceptorChain</property>
+	    <initMethod name="addClassPattern">
+	        <arg>"jp.co.isid.mos.bird"</arg>
+	        <arg>".*ActionImpl"</arg>
+	    </initMethod>
+	    <initMethod name="registerAll"/>
+	</component> 
+	<component class="org.seasar.framework.container.autoregister.AspectAutoRegister">
+	    <property name="interceptor">birdInterceptor.logicInterceptorChain</property>
+	    <initMethod name="addClassPattern">
+	        <arg>"jp.co.isid.mos.bird"</arg>
+	        <arg>".*LogicImpl"</arg>
+	    </initMethod>
+	    <initMethod name="registerAll"/>  
+	</component>
+
+	<!-- DTO -->
+	<component name="pullDownMenuDto" class="jp.co.isid.mos.bird.framework.dto.PullDownMenuDto" autoBinding="none" instance="session"/>
+	<component name="eventListDto" class="jp.co.isid.mos.bird.entry.eventlist.dto.EventListDto" autoBinding="none" instance="session"/>
+	<component name="entryStaffSearchDto" class="jp.co.isid.mos.bird.entry.commonform.entrystaffsearch.dto.EntryStaffSearchDto" autoBinding="none" instance="session"/>
+	<component name="nationalEntryDto" class="jp.co.isid.mos.bird.entry.nationalentry.dto.NationalEntryDto" autoBinding="none" instance="session"/>	
+	<component name="longserviceOfferDto" class="jp.co.isid.mos.bird.entry.longserviceoffer.dto.LongserviceOfferDto" instance="session"/>
+	<component name="longserviceOfferCommonDto" class="jp.co.isid.mos.bird.entry.longserviceoffer.dto.CommonDto" autoBinding="none" instance="session"/>	
+	
+	<!-- DAO -->
+	<component name="uIOfferMstDao" class="jp.co.isid.mos.bird.entry.longserviceoffer.dao.UIOfferMstDao">
+		<aspect>dao.interceptor</aspect>
+	</component>
+	<component name="uIOfferEntryDao" class="jp.co.isid.mos.bird.entry.longserviceoffer.dao.UIOfferEntryDao">
+		<aspect>dao.interceptor</aspect>
+	</component>
+	<component name="uIOfferMiseInfoDao" class="jp.co.isid.mos.bird.entry.longserviceoffer.dao.UIOfferMiseInfoDao">
+		<aspect>dao.interceptor</aspect>
+	</component>
+	<component name="uIOfferOnerInfoDao" class="jp.co.isid.mos.bird.entry.longserviceoffer.dao.UIOfferOnerInfoDao">
+		<aspect>dao.interceptor</aspect>
+	</component>
+	<component name="uiOfferEntryStateDao" class="jp.co.isid.mos.bird.entry.longserviceoffer.dao.UIOfferEntryStateDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+
+	<!-- LOGIC -->
+	<component name="searchOfferMiseLogic" class="jp.co.isid.mos.bird.entry.longserviceoffer.logic.impl.SearchOfferMiseLogicImpl"/>
+	<component name="searchOfferLogic" class="jp.co.isid.mos.bird.entry.longserviceoffer.logic.impl.SearchOfferLogicImpl"/>
+	<component name="checkOfferLogic" class="jp.co.isid.mos.bird.entry.longserviceoffer.logic.impl.CheckOfferLogicImpl"/>
+	<component name="updateOfferLogic" class="jp.co.isid.mos.bird.entry.longserviceoffer.logic.impl.UpdateOfferLogicImpl">
+		<aspect>j2ee.requiresNewTx</aspect>
+	</component>
+	<component name="insertOfferLogic" class="jp.co.isid.mos.bird.entry.longserviceoffer.logic.impl.InsertOfferLogicImpl"/>
+	
+	<!-- ACTION -->
+	<component name="longserviceOfferEditAction" class="jp.co.isid.mos.bird.entry.longserviceoffer.action.impl.LongserviceOfferEditActionImpl" instance="request"/>
+	<component name="longserviceOfferConfirmAction" class="jp.co.isid.mos.bird.entry.longserviceoffer.action.impl.LongserviceOfferConfirmActionImpl" instance="request"/>
+
+	<!-- CONVERTER -->
+	<component name="dateConverter" class="jp.co.isid.mos.bird.framework.text.converter.DateConverter" instance="request">
+		<arg>@jp.co.isid.mos.bird.framework.util.formatter.DateFormatter@DATE_TYPE_YMD</arg>
+		<arg>@jp.co.isid.mos.bird.framework.util.formatter.DateFormatter@PATTERN_SLASH</arg>
+	</component>
+	<component name="dateConverterWeek" class="jp.co.isid.mos.bird.framework.text.converter.DateConverter" instance="request">
+		<arg>@jp.co.isid.mos.bird.framework.util.formatter.DateFormatter@DATE_TYPE_YMD</arg>
+		<arg>@jp.co.isid.mos.bird.framework.util.formatter.DateFormatter@PATTERN_DAY_OF_WEEK</arg>
+	</component>
+</components>

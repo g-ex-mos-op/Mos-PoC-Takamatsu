@@ -1,0 +1,116 @@
+<html xmlns:m="http://www.seasar.org/maya">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Windows-31j" />
+<title>ヘルプ</title>
+</head>
+<body>
+<span m:inject="s:insert">
+<style type="text/css">
+<!--
+/* ナビエリア2の設定 */
+table.navi2{
+  width:150px;
+}
+table.navi2 tr td{
+  border                : solid 1px #c0c0c0;
+  text-align			: left;
+}
+table.navi2 tr td.menu{
+  background-color      : #C0E0F0;
+  font-weight           : bold;
+}
+table.navi2 tr td.submenu{
+  background-color      : #FFFFCC;
+}
+.submenu td {
+	padding-left		: 20px;
+  	font-weight        	: normal;
+}
+-->
+</style>
+<form m:id="view">
+ <input type="hidden" m:id="viewid" m:value="#{userMenuDto.viewId}"/>
+ <input type="hidden" m:id="menuid" m:value="#{userMenuDto.menuId}"/>
+</form>
+<table class="navi2" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="menu">
+    <a href="../../../help/KihonSosa.pdf?#{userMenuDto.helpVersion}" target="iframeObj">基本操作</a>
+    </td>
+  </tr>
+  <tr>
+    <td class="menu">
+    <a href="../../../jsf/sysadmin/help/Question.html?#{userMenuDto.helpVersion}" target="iframeObj">よくあるご質問</a>
+    </td>
+  </tr>
+  <tr>
+    <td class="menu">
+    <a href="../../../jsf/sysadmin/help/Word.html?#{userMenuDto.helpVersion}" target="iframeObj">用語集</a>
+    </td>
+  </tr>
+</table>
+<br>
+<table width="150px" class="navi_caption" cellspacing="0" cellpadding="0">
+  <tr>
+    <td>
+      画面マニュアル
+    </td>
+  </tr>
+</table>
+<table class="navi2" cellspacing="0" cellpadding="0">
+  <span m:inject="s:forEach" m:items="#{userMenuDto.userHelpMenuList}" m:var="e" m:varIndex="i">
+	  <tr>
+	    <td class="menu">
+	    <a href="#" onclick="changeMenu('#{e.menuId}');"><span m:converter="#{characterEncodingConverter}" m:value="#{e.menuName}"/></a>
+	    </td>
+	  </tr>
+	  <span m:inject="s:forEach" m:items="#{userMenuDto.userHelpList}" m:var="e2" m:varIndex="j">
+		  <tr m:rendered="#{e.menuId == e2.menuId}" name="#{e.menuId}" class="submenu">
+			<td class="navi2_field2">
+			<div m:rendered="#{e2.fileCheck == true}">
+			<span m:rendered="#{'BBR016'==e2.viewId || 'BBR002'==e2.viewId}">
+				<a href="../../../help/#{e2.viewId}_#{birdUserInfo.mstUser.userTypeCd}.pdf?#{userMenuDto.helpVersion}" target="iframeObj"><span m:converter="#{characterEncodingConverter}" m:value="#{e2.subMenuName}"/></a>
+			</span>
+			<span m:rendered="#{'BBR016'!=e2.viewId && 'BBR002'!=e2.viewId}">
+			<a href="../../../help/#{e2.viewId}.pdf?#{userMenuDto.helpVersion}" target="iframeObj"><span m:converter="#{characterEncodingConverter}" m:value="#{e2.subMenuName}"/></a>
+			</span>
+			</div>
+			<div m:rendered="#{e2.fileCheck == false}">
+			<span m:converter="#{characterEncodingConverter}" m:value="#{e2.subMenuName}"/>
+			</div>
+			</td>
+	      </tr>
+	  </span>
+  </span>
+
+  <script type="text/javascript">
+		function changeMenu(selectMenu) {
+		    array = document.getElementsByTagName("tr");
+		    for (var i = 0; i < array.length; i++) {
+		        if (array[i].className == "submenu") {
+			        if (selectMenu == array[i].name || array[i].outerHTML.indexOf('name="' + selectMenu +'"') > -1) {
+			            array[i].style.display = "";
+			        }else{
+						 array[i].style.display = "none";
+					}
+				}
+		    }
+		}
+
+		var ldwViewId = document.view.elements["view:viewid"].value;
+		var ldwMenuId = document.view.elements["view:menuid"].value;
+		array = document.getElementsByTagName("tr");
+	    for (var i = 0; i < array.length; i++) {
+	    	if (array[i].className == "submenu") {
+		        if (ldwViewId != "BPO001" && ldwViewId != null && (ldwMenuId == array[i].name || array[i].outerHTML.indexOf('name="' + ldwMenuId +'"') > -1)) {
+		            array[i].style.display = "";
+		        }else{
+					 array[i].style.display = "none";
+				}
+	    	}
+	    }
+  </script>
+</table>
+</span>
+</body>
+</html>

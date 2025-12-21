@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="Shift_JIS"?>
+<!DOCTYPE components PUBLIC "-//SEASAR//DTD S2Container//EN"
+	"http://www.seasar.org/dtd/components.dtd">
+<components>
+	<include path="jp/co/isid/mos/bird/storeinfo/miseref/dicon/miseRef.dicon"/>
+	<include path="jp/co/isid/mos/bird/storeinfo/onerref/dicon/ownerinforeference.dicon"/>
+	<include path="jp/co/isid/mos/bird/storeinfo/miselumpextract/dicon/miseLumpExtract.dicon"/>
+	<include path="jp/co/isid/mos/bird/storeinfo/eiseiref/dicon/eiseiRef.dicon"/>
+	<include path="jp/co/isid/mos/bird/storeinfo/miseinformationextract/dicon/miseInformationExtract.dicon" />
+</components>

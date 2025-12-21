@@ -1,0 +1,2 @@
+DELETE FROM BM41CMNU 
+WHERE CKANRI_NO = /*ckanriNo*/''

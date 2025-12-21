@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="Shift_JIS"?>
+<!DOCTYPE components PUBLIC "-//SEASAR2.1//DTD S2Container//EN"
+"http://www.seasar.org/dtd/components21.dtd">
+<components>
+	<component name="proMap" class="java.util.HashMap">
+
+        <initMethod name="put">
+            <arg>"filePathHelp"</arg>
+            <arg>"C:\\eclipse4.5\\pleiades\\eclipse\\data\\file\\help"</arg>
+        </initMethod>
+
+	    <initMethod name="put">
+            <arg>"upLoadPath"</arg>
+            <arg>"C:\\eclipse4.5\\pleiades\\eclipse\\data\\upfile"</arg>
+        </initMethod>
+
+	    <initMethod name="put">
+            <arg>"downLoadPath"</arg>
+            <arg>"C:\\eclipse4.5\\pleiades\\eclipse\\data\\file"</arg>
+        </initMethod>
+
+	    <initMethod name="put">
+            <arg>"imageTempPath"</arg>
+            <arg>"C:\\eclipse4.5\\workspace\\bird\\images\\jfreechart"</arg>
+        </initMethod>
+
+        <initMethod name="put">
+            <arg>"imageURL"</arg>
+            <arg>"/bird/images/jfreechart"</arg>
+        </initMethod>
+
+	    <initMethod name="put">
+            <arg>"filePathRenraku"</arg>
+            <arg>"C:\\eclipse4.5\\pleiades\\eclipse\\data\\file\\renraku"</arg>
+        </initMethod>
+	    <initMethod name="put">
+            <arg>"filePathTutatu"</arg>
+            <arg>"C:\\eclipse4.5\\pleiades\\eclipse\\data\\file\\tutatu"</arg>
+        </initMethod>
+	    <initMethod name="put">
+            <arg>"filePathBunsho"</arg>
+            <arg>"C:\\eclipse4.5\\pleiades\\eclipse\\data\\file\\bunsho"</arg>
+        </initMethod>
+	    <initMethod name="put">
+            <arg>"filePathOshirase"</arg>
+            <arg>"C:\\eclipse4.5\\pleiades\\eclipse\\data\\file\\oshirase"</arg>
+        </initMethod>
+	    <initMethod name="put">
+            <arg>"filePathForm"</arg>
+            <arg>"C:\\eclipse4.5\\pleiades\\eclipse\\data\\file\\form"</arg>
+        </initMethod>
+	    <initMethod name="put">
+            <arg>"filePathKeijiban"</arg>
+            <arg>"C:\\eclipse4.5\\pleiades\\eclipse\\data\\file\\keijiban"</arg>
+        </initMethod>
+	    <initMethod name="put">
+            <arg>"filePathHelp"</arg>
+            <arg>"C:\\eclipse4.5\\workspace\\bird\\help"</arg>
+        </initMethod>
+	    <initMethod name="put">
+            <arg>"filePathSeikyu"</arg>
+            <arg>"C:\\eclipse4.5\\pleiades\\eclipse\\data\\file\\seikyu"</arg>
+        </initMethod>
+	    <initMethod name="put">
+            <arg>"filePathSeikyuNohinsho"</arg>
+            <arg>"C:\\eclipse4.5\\pleiades\\eclipse\\data\\file\\seikyuNohinsho"</arg>
+        </initMethod>
+        <initMethod name="put">
+            <arg>"filePathMss"</arg>
+            <arg>"C:\\eclipse4.5\\pleiades\\eclipse\\data\\file\\msp"</arg>
+        </initMethod>
+	    <initMethod name="put">
+            <arg>"upLoadPathMss"</arg>
+            <arg>"C:\\eclipse4.5\\pleiades\\eclipse\\data\\upfile\\msp"</arg>
+        </initMethod>
+	    <initMethod name="put">
+            <arg>"filePathPos"</arg>
+            <arg>"C:\\eclipse4.5\\pleiades\\eclipse\\data\\file\\pos"</arg>
+        </initMethod>
+
+	    <initMethod name="put">
+            <arg>"pdfSokuhoFilePath"</arg>
+            <arg>"C:\\eclipse4.5\\pleiades\\eclipse\\data\\file\\uriage_report"</arg>
+        </initMethod>
+
+        <initMethod name="put">
+            <arg>"filePathAnshin"</arg>
+            <arg>"C:\\eclipse4.5\\pleiades\\eclipse\\data\\file\\anshin"</arg>
+        </initMethod>
+        <initMethod name="put">
+            <arg>"filePathEisei"</arg>
+            <arg>"C:\\eclipse4.5\\pleiades\\eclipse\\data\\file\\eisei"</arg>
+        </initMethod>
+    </component>
+
+    <component autoBinding="auto" name="fileProperty"
+               class="jp.co.isid.mos.bird.framework.control.PropertyInjection">
+         <arg>proMap</arg>
+    </component>
+</components>

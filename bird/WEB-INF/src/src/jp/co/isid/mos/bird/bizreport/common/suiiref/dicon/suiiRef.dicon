@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="Shift_JIS"?>
+<!DOCTYPE components PUBLIC "-//SEASAR//DTD S2Container 2.3//EN" "http://www.seasar.org/dtd/components23.dtd">
+<!--売上推移表系dicon-->
+<components namespace="suiiRef">
+	<include path="dao.dicon"/>
+	<include path="jp/co/isid/mos/bird/common/dicon/birdCommon.dicon"/>
+	<include path="jp/co/isid/mos/bird/framework/dicon/birdInterceptor.dicon"/>
+	<include path="jp/co/isid/mos/bird/bizreport/common/dicon/bizreportCommon.dicon" />
+	<!-- インターセプターを自動登録 -->
+	<component class="org.seasar.framework.container.autoregister.AspectAutoRegister">
+	    <property name="interceptor">birdInterceptor.logicInterceptorChain</property>
+	    <initMethod name="addClassPattern">
+	        <arg>"jp.co.isid.mos.bird"</arg>
+	        <arg>".*LogicImpl"</arg>
+	    </initMethod>
+	    <initMethod name="registerAll"/>  
+	</component>
+	<!--DTO-->
+	<component name="suiiRefConditionDto" class="jp.co.isid.mos.bird.bizreport.common.suiiref.dto.SuiiRefConditionDto" instance="session">
+		<property name="listCompany">new java.util.ArrayList(0)</property>
+		<property name="listBlock">new java.util.ArrayList(0)</property>
+		<property name="listTaishoKikan">new java.util.ArrayList(0)</property>
+		<property name="listTenpoShubetu">new java.util.ArrayList(0)</property>
+	</component>
+	<component name="suiiRefSearchParameterDto" class="jp.co.isid.mos.bird.bizreport.common.suiiref.dto.SuiiRefParameterDto" instance="request">
+		<property name="listTaishoJoken">new java.util.ArrayList(0)</property>
+	</component>
+	<component name="suiiRefResultParameterDto" class="jp.co.isid.mos.bird.bizreport.common.suiiref.dto.SuiiRefParameterDto" instance="request">
+		<property name="listTaishoJoken">new java.util.ArrayList(0)</property>
+	</component>
+	<!--LOGIC-->
+	<component name="suiiRefConditionLogic" class="jp.co.isid.mos.bird.bizreport.common.suiiref.logic.impl.ConditionLogicImpl">
+		<property name="companyListLogic">bizreportCommon.companyListLogic</property>
+		<property name="getHyojiTaishoLogic">birdCommon.getHyojiTaishoLogic</property>
+		<property name="accessCtlCheckLogic">birdInterceptor.accessCtlCheckLogic</property>
+	</component>
+	<!-- CONVERTER -->
+	<component name="suiiRefDateCnvtYYMM" class="jp.co.isid.mos.bird.framework.text.converter.DateConverter" instance="request">
+		<arg>@jp.co.isid.mos.bird.framework.util.formatter.DateFormatter@DATE_TYPE_YM</arg>
+		<arg>"yy/MM"</arg>
+	</component>
+	<component name="suiiRefDateCnvtYYYYMM" class="jp.co.isid.mos.bird.framework.text.converter.DateConverter" instance="request">
+		<arg>@jp.co.isid.mos.bird.framework.util.formatter.DateFormatter@DATE_TYPE_YM</arg>
+		<arg>@jp.co.isid.mos.bird.framework.util.formatter.DateFormatter@PATTERN_MONTH_SLASH</arg>
+	</component>
+	<component name="suiiRefDateConverterDE" class="jp.co.isid.mos.bird.framework.text.converter.DateConverter" instance="request">
+		<arg>@jp.co.isid.mos.bird.framework.util.formatter.DateFormatter@DATE_TYPE_YMD</arg>
+		<arg>"dd'日('E')'"</arg>
+	</component>
+</components>

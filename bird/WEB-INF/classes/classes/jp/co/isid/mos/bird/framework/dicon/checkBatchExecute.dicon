@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="Shift_JIS"?>
+<!DOCTYPE components PUBLIC "-//SEASAR2.1//DTD S2Container//EN"
+	"http://www.seasar.org/dtd/components21.dtd">
+<components>
+	<include path="dao.dicon"/>
+	<component class="jp.co.isid.mos.bird.framework.dao.CtlOnlineUsedTblDao">
+		<aspect>dao.interceptor</aspect>
+	</component>	
+	<component name="checkBatchExecute" class="jp.co.isid.mos.bird.framework.logic.impl.CheckBatchExecuteLogicImpl" />	
+
+	<component name="batchCheckInterceptor" class="jp.co.isid.mos.bird.framework.interceptor.BatchCheckInterceptor" />
+	
+</components>

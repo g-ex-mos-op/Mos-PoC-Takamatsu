@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="Shift_JIS"?>
+<!DOCTYPE components PUBLIC "-//SEASAR//DTD S2Container 2.3//EN"
+    "http://www.seasar.org/dtd/components23.dtd">
+<components namespace="proceedsManageGepo">
+    <include path="dao.dicon"/>
+	<include path="jp/co/isid/mos/bird/framework/dicon/birdInterceptor.dicon"/>
+	<include path="jp/co/isid/mos/bird/common/dicon/birdCommon.dicon"/>
+	<include path="jp/co/isid/mos/bird/storeinfo/miseref/dicon/miseRef.dicon"/>
+
+	<component
+	  class="org.seasar.framework.container.autoregister.AspectAutoRegister">
+	    <property name="interceptor">birdInterceptor.actionInterceptorChain</property>
+	    <initMethod name="addClassPattern">
+	        <arg>"jp.co.isid.mos.bird"</arg>
+	        <arg>".*ActionImpl"</arg>
+	    </initMethod>
+	    <initMethod name="registerAll"/>
+	</component> 
+
+	<component
+	  class="org.seasar.framework.container.autoregister.AspectAutoRegister">
+	    <property name="interceptor">birdInterceptor.logicInterceptorChain</property>
+	    <initMethod name="addClassPattern">
+	        <arg>"jp.co.isid.mos.bird"</arg>
+	        <arg>".*LogicImpl"</arg>
+	    </initMethod>
+	    <initMethod name="registerAll"/>
+	</component>
+
+	<component class="jp.co.isid.mos.bird.framework.control.BirdUserInfo" instance="session"/>
+	<component class="jp.co.isid.mos.bird.framework.control.BirdDateInfo" instance="session"/>
+
+	<!-- DAO -->
+	<component name="ctlSyukeiKbnDao" class="jp.co.isid.mos.bird.common.kaikei.dao.CtlSyukeiKbnDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="ctlKaikeiKbnInfoDao" class="jp.co.isid.mos.bird.common.kaikei.dao.CtlKaikeiKbnInfoDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="mstTicketInfoDao" class="jp.co.isid.mos.bird.storemanage.proceedsmanagegepo.dao.MstTicketInfoDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="mstMiseInfoDao" class="jp.co.isid.mos.bird.storemanage.proceedsmanagegepo.dao.MstMiseInfoDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="userCompanyInfoDao" class="jp.co.isid.mos.bird.storemanage.proceedsmanagegepo.dao.UserCompanyInfoDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="proceedsManageGepoDao" class="jp.co.isid.mos.bird.storemanage.proceedsmanagegepo.dao.ProceedsManageGepoDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="nebikiInfoDao" class="jp.co.isid.mos.bird.storemanage.proceedsmanagegepo.dao.NebikiInfoDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="mstNebikiKbnInfoDao" class="jp.co.isid.mos.bird.storemanage.proceedsmanagegepo.dao.MstNebikiKbnInfoDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="trnAridakaMeisaiDao" class="jp.co.isid.mos.bird.storemanage.proceedsmanagegepo.dao.TrnAridakaMeisaiDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	
+
+	<!-- DTO -->
+	<component name="proceedsManageGepoDto" class="jp.co.isid.mos.bird.storemanage.proceedsmanagegepo.dto.ProceedsManageGepoDto" instance="session"/>
+	<component name="proceedsManageGepoResultDto" class="jp.co.isid.mos.bird.storemanage.proceedsmanagegepo.dto.ProceedsManageGepoResultDto" instance="request"/>
+	<component name="pullDownMenuDto" class="jp.co.isid.mos.bird.framework.dto.PullDownMenuDto" instance="session"/>
+	<component name="miseSearchDto" class="jp.co.isid.mos.bird.commonform.misesearch.dto.MiseSearchDto" instance="session"/>
+	<component name="meisaiRequestJokenDto" class="jp.co.isid.mos.bird.storemanage.proceedsmanagegepo.dto.MeisaiRequestJokenDto" instance="request"/>
+	<component name="meisaiRequestResultDto" class="jp.co.isid.mos.bird.storemanage.proceedsmanagegepo.dto.MeisaiRequestResultDto" instance="request"/>
+
+	<!-- Entity -->
+	<component name="mstAccountKbnInfo" class="jp.co.isid.mos.bird.storemanage.proceedsmanagegepo.entity.MstAccountKbnInfo" instance="session"/>
+	<component name="mstTicketInfo" class="jp.co.isid.mos.bird.storemanage.proceedsmanagegepo.entity.MstTicketInfo" instance="session"/>
+	<component name="mstMiseInfo" class="jp.co.isid.mos.bird.storemanage.proceedsmanagegepo.entity.MstMiseInfo" instance="session"/>
+	<component name="userCompanyInfo" class="jp.co.isid.mos.bird.storemanage.proceedsmanagegepo.entity.UserCompanyInfo" instance="session"/>
+	<component name="proceedsManageGepoInfo" class="jp.co.isid.mos.bird.storemanage.proceedsmanagegepo.entity.ProceedsManageGepoInfo" instance="session"/>
+	<component name="meisaiTabInfo" class="jp.co.isid.mos.bird.storemanage.proceedsmanagegepo.entity.MeisaiTabInfo" instance="session"/>
+
+	<!-- Logic -->
+	<component name="proceedsConditionLogic" class="jp.co.isid.mos.bird.storemanage.proceedsmanagegepo.logic.impl.ProceedsConditionLogicImpl">
+		<property name="userCompanyInfoDao">userCompanyInfoDao</property>
+	</component>
+	<component name="proceedsManageGepoLogic" class="jp.co.isid.mos.bird.storemanage.proceedsmanagegepo.logic.impl.ProceedsManageGepoLogicImpl">
+		<property name="mstTicketInfoDao">mstTicketInfoDao</property>
+		<property name="proceedsManageGepoDao">proceedsManageGepoDao</property>				
+	</component>
+	<component name="proceedsCsvOutputLogic" class="jp.co.isid.mos.bird.storemanage.proceedsmanagegepo.logic.impl.ProceedsCsvOutputLogicImpl">
+		<property name="mstMiseInfoLogic">mstMiseInfoLogic</property>
+		<property name="proceedsManageGepoLogic">proceedsManageGepoLogic</property>	
+		<property name="nebikiLogic">nebikiLogic</property>		
+	</component>
+	<component name="mstMiseInfoLogic" class="jp.co.isid.mos.bird.storemanage.proceedsmanagegepo.logic.impl.MstMiseInfoLogicImpl">
+		<property name="mstMiseInfoDao">mstMiseInfoDao</property>
+	</component>
+	<component name="nebikiLogic" class="jp.co.isid.mos.bird.storemanage.proceedsmanagegepo.logic.impl.NebikiLogicImpl">
+		<property name="nebikiInfoDao">nebikiInfoDao</property>
+		<property name="mstNebikiKbnInfoDao">mstNebikiKbnInfoDao</property>
+	</component>
+	<component name="csvMeisaiLogic" class="jp.co.isid.mos.bird.storemanage.proceedsmanagegepo.logic.impl.CsvMeisaiLogicImpl">
+		<property name="ctlSyukeiKbnDao">ctlSyukeiKbnDao</property>
+		<property name="ctlKaikeiKbnInfoDao">ctlKaikeiKbnInfoDao</property>
+		<property name="trnAridakaMeisaiDao">trnAridakaMeisaiDao</property>
+	</component>
+	<component name="searchMeisaiLogic" class="jp.co.isid.mos.bird.storemanage.proceedsmanagegepo.logic.impl.SearchMeisaiLogicImpl">
+		<property name="ctlSyukeiKbnDao">ctlSyukeiKbnDao</property>
+		<property name="ctlKaikeiKbnInfoDao">ctlKaikeiKbnInfoDao</property>
+		<property name="trnAridakaMeisaiDao">trnAridakaMeisaiDao</property>
+		<property name="mstMiseInfoLogic">mstMiseInfoLogic</property>
+	</component>
+	
+	<!-- Action -->
+	<component name="proceedsManageGepoAction" class="jp.co.isid.mos.bird.storemanage.proceedsmanagegepo.action.impl.ProceedsManageGepoActionImpl" instance="request">
+		<property name="miseSearchDto">miseSearchDto</property>
+		<property name="proceedsManageGepoDto">proceedsManageGepoDto</property>
+		<property name="proceedsConditionLogic">proceedsConditionLogic</property>
+		<property name="mstMiseInfoLogic">mstMiseInfoLogic</property>
+		<property name="proceedsManageGepoLogic">proceedsManageGepoLogic</property>
+		<property name="nebikiLogic">nebikiLogic</property>		
+	</component>
+	<component name="proceedsManageGepoCsvAction" class="jp.co.isid.mos.bird.framework.action.impl.CsvOutputActionImpl" instance="request">
+		<property name="csvOutputLogic">proceedsCsvOutputLogic</property>
+		<property name="csvOutputDto">proceedsManageGepoDto</property>
+	</component>
+	<component name="proceedsManageGepoMeisaiAction" class="jp.co.isid.mos.bird.storemanage.proceedsmanagegepo.action.impl.ProceedsManageGepoMeisaiActionImpl" instance="request">
+		<property name="meisaiRequestJokenDto">meisaiRequestJokenDto</property>
+		<property name="miseSearchDto">miseSearchDto</property>
+		<property name="proceedsManageGepoDto">proceedsManageGepoDto</property>
+		<property name="meisaiRequestResultDto">meisaiRequestResultDto</property>
+		<property name="mstMiseInfoLogic">mstMiseInfoLogic</property>
+		<property name="csvOutputLogic">csvMeisaiLogic</property>
+		<property name="searchMeisaiLogic">searchMeisaiLogic</property>
+	</component>
+
+	<!-- CONVERTER -->	
+	<component name="bizreportNumericCnvt" class="jp.co.isid.mos.bird.framework.text.converter.NumericConverter" instance="request">
+		<property name="formatPattern">"#,##0"</property>
+	</component>
+	<component name="numericConverter" class="jp.co.isid.mos.bird.framework.text.converter.NumericConverter" instance="request"/>
+	<component name="dateConverterDE" class="jp.co.isid.mos.bird.framework.text.converter.DateConverter" instance="request">
+		<arg>@jp.co.isid.mos.bird.framework.util.formatter.DateFormatter@DATE_TYPE_YMD</arg>
+		<arg>"dd'日('E')'"</arg>
+	</component>
+	<component name="codeConverter5" class="jp.co.isid.mos.bird.framework.text.converter.CodeConverter" instance="request">
+		<property name="formatPattern">"00000"</property>
+	</component>
+</components>

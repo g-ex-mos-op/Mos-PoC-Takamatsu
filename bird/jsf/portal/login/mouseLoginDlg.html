@@ -1,0 +1,345 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html >
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Windows-31j" />
+<meta http-equiv="Content-Style-Type" content="text/css">
+<meta name="robots" content="noindex">
+<link rel="stylesheet" type="text/css" href="#{request.contextPath}/css/trident/body.css?#{loginAction.requestTime}"/>
+<link rel="stylesheet" type="text/css" href="#{request.contextPath}/css/trident/main.css?#{loginAction.requestTime}"/>
+<title>入力補助</title>
+<style type="text/css">
+<!--
+html, body {
+  font-family           : ＭＳ Ｐゴシック;
+}
+.btn{width:40px;}
+-->
+</style>
+<SCRIPT type="text/javascript">
+<!--
+function chgChar(openCase, closeCase){
+	var tableObj = document.getElementsByTagName("table");
+	document.dlgform.elements[openCase].style.display="none";
+	document.dlgform.elements[closeCase].style.display="inline";
+	for(i=0; i<tableObj.length; i++) {
+		if(openCase == tableObj[i].className) {
+			tableObj[i].style.display="inline";
+		}
+		else if(closeCase == tableObj[i].className) {
+			tableObj[i].style.display="none";
+		}
+	}
+
+}
+var openerForm = opener.document.login;
+var openerFormId = openerForm.elements["login:userId"];
+var openerFormPw = openerForm.elements["login:password"];
+function setno(num) {
+	if(opener == null) {
+	}
+	var selectElm = document.dlgform.elements["dlgform:selTarget"];
+	if ( selectElm.options[selectElm.selectedIndex].value == 'ID') {
+		if ( openerFormId.value.length < 8 ) {
+			openerFormId.value += num;
+		}
+	} else {
+		if ( openerFormPw.value.length < 20 ) {
+			openerFormPw.value += num;
+		}
+	}
+}
+
+function backsp() {
+	var selectElm = document.dlgform.elements["dlgform:selTarget"];
+	if ( selectElm.options[selectElm.selectedIndex].value == 'ID') {
+		if ( openerFormId.value.length > 0 ) {
+			openerFormId.value = openerFormId.value.substr(0,openerFormId.value.length-1);
+		}
+	} else {
+		if ( openerFormPw.value.length > 0 ) {
+			openerFormPw.value = openerFormPw.value.substr(0,openerFormPw.value.length-1);
+		}
+	}
+}
+function clearfld() {
+	var selectElm = document.dlgform.elements["dlgform:selTarget"];
+	if ( selectElm.options[selectElm.selectedIndex].value == 'ID') {
+		if ( openerFormId.value.length > 0 ) {
+			openerFormId.value = "";
+		}
+	} else {
+		if ( openerFormPw.value.length > 0 ) {
+			openerFormPw.value = "";
+		}
+	}
+}
+
+//-->
+</SCRIPT>
+</head>
+<BODY bgcolor="#FFFFFF" text="#000000" link="#0000C0" vlink="#0000C0" alink="#0000C0">
+<form id="dlgform">
+<div align="center">
+	<table border="0" cellpadding="2" cellspacing="2" width="100%">
+ 		<tr style="height:20px;"><td/></tr>
+ 		<tr><td colspan="2" class="body_caption">■マウスで入力</td></tr>
+ 		<tr style="height:20px;"><td/></tr>
+		<tr>
+			<td colspan="2">
+				<table width="100%">
+					<tr>
+				<TD>入力欄選択：
+				<select id="selTarget" size="1">
+				    <option value="ID" selected>ユーザーＩＤ</option>
+				    <option value="PASSWORD">パスワード</option>
+				</select>
+				</TD>
+				<TD align="right">
+				<input type="button" NAME="btClear" VALUE="クリア" onClick="clearfld()"/>
+				<input type="button" NAME="lower" VALUE="小文字" onClick="chgChar('lower', 'upper')"/>
+				<input type="button" NAME="upper" VALUE="大文字" onClick="chgChar('upper', 'lower')" style="display:none;"/>
+				<input type="button" NAME="btClose" VALUE="閉じる" onClick="self.close()"/>
+				</TD>
+					</tr>
+				</table>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<table border="0" cellpadding="2" cellspacing="0" width="100%">
+					<tr>
+						<td>
+						<input type="button" value="１" onClick="setno('1')" class="btn"/>
+						</td>
+						<td>
+						<input type="button" value="２" onClick="setno('2')" class="btn"/>
+						</td>
+						<td>
+						<input type="button" value="３" onClick="setno('3')" class="btn"/>
+						</td>
+					</tr>
+					<tr>
+						<td>
+						<input type="button" value="４" onClick="setno('4')" class="btn"/>
+						</td>
+						<td>
+						<input type="button" value="５" onClick="setno('5')" class="btn"/>
+						</td>
+						<td>
+						<input type="button" value="６" onClick="setno('6')" class="btn"/>
+						</td>
+					</tr>
+					<tr>
+						<td>
+						<input type="button" value="７" onClick="setno('7')" class="btn"/>
+						</td>
+						<td>
+						<input type="button" value="８" onClick="setno('8')" class="btn"/>
+						</td>
+						<td>
+						<input type="button" value="９" onClick="setno('9')" class="btn"/>
+						</td>
+					</tr>
+					<tr>
+						<td>
+						<input type="button" VALUE="SPC" onClick="setno(' ')" class="btn"/>
+						</td>
+						<td>
+						<input type="button" VALUE="０" onClick="setno('0')" class="btn"/>
+						</td>
+						<td>
+						<input type="button" VALUE="←" onClick="backsp()" class="btn"/>
+						</td>
+					</tr>
+				</table>
+			</td>
+			<td>
+				<table class="upper" width="100%">
+					<tr>
+						<td width  ="15%">
+						<input type="button" NAME="btA" value="Ａ" onClick="setno('A')" class="btn"/>
+						</td>
+						<td width  ="15%">
+						<input type="button" NAME="btB" value="Ｂ" onClick="setno('B')" class="btn"/>
+						</td>
+						<td width  ="15%">
+						<input type="button" NAME="btC" value="Ｃ" onClick="setno('C')" class="btn"/>
+						</td>
+						<td width  ="15%">
+						<input type="button" NAME="btD" value="Ｄ" onClick="setno('D')" class="btn"/>
+						</td>
+						<td width  ="15%">
+						<input type="button" NAME="btE" value="Ｅ" onClick="setno('E')" class="btn"/>
+						</td>
+						<td width  ="15%">
+						<input type="button" NAME="btF" value="Ｆ" onClick="setno('F')" class="btn"/>
+						</td>
+						<td width  ="15%">
+						<input type="button" NAME="btG" value="Ｇ" onClick="setno('G')" class="btn"/>
+						</td>
+					</tr>
+					<tr>
+						<td width  ="15%">
+						<input type="button" NAME="btH" value="Ｈ" onClick="setno('H')" class="btn"/>
+						</td>
+						<td width  ="15%">
+						<input type="button" NAME="btI" value="Ｉ" onClick="setno('I')" class="btn"/>
+						</td>
+						<td width  ="15%">
+						<input type="button" NAME="btJ" value="Ｊ" onClick="setno('J')" class="btn"/>
+						</td>
+						<td width  ="15%">
+						<input type="button" NAME="btK" value="Ｋ" onClick="setno('K')" class="btn"/>
+						</td>
+						<td width  ="15%">
+						<input type="button" NAME="btL" value="Ｌ" onClick="setno('L')" class="btn"/>
+						</td>
+						<td width  ="15%">
+						<input type="button" NAME="btM" VALUE="Ｍ" onClick="setno('M')" class="btn"/>
+						</td>
+						<td width  ="15%">
+						<input type="button" NAME="btN" value="Ｎ" onClick="setno('N')" class="btn"/>
+						</td>
+					</tr>
+					<tr>
+						<td width  ="15%">
+						<input type="button" NAME="btO" value="Ｏ" onClick="setno('O')" class="btn"/>
+						</td>
+						<td width  ="15%">
+						<input type="button" NAME="btP" value="Ｐ" onClick="setno('P')" class="btn"/>
+						</td>
+						<td width  ="15%">
+						<input type="button" NAME="btQ" value="Ｑ" onClick="setno('Q')" class="btn"/>
+						</td>
+						<td width  ="15%">
+						<input type="button" NAME="btR" value="Ｒ" onClick="setno('R')" class="btn"/>
+						</td>
+						<td width  ="15%">
+						<input type="button" NAME="btS" value="Ｓ" onClick="setno('S')" class="btn"/>
+						</td>
+						<td width  ="15%">
+						<input type="button" NAME="btT" value="Ｔ" onClick="setno('T')" class="btn"/>
+						</td>
+						<td width  ="15%">
+						<input type="button" NAME="btU" value="Ｕ" onClick="setno('U')" class="btn"/>
+						</td>
+					</tr>
+					<tr>
+						<td width  ="15%">
+						<input type="button" value="Ｖ" onClick="setno('V')" class="btn"/>
+						</td>
+						<td width  ="15%">
+						<input type="button" VALUE="Ｗ" onClick="setno('W')" class="btn"/>
+						</td>
+						<td width  ="15%">
+						<input type="button" value="Ｘ" onClick="setno('X')" class="btn"/>
+						</td>
+						<td width  ="15%">
+						<input type="button" value="Ｙ" onClick="setno('Y')" class="btn"/>
+						</td>
+						<td width  ="15%">
+						<input type="button" value="Ｚ" onClick="setno('Z')" class="btn"/>
+						</td>
+						<td>&nbsp;</td>
+						<td>&nbsp;</td>
+					</tr>
+				</table>
+				<table class="lower" width="100%" style="display:none;">
+					<tr>
+						<td width  ="15%">
+						<input type="button" NAME="btA" value="ａ" onClick="setno('a')" class="btn"/>
+						</td>
+						<td width  ="15%">
+						<input type="button" NAME="btB" value="ｂ" onClick="setno('b')" class="btn"/>
+						</td>
+						<td width  ="15%">
+						<input type="button" NAME="btC" value="ｃ" onClick="setno('c')" class="btn"/>
+						</td>
+						<td width  ="15%">
+						<input type="button" NAME="btD" value="ｄ" onClick="setno('d')" class="btn"/>
+						</td>
+						<td width  ="15%">
+						<input type="button" NAME="btE" value="ｅ" onClick="setno('e')" class="btn"/>
+						</td>
+						<td width  ="15%">
+						<input type="button" NAME="btF" value="ｆ" onClick="setno('f')" class="btn"/>
+						</td>
+						<td width  ="15%">
+						<input type="button" NAME="btG" value="ｇ" onClick="setno('g')" class="btn"/>
+						</td>
+					</tr>
+					<tr>
+						<td width  ="15%">
+						<input type="button" NAME="btH" value="ｈ" onClick="setno('h')" class="btn"/>
+						</td>
+						<td width  ="15%">
+						<input type="button" NAME="btI" value="ｉ" onClick="setno('i')" class="btn"/>
+						</td>
+						<td width  ="15%">
+						<input type="button" NAME="btJ" value="ｊ" onClick="setno('j')" class="btn"/>
+						</td>
+						<td  width  ="15%">
+						<input type="button" NAME="btK" value="ｋ" onClick="setno('k')" class="btn"/>
+						</td>
+						<td  width  ="15%">
+						<input type="button" NAME="btL" value="ｌ" onClick="setno('l')" class="btn"/>
+						</td>
+						<td  width  ="15%">
+						<input type="button" NAME="btM" VALUE="ｍ" onClick="setno('m')" class="btn"/>
+						</td>
+						<td  width  ="15%">
+						<input type="button" NAME="btN" value="ｎ" onClick="setno('n')" class="btn"/>
+						</td>
+					</tr>
+					<tr>
+						<td  width  ="15%">
+						<input type="button" NAME="btO" value="ｏ" onClick="setno('o')" class="btn"/>
+						</td>
+						<td  width  ="15%">
+						<input type="button" NAME="btP" value="ｐ" onClick="setno('p')" class="btn"/>
+						</td>
+						<td  width  ="15%">
+						<input type="button" NAME="btQ" value="ｑ" onClick="setno('q')" class="btn"/>
+						</td>
+						<td  width  ="15%">
+						<input type="button" NAME="btR" value="ｒ" onClick="setno('r')" class="btn"/>
+						</td>
+						<td  width  ="15%">
+						<input type="button" NAME="btS" value="ｓ" onClick="setno('s')" class="btn"/>
+						</td>
+						<td  width  ="15%">
+						<input type="button" NAME="btT" value="ｔ" onClick="setno('t')" class="btn"/>
+						</td>
+						<td  width  ="15%">
+						<input type="button" NAME="btU" value="ｕ" onClick="setno('u')" class="btn"/>
+						</td>
+					</tr>
+					<tr>
+						<td  width  ="15%">
+						<input type="button" NAME="btV" value="ｖ" onClick="setno('v')" class="btn"/>
+						</td>
+						<td  width  ="15%">
+						<input type="button" NAME="btW" VALUE="ｗ" onClick="setno('w')" class="btn"/>
+						</td>
+						<td  width  ="15%">
+						<input type="button" NAME="btX" value="ｘ" onClick="setno('x')" class="btn"/>
+						</td>
+						<td  width  ="15%">
+						<input type="button" NAME="btY" value="ｙ" onClick="setno('y')" class="btn"/>
+						</td>
+						<td  width  ="15%">
+						<input type="button" NAME="btZ" value="ｚ" onClick="setno('z')" class="btn"/>
+						</td>
+						<td>&nbsp;</td>
+						<td>&nbsp;</td>
+					</tr>
+				</table>
+			</td>
+		</tr>
+	</table>
+
+</div>
+</form>
+</BODY>
+</html>
+

@@ -1,0 +1,15 @@
+select 
+	rtrim(BM10.COMPANY_CD) as COMPANY_CD,
+	rtrim(BM10.SIBU_CD) as SIBU_CD,
+	rtrim(BM10.SIBU_NAME) as SIBU_NAME,
+	rtrim(BM10.HONBU_CD) as HONBU_CD,
+	rtrim(BM10.HONBU_NAME) as HONBU_NAME,
+	rtrim(BM10.JIGYOU_CD) as JIGYOU_CD,
+	rtrim(BM10.JIGYOU_NAME) as JIGYOU_NAME,
+	rtrim(BM10.SLAREA_CD) as SLAREA_CD,
+	rtrim(BM10.SLAREA_NAME) as SLAREA_NAME 
+from 
+	BM10GSIB BM10
+where 
+	BM10.COMPANY_CD = /*companyCd*/'00' 
+order by SIBU_CD

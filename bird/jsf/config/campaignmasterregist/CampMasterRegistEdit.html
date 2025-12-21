@@ -1,0 +1,322 @@
+<html xmlns:m="http://www.seasar.org/maya" m:action="#{campmasterregistEditAction.initialize}" m:extends="/jsf/layout/layoutNoNavi.html">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Windows-31j"/>
+<meta http-equiv="Content-Style-Type" content="text/css"/>
+<meta http-equiv="Content-Script-Type" content="text/javascript"/>
+<title>キャンペーンマスタ登録（編集画面）</title>
+</head>
+<body>
+<span m:inject="f:param" m:name="layoutTitle" m:value="キャンペーンマスタ登録（編集画面）"/>
+<span m:inject="s:insert" m:name="bodyTitleName">■キャンペーンマスタ登録（編集画面）</span>
+<span m:inject="f:param" m:name="viewIdValue" m:value="BCF006V02"/>
+<span m:inject="f:param" m:name="onLoadName" m:value="onLoadFunction()"/>
+<div m:inject="s:insert" m:name="body">
+<style type="text/css">
+<!--
+.scroll_area {
+	width:	  370px;
+	height:   323px;
+	overflow: auto;
+}
+-->
+</style>
+
+<script type="text/javascript">
+<!--
+function onLoadFunction() {
+    focusElementCampRegist();
+    //確認ダイアログ処理を行います。
+    if (document.confirmDialogForm != null) {
+    	//確認ダイアログフォームが存在する場合は、確認ダイアログを起動します。
+        if (confirm(document.confirmDialogForm.cfmMsg.value)) {
+            document.confirmDialogForm.elements['confirmDialogForm:__link_clicked__'].value
+                ='confirmDialogForm:doConfirmDialog';
+          //ＯＫを押された場合は確認画面へ遷移します。
+		  document.confirmDialogForm.submit();
+        }
+    }
+}
+function focusElementCampRegist(){
+    var objForm = document.forms['registForm'];
+    var indexOya = objForm.elements['registForm:ERR_INDEX_OYA'].value;
+    var indexKo = objForm.elements['registForm:ERR_INDEX_KO'].value;
+    var errElement = objForm.elements['registForm:ERR_ELEMENT'].value;
+
+    if (errElement == null || errElement == '') {
+        focusElement('registForm');
+    }
+    else {
+	    for (i = 0; i < objForm.elements.length; i++) {
+	        if (objForm.elements[i].type == "text") {
+	            if (objForm.elements[i].name.indexOf('_' + indexOya + ':_') > 0
+	                    && objForm.elements[i].name.indexOf('_' + indexKo + ':' + errElement) > 0)
+	            {
+	                objForm.elements[i].focus();
+	            }
+	        }
+	    }
+
+    }
+}
+function doChkSibu() {
+  var objSibu = document.getElementById('registForm:sibuListPanel');
+  var objAreaDai = document.getElementById('registForm:areaDaiListPanel');
+
+  if (document.forms['registForm'].elements['registForm:flgAreaDai'].checked) {
+    objSibu.style.display = 'none';
+    objAreaDai.style.display = 'inline';
+  }
+  else {
+    objSibu.style.display = 'inline';
+    objAreaDai.style.display = 'none';
+  }
+}
+function doTargetKbn() {
+  var objForm = document.forms['registForm'];
+  if (objForm.elements['registForm:targetKbn'][0].checked) {
+    document.getElementById('registForm:sibuPanel').style.display = 'none';
+    document.getElementById('registForm:misePanel').style.display = 'none';
+  }
+  else if (objForm.elements['registForm:targetKbn'][1].checked) {
+    document.getElementById('registForm:sibuPanel').style.display = 'inline';
+    document.getElementById('registForm:misePanel').style.display = 'none';
+  }
+  else if (objForm.elements['registForm:targetKbn'][2].checked) {
+    document.getElementById('registForm:sibuPanel').style.display = 'none';
+    document.getElementById('registForm:misePanel').style.display = 'inline';
+  }
+}
+function doBtnOn() {
+    doCheckBoxSwitch(
+        document.forms['registForm'].elements['registForm:flgAreaDai'].checked,
+        true);
+}
+function doBtnOff() {
+    doCheckBoxSwitch(
+        document.forms['registForm'].elements['registForm:flgAreaDai'].checked,
+        false);
+}
+function doCheckBoxSwitch(mode, flg) {
+    var formobj = document.forms['registForm'];
+    for (i = 0; i < formobj.elements.length; i++) {
+        if (formobj.elements[i].type == "checkbox") {
+            if (!mode && formobj.elements[i].name.indexOf('chkSibu') > 0) {
+                formobj.elements[i].checked = flg;
+            }
+            else if (mode && formobj.elements[i].name.indexOf('chkAreaDai') > 0) {
+                formobj.elements[i].checked = flg;
+            }
+        }
+    }
+}
+
+
+function setDefaultSubmitButton(formName, btnID) {
+	var theEvent = window.event || arguments.callee.caller.arguments[0];
+	var srcobj;
+	var key;
+	var isMsie = (document.all) ? true : false;
+	if (isMsie) { // IE
+        key = theEvent.keyCode;
+        srcobj=theEvent.srcElement;
+    }
+    else { // IE以外
+        key = theEvent.which;
+        srcobj=theEvent.target;
+    }
+    
+	if (key == 13) {
+		if (srcobj.type == 'text' ||
+				srcobj.type == 'radio' ||
+				srcobj.type == 'checkbox' ||
+				srcobj.type == 'password'){
+
+			var iDorName = formName + ":" + btnID;
+			var targetForm = document.forms[formName];
+			var execBtn = targetForm.elements[iDorName];
+			if(execBtn == null) {
+				execBtn = targetForm.elements[btnID];
+			}
+			execBtn.click();
+			return false;
+		} else if (srcobj.type == 'file') {
+			theEvent.srcobj.click();
+			return false;
+		}
+	}
+	return true;
+}
+-->
+</script>
+
+<form m:id="registForm" onkeydown="return setDefaultSubmitButton('registForm', 'btnConfirm');" enctype="multipart/form-data">
+
+<input type="hidden" m:id="viewId" m:value="#{viewIdValue}" />
+<input type="hidden" m:id="initMenuId" m:value="#{menuAction.initMenuId}"/>
+<input type="hidden" m:id="initSubMenuId" m:value="#{menuAction.initSubMenuId}"/>
+<input type="hidden" m:id="ERR_INDEX_OYA" m:value="#{campmasterregistDto.errIndexOya}"/>
+<input type="hidden" m:id="ERR_INDEX_KO" m:value="#{campmasterregistDto.errIndexKo}"/>
+<input type="hidden" m:id="ERR_ELEMENT" m:value="#{campmasterregistDto.errElement}"/>
+<input type="submit" m:id="btnBack" value="戻る" m:action="#{campmasterregistEditAction.doBack}"/>
+<input type="submit" m:id="btnConfirm" value="確認" m:action="#{campmasterregistEditAction.doConfirm}"/>
+<br/>
+<table class="body_table2" style="width:630px;margin-top:4px;margin-bottom:15px;">
+  <tr>
+    <th class="body_header4" style="width:130px">タイトル</th>
+    <td width="*"><input m:id="campTitle" class="width_460"
+       type="text" m:value="#{campmasterregistDto.entityMstCampaign.campTitle}"
+       style="ime-mode:on;" maxlength="40" size="90"/></td>
+  </tr>
+</table>
+<!--画面左側start-->
+<span style="width:460px;float:left;">
+<table class="body_table2" style="width:390px;margin-bottom:15px;">
+  <col style="width:130px"/>
+  <col style="width:130px"/>
+  <col style="width:130px"/>
+  <tr class="header_row">
+    <th class="body_header2">設定項目</th>
+    <th class="body_header2">開始日</th>
+    <th class="body_header2">終了日</th>
+  </tr>
+  <tr>
+    <th class="body_header">対象期間</th>
+    <td><input m:id="campFrom" type="text" class="width_90" maxlength="10" size="15" style="ime-mode:disabled;" m:value="#{campmasterregistDto.entityMstCampaign.campFrom}" m:converter="#{campmasterregistDateConverter}"/></td>
+    <td><input m:id="campTo" type="text" class="width_90" maxlength="10" size="15" style="ime-mode:disabled;" m:value="#{campmasterregistDto.entityMstCampaign.campTo}" m:converter="#{campmasterregistDateConverter}"/></td>
+  </tr>
+  <tr>
+    <th class="body_header">表示期間</th>
+    <td><input m:id="dispFrom" type="text" class="width_90" maxlength="10" size="15" style="ime-mode:disabled;" m:value="#{campmasterregistDto.entityMstCampaign.dispFrom}" m:converter="#{campmasterregistDateConverter}"/></td>
+    <td><input m:id="dispTo" type="text" class="width_90" maxlength="10" size="15" style="ime-mode:disabled;" m:value="#{campmasterregistDto.entityMstCampaign.dispTo}" m:converter="#{campmasterregistDateConverter}" /></td>
+  </tr>
+</table>
+<table class="body_table2" style="width:300px;margin-bottom:4px;">
+<tr class="header_row">
+  <th colspan="4">対象メニュー</th>
+</tr>
+<div m:inject="s:forEach" m:items="#{campmasterregistDto.entityMstMenuList}" m:var="e" m:varindex="i">
+<tr>
+  <div m:inject="s:forEach" m:items="#{e}" m:var="f" m:varindex="j">
+  <td align="center"><input m:id="menuCd" type="text" class="width_62" style="ime-mode:disabled;" m:value="#{f.menuCd}" maxlength="6" size="10" m:converter="#{campmasterregistMenuCodeConverter}"/></td>
+  </div>
+</tr>
+</div>
+</table>
+
+<span m:rendered="#{campmasterregistDto.registMode == 2}">
+対象期間開始日以降にメニューの追加・変更を行った場合、<br/>
+照会画面に即時反映されません。<br/>
+編集当日は、追加メニューのメニュー別売上が０で表示されます。
+</span>
+</span>
+<!--画面左側end-->
+
+<!--画面右側start-->
+<span m:style="position:relative;left:10px;">
+  <span m:converter="#{characterEncodingConverter}" m:id="targetKbn" m:inject="s:selectOneRadio2" m:value="#{campmasterregistDto.condTaishoTenpo}">
+  <table class="body_table2" style="width:350px;margin-bottom:4px;">
+    <tr>
+      <th class="body_header" style="width:80px">対象店舗</th>
+      <td style="border-right-width:0px;">
+          <input m:id="targetKbn1" type="radio" value="1" onclick="javascript:doTargetKbn();"/>全店</td>
+      <td style="border-right-width:0px;border-left-width:0px;">
+          <input m:id="targetKbn2" type="radio" value="2" onclick="javascript:doTargetKbn();"/>支部</td>
+      <td style="border-left-width:0px;">
+          <input m:id="targetKbn3" type="radio" value="3" onclick="javascript:doTargetKbn();"/>個店</td>
+    </tr>
+  </table>
+  </span>
+  <div class="div_position_webkit div_position_gecko" id = "sibuPanel" m:style="#{campmasterregistDto.condTaishoTenpo == '2' ? 'display:inline;' : 'display:none;'}">
+  <input type="button" value="すべてON" onclick="javascript:doBtnOn();return false;"/>
+  <input type="button" value="すべてOFF" onclick="javascript:doBtnOff();return false;"/>
+  <input type="checkbox" m:id="flgAreaDai" m:value="#{campmasterregistDto.flgAreaDai}" onclick="javascript:doChkSibu();" ondblclick="return false;"/><span m:converter="#{characterEncodingConverter}" m:value="#{campmasterregistDto.labelAreaDai}"/>
+  <div m:id="sibuListPanel" m:style="#{campmasterregistDto.flgAreaDai ? 'display:none;' : 'display:inline;'}">
+    <table class="body_table2" style="width:350px;margin-top:3px;">
+      <col style="width:50px"/>
+      <col style="width:300px"/>
+      <tr class="header_row">
+        <th class="body_header2">選択</th>
+        <th class="body_header2">対象支部</th>
+      </tr>
+    </table>
+    <div class="scroll_area">
+      <table class="body_table2" style="width:350px;border-top-width:0px;">
+      <col style="width:50px;"/>
+      <col style="width:300px"/>
+      <div m:inject="s:forEach" m:items="#{campmasterregistDto.listSibu}" m:var="e" m:varindex="i">
+        <tr class="non_top_border">
+          <td style="text-align:center;"><input m:id="chkSibu" type="checkbox" m:value="#{e.chkSentaku}"/></td>
+          <td><span m:converter="#{characterEncodingConverter}" m:value="#{e.sibuName}"/></td>
+        </tr>
+      </div>
+    </table>
+    </div>
+  </div>
+  <div style="width:1200px">
+  <div m:id="areaDaiListPanel" m:style="#{campmasterregistDto.flgAreaDai ? 'display:inline;' : 'display:none;'}">
+    <table class="body_table2" style="width:350px;margin-top:3px;">
+      <col style="width:50px"/>
+      <col style="width:300px"/>
+      <tr class="header_row">
+        <th class="body_header2">選択</th>
+        <th class="body_header2">対象支部</th>
+      </tr>
+    </table>
+    <div class="scroll_area">
+    <table class="body_table2" style="width:350px;border-top-width:0px;">
+      <col style="width:50px"/>
+      <col style="width:300px"/>
+      <div m:inject="s:forEach" m:items="#{campmasterregistDto.listAreaDai}" m:var="e" m:varindex="i">
+        <tr class="non_top_border">
+          <td style="text-align:center;"><input m:id="chkAreaDai" type="checkbox" m:value="#{e.chkSentaku}"/></td>
+          <td><span m:converter="#{characterEncodingConverter}" m:value="#{e.sibuName}"/></td>
+        </tr>
+      </div>
+    </table>
+    </div>
+  </div>
+  </div>
+    </div>
+  <div m:id="misePanel" class="div_position_gecko" m:style="#{campmasterregistDto.condTaishoTenpo == '3' ? 'display:inline;' : 'display:none;'}">
+		  <div style="width:1200px">
+		<font style="font-weight:bold;">個店アップロード</font>
+		</div>
+	<table class="body_table2 div_position_webkit">
+	    <tr>
+	      <th class="body_header" rowspan="2" style="width:120px">CSVファイル</th>
+	      <td><span m:id="kotenUploadFile" m:inject="x:inputFileUpload"
+	                m:value="#{campmasterregistReqDto.kotenUploadFile}" size="60"/></td>
+	    </tr>
+	    <tr>
+	      <td>&nbsp;
+	        <span m:rendered="#{campmasterregistDto.uploadStatus == 2}">
+	          <span m:converter="#{characterEncodingConverter}" m:value="#{campmasterregistDto.uploadFileName}"/>
+	        </span>
+	        <span m:rendered="#{campmasterregistDto.uploadStatus == 3}">
+	          <a m:action="#{campmasterregistEditAction.doCsvDownload}">
+	            登録内容にエラーがあります。</a>
+	        </span>
+	        <span m:rendered="#{campmasterregistDto.uploadStatus == 4}">
+	          <a m:action="#{campmasterregistEditAction.doCsvDownload}">
+	            個店登録済みです。</a>
+	        </span>
+	      </td>
+	    </tr>
+	</table>
+  </div>
+</span>
+<!--画面右側end-->
+
+</form>
+<div  m:rendered="#{campmasterregistDto.exeConfirmMsg}">
+<form m:id="confirmDialogForm">
+<input type="hidden" m:id="viewId" m:value="#{viewIdValue}" />
+<input type="hidden" m:id="initMenuId" m:value="#{menuAction.initMenuId}"/>
+<input type="hidden" m:id="initSubMenuId" m:value="#{menuAction.initSubMenuId}"/>
+<input type="hidden" name="cfmMsg" m:value="#{campmasterregistDto.confirmMsg}" m:passthrough="true"/>
+	<a id="doConfirmDialog" m:action="#{campmasterregistEditAction.doConfirmDialog}"/>
+</form>
+</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,259 @@
+<html xmlns:m="http://www.seasar.org/maya" m:action="#{plRegistSelectAction.initialize}" m:extends="/jsf/layout/layoutNoNavi.html">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Windows-31j" />
+<title></title>
+</head>
+<body>
+<span m:inject="f:param" m:name="layoutTitle" m:value="P/Lデータ入力"/>
+<span m:inject="s:insert" m:name="bodyTitleName">■P/Lデータ入力</span>
+<span m:inject="f:param" m:name="onLoadName" m:value="load();"/>
+<span m:inject="f:param" m:name="viewIdValue" m:value="BBS001V01"/>
+<span m:inject="s:insert" m:name="body">
+<style type="text/css">
+<!--
+-->
+</style>
+<SCRIPT LANGUAGE="javascript">
+<!--
+function load(){
+	changeMode(false);
+	document.plRegistSelect.elements['plRegistSelect:loadingFlg'].value = "";
+}
+/**
+ * 条件画面表示切替処理
+ */
+function changeMode(bl){
+  if(document.forms['plRegistSelect'].elements['plRegistSelect:selectViewMode'].value == 0){
+    targetYMSelectBox = document.forms['plRegistSelect'].elements['plRegistSelect:targetYMSelectBox'].value;
+
+    if (targetYMSelectBox=="999999"){
+      document.forms['plRegistSelect'].elements['plRegistSelect:targetYM'].style.display="inline";
+      if(bl==true){
+        document.forms['plRegistSelect'].elements['plRegistSelect:targetYM'].value = '';
+      }
+    } else {
+      document.forms['plRegistSelect'].elements['plRegistSelect:targetYM'].style.display="none";
+    }
+  }
+}
+/**
+ * 対象年月プルダウン変更処理
+ * ※ロード中チェックフラグをONにする
+ * ※ロード中チェックによる制御は行わない
+ */
+function changeSelectTargetYM(){
+	setLoadingFlg();
+	targetYM = document.forms['plRegistSelect'].elements['plRegistSelect:targetYMSelectBox'].value;
+	document.forms['plRegistSelect'].elements['plRegistSelect:targetYM'].value = targetYM;
+	document.forms['plRegistSelect'].target ="_self";
+	document.forms['plRegistSelect'].elements['plRegistSelect:__link_clicked__'].value='plRegistSelect:selectTargetYM';
+	document.forms['plRegistSelect'].submit();
+}
+/**
+ * 実行ボタン押下時処理
+ * ※ロード中チェックフラグをONにする
+ * ※ロード中チェックによる制御を行う
+ */
+function execute(){
+	if(returnLoadingStatus()){
+		document.plRegistSelect.elements['plRegistSelect:__link_clicked__'].value='plRegistSelect:execute';
+		document.plRegistSelect.elements['plRegistSelect:loadingFlg'].value = "";
+		document.plRegistSelect.target ="_self";
+		document.plRegistSelect.submit();
+	}
+}
+/**
+ * 登録状況確認ボタン押下時処理
+ * ※ロード中チェックフラグをONにする
+ * ※ロード中チェックによる制御を行う
+ */
+function executeStateConfirm(){
+	if(returnLoadingStatus()){
+		document.plRegistSelect.elements['plRegistSelect:__link_clicked__'].value='plRegistSelect:executeStateConfirm';
+		document.plRegistSelect.elements['plRegistSelect:loadingFlg'].value = "";
+		document.plRegistSelect.target ="_self";
+		document.plRegistSelect.submit();
+	}
+}
+/**
+ * ウィンドウロードステータス取得処理
+ */
+function returnLoadingStatus(){
+	if(isLoadingFlgOFF()) {
+		setLoadingFlg();
+		return true;
+	}
+	return false;
+}
+/**
+ * ウィンドウロードステータス取得処理
+ */
+function isLoadingFlgOFF(){
+	return (document.plRegistSelect.elements['plRegistSelect:loadingFlg'].value != "ON");
+}
+/**
+ * ウィンドウロードフラグ設定処理
+ */
+function setLoadingFlg() {
+	document.plRegistSelect.elements['plRegistSelect:loadingFlg'].value = "ON";
+}
+//-->
+</SCRIPT>
+<form m:id="plRegistSelect">
+<input type="hidden" id="loadingFlg" value=""/>
+<input type="hidden" m:id="viewId" m:value="#{viewIdValue}"/>
+<input type="hidden" m:id="initMenuId" m:value="#{menuAction.initMenuId}"/>
+<input type="hidden" m:id="initSubMenuId" m:value="#{menuAction.initSubMenuId}"/>
+<input type="hidden" m:id="selectViewMode" m:value="#{plRegistDto.selectViewMode}"/>
+<input type="hidden" m:value="#{plRegistSessionKeyDto.sessionKey}"/>
+
+<span m:rendered="#{plRegistDto.selectViewMode == 1}">
+  <input type="submit" value="実行" m:action="#{plRegistSelectAction.changeSelectViewMode}"/>&nbsp;&nbsp;
+  <table class="body_table" style="margin-top:4px">
+    <tr>
+      <th>オーナーコード</th>
+      <td style="border-right-width:0px;">
+	    <input type="text" m:id="onerCd" m:value="#{plRegistDto.onerCd}" m:maxlength="5" style="ime-mode:disabled"/>
+      </td>
+      <td style="border-left-width:0px;"><input type="submit" value="検索" m:action="#{plRegistSelectAction.search}"/></td>
+    </tr>
+  </table>
+</span>
+
+<span m:rendered="#{plRegistDto.selectViewMode == 0}" onkeydown="return setDefaultSubmitButton('plRegistSelect', 'btnExecute');">
+<span m:inject="s:selectOneRadio2" m:value="#{plRegistDto.plFlg}">
+<span m:rendered="#{plRegistDto.userTypeCd != '02'}">
+  <input type="submit" value="戻る" m:id="btnBack" m:action="#{plRegistSelectAction.changeSelectViewMode}"/>&nbsp;&nbsp;
+</span>
+<input type="button" value="実行" name="plRegistSelect:btnExecute" onclick="execute();"/>&nbsp;&nbsp;
+<input type="button" value="登録状況確認" onclick="executeStateConfirm();"/>&nbsp;&nbsp;
+<a id="execute" m:action="#{plRegistSelectAction.execute}"/>
+<a id="executeStateConfirm" m:action="#{plRegistSelectAction.executeStateConfirm}"/>
+<div style="line-height:4px;"><br/></div>
+<table class="body_table">
+    <tr>
+      <th width="30px">
+      </th>
+      <th width="120px">
+        オーナー
+      </th>
+      <td width="300px">
+        <span m:value="#{plRegistDto.headOfficePlOnerCd}"/>&nbsp;&nbsp;
+        <span m:converter="#{characterEncodingConverter}" m:value="#{plRegistDto.headOfficePlOnerName}"/>
+      </td>
+    </tr>
+  <tr>
+    <th width="30px">
+    </th>
+    <th width="120px">
+      対象年月
+    </th>
+    <td width="300px">
+      <div class="hideArea">
+        <select m:id="targetYMSelectBox"
+        		m:value="#{plRegistDto.targetYMSelectBox}"
+                m:items="#{plRegistDto.targetYMList}"
+                m:itemValue="value"
+                m:itemLabel="label"
+                m:onChange="changeMode(true);changeSelectTargetYM();">
+            <option value="">MOS</option>
+        </select>
+        <input type="text" m:id="targetYM" m:value="#{plRegistDto.targetYM}" m:converter="#{dateConverterPlRegist}" m:maxlength="7" style="display:none;ime-mode:disabled"/>
+	    <a id="selectTargetYM" m:action="#{plRegistSelectAction.changeSelectTargetYM}"/>
+	    <input type="checkbox" m:id="closeMiseFlg" m:value="#{plRegistDto.closeMiseFlg}" onclick="changeSelectTargetYM();"/>クローズ店を含む
+      </div>
+    </td>
+  </tr>
+  <tr>
+    <th width="30px" style="text-align:center;">
+        <input type="radio" name="plFlg" value="0" />
+    </th>
+    <th width="120px">店舗P/L</th>
+    <td width="300px">
+      <div class="hideArea">
+        <select m:value="#{plRegistDto.storePlMiseCd}"
+                m:items="#{plRegistDto.storePlList}"
+                m:itemValue="miseCd"
+                m:itemLabel="label">
+            <option value="">MOS</option>
+        </select>
+      </div>
+    </td>
+  </tr>
+  <tr>
+    <th width="30px" style="text-align:center;">
+        <input type="radio" name="plFlg" value="1"/>
+    </th>
+    <th width="120px">本社P/L</th>
+    <td width="300px">
+    </td>
+  </tr>
+</table>
+</span>
+<br>
+作成者欄は入力必須です。<br>
+<table class="body_table">
+  <tr>
+    <th width="30px" rowspan="5" style="text-align:center;">
+      作<br>成<br>者
+    </th>
+    <th width="120px">
+      年月日
+    </th>
+    <td width="300px">
+	  <input type="text" m:id="authDt" m:value="#{plRegistDto.trnPLAuthorInfo.authDt}" m:converter="#{dateConverter}" m:maxlength="10"/>
+    </td>
+  </tr>
+  <tr>
+    <th width="120px">
+      電話番号
+    </th>
+    <td width="300px">
+	  <input type="text" m:id="authPhoneNum" m:value="#{plRegistDto.trnPLAuthorInfo.authPhoneNum}" m:maxlength="15" style="ime-mode:disabled"/>
+    </td>
+  </tr>
+  <tr>
+    <th width="120px">
+      会計事務所等
+    </th>
+    <td width="300px">
+	  <input type="text" m:id="authOther" m:value="#{plRegistDto.trnPLAuthorInfo.authOther}" m:maxlength="40" m:size="55"/>
+    </td>
+  </tr>
+  <tr>
+    <th width="120px">
+      氏名
+    </th>
+    <td width="300px">
+	  <input type="text" m:id="author" m:value="#{plRegistDto.trnPLAuthorInfo.authorName}" m:maxlength="40" m:size="55"/>
+    </td>
+  </tr>
+  <tr>
+    <th width="120px">
+      決算月
+    </th>
+    <td width="300px">
+      <div class="hideArea">
+        <select m:id="kessanDtList"
+        		m:value="#{plRegistDto.trnPLAuthorInfo.kessanDt}"
+                m:items="#{plRegistDto.kessanDtList}"
+                m:itemValue="value"
+                m:itemLabel="label">
+            <option value="">MOS</option>
+        </select>
+      </div>
+	  <!--input type="text" m:id="kessanDt" m:value="#{plRegistDto.trnPLAuthorInfo.kessanDt}" m:maxlength="2"/-->
+    </td>
+  </tr>
+</table>
+</span>
+<input type="text" m:id="dummyEnter" style="display:none"/>
+</form>
+<script type="text/javascript">
+<!--
+	focusElement("plRegistSelect");
+-->
+</script>
+</span>
+</body>
+</html>

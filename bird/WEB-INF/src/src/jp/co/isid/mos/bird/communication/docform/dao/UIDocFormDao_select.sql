@@ -1,0 +1,304 @@
+SELECT MAIN.REG_DATE
+,      MAIN.SEQ
+,      MAIN.CATE_ID
+,      BM02.CATE_NAME
+,      MAIN.SUB_CATE_ID
+,      BM17.SUB_CATE_NAME
+,      MAIN.TITLE
+,      MAIN.DISCRIPTION
+,      MAIN.PUB_DATE_FROM
+,      MAIN.PUB_DATE_TO
+,      MAIN.PUB_USER
+,      BR01.USER_NAME_KJ
+,      MAIN.PUB_ORG
+,      BC08.BUMON_NAME AS PUB_ORG_NAME
+,      MAIN.FILE_NAME
+,      MAIN.ATTACH_NAME1
+,      MAIN.ATTACH_NAME2
+,      MAIN.ATTACH_NAME3
+,      MAIN.ATTACH_FL1
+,      MAIN.ATTACH_FL2
+,      MAIN.ATTACH_FL3
+,      MAIN.LIMIT_KBN
+,      MAIN.SORT_SEQ
+,      BM02.INFO_SHU
+,      BM02.SORT_KEY as CATE_SORT_KEY
+,      BM17.SORT_KEY as SUB_CATE_SORT_KEY
+,      (CASE WHEN BT11.CNT IS NULL THEN 0 ELSE BT11.CNT END ) AS KRNF_CNT
+FROM (
+    SELECT * FROM (
+    SELECT BT03or04.CATE_ID
+    ,      BT03or04.SUB_CATE_ID
+    ,      BT03or04.REG_DATE
+    ,      BT03or04.SEQ
+    ,      BT03or04.TITLE
+    ,      BT03or04.DISCRIPTION
+    ,      BT03or04.PUB_DATE_FROM
+    ,      BT03or04.PUB_DATE_TO
+    ,      BT03or04.PUB_USER
+    ,      BT03or04.PUB_ORG
+    ,      BT03or04.FILE_NAME
+    ,      BT03or04.ATTACH_NAME1
+    ,      BT03or04.ATTACH_NAME2
+    ,      BT03or04.ATTACH_NAME3
+    ,      BT03or04.ATTACH_FL1
+    ,      BT03or04.ATTACH_FL2
+    ,      BT03or04.ATTACH_FL3
+    ,      BT03or04.LIMIT_KBN
+    ,      BT03or04.SORT_SEQ
+    ,      BT03or04.SAKUJO_FLG
+    ,      BT13.SHOZOKU_KBN
+    FROM (SELECT *
+/*IF "03".equals(infoShu)*/
+          FROM BT03DOCM 
+/*END*/
+/*IF "04".equals(infoShu)*/
+          FROM BT04FRMM 
+/*END*/
+     	  WHERE SAKUJO_FLG <> '1' 
+     	  AND PUB_DATE_FROM <= /*sysDate*/'20110214'
+     	  AND PUB_DATE_TO >= /*sysDate*/'20110214'
+/*IF cateId != null*/
+     	  AND CATE_ID = /*cateId*/'01'
+/*IF subCateId != null*/
+          AND SUB_CATE_ID = /*subCateId*/'01'
+/*END*/
+/*END*/
+/*IF title != null*/
+          AND TITLE LIKE /*title*/'01'
+/*END*/
+     	  ) BT03or04
+    ,   (SELECT R_COMPANY_CD, REG_DATE,SEQ FROM BT12IACP WHERE INFO_SHU = /*infoShu*/'03') BT12
+    ,   (SELECT SHOZOKU_KBN, REG_DATE,SEQ FROM BT13IASZ WHERE INFO_SHU = /*infoShu*/'03') BT13
+    ,   (SELECT GYOTAI_KBN, REG_DATE,SEQ FROM BT14IAGT WHERE INFO_SHU = /*infoShu*/'03'
+/*IF kobetsuFlg */
+                                       AND   KOBETSU_FLG <> '1' AND MISE_FLG <> '1'
+/*END*/
+         ) BT14
+    WHERE BT12.REG_DATE = BT03or04.REG_DATE
+    AND   BT13.REG_DATE = BT12.REG_DATE
+    AND   BT14.REG_DATE = BT13.REG_DATE
+    AND   BT12.SEQ = BT03or04.SEQ
+    AND   BT13.SEQ = BT12.SEQ
+    AND   BT14.SEQ = BT13.SEQ
+    AND   EXISTS(SELECT * FROM BM03USCP BM03
+                 WHERE BM03.USER_ID = /*userId*/'99990003'
+                 AND   BT12.R_COMPANY_CD = BM03.R_COMPANY_CD)
+    AND   EXISTS(SELECT * FROM BM13SHKM BM13
+                 WHERE BM13.USER_ID = /*userId*/'99990003'
+                 AND   BT13.SHOZOKU_KBN = BM13.SHOZOKU_KBN)
+    AND   EXISTS(SELECT * FROM BM05USGT BM05
+                 WHERE BM05.USER_ID = /*userId*/'99990003'
+                 AND   BT14.GYOTAI_KBN = BM05.GYOTAI_KBN)
+/*IF kobetsuFlg */
+ UNION ALL
+    SELECT BT03or04.CATE_ID
+    ,      BT03or04.SUB_CATE_ID
+    ,      BT03or04.REG_DATE
+    ,      BT03or04.SEQ
+    ,      BT03or04.TITLE
+    ,      BT03or04.DISCRIPTION
+    ,      BT03or04.PUB_DATE_FROM
+    ,      BT03or04.PUB_DATE_TO
+    ,      BT03or04.PUB_USER
+    ,      BT03or04.PUB_ORG
+    ,      BT03or04.FILE_NAME
+    ,      BT03or04.ATTACH_NAME1
+    ,      BT03or04.ATTACH_NAME2
+    ,      BT03or04.ATTACH_NAME3
+    ,      BT03or04.ATTACH_FL1
+    ,      BT03or04.ATTACH_FL2
+    ,      BT03or04.ATTACH_FL3
+    ,      BT03or04.LIMIT_KBN
+    ,      BT03or04.SORT_SEQ
+    ,      BT03or04.SAKUJO_FLG
+    ,      BT13.SHOZOKU_KBN
+    FROM (SELECT * 
+/*IF "03".equals(infoShu)*/
+          FROM BT03DOCM 
+/*END*/
+/*IF "04".equals(infoShu)*/
+          FROM BT04FRMM 
+/*END*/
+     	  WHERE SAKUJO_FLG <> '1' 
+     	  AND PUB_DATE_FROM <= /*sysDate*/'20110214'
+     	  AND PUB_DATE_TO >= /*sysDate*/'20110214'
+/*IF cateId != null*/
+     	  AND CATE_ID = /*cateId*/'01'
+/*IF subCateId != null*/
+          AND SUB_CATE_ID = /*subCateId*/'01'
+/*END*/
+/*END*/
+/*IF title != null*/
+          AND TITLE LIKE /*title*/'01'
+/*END*/
+    ) BT03or04
+    ,   (SELECT R_COMPANY_CD, REG_DATE,SEQ FROM BT12IACP WHERE INFO_SHU = /*infoShu*/'03') BT12
+    ,   (SELECT SHOZOKU_KBN, REG_DATE,SEQ FROM BT13IASZ WHERE INFO_SHU = /*infoShu*/'03') BT13
+    ,   (SELECT GYOTAI_KBN, REG_DATE,SEQ , KOBETSU_FLG , MISE_FLG FROM BT14IAGT WHERE INFO_SHU = /*infoShu*/'03'
+                       AND   (KOBETSU_FLG = '1' OR MISE_FLG = '1')) BT14
+    LEFT JOIN  (
+    SELECT BT15.INFO_SHU
+    ,      BT15.REG_DATE
+    ,      BT15.SEQ
+    ,      BT15.GYOTAI_KBN
+    from BT15IAID BT15
+    ,    BM04GTCP BM04
+    ,    BM05USGT BM05
+    ,    BM01TENM BM01
+    /*IF "03".equals(userTypeCd) */
+    ,    BM07UTEN USER
+    --ELSE
+    ,    BM06UONR USER
+    /*END*/
+    WHERE BT15.INFO_SHU    = /*infoShu*/'03'
+    AND   BT15.KOBETSU_SHU = '01'
+    AND   BM05.USER_ID     = /*userId*/'99990003'
+    AND   BM01.CLOSE_DT > /*sysDate*/''
+    AND   USER.USER_ID     = BM05.USER_ID
+    AND   BM04.COMPANY_CD = USER.COMPANY_CD
+    AND   BM01.COMPANY_CD = BM04.COMPANY_CD
+    AND   BM05.GYOTAI_KBN = BM04.GYOTAI_KBN
+    AND   BT15.GYOTAI_KBN = BM05.GYOTAI_KBN
+    /*IF userTypeCd == '03' */
+    	AND BM01.MISE_CD = USER.MISE_CD
+    --ELSE
+    	AND BM01.ONER_CD = USER.ONER_CD
+    /*END*/
+    AND BT15.KOBETSU_CD = BM01.AREA_DAI
+    group by
+    BT15.INFO_SHU,
+    BT15.REG_DATE,
+    BT15.SEQ,
+    BT15.GYOTAI_KBN
+   ) KOBETSU ON (KOBETSU.REG_DATE = BT14.REG_DATE)
+    LEFT JOIN  (
+    SELECT BT16.INFO_SHU,
+           BT16.REG_DATE,
+           BT16.SEQ,
+           BT16.GYOTAI_KBN
+    FROM BT16IAST BT16,
+         BM04GTCP BM04,
+         BM05USGT BM05,
+         BM01TENM BM01
+    /*IF "03".equals(userTypeCd) */
+    ,    BM07UTEN USER
+    --ELSE
+    ,    BM06UONR USER
+    /*END*/
+    WHERE BT16.INFO_SHU = /*infoShu*/'03'
+    AND   BM05.USER_ID = /*userId*/'99990003'
+    AND   BM01.CLOSE_DT > /*sysDate*/''
+    AND   USER.USER_ID = BM05.USER_ID
+    AND   BM04.COMPANY_CD = USER.COMPANY_CD
+    AND   BM01.COMPANY_CD = BM04.COMPANY_CD
+    AND   BT16.GYOTAI_KBN = BM05.GYOTAI_KBN
+    AND   BT16.GYOTAI_KBN = BM04.GYOTAI_KBN
+    AND   BT16.MISE_CD = BM01.MISE_CD
+/*IF "03".equals(userTypeCd) */
+    	AND BM01.MISE_CD = USER.MISE_CD
+--ELSE
+    	AND BM01.ONER_CD = USER.ONER_CD
+/*END*/
+    group by
+        BT16.INFO_SHU,
+        BT16.REG_DATE,
+        BT16.SEQ,
+        BT16.GYOTAI_KBN
+   ) MISEBETSU ON (MISEBETSU.REG_DATE = BT14.REG_DATE)
+    WHERE BT12.REG_DATE = BT03or04.REG_DATE
+    AND   BT13.REG_DATE = BT12.REG_DATE
+    AND   BT14.REG_DATE = BT13.REG_DATE
+    AND   BT12.SEQ = BT03or04.SEQ
+    AND   BT13.SEQ = BT12.SEQ
+    AND   BT14.SEQ = BT13.SEQ
+    AND ((BT14.KOBETSU_FLG ='1' 
+    	 AND BT14.REG_DATE   = KOBETSU.REG_DATE
+    	 AND BT14.SEQ        = KOBETSU.SEQ
+    	 AND BT14.GYOTAI_KBN = KOBETSU.GYOTAI_KBN
+        ) 
+        OR (BT14.MISE_FLG ='1' 
+    	 AND BT14.REG_DATE   = MISEBETSU.REG_DATE
+    	 AND BT14.SEQ        = MISEBETSU.SEQ
+    	 AND BT14.GYOTAI_KBN = MISEBETSU.GYOTAI_KBN
+        ))
+    
+    AND   EXISTS(SELECT * FROM BM03USCP BM03
+                 WHERE BM03.USER_ID = /*userId*/'99990003'
+                 AND   BT12.R_COMPANY_CD = BM03.R_COMPANY_CD)
+    AND   EXISTS(SELECT * FROM BM13SHKM BM13
+                 WHERE BM13.USER_ID = /*userId*/'99990003'
+                 AND   BT13.SHOZOKU_KBN = BM13.SHOZOKU_KBN)
+    AND   EXISTS(SELECT * FROM BM05USGT BM05
+                 WHERE BM05.USER_ID = /*userId*/'99990003'
+                 AND   BT14.GYOTAI_KBN = BM05.GYOTAI_KBN)
+/*END*/
+    ) BT0304
+    GROUP BY BT0304.CATE_ID
+    ,        BT0304.SUB_CATE_ID
+    ,        BT0304.REG_DATE
+    ,        BT0304.SEQ
+    ,        BT0304.TITLE
+    ,        BT0304.DISCRIPTION
+    ,        BT0304.PUB_DATE_FROM
+    ,        BT0304.PUB_DATE_TO
+    ,        BT0304.PUB_USER
+    ,        BT0304.PUB_ORG
+    ,        BT0304.FILE_NAME
+    ,        BT0304.ATTACH_NAME1
+    ,        BT0304.ATTACH_NAME2
+    ,        BT0304.ATTACH_NAME3
+    ,        BT0304.ATTACH_FL1
+    ,        BT0304.ATTACH_FL2
+    ,        BT0304.ATTACH_FL3
+    ,        BT0304.LIMIT_KBN
+    ,        BT0304.SORT_SEQ
+    ,        BT0304.SAKUJO_FLG
+    ,        BT0304.SHOZOKU_KBN
+) MAIN
+LEFT JOIN BR01USER BR01 ON (BR01.USER_ID = MAIN.PUB_USER)
+LEFT JOIN (SELECT REG_DATE, SEQ, COUNT(*) as CNT 
+	       FROM BT11RLFL WHERE INFO_SHU = /*infoShu*/'03'
+	       GROUP BY REG_DATE, SEQ) BT11 on (BT11.REG_DATE=MAIN.REG_DATE AND BT11.SEQ=MAIN.SEQ)
+LEFT JOIN BC08CBMN BC08 ON ( BC08.BUMON_CD    = MAIN.PUB_ORG)
+,    (SELECT * FROM BM02IFCT WHERE INFO_SHU = /*infoShu*/'03') BM02
+,    (SELECT * FROM BM17SBCT WHERE INFO_SHU = /*infoShu*/'03') BM17
+WHERE BM02.CATE_ID     = MAIN.CATE_ID 
+AND   BM17.CATE_ID     = MAIN.CATE_ID 
+AND   BM17.SUB_CATE_ID = MAIN.SUB_CATE_ID 
+
+GROUP BY MAIN.REG_DATE
+,        MAIN.SEQ
+,        MAIN.CATE_ID
+,        BM02.CATE_NAME
+,        MAIN.SUB_CATE_ID
+,        BM17.SUB_CATE_NAME
+,        MAIN.TITLE
+,        MAIN.DISCRIPTION
+,        MAIN.PUB_DATE_FROM
+,        MAIN.PUB_DATE_TO
+,        MAIN.PUB_USER
+,        BR01.USER_NAME_KJ
+,        MAIN.PUB_ORG
+,        BC08.BUMON_NAME
+,        MAIN.FILE_NAME
+,        MAIN.ATTACH_NAME1
+,        MAIN.ATTACH_NAME2
+,        MAIN.ATTACH_NAME3
+,        MAIN.ATTACH_FL1
+,        MAIN.ATTACH_FL2
+,        MAIN.ATTACH_FL3
+,        MAIN.LIMIT_KBN
+,        MAIN.SORT_SEQ
+,        BM02.INFO_SHU
+,        BM02.SORT_KEY
+,        BM17.SORT_KEY
+,        (CASE WHEN BT11.CNT IS NULL THEN 0 ELSE BT11.CNT END )
+order by
+	CATE_SORT_KEY,
+	CATE_ID,
+	SUB_CATE_SORT_KEY,
+	SUB_CATE_ID,
+	SORT_SEQ,
+    REG_DATE desc,
+    SEQ desc

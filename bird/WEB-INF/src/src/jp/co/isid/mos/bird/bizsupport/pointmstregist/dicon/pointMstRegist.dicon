@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="Shift_JIS"?>
+<!DOCTYPE components PUBLIC
+    "-//SEASAR//DTD S2Container 2.3//EN"
+    "http://www.seasar.org/dtd/components23.dtd">
+<components namespace="pointMstRegister">
+    <include path="dao.dicon"/>
+    <include path="jp/co/isid/mos/bird/common/dicon/birdCommon.dicon"/>
+	<include path="jp/co/isid/mos/bird/framework/dicon/birdInterceptor.dicon"/>
+	<include path="jp/co/isid/mos/bird/common/dicon/birdCommon.dicon"/>
+
+	<component class="org.seasar.framework.container.autoregister.AspectAutoRegister">
+	    <property name="interceptor">birdInterceptor.actionInterceptorChain</property>
+	    <initMethod name="addClassPattern">
+	        <arg>"jp.co.isid.mos.bird"</arg>
+	        <arg>".*ActionImpl"</arg>
+	    </initMethod>
+	    <initMethod name="registerAll"/>
+	</component>
+	<component
+	  class="org.seasar.framework.container.autoregister.AspectAutoRegister">
+	    <property name="interceptor">birdInterceptor.logicInterceptorChain</property>
+	    <initMethod name="addClassPattern">
+	        <arg>"jp.co.isid.mos.bird"</arg>
+	        <arg>".*LogicImpl"</arg>
+	    </initMethod>
+	    <initMethod name="registerAll"/>
+	</component>
+
+	<!-- DAO -->
+	<component name="uISeidoPointDao" class="jp.co.isid.mos.bird.bizsupport.common.dao.UISeidoPointDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="uIToukyuDao" class="jp.co.isid.mos.bird.bizsupport.pointmstregist.dao.UIToukyuDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="uIPointDao" class="jp.co.isid.mos.bird.bizsupport.pointmstregist.dao.UIPointDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="uISeidoDao" class="jp.co.isid.mos.bird.bizsupport.pointmstregist.dao.UISeidoDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+
+	<!-- LOGIC -->
+	<component name="getSeidoPointInfoLogic" class="jp.co.isid.mos.bird.bizsupport.common.logic.impl.GetSeidoPointInfoLogicImpl"/>
+	<component name="getToukyuInfoLogic" class="jp.co.isid.mos.bird.bizsupport.pointmstregist.logic.impl.GetToukyuInfoLogicImpl"/>
+	<component name="getPointInfoLogic" class="jp.co.isid.mos.bird.bizsupport.pointmstregist.logic.impl.GetPointInfoLogicImpl"/>
+
+	<!-- DTO -->
+	<component name="pullDownMenuDto" class="jp.co.isid.mos.bird.framework.dto.PullDownMenuDto" instance="session"/>
+	<component name="seidoDataDto" class="jp.co.isid.mos.bird.bizsupport.pointmstregist.dto.SeidoDataDto" instance="session"/>
+	<component name="pointDataDto" class="jp.co.isid.mos.bird.bizsupport.pointmstregist.dto.PointDataDto" instance="session"/>
+
+	<!-- ACTION -->
+	<component name="pointMstRegistRefAction" class="jp.co.isid.mos.bird.bizsupport.pointmstregist.action.impl.PointMstRegistRefActionImpl" instance="request"/>
+	<component name="pointMstRegistEditAction" class="jp.co.isid.mos.bird.bizsupport.pointmstregist.action.impl.PointMstRegistEditActionImpl" instance="request"/>
+
+	<!-- CONVERTER -->
+</components>

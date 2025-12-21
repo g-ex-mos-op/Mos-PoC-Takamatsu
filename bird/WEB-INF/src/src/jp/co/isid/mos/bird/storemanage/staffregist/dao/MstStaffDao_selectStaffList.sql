@@ -1,0 +1,59 @@
+select
+    rtrim(BM12STAF.STAFF_ID) as STAFF_ID,
+    rtrim(BM12STAF.COMPANY_CD) as COMPANY_CD,
+    rtrim(BM12STAF.ONER_CD) as ONER_CD,
+    rtrim(BM12STAF.OLD_ONER_CD) as OLD_ONER_CD,
+    rtrim(BM12STAF.MISE_CD_1) as MISE_CD_1,
+    rtrim(BM12STAF.MISE_CD_2) as MISE_CD_2,
+    rtrim(BM12STAF.MISE_CD_3) as MISE_CD_3,
+    rtrim(BM12STAF.MISE_CD_4) as MISE_CD_4,
+    rtrim(BM12STAF.MISE_CD_5) as MISE_CD_5,
+    rtrim(BM12STAF.STAFF_L_NAME_KJ) as STAFF_L_NAME_KJ,
+    rtrim(BM12STAF.STAFF_F_NAME_KJ) as STAFF_F_NAME_KJ,
+    rtrim(BM12STAF.STAFF_L_NAME_KNA) as STAFF_L_NAME_KNA,
+    rtrim(BM12STAF.STAFF_F_NAME_KNA) as STAFF_F_NAME_KNA,
+    rtrim(BM12STAF.SEX) as SEX,
+    rtrim(BM12STAF.BIRTHDAY) as BIRTHDAY,
+    rtrim(BM12STAF.SITUATION_KBN) as SITUATION_KBN,
+    rtrim(BM12STAF.MOVE_DT) as MOVE_DT,
+    rtrim(BM12STAF.RETIRE_DT) as RETIRE_DT,
+    rtrim(BM12STAF.LEAVE_DT) as LEAVE_DT,
+    rtrim(BM12STAF.RETURN_DT) as RETURN_DT,
+    rtrim(BM12STAF.NOTE) as NOTE,
+    rtrim(BM12STAF.SPARE_FLG1) as SPARE_FLG1,
+    rtrim(BM12STAF.SPARE_FLG2) as SPARE_FLG2,
+    rtrim(BM12STAF.SPARE_FLG3) as SPARE_FLG3,
+    rtrim(BT26UPJK.LICENSE_NO) as LICENSE_NO,
+    (case when
+        rtrim(BT26UPJK.LICENSE_NO)  = '' or
+        rtrim(BT26UPJK.LICENSE_NO) is null then '1' else '0' end) as HAS_LICENSE_FLG,
+    BM12STAF.FIRST_USER,
+    BM12STAF.FIRST_PGM,
+    BM12STAF.FIRST_TMSP,
+    BM12STAF.LAST_USER,
+    BM12STAF.LAST_PGM,
+    BM12STAF.LAST_TMSP,
+    rtrim(BM01TENM.MISE_NAME_KJ) as MISE_NAME_KJ,
+    BM01TENM.CLOSE_DT,
+    (case when exists 
+    (select staff_id from BT30ENKJ where course_status = '1' and staff_id = BM12STAF.STAFF_ID)
+     then '0' else '1' end) as COURSE_STATUS
+from
+    BM12STAF
+    inner join BM01TENM on (BM12STAF.MISE_CD_1 = BM01TENM.MISE_CD and
+    BM12STAF.COMPANY_CD = BM01TENM.COMPANY_CD)
+    left join BT26UPJK on BM12STAF.STAFF_ID = BT26UPJK.STAFF_ID
+where
+    BM12STAF.COMPANY_CD = /*companyCd*/'00'
+and BM12STAF.ONER_CD = /*onerCd*/'36444'
+order by
+    MISE_CD_1,
+    MISE_CD_2,
+    MISE_CD_3,
+    MISE_CD_4,
+    MISE_CD_5,
+    SITUATION_KBN,
+    HAS_LICENSE_FLG,
+    LICENSE_NO,
+    COURSE_STATUS,
+    STAFF_ID

@@ -1,0 +1,161 @@
+<html xmlns:m="http://www.seasar.org/maya" m:action="#{mosChickenMstChoiseShokuhouzaiAction.initialize}" m:extends="/jsf/layout/layoutNoNavi.html">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Windows-31j" />
+<title>予約販売管理マスタ登録 食包材選択</title>
+<span m:inject="f:param" m:name="layoutTitle" m:value="食包材選択"/>
+<span m:inject="s:insert" m:name="bodyTitleName">■食包材選択</span>
+<span m:inject="f:param" m:name="viewIdValue" m:value="BBS015V04"/>
+<span m:inject="f:param" m:name="onLoadName" m:value="load()"/>
+</head>
+<body>
+<span m:inject="s:insert" m:name="body">
+<STYLE type="text/css">
+<!--
+//-->
+</STYLE>
+<script type="text/javascript">
+<!--
+var userTypeHONBU = "01";
+var userTypeONER = "02";
+var userTypeMISE = "03";
+
+function load(){
+	document.choiseForm.elements['choiseForm:loadingFlg'].value = "";
+	focusElement("choiseForm");
+}
+/**
+ * ウィンドウロードステータス取得処理
+ *
+ */
+function returnLoadingStatus(){
+	if(isLoadingFlgOFF()) {
+		setLoadingFlg();
+		return true;
+	}
+	return false;
+}
+/**
+ * ウィンドウロードステータス取得処理
+ *
+ */
+function isLoadingFlgOFF(){
+	return (document.choiseForm.elements['choiseForm:loadingFlg'].value != "ON");
+}
+/**
+ * 実行ボタン押下時処理
+ *
+ */
+function execSearch(){
+
+	document.choiseForm.elements['choiseForm:__link_clicked__'].value='choiseForm:execSearch';
+	document.choiseForm.submit();
+}
+
+/**
+ * ウィンドウロードフラグ設定処理
+ *
+ *
+ */
+function setLoadingFlg() {
+	document.choiseForm.elements['choiseForm:loadingFlg'].value = "ON";
+}
+function isUserType(code){
+	var userType = document.choiseForm.elements['choiseForm:usertypeCd'].value;
+	return (code == userType);
+}
+/**
+ * 戻るボタン押下時処理
+ *
+ */
+function execBack(confirmMsg){
+	document.choiseForm.elements['choiseForm:__link_clicked__'].value='choiseForm:execBack';
+	document.choiseForm.submit();
+}
+/**
+ * 食包材名称リンク押下時処理
+ *
+ */
+function execChoise(choiseCd, choiseName){
+	document.choiseForm.elements['choiseForm:targetShokuCd'].value=choiseCd;
+	document.choiseForm.elements['choiseForm:targetShokuName'].value=choiseName;
+
+	document.choiseForm.elements['choiseForm:__link_clicked__'].value='choiseForm:execChoise';
+	document.choiseForm.submit();
+}
+//-->
+</script>
+
+<form m:id="choiseForm" onKeyDown="return setDefaultSubmitButton('choiseForm','executeBt');">
+    <input type="hidden" m:id="viewId" m:value="#{viewIdValue}" />
+	<input type="hidden" m:id="initMenuId" m:value="#{menuAction.initMenuId}"/>
+	<input type="hidden" m:id="initSubMenuId" m:value="#{menuAction.initSubMenuId}"/>
+	<input type="hidden" m:id="targetShokuCd" m:value="#{mosChickenShokuhouzaiDto.targetShokuCd}"/>
+	<input type="hidden" m:id="targetShokuName" m:value="#{mosChickenShokuhouzaiDto.targetShokuName}"/>
+	<input type="hidden" id="loadingFlg" value=""/>
+	<a id="execBack" m:action="#{mosChickenMstChoiseShokuhouzaiAction.back}"/>
+	<a id="execSearch" m:action="#{mosChickenMstChoiseShokuhouzaiAction.search}"/>
+	<a id="execChoise" m:action="#{mosChickenMstChoiseShokuhouzaiAction.choise}"/>
+	<input style="margin-bottom:4px;"type="button" class="operation_button" value="戻る" onClick="execBack();" onDblClick="return false"/>
+	<table class="hiddenBody">
+		<tr>
+			<td>
+				<table class="body_table">
+					<tr>
+						<th>食包材コード</th>
+						<td><input type="text" m:id="cdFrom" m:value="#{mosChickenShokuhouzaiDto.cdFrom}" maxlength="5" size="10" style="ime-mode:disabled"/>～<input type="text" m:id="cdTo" m:value="#{mosChickenShokuhouzaiDto.cdTo}" maxlength="5" size="10" style="ime-mode:disabled"/></td>
+						<th>食包材名</th>
+						<td><input type="text" m:id="name" m:value="#{mosChickenShokuhouzaiDto.name}" maxlength="40" size="50"/></td>
+						<th>発注分類</th>
+						<td>
+					        <div class="hideArea">
+								<select class="condition_field"
+										m:id="hacchuBnrCd"
+										m:value="#{mosChickenShokuhouzaiDto.hacchuBnrCd}"
+										m:items="#{mosChickenShokuhouzaiDto.listHacchuBnr}"
+										m:itemValue="hacchuBnrCd"
+										m:itemLabel="hacBnrNameKj"
+										m:nullLabel=" "
+										>
+									<option value=""></option>
+								</select>
+							</div>
+						</td>
+					</tr>
+				</table>
+			</td>
+			<td align="right" valign="bottom">
+				&nbsp;<input type="button" name="choiseForm:executeBt" class="operation_button" value="検索" onClick="execSearch();" onDblClick="return false"/>
+			</td>
+		</tr>
+	</table>
+
+	<span m:rendered="#{mosChickenShokuhouzaiDto.listShokuhouzaiMst != null}">
+	<table class="body_table2" style="width:540px;margin-top:4px;">
+	  <tr class="header_row">
+	    <th width="85px">商品コード</th>
+	    <th width="*">商品名</th>
+	    <th width="110px">発注分類</th>
+	  </tr>
+	</table>
+	<div style="width:560px; height:400px;"class="scroll_area">
+		<table class="body_table2" style="border-top-width : 0px;" width="540px" border="1">
+		    <div m:inject="s:forEach" m:items="#{mosChickenShokuhouzaiDto.listShokuhouzaiMst}" m:var="e" m:varindex="i">
+		      <tr class="non_top_border">
+		        <td width="85px">
+		          <span m:value="#{e.shokuCd}"/>
+		        </td>
+		        <td width="*">
+		          <a href="javaScript:void(0);" onClick ="execChoise('#{e.shokuCd}','#{e.shokuNameKna}')" onDblClick="return false;"><span m:converter="#{characterEncodingConverter}" m:value="#{e.shokuNameKna}"/></a>
+		        </td>
+		        <td width="110px">
+		          <span m:converter="#{characterEncodingConverter}" m:value="#{e.hacBnrNameKj}"/>
+		        </td>
+		      </tr>
+		    </div>
+		</table>
+	</div>
+    </span>
+</form>
+</span>
+</body>
+</html>

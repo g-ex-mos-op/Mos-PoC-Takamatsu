@@ -1,0 +1,330 @@
+<html xmlns:m="http://www.seasar.org/maya" m:action="#{shobetuGoukeiAction.initialize}" m:extends="/jsf/layout/layoutNoNavi.html">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Windows-31j"/>
+<meta http-equiv="Content-Style-Type" content="text/css"/>
+<script type="text/javascript" src="./js/bird.js"></script>
+</head>
+<body>
+  <span m:inject="f:param" m:name="layoutTitle" m:value="商品別合計"/>
+  <span m:inject="f:param" m:name="onLoadName" m:value="bodyLoad();"/>
+  <span m:inject="s:insert" m:name="bodyTitleName">■商品別合計</span>
+  <span m:inject="f:param" m:name="viewIdValue" m:value="BBS011V01"/>
+  <span m:inject="s:insert" m:name="body">
+  <style type="text/css">
+	<!--
+	.shohin_name {
+			width			: *;
+	}
+	.suryo {
+			width			: 45px;
+	}
+	.tani {
+			width			: 64px;
+			text-align:center;
+	}
+	.tanka {
+			width			: 105px;
+	}
+	.kingaku {
+			width			: 105px;
+	}
+	.kouseihi {
+			width			: 60px;
+	}
+	.uriagehi {
+			width			: 60px;
+	}
+	.input_button {
+			width			: 110px;
+	}
+	.link_feild {
+		text-decoration		:underline;
+	}
+	-->
+  </style>
+  <script type="text/javascript">
+  <!--
+    var maxScrollHeight = 0;
+    function bodyLoad() {
+      if(document.shobetuGoukei.elements['shobetuGoukei:condOnerCd'] != null) {
+        document.shobetuGoukei.elements['shobetuGoukei:condOnerCd'].focus();
+      }
+      maxScrollHeight = document.shobetuGoukei.maxScrollHeight.value;
+      loadScrolls("shobetuGoukeiScroll", maxScrollHeight);
+    }
+    function execSubmit() {
+	  if (document.shobetuGoukei.elements['shobetuGoukei:newWindowFlg'] == null) {
+	    document.shobetuGoukei.target = "_self";
+	    return;
+	  }
+	  var flg2= document.shobetuGoukei.elements['shobetuGoukei:newWindowFlg'].value;
+	  if (flg2 == '1' || flg2 == '2') {
+	    document.shobetuGoukei.target = "_blank";
+	  }
+	  else {
+	    document.shobetuGoukei.target = "_self";
+	  }
+    }
+    function changeTab(tabIndex) {
+      //タブ切り替え初期処理（外部jsに定義）
+      changeTabArea(tabIndex);
+      loadScrolls("shobetuGoukeiScroll", maxScrollHeight, tabIndex);
+    }
+   function downLoad(s){
+		var f=document.forms['shobetuGoukei'];
+  		f.elements['shobetuGoukei:__link_clicked__'].value='shobetuGoukei:downLoadPdf';
+		document.shobetuGoukei.target = "_self";
+		f.submit();
+		return false;
+	}
+	function callDetailForm(windowFlg,shoCdJitu, shoNameKj) {
+		document.shobetuGoukei.elements['shobetuGoukei:newWindowFlg'].value = windowFlg;
+		document.shobetuGoukei.elements['shobetuGoukei:shoCdJitu'].value = shoCdJitu;
+		document.shobetuGoukei.elements['shobetuGoukei:shoCdJituNm'].value = shoNameKj;
+  		document.shobetuGoukei.elements['shobetuGoukei:__link_clicked__'].value='shobetuGoukei:detailForm';
+		document.shobetuGoukei.target = "_blank";
+		document.shobetuGoukei.submit();
+		return false;
+	}
+
+	function searchA() {
+		var f = document.forms['shobetuGoukei'];
+		f.elements['shobetuGoukei:newWindowFlg'].value = '';
+		f.elements['shobetuGoukei:__link_clicked__'].value='shobetuGoukei:jikkouA';
+		if (f.onsubmit) {
+			f.onsubmit();
+		}
+		f.submit();
+	}
+
+	function searchB() {
+		var f = document.forms['shobetuGoukei'];
+		f.elements['shobetuGoukei:newWindowFlg'].value = '';
+		f.elements['shobetuGoukei:__link_clicked__'].value='shobetuGoukei:jikkouB';
+		if (f.onsubmit) {
+			f.onsubmit();
+		}
+		f.submit();
+	}
+	function callOnerForm(){
+		var f = document.forms['shobetuGoukei'];
+		f.elements['shobetuGoukei:newWindowFlg'].value = '';
+		f.elements['shobetuGoukei:__link_clicked__'].value='shobetuGoukei:callOnerForm';
+		if (f.onsubmit) {
+			f.onsubmit();
+		}
+		f.submit();
+	}
+
+  //-->
+  </script>
+  <form m:id="shobetuGoukei" onSubmit="execSubmit();" onKeyDown="return setDefaultSubmitButton('shobetuGoukei','btnExecute');">
+	<input type="hidden" m:id="viewId" m:value="#{viewIdValue}"/>
+	<input type="hidden" m:id="initMenuId" m:value="#{menuAction.initMenuId}"/>
+	<input type="hidden" m:id="initSubMenuId" m:value="#{menuAction.initSubMenuId}"/>
+	<input type="hidden" m:id="newWindowFlg" m:value="#{shobetuGoukeiDto.newWindowFlg}"/>
+	<input type="hidden" m:id="shoCdJitu" m:value="#{shobetuGoukeiDto.shoCdJitu}"/>
+	<input type="hidden" m:id="shoCdJituNm" m:value="#{shobetuGoukeiDto.shoCdJituNm}"/>
+	<!-- 複数window対応 -->
+    <input type="hidden" m:id="windowId" m:value="#{shobetuGoukeiDto.windowId}"/>
+    <input type="hidden" name="maxScrollHeight" value="#{shobetuGoukeiDto.userTypeCd == '01'?'335':'360'}"
+           m:passthrough="true"/>
+	<a m:id="downLoadPdf" m:action="#{shobetuGoukeiPdfOutputAction.downloadPDF}"/>
+	<a m:id="callOnerForm" m:action="#{shobetuGoukeiAction.callOnerForm}"/>
+	<a m:id="jikkouA" m:action="#{shobetuGoukeiAction.taishoTenpoExecute}"/>
+	<a m:id="jikkouB" m:action="#{shobetuGoukeiAction.searchExecute}"/>
+	<a m:id="detailForm" m:action="#{shobetuGoukeiAction.callDetailForm}"/>
+    <!-- 本部ユーザーのみ表示 START　-->
+	<table m:rendered="#{shobetuGoukeiDto.userTypeCd == '01'}"
+	       class="hiddenBody" style="margin-bottom:4px;">
+		<tr><td>
+	    <table class="body_table">
+	      <tr>
+	        <th>オーナーコード
+	          <input type="button" value="検索" m:onclick="callOnerForm();return false;"  />
+
+	        </th>
+			<td>
+			  <input m:id="condOnerCd" m:name="CondOnerCd" type="text" value="#{shobetuGoukeiDto.condOnerCd}"
+			         class="imenotuse" maxlength="5" size="10"/>
+			</td>
+		  </tr>
+		</table>
+		</td>
+		<td style="padding-left:3px;">
+		<input type="button" m:id="btnExecute" value="実行"  m:onclick="searchA();return false;" />
+		</td>
+	  </tr>
+	</table>
+    <table class="hiddenBody" style="width:100%;margin-bottom:4px;">
+    <tr>
+        <td>
+        <table m:rendered="#{shobetuGoukeiDto.condTaishoTenpoListSize > 0}" class="hiddenBody">
+	        <tr>
+		        <td>
+					<table class="body_table">
+					  <tr>
+						<th>対象店舗</th>
+						<td>
+						<div class="hideArea">
+				        <select m:id="condTaishoTenpoCd"
+			                  m:value="#{shobetuGoukeiDto.condTaishoTenpoCd}"
+			                  m:items="#{shobetuGoukeiDto.condTaishoTenpoList}"
+			                  m:itemValue="miseCd"
+			                  m:itemlabel="miseNameKj">
+			            </select>
+			            </div>
+						</td>
+					    <th width="80px">対象期間</th>
+						<td>
+						  <div class="hideArea">
+					        <select m:id="condTaishoKikanCd"
+				                  m:value="#{shobetuGoukeiDto.condTaishoKikanCd}"
+				                  m:items="#{shobetuGoukeiDto.condTaishoKikanList}"
+				                  m:itemValue="value"
+				                  m:itemlabel="label">
+				            </select>
+				          </div>
+						</td>
+					  </tr>
+					</table>
+				</td>
+				<td style="padding-left:3px;">
+				 <!-- <input type="button" value="実行" m:action="#{shobetuGoukeiAction.searchExecute}"
+				    m:onclick="document.shobetuGoukei.elements['shobetuGoukei:newWindowFlg'].value = '';" />-->
+				    <input type="button" value="実行" m:onclick="searchB();return false;"  />
+				</td>
+			</tr>
+		</table>
+		</td>
+		<td style="width:280px;text-align:right;">
+			<table class="body_table2" cellspacing="0" cellpadding="0" m:rendered="#{shobetuGoukeiDto.bunruiInfoListSize > 0 && shobetuGoukeiDto.shohinbetuInfoListSize > 0}">
+			  <tr>
+			    <th width="60px">売上高</th>
+			    <td width="100px"  class="body_num">
+			    	<span m:value="#{shobetuGoukeiDto.uriageDakaInfo}" m:converter="#{itemTotalNumericConverter}"/>
+			    </td>
+			    <td align="right">
+			    	<input type="button" value="PDFダウンロード" m:id="pdfDlBt"  m:onclick="downLoad(document.shobetuGoukei.elements['shobetuGoukei:newWindowFlg'].value = '');"/>
+			    </td>
+			  </tr>
+			</table>
+		</td>
+	</tr>
+	</table>
+	<div m:rendered="#{shobetuGoukeiDto.bunruiInfoListSize > 0 && shobetuGoukeiDto.shohinbetuInfoListSize > 0}" m:id="shobetuGoukeiScroll">
+        <a id="callDetailForm" target="_blank" m:action="#{shobetuGoukeiAction.callDetailForm}"/>
+		<!--タブエリア-->
+		<table cellpadding="0" cellspacing="0" class="element_browser">
+		<div m:inject="s:forEach" m:items="#{shobetuGoukeiDto.bunruiInfoList}" m:var="e" m:varindex="i">
+			<tr style="line-height:18px;">
+		    <span m:inject="s:forEach" m:items="#{e}" m:var="ee" m:varindex="ie">
+			    <td style="width:135px;"
+	          class="body_#{i==0&&ie==0?'':'non_'}active_cell tab_change_area_#{i == 0?ie:ie+7}"
+			  onClick="changeTab('#{i == 0?ie:ie+7}');"
+			  onMouseOver="this.style.cursor='pointer';"><span m:converter="#{characterEncodingConverter}" m:value="#{ee.seBnrName}"/></td>
+		    </span>
+		    </tr>
+		</div>
+		</table>
+	    <!-- loop -->
+	    <div m:inject="s:forEach" m:items="#{shobetuGoukeiDto.shohinbetuInfoList}" m:var="e" m:varindex="i">
+		    <div class="tab_change_area_#{i} #{i==0?'':'in'}visible_tab">
+		    <div class="scroll_padding_head">
+			<div class="scroll_hidden margin_bottom_hidden">
+	        <table width="98%" cellpadding="0" cellspacing="0">
+	        	<tr>
+		        <div m:inject="s:forEach" m:items="#{e}" m:var="f" m:varindex="j">
+		        	<th m:rendered="#{j == 0}" class="body_caption" style="padding-top:3px;padding-left:3px;">
+		        		<span m:converter="#{characterEncodingConverter}" m:value="#{f.seikyuBunruiKigou}"/>　<span m:converter="#{characterEncodingConverter}" m:value="#{f.seBnrName}"/></th>
+				</div>
+				</tr>
+		    </table>
+			<table class="body_table2" style="width:98%; border-top-width:0px;">
+		        <tr class="header_row">
+				    <th class="shohin_name">商品</th>
+				    <th class="suryo">数量</th>
+				    <th class="tani">単位</th>
+				    <th class="tanka">単価</th>
+				    <th class="kingaku">金額</th>
+				    <th class="kouseihi">構成比</th>
+				    <th class="uriagehi">売上比</th>
+				    <th class="input_button">&nbsp;</th>
+			    </tr>
+			</table>
+			</div>
+			</div>
+			<div class="scroll_padding_data">
+    		<div class="scroll_standby">
+	        <table class="body_table2" style="width:98%; border-top-width:0px;">
+		      <div m:inject="s:forEach" m:items="#{e}" m:var="f" m:varindex="j">
+  				  <span m:inject="f:param" m:name="bnr1or2" m:value="#{(f.seikyusyoBunrui == '1' || f.seikyusyoBunrui == '2')?'oui':'non'}"/>
+		      <div m:rendered="#{f.seikyusyoBunrui != '' && f.shoNameKj != ''}">
+		      <tr m:class="#{(f.seikyusyoBunrui == '1' || f.seikyusyoBunrui == '2') ? 'body_sum5' : ''} non_top_border">
+		        <td class="shohin_name" m:style="#{f.seikyusyoBunrui == '1' ? 'background-color:#99FF99;' : ''}">
+		        <span class="#{(f.seikyusyoBunrui == '1' || f.seikyusyoBunrui == '2')?'':'link_feild'}"
+                      onMouseOver="this.style.cursor='pointer';"
+                      onClick="#{(f.seikyusyoBunrui == '1' || f.seikyusyoBunrui == '2')?'':'callDetailForm(\''}#{(f.seikyusyoBunrui == '1' || f.seikyusyoBunrui == '2')?'':'2\',\''}#{(f.seikyusyoBunrui == '1' || f.seikyusyoBunrui == '2')?'':f.shoCdJitu}#{(f.seikyusyoBunrui == '1' || f.seikyusyoBunrui == '2')?'':'\',\''}#{(f.seikyusyoBunrui == '1' || f.seikyusyoBunrui == '2')?'':f.shoNameKj}#{(f.seikyusyoBunrui == '1' || f.seikyusyoBunrui == '2')?'':'\');'}">
+		        	<span m:converter="#{characterEncodingConverter}" m:value="#{f.shoCdJitu}"/>&nbsp;<span m:converter="#{characterEncodingConverter}" m:value="#{f.shoNameKj}"/>
+			    </span>
+			    </td>
+		        <td class="suryo body_num" m:style="#{f.seikyusyoBunrui == '1' ? 'background-color:#99FF99;' : ''}">
+		          <span m:rendered="#{f.meisaiFlg}" m:value="#{f.shoAmount}" m:converter="#{itemTotalNumericConverter}"/>
+		        </td>
+		        <td class="tani body_num" m:style="#{f.seikyusyoBunrui == '1' ? 'background-color:#99FF99;' : ''}" align="center">
+		          <span m:converter="#{characterEncodingConverter}" m:value="#{f.nisuName}"/>
+		        </td>
+		        <td class="tanka body_num" m:style="#{f.seikyusyoBunrui == '1' ? 'background-color:#99FF99;' : ''}">
+		          <span m:rendered="#{f.meisaiFlg}" m:value="#{f.nohinTanka}" m:converter="#{numericConverterTanka}"/>
+		        </td>
+		        <td class="kingaku body_num" m:style="#{f.seikyusyoBunrui == '1' ? 'background-color:#99FF99;' : ''}">
+		          <span m:value="#{f.kingaku}" m:converter="#{itemTotalNumericConverter}"/>
+		        </td>
+		        <td class="kouseihi body_num" m:style="#{f.seikyusyoBunrui == '1' ? 'background-color:#99FF99;' : ''}">
+		          <span m:value="#{f.kouseihi}" m:converter="#{numericConverterTanka}"/>
+		        </td>
+		        <td class="uriagehi body_num" m:style="#{f.seikyusyoBunrui == '1' ? 'background-color:#99FF99;' : ''}">
+		          <span m:value="#{f.uriagehi}" m:converter="#{numericConverterTanka}"/>
+		        </td>
+		        <td class="input_button" m:style="#{f.seikyusyoBunrui == '1' ? 'background-color:#99FF99;' : ''}" align="center">
+	 	         <span m:rendered="#{(f.seikyusyoBunrui == '1' || f.seikyusyoBunrui == '2')==false}">
+		         <input type="button" value="履歴" m:id="btnExecut"
+		                class="button_in_table buttom_margin_left"
+			            m:onclick="callDetailForm('1','#{f.shoCdJitu}','#{f.shoNameKj}');" />
+			      <input type="button" value="明細" m:id="btnExecut1"
+			      		 class="button_in_table buttom_margin_left"
+			             m:onclick="callDetailForm('2','#{f.shoCdJitu}','#{f.shoNameKj}');" />
+			     </span>
+		        </td>
+		      </tr>
+		      </div>
+		      <tr m:rendered="#{f.seikyusyoBunrui == '' && f.shoNameKj != ''}"
+		          class="body_sum5 non_top_border">
+		        <td m:style="#{f.shoCdJitu == '1' ? 'background-color:#99FF99;' : ''}">
+			    <span m:converter="#{characterEncodingConverter}" m:value="#{f.shoNameKj}"/>
+			    </td>
+		        <td class="suryo body_num" m:style="#{f.shoCdJitu == '1' ? 'background-color:#99FF99;' : ''}">
+		        </td>
+		        <td class="tani body_num" m:style="#{f.shoCdJitu == '1' ? 'background-color:#99FF99;' : ''}" align="center">
+		          <span m:converter="#{characterEncodingConverter}" m:value="#{f.nisuName}"/></td>
+		        <td class="tanka body_num" m:style="#{f.shoCdJitu == '1' ? 'background-color:#99FF99;' : ''}"></td>
+		        <td class="kingaku body_num" m:style="#{f.shoCdJitu == '1' ? 'background-color:#99FF99;' : ''}">
+		          <span m:value="#{f.kingaku}" m:converter="#{itemTotalNumericConverter}"/></td>
+		        <td class="kouseihi body_num" m:style="#{f.shoCdJitu == '1' ? 'background-color:#99FF99;' : ''}">
+		          <span m:value="#{f.kouseihi}" m:converter="#{numericConverterTanka}"/></td>
+		        <td class="uriagehi body_num" m:style="#{f.shoCdJitu == '1' ? 'background-color:#99FF99;' : ''}">
+		          <span m:value="#{f.uriagehi}" m:converter="#{numericConverterTanka}"/></td>
+		        <td class="input_button" m:style="#{f.shoCdJitu == '1' ? 'background-color:#99FF99;' : ''}" align="center"></td>
+		      </tr>
+		      </div>
+		    </table>
+	        </div>
+	        </div>
+	    </div>
+	    <!-- end of loop -->
+	</div>
+    <input type="text" m:id="dummyEnter" style="display:none"/>
+  </form>
+  </span>
+</body>
+</html>

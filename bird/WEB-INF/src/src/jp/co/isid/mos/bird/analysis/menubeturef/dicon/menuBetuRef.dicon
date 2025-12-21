@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="Shift_JIS"?>
+<!DOCTYPE components PUBLIC "-//SEASAR//DTD S2Container 2.3//EN" "http://www.seasar.org/dtd/components23.dtd">
+<components namespace="menuBetuRef">
+	<include path="dao.dicon"/>
+	<include path="jp/co/isid/mos/bird/framework/dicon/birdInterceptor.dicon"/>
+	<include path="jp/co/isid/mos/bird/analysis/common/menubetu/dicon/analysisMenuBetu.dicon"/>
+	
+	<!-- インターセプターを自動登録 -->
+	<component class="org.seasar.framework.container.autoregister.AspectAutoRegister">
+	    <property name="interceptor">birdInterceptor.actionInterceptorChain</property>
+	    <initMethod name="addClassPattern">
+	        <arg>"jp.co.isid.mos.bird"</arg>
+	        <arg>".*ActionImpl"</arg>
+	    </initMethod>
+	    <initMethod name="registerAll"/>
+	</component> 
+	<component class="org.seasar.framework.container.autoregister.AspectAutoRegister">
+	    <property name="interceptor">birdInterceptor.logicInterceptorChain</property>
+	    <initMethod name="addClassPattern">
+	        <arg>"jp.co.isid.mos.bird"</arg>
+	        <arg>".*LogicImpl"</arg>
+	    </initMethod>
+	    <initMethod name="registerAll"/>  
+	</component>
+
+	<!-- DAO -->
+	<component name="codCompanyDao" class="jp.co.isid.mos.bird.common.dao.CodCompanyDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="codBlockDao" class="jp.co.isid.mos.bird.common.dao.CodBlockDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="codHyojiTaishoDao" class="jp.co.isid.mos.bird.common.dao.CodHyojiTaishoDao">
+		<aspect>dao.interceptor</aspect>
+	</component>
+	<component name="menuBetuRefUILastYearEigyoDtDao" class="jp.co.isid.mos.bird.analysis.menubeturef.dao.UILastYearEigyoDtDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="menuBetuRefUIAbcDayDao" class="jp.co.isid.mos.bird.analysis.menubeturef.dao.UIAbcDayDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="menuBetuRefUIAbcMonthDao" class="jp.co.isid.mos.bird.analysis.menubeturef.dao.UIAbcMonthDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="menuBetuRefUIUriageShubetuDao" class="jp.co.isid.mos.bird.analysis.menubeturef.dao.UIUriageShubetuDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="menuBetuRefUIShokuzaiMeyasuDao" class="jp.co.isid.mos.bird.analysis.menubeturef.dao.UIShokuzaiMeyasuDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+
+	<!-- Entity -->
+
+	<!-- DTO -->
+	<component name="commonCodeDto" class="jp.co.isid.mos.bird.framework.dto.CommonCodeDto" instance="session"/>
+	<component name="pullDownMenuDto" class="jp.co.isid.mos.bird.framework.dto.PullDownMenuDto" autoBinding="none" instance="session"/>
+	<component name="miseSearchDto" class="jp.co.isid.mos.bird.commonform.misesearch.dto.MiseSearchDto" instance="session">
+		<property name="RCompanyCdList">null</property>
+	</component>
+	<component name="menuBetuRefSesDto" class="jp.co.isid.mos.bird.analysis.menubeturef.dto.SessionDto" autoBinding="none" instance="session"/>
+	<component name="menuBetuRefReqDto" class="jp.co.isid.mos.bird.analysis.menubeturef.dto.RequestDto" autoBinding="none" instance="request">
+		<property name="menuBetuSesDto">menuBetuRefSesDto</property>
+	</component>
+	<component name="menuBetuRefViewDto" class="jp.co.isid.mos.bird.analysis.menubeturef.dto.RequestDto" autoBinding="none" instance="request">
+		<property name="menuBetuSesDto">menuBetuRefSesDto</property>
+	</component>
+
+	<!-- LOGIC -->
+	<component name="getHyojiTaishoLogic" class="jp.co.isid.mos.bird.common.logic.impl.GetHyojiTaishoLogicImpl"/>
+	<component name="menuBetuRefSetCompanyLogic" class="jp.co.isid.mos.bird.analysis.menubeturef.logic.impl.SetCompanyLogicImpl"/>
+	<component name="menuBetuRefConditionLogic" class="jp.co.isid.mos.bird.analysis.menubeturef.logic.impl.ConditionLogicImpl"/>
+	<component name="menuBetuRefSearchAbcLogic" class="jp.co.isid.mos.bird.analysis.menubeturef.logic.impl.SearchAbcLogicImpl"/>
+	<component name="menuBetuRefSearchUriageShubetuLogic" class="jp.co.isid.mos.bird.analysis.menubeturef.logic.impl.SearchUriageShubetuLogicImpl"/>
+	<component name="menuBetuRefSearchShokuzaiMeyasuLogic" class="jp.co.isid.mos.bird.analysis.menubeturef.logic.impl.SearchShokuzaiMeyasuLogicImpl"/>
+	<component name="menuBetuRefCsvAbcLogic" class="jp.co.isid.mos.bird.analysis.menubeturef.logic.impl.CsvAbcLogicImpl"/>
+	<component name="menuBetuRefCsvUriageShubetuLogic" class="jp.co.isid.mos.bird.analysis.menubeturef.logic.impl.CsvUriageShubetuLogicImpl"/>
+	<component name="menuBetuRefCsvShokuzaiMeyasuLogic" class="jp.co.isid.mos.bird.analysis.menubeturef.logic.impl.CsvShokuzaiMeyasuLogicImpl"/>
+
+	<!-- ACTION -->
+	<component name="menuBetuRefViewAction" class="jp.co.isid.mos.bird.analysis.menubeturef.action.impl.ViewActionImpl" instance="request">
+		<property name="csvOutputDto">menuBetuRefReqDto</property>
+		<property name="csvOutputLogic">null</property>
+	</component>
+	
+	<!-- CONVERTER -->
+</components>

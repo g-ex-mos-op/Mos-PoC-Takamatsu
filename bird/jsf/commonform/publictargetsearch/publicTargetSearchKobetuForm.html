@@ -1,0 +1,90 @@
+<html xmlns:m="http://www.seasar.org/maya"  m:extends="/jsf/layout/layoutNoNavi.html">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Windows-31j" />
+<title></title>
+</head>
+<body>
+<span m:inject="f:param" m:name="layoutTitle" m:value="公開対象選択"/>
+<span m:inject="s:insert" m:name="bodyTitleName">■公開対象 業態別設定</span>
+<span m:inject="f:param" m:name="onLoadName" m:value=""/>
+<span m:inject="f:param" m:name="viewIdValue" m:value="BCO002V02"/>
+<span m:inject="s:insert" m:name="body">
+
+<SCRIPT LANGUAGE="javascript">
+
+<!--
+function checkAll(formobj) {
+    for (i = 0; i < formobj.elements.length; i++) {
+        if (formobj.elements[i].type == "checkbox") {
+            formobj.elements[i].checked = true;
+        }
+    }
+}
+function checkClearAll(formobj) {
+    for (i = 0; i < formobj.elements.length; i++) {
+        if (formobj.elements[i].type == "checkbox") {
+            formobj.elements[i].checked = false;
+        }
+    }
+}
+-->
+</SCRIPT>
+
+<form m:id="publicTargetSearch">
+<input type="hidden" m:id="viewId" m:value="#{viewIdValue}" />
+<input type="hidden" m:id="initMenuId" m:value="#{menuAction.initMenuId}"/>
+<input type="hidden" m:id="initSubMenuId" m:value="#{menuAction.initSubMenuId}"/>
+<input type="button" value="決定" m:action="#{publicTargetSearchKobetuAction.select}" m:disabled="#{publicTargetSearchDto.referenceFlg}"/>&nbsp;&nbsp;
+<input type="button" value="戻る" m:action="#{publicTargetSearchKobetuAction.cancel}" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<input type="submit" value="個店別指定" m:action="#{publicTargetSearchKobetuAction.kotenSelect}" />
+<table class="body_table" style="width:380px;margin-top:4px;">
+    <tr>
+        <th class="body_header1" width="100px">
+        	業態</th>
+        <td width="*"><span m:converter="#{characterEncodingConverter}" m:value="#{publicTargetSearchConditionDto.selectedGyotiaName}"/></td>
+    </tr>
+    <tr>
+        <th class="body_header1">
+        	個店別指定</th>
+        <td><span m:value="#{publicTargetSearchConditionDto.kotenFlg}"/></td>
+    </tr>
+</table>
+<div style="line-height:5px;"><br/></div>
+<table width="330px" cellpadding="0" cellspacing="0">
+	<tr>
+		<td align="right">
+		<input type="button" value="すべてON" onclick="checkAll(this.form);" m:disabled="#{publicTargetSearchDto.referenceFlg}"/>&nbsp;
+		<input type="button" value="すべてOFF" onclick="checkClearAll(this.form);" m:disabled="#{publicTargetSearchDto.referenceFlg}"/>
+		</td>
+	</tr>
+</table>
+<table class="body_table2" width="330px">
+  <caption class="body_caption">公開対象支部</caption>
+  <tr class="header_row">
+    <th width="50px">選択</th>
+    <th width="*">支部取込コード</th>
+  </tr>
+</table>
+<div style="width:350px; height:347px;"class="scroll_area">
+	<table class="body_table2" style="border-top-width:0px;" width="330px" >
+	    <span m:inject="s:forEach" 
+	          m:items="#{publicTargetSearchConditionDto.listMstCompanySibuTorikomi}"
+	          m:var="e" m:varindex="i">
+	      <tr class="non_top_border">
+	        <td width="50px" align="center">
+	   			<input type="checkbox" m:value="#{e.sentakuFlg}"
+	       		       m:disabled="#{publicTargetSearchDto.referenceFlg}"/>
+	        </td>
+	        <td width="*">
+	          <span m:converter="#{characterEncodingConverter}" m:value="#{e.sibuName}"/>
+	        </td>
+	      </tr>
+	    </span>
+	</table>
+</div>
+
+<input type="text" m:id="dummyEnter" style="display:none"/>
+</form>
+</span>
+</body>
+</html>

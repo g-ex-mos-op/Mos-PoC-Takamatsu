@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="Shift_JIS"?>
+<!DOCTYPE components PUBLIC "-//SEASAR//DTD S2Container//EN"
+	"http://www.seasar.org/dtd/components.dtd">
+<components namespace="analysis">
+	<include path="jp/co/isid/mos/bird/analysis/posdata/dicon/posDataRef.dicon"/>
+	<include path="jp/co/isid/mos/bird/analysis/menubeturef/dicon/menuBetuRef.dicon"/>
+	<include path="jp/co/isid/mos/bird/analysis/shubetusuiiref/dicon/shubetusuiiref.dicon"/>
+	<include path="jp/co/isid/mos/bird/analysis/jikanbeturef/dicon/jikanBetuRef.dicon"/>
+	<include path="jp/co/isid/mos/bird/analysis/kakouriage/dicon/kakouriage.dicon"/>
+	<include path="jp/co/isid/mos/bird/analysis/sibuaverage/dicon/sibuaverage.dicon"/>
+	<include path="jp/co/isid/mos/bird/analysis/rankref/dicon/rankRef.dicon"/>
+</components>

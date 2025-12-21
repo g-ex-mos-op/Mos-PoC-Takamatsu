@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="Shift_JIS"?>
+<!DOCTYPE components PUBLIC "-//SEASAR//DTD S2Container//EN"
+	"http://www.seasar.org/dtd/components.dtd">
+<components namespace="bizsupport">
+	<include path="jp/co/isid/mos/bird/bizsupport/noinputoner/dicon/noInputOner.dicon"/>
+	<include path="jp/co/isid/mos/bird/bizsupport/plregist/dicon/plRegist.dicon" />
+	<include path="jp/co/isid/mos/bird/bizsupport/lumptakein/dicon/lumpTakeIn.dicon"/>
+	<include path="jp/co/isid/mos/bird/bizsupport/plcontentconfirm/dicon/plcontentconfirm.dicon"/>
+	<include path="jp/co/isid/mos/bird/bizsupport/plinfoview/dicon/plInfoView.dicon"/>
+	<include path="jp/co/isid/mos/bird/bizsupport/similarshop/dicon/ruijitensearchreference.dicon"/>
+	<include path="jp/co/isid/mos/bird/bizsupport/pllumpextract/dicon/plLumpExtract.dicon"/>
+	<include path="jp/co/isid/mos/bird/bizsupport/common/dicon/plcommon.dicon"/>
+	<include path="jp/co/isid/mos/bird/bizsupport/moschickenmastregist/dicon/moschickenmastregist.dicon"/>
+	<include path="jp/co/isid/mos/bird/bizsupport/moschickenreservation/dicon/moschickenreservation.dicon"/>
+	<include path="jp/co/isid/mos/bird/bizsupport/moschickensalestateview/dicon/moschickensalestateview.dicon"/>
+	<include path="jp/co/isid/mos/bird/bizsupport/moschickenstateconfirm/dicon/moschickenstateconfirm.dicon"/>
+	<include path="jp/co/isid/mos/bird/bizsupport/moschickenreservechkbytime/dicon/moschickenreservechkbytime.dicon"/>
+	<include path="jp/co/isid/mos/bird/bizsupport/moschickenstorestateconfirm/dicon/moschickenstorestateconfirm.dicon"/>
+	<include path="jp/co/isid/mos/bird/bizsupport/moschickenrefconflist/dicon/moschickenrefconflist.dicon"/>
+    <include path="jp/co/isid/mos/bird/bizsupport/budgetref/dicon/budgetRef.dicon"/>
+	<include path="jp/co/isid/mos/bird/bizsupport/budgetregist/dicon/budgetRegist.dicon"/>
+	<include path="jp/co/isid/mos/bird/bizsupport/tempstorereplace/dicon/tempStoreReplace.dicon"/>
+	<include path="jp/co/isid/mos/bird/bizsupport/vansmastregist/dicon/vansmastRegist.dicon"/>
+	<include path="jp/co/isid/mos/bird/bizsupport/campcheckamount/dicon/campcheckamount.dicon"/>
+	<include path="jp/co/isid/mos/bird/bizsupport/spot/dicon/spot.dicon"/>
+	<include path="jp/co/isid/mos/bird/bizsupport/bunsautoamtregist/dicon/bunsAutoAmtRegist.dicon"/>
+	<include path="jp/co/isid/mos/bird/bizsupport/contractstatement/dicon/contractStatement.dicon"/>
+	<include path="jp/co/isid/mos/bird/bizsupport/codbalancelist/dicon/codBalanceList.dicon"/>
+	<include path="jp/co/isid/mos/bird/bizsupport/energyamount/dicon/energyamount.dicon"/>
+	<include path="jp/co/isid/mos/bird/bizsupport/energyinputitem/dicon/energyinputitem.dicon"/>
+	<include path="jp/co/isid/mos/bird/bizsupport/tenantpaypdfregist/dicon/tenantPayPdfRegist.dicon"/>
+	<include path="jp/co/isid/mos/bird/bizsupport/ordertimerequired/dicon/orderTimeRequired.dicon"/>
+	<include path="jp/co/isid/mos/bird/bizsupport/pointmstregist/dicon/pointMstRegist.dicon"/>
+	<include path="jp/co/isid/mos/bird/bizsupport/pointinfotakein/dicon/pointInfoTakein.dicon"/>
+	<include path="jp/co/isid/mos/bird/bizsupport/pointhistoryoutput/dicon/pointHistoryOutput.dicon"/>
+</components>

@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="Shift_JIS"?>
+<!DOCTYPE components PUBLIC
+    "-//SEASAR//DTD S2Container 2.3//EN"
+    "http://www.seasar.org/dtd/components23.dtd">
+<components namespace='documentdownload'>
+	<include path="dao.dicon"/>
+	<include path="jp/co/isid/mos/bird/common/dicon/birdCommon.dicon"/>
+	<include path="jp/co/isid/mos/bird/framework/dicon/birdInterceptor.dicon"/>
+	<!-- インターセプターを自動登録 -->
+	<component class="org.seasar.framework.container.autoregister.AspectAutoRegister">
+	    <property name="interceptor">birdInterceptor.actionInterceptorChain</property>
+	    <initMethod name="addClassPattern">
+	        <arg>"jp.co.isid.mos.bird"</arg>
+	        <arg>".*ActionImpl"</arg>
+	    </initMethod>
+	    <initMethod name="registerAll"/>
+	</component> 
+	<component class="org.seasar.framework.container.autoregister.AspectAutoRegister">
+	    <property name="interceptor">birdInterceptor.logicInterceptorChain</property>
+	    <initMethod name="addClassPattern">
+	        <arg>"jp.co.isid.mos.bird"</arg>
+	        <arg>".*LogicImpl"</arg>
+	    </initMethod>
+	    <initMethod name="registerAll"/>  
+	</component>
+	<!-- DAO -->
+	<component name="mstUserDao" class="jp.co.isid.mos.bird.framework.dao.MstUserDao">
+		<aspect>dao.interceptor</aspect>
+	</component>
+	<component name="uiViewBunshoInfoDao" class="jp.co.isid.mos.bird.communication.documentdownload.dao.UIViewBunshoInfoDao">
+		<aspect>dao.interceptor</aspect>
+	</component>
+	<component name="uiViewShozokuInfoDao" class="jp.co.isid.mos.bird.communication.documentdownload.dao.UIViewShozokuInfoDao">
+		<aspect>dao.interceptor</aspect>
+	</component>
+	<component name="documentdownloadViewBunshoInfoDao" class="jp.co.isid.mos.bird.communication.documentdownload.dao.ViewBunshoInfoDao">
+		<aspect>dao.interceptor</aspect>
+	</component>
+	<component name="documentdownloadUICategoryListDao" class="jp.co.isid.mos.bird.communication.documentdownload.dao.UICategoryListDao">
+		<aspect>dao.interceptor</aspect>
+	</component>
+	
+
+	<!-- DTO -->
+	<component name="documentDownloadDto" class="jp.co.isid.mos.bird.communication.documentdownload.dto.DocumentDownloadDto" instance="session"/>
+	<component name="pullDownMenuDto" class="jp.co.isid.mos.bird.framework.dto.PullDownMenuDto" instance="session"/>
+	<!-- LOGIC -->
+	<component name="getDocInfoLogic" class="jp.co.isid.mos.bird.communication.documentdownload.logic.impl.GetDocInfoLogicImpl"/>
+	<component name="documentDownloadLogic" class="jp.co.isid.mos.bird.communication.documentdownload.logic.impl.DocumentDownloadLogicImpl"/>
+	<component name="getUserDocCategoryLogic" class="jp.co.isid.mos.bird.communication.documentdownload.logic.impl.GetUserDocCategoryLogicImpl"/>
+	<component name="getDocShozokuLogic" class="jp.co.isid.mos.bird.communication.documentdownload.logic.impl.GetDocShozokuLogicImpl"/>
+
+	<!-- ENTITY -->
+	<!-- アクション -->
+	<component name="documentDownloadAction" class="jp.co.isid.mos.bird.communication.documentdownload.action.impl.DocumentDownloadActionImpl" instance="request">
+		<property name="documentDownloadDto">documentDownloadDto</property>
+		<property name="infoShu">"03"</property>
+	</component>
+	<!-- アクション -->
+	<component name="documentDownloadFileDownlodAction" class="jp.co.isid.mos.bird.framework.action.impl.FileDownloadActionImpl" instance="request">
+		 <property name="downloadDto">documentDownloadDto</property>
+		 <property name="downloadLogic">documentDownloadLogic</property>
+	</component>
+
+	<!-- コンバーター -->
+	<component name="dateConverter" class="jp.co.isid.mos.bird.framework.text.converter.DateConverter" instance="request">
+		<arg>@jp.co.isid.mos.bird.framework.util.formatter.DateFormatter@DATE_TYPE_YMD</arg>
+		<arg>@jp.co.isid.mos.bird.framework.util.formatter.DateFormatter@PATTERN_SLASH</arg>
+	</component>
+	<component name="changeLineRefConverter" class="jp.co.isid.mos.bird.framework.text.converter.ChangeLineRefConverter" instance="request"/>
+</components>

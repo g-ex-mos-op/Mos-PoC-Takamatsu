@@ -1,0 +1,214 @@
+SELECT BS09.EIGYO_DT
+,       CASE WHEN BS09.EIGYO_DT = /*appMonth*/'200812' THEN '2' 
+             ELSE '1' END AS DT_TYPE
+,      CASE WHEN BS09.EIGYO_DT = /*appMonth*/'200812' THEN '“–ŒŽ' 
+             ELSE '–{“ú' END AS DT_NAME
+,	 CASE WHEN SEGMENT_TYPE IS NULL THEN ''
+		ELSE SEGMENT_TYPE END AS SEGMENT_TYPE 
+,	 CASE WHEN SEGMENT_TYPE IS NULL THEN '‘S“X'
+		ELSE SEGMENT_NAME END AS SEGMENT_NAME 
+,		BS09.TENPO_COUNT
+,		0 ZEN_TENPO_COUNT
+,		BS09.URIAGE
+,		BS09.YOSAN
+,		0.00 YOSANHI_MIKOMI
+,		BS09.ZEN_URIAGE_DOYO AS ZEN_URIAGE
+,		BS09.ZEN_URIAGE_DOUJITU
+,		BS09.KYAKUSU
+,		BS09.ZEN_KYAKUSU_DOYO AS ZEN_KYAKUSU
+,		BS09.ZEN_KYAKUSU_DOUJITU
+,      DECIMAL(
+           CASE WHEN BS09.YOSAN <= 0 THEN 0.00 
+                WHEN BS09.URIAGE <= 0 THEN 0.00 
+                ELSE ((DOUBLE(BS09.URIAGE)/DOUBLE(BS09.YOSAN)*100)+0.005)
+           END, 20, 2) AS YOSAN_HI
+,      DECIMAL(
+           CASE WHEN BS09.ZEN_URIAGE_DOYO <= 0 THEN 0.00 
+                WHEN BS09.URIAGE <= 0 THEN 0.00 
+                ELSE ((DOUBLE(BS09.URIAGE)/DOUBLE(BS09.ZEN_URIAGE_DOYO)*100)+0.005)
+           END, 20, 2) AS URIAGE_ZEN_HI
+,      DECIMAL(
+           CASE WHEN BS09.ZEN_URIAGE_DOUJITU <= 0 THEN 0.00 
+                WHEN BS09.URIAGE <= 0 THEN 0.00 
+                ELSE ((DOUBLE(BS09.URIAGE)/DOUBLE(BS09.ZEN_URIAGE_DOUJITU)*100)+0.005)
+           END, 20, 2) AS URIAGE_ZEN_HI_DOUJITU
+,      DECIMAL(
+           CASE WHEN BS09.ZEN_KYAKUSU_DOYO <= 0 THEN 0.00 
+                WHEN BS09.KYAKUSU <= 0 THEN 0.00 
+                ELSE ((DOUBLE(BS09.KYAKUSU)/DOUBLE(BS09.ZEN_KYAKUSU_DOYO)*100)+0.005)
+           END, 20, 2) AS KYAKUSU_ZEN_HI
+,      DECIMAL(
+           CASE WHEN BS09.ZEN_KYAKUSU_DOUJITU <= 0 THEN 0.00 
+                WHEN BS09.KYAKUSU <= 0 THEN 0.00 
+                ELSE ((DOUBLE(BS09.KYAKUSU)/DOUBLE(BS09.ZEN_KYAKUSU_DOUJITU)*100)+0.005)
+           END, 20, 2) AS KYAKUSU_ZEN_HI_DOUJITU
+,      DECIMAL(
+           CASE WHEN BS09.KYAKUSU <= 0 THEN 0.00 
+                ELSE ((DOUBLE(BS09.URIAGE )/DOUBLE(BS09.KYAKUSU))+0.5)
+           END, 11, 0) AS KYAKUTANKA
+
+,      DECIMAL(
+           CASE WHEN BS09.ZEN_KYAKUSU_DOYO <= 0 THEN 0.00 
+                ELSE ((DOUBLE(BS09.ZEN_URIAGE_DOYO )/DOUBLE(BS09.ZEN_KYAKUSU_DOYO))+0.5)
+           END, 11, 0) AS ZEN_KYAKUTANKA
+
+,      DECIMAL(
+           CASE WHEN BS09.ZEN_KYAKUSU_DOUJITU <= 0 THEN 0.00 
+                ELSE ((DOUBLE(BS09.ZEN_URIAGE_DOUJITU )/DOUBLE(BS09.ZEN_KYAKUSU_DOUJITU))+0.5)
+           END, 11, 0) AS ZEN_KYAKUTANKA_DOUJITU
+
+,      DECIMAL(
+           CASE WHEN BS09.KYAKUSU <= 0 THEN 0.00 
+                WHEN BS09.ZEN_KYAKUSU_DOYO <= 0 THEN 0.00 
+                ELSE ((DECIMAL(
+                         ((DOUBLE(BS09.URIAGE )/DOUBLE(BS09.KYAKUSU))+0.5)
+                       , 11,0) 
+                      /DECIMAL(
+                         ((DOUBLE(BS09.ZEN_URIAGE_DOYO )/DOUBLE(BS09.ZEN_KYAKUSU_DOYO))+0.5)
+                       , 11,0)
+                         *100
+                      )+0.005) 
+           END, 10, 2) AS KYAKUTANKA_ZEN_HI
+,      DECIMAL(
+           CASE WHEN BS09.KYAKUSU <= 0 THEN 0.00 
+                WHEN BS09.ZEN_KYAKUSU_DOUJITU <= 0 THEN 0.00 
+                ELSE ((DECIMAL(
+                         ((DOUBLE(BS09.URIAGE )/DOUBLE(BS09.KYAKUSU))+0.5)
+                       , 11,0) 
+                      /DECIMAL(
+                         ((DOUBLE(BS09.ZEN_URIAGE_DOUJITU)/DOUBLE(BS09.ZEN_KYAKUSU_DOUJITU))+0.5)
+                       , 11,0)
+                         *100
+                      )+0.005) 
+           END, 10, 2) AS KYAKUTANKA_ZEN_HI_DOUJITU
+
+FROM (
+	(
+	  SELECT EIGYO_DT
+	  ,      COUNT(DISTINCT BM01.MISE_CD) AS TENPO_COUNT
+      ,      SUM(URIAGE) AS URIAGE
+/*IF userTypeCd == "02" */
+      ,      BM01.COMPANY_CD SEGMENT_TYPE
+      ,      BC02.COMPANY_NAME AS SEGMENT_NAME
+      ,      SUM(ONER_YOSAN) AS YOSAN
+/*END*/
+/*IF userTypeCd == "03" */
+      ,      BM01.MISE_CD AS SEGMENT_TYPE
+      ,      BM01.MISE_NAME_KJ AS SEGMENT_NAME
+      ,      SUM(CASE WHEN SUBSTR(BM01.MISE_KBN, 2,1)='1' THEN ONER_YOSAN
+                      ELSE BT4.YOSAN END) AS YOSAN
+/*END*/
+      ,      SUM(URIAGE_ZEN_DOGETU )  AS ZEN_URIAGE_DOGETU
+      ,      SUM(URIAGE_ZEN_DOJITU)   AS ZEN_URIAGE_DOUJITU
+      ,      SUM(URIAGE_ZEN_DOYO)     AS ZEN_URIAGE_DOYO
+      ,      SUM(KYAKUSU) AS KYAKUSU
+      ,      SUM(KYAKUSU_ZEN_DOGETU)  AS ZEN_KYAKUSU_DOGETU
+      ,      SUM(KYAKUSU_ZEN_DOJITU)  AS ZEN_KYAKUSU_DOUJITU
+      ,      SUM(KYAKUSU_ZEN_DOYO)    AS ZEN_KYAKUSU_DOYO
+      FROM BM01TENM BM01
+/*IF userTypeCd == "02" */
+      ,    BC02COMP BC02
+      ,    BM06UONR BM06
+/*END*/
+/*IF userTypeCd == "03" */
+      ,    BM07UTEN BM07
+      ,    BT45DSJY BT4
+/*END*/
+      ,    BT60ZNIP BT60
+      WHERE BM01.COMPANY_CD IN /*companyCdList*/('00')
+      AND   BT60.COMPANY_CD = BM01.COMPANY_CD
+/*IF userTypeCd == "02" */
+      AND   BM06.USER_ID    = /*userId*/'99990002'
+      AND   BM06.COMPANY_CD = BC02.R_COMPANY_CD
+      AND   BM01.COMPANY_CD = BM06.COMPANY_CD
+      AND   BM06.ONER_CD    = BM01.ONER_CD
+/*END*/
+/*IF userTypeCd == "03" */
+      AND   BM07.USER_ID    = /*userId*/'99990003'
+      AND   BM07.COMPANY_CD = BM01.COMPANY_CD
+      AND   BM07.MISE_CD    = BM01.MISE_CD
+      AND   BT4.MISE_CD    = BM07.MISE_CD
+/*END*/
+      AND   BT60.MISE_CD     = BM01.MISE_CD
+      AND   EIGYO_DT = /*appDate*/'20081214'
+      AND   OPEN_KBN = 1
+      AND   OLDM_FLG <> '1'
+/*IF userTypeCd == "03" */
+      AND   YOSAN_DT = EIGYO_DT
+/*END*/      
+/*IF userTypeCd == "02" */
+      GROUP BY ROLLUP((EIGYO_DT)
+      ,      (BM01.COMPANY_CD, BC02.COMPANY_NAME))
+	  HAVING EIGYO_DT IS NOT NULL
+/*END*/
+/*IF userTypeCd == "03" */
+      GROUP BY EIGYO_DT, BM01.MISE_CD, BM01.MISE_NAME_KJ
+/*END*/
+	  
+	) 
+	UNION ALL
+    ( SELECT EIGYO_DT
+	  ,      COUNT(DISTINCT BM01.MISE_CD) AS TENPO_COUNT
+      ,      SUM(URIAGE_DOGETU)     AS URIAGE
+/*IF userTypeCd == "02" */
+      ,      BM01.COMPANY_CD SEGMENT_TYPE
+      ,      BC02.COMPANY_NAME AS SEGMENT_NAME
+      ,      SUM(ONER_YOSAN_DOGETU) AS YOSAN
+/*END*/
+/*IF userTypeCd == "03" */
+      ,      BM01.MISE_CD AS SEGMENT_TYPE
+      ,      BM01.MISE_NAME_KJ AS SEGMENT_NAME
+      ,      SUM(CASE WHEN SUBSTR(BM01.MISE_KBN, 2,1)='1' THEN ONER_YOSAN_DOGETU
+                      ELSE BT4.YOSAN END) AS YOSAN
+/*END*/
+      ,      SUM(URIAGE_ZEN_DOGETU) AS ZEN_URIAGE_DOGETU
+      ,      SUM(URIAGE_ZEN_DOJITU) AS ZEN_URIAGE_DOUJITU
+      ,      SUM(URIAGE_ZEN_DOYO)   AS ZEN_URIAGE_DOYO
+      ,      SUM(KYAKUSU_DOGETU)     AS KYAKUSU
+      ,      SUM(KYAKUSU_ZEN_DOGETU) AS ZEN_KYAKUSU_DOGETU
+      ,      SUM(KYAKUSU_ZEN_DOJITU) AS ZEN_KYAKUSU_DOUJITU
+      ,      SUM(KYAKUSU_ZEN_DOYO)   AS ZEN_KYAKUSU_DOYO
+/*END*/
+      FROM BM01TENM BM01
+      ,    BT64ZGEP BT64
+/*IF userTypeCd == "02" */
+      ,    BC02COMP BC02
+      ,    BM06UONR BM06
+/*END*/
+/*IF userTypeCd == "03" */
+      ,    BM07UTEN BM07
+      ,    BT44MSJY BT4
+/*END*/
+      WHERE BM01.COMPANY_CD IN /*companyCdList*/('00')
+      AND   BT64.COMPANY_CD = BM01.COMPANY_CD
+/*IF userTypeCd == "02" */
+      AND   BM06.USER_ID    = /*userId*/'99990002'
+      AND   BM06.COMPANY_CD = BC02.R_COMPANY_CD
+      AND   BM01.COMPANY_CD = BM06.COMPANY_CD
+      AND   BM06.ONER_CD    = BM01.ONER_CD
+/*END*/
+/*IF userTypeCd == "03" */
+      AND   BM07.USER_ID    = /*userId*/'99990003'
+      AND   BM07.COMPANY_CD = BM01.COMPANY_CD
+      AND   BM07.MISE_CD    = BM01.MISE_CD
+      AND   BT4.MISE_CD     = BM07.MISE_CD
+/*END*/
+      AND   BT64.MISE_CD    = BM01.MISE_CD
+      AND   EIGYO_DT = /*appMonth*/'200812'
+      AND   OPEN_KBN = 1
+      AND   OLDM_FLG <> '1'
+/*IF userTypeCd == "03" */
+      AND   YOSAN_DT = EIGYO_DT
+/*END*/
+/*IF userTypeCd == "02" */
+      GROUP BY ROLLUP((EIGYO_DT)
+      ,      (BM01.COMPANY_CD, BC02.COMPANY_NAME))
+	  HAVING EIGYO_DT IS NOT NULL
+/*END*/
+/*IF userTypeCd == "03" */
+      GROUP BY EIGYO_DT, BM01.MISE_CD, BM01.MISE_NAME_KJ
+/*END*/
+       ) 
+) BS09
+ORDER BY SEGMENT_TYPE 
+,        DT_TYPE

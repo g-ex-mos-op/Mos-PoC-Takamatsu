@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE components PUBLIC "-//SEASAR//DTD S2Container 2.3//EN"
+	"http://www.seasar.org/dtd/components23.dtd">
+<components namespace="posNipoRef">
+    <include path="dao.dicon"/>
+	<include path="jp/co/isid/mos/bird/framework/dicon/birdInterceptor.dicon"/>
+	<include path="jp/co/isid/mos/bird/common/dicon/birdCommon.dicon"/>
+	
+	<component
+	  class="org.seasar.framework.container.autoregister.AspectAutoRegister">
+	    <property name="interceptor">birdInterceptor.actionInterceptorChain</property>
+	    <initMethod name="addClassPattern">
+	        <arg>"jp.co.isid.mos.bird"</arg>
+	        <arg>".*ActionImpl"</arg>
+	    </initMethod>
+	    <initMethod name="registerAll"/>
+	</component> 
+	<component
+	  class="org.seasar.framework.container.autoregister.AspectAutoRegister">
+	    <property name="interceptor">birdInterceptor.logicInterceptorChain</property>
+	    <initMethod name="addClassPattern">
+	        <arg>"jp.co.isid.mos.bird"</arg>
+	        <arg>".*LogicImpl"</arg>
+	    </initMethod>
+	    <initMethod name="registerAll"/>
+	</component>
+
+	<component class="jp.co.isid.mos.bird.framework.control.BirdUserInfo" instance="session"/>
+	<component class="jp.co.isid.mos.bird.framework.control.BirdDateInfo" instance="session"/>
+
+	<!-- Converter -->
+	<component name="dateConverterDE" class="jp.co.isid.mos.bird.framework.text.converter.DateConverter" instance="request">
+		<arg>@jp.co.isid.mos.bird.framework.util.formatter.DateFormatter@DATE_TYPE_YMD</arg>
+		<arg>"dd'日('E')'"</arg>
+	</component>
+	<component name="numericConverter" class="jp.co.isid.mos.bird.framework.text.converter.NumericConverter" instance="request"/>
+	<component name="hourTimeConverter" class="jp.co.isid.mos.bird.storemanage.posniporef.text.converter.HourTimeConverter" instance="request"/>
+
+	<!-- DAO -->
+	<component name="posNipoInfoDao" class="jp.co.isid.mos.bird.storemanage.posniporef.dao.PosNipoInfoDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="posNipoCntDao" class="jp.co.isid.mos.bird.storemanage.posniporef.dao.PosNipoCntDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="tenpoListByOnerDao" class="jp.co.isid.mos.bird.storemanage.posniporef.dao.TenpoListByOnerDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+
+	<!-- Logic -->
+	<component name="posNipoTenpoCntLogic" class="jp.co.isid.mos.bird.storemanage.posniporef.logic.impl.PosNipoTenpoCntLogicImpl"/>
+	<component name="posNipoInfoLogic" class="jp.co.isid.mos.bird.storemanage.posniporef.logic.impl.PosNipoInfoLogicImpl"/>
+	<component name="posNipoCSVLogic" class="jp.co.isid.mos.bird.storemanage.posniporef.logic.impl.PosNipoCSVLogicImpl"/>
+	<component name="makeMiseListByOnerLogic" class="jp.co.isid.mos.bird.storemanage.posniporef.logic.impl.MakeMiseListByOnerLogicImpl"/>
+
+	<!-- DTO -->
+	<component name="posNipoRequestDto" class="jp.co.isid.mos.bird.storemanage.posniporef.dto.PosNipoRequestDto" autoBinding="none" instance="request"/>
+	<component name="posNipoSessionDto" class="jp.co.isid.mos.bird.storemanage.posniporef.dto.PosNipoSessionDto" autoBinding="none" instance="session">
+		<property name="maxSize">5</property>
+	</component>
+	<component name="pullDownMenuDto" class="jp.co.isid.mos.bird.framework.dto.PullDownMenuDto" autoBinding="none" instance="session"/>
+	<component name="miseSearchDto" class="jp.co.isid.mos.bird.commonform.misesearch.dto.MiseSearchDto" autoBinding="none" instance="session"/>
+	<component name="ownerSearchDto" class="jp.co.isid.mos.bird.commonform.ownersearch.dto.OwnerSearchDto" autoBinding="none" instance="session"/>
+	
+	<!-- Action -->
+	<component name="posNipoRefAction" class="jp.co.isid.mos.bird.storemanage.posniporef.action.impl.PosNipoRefActionImpl" instance="request"/>
+	<component name="posNipoRefCSVAction" class="jp.co.isid.mos.bird.framework.action.impl.CsvOutputActionImpl" instance="request">
+		<property name="csvOutputLogic">posNipoCSVLogic</property>
+		<property name="csvOutputDto">posNipoSessionDto</property>
+	</component>
+
+</components>

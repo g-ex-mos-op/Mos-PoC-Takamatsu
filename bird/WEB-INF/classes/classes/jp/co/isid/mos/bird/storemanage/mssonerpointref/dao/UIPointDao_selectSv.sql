@@ -1,0 +1,102 @@
+SELECT BM31.BNR_L 
+,      BM31.BNR_L_NAME 
+,      BM31.BNR_M 
+,      BM31.BNR_M_NAME 
+,      BM31.KOUMOKU_NO 
+,      BM31.KOUMOKU_SUB  
+,      BM31.KOUMOKU_NAME 
+,      BM31.LIMIT_U AS LIMITMAX 
+,      BM31.LIMIT_U AS LIMIT_U_100 
+,      TENPO_DATA.ZEN_AVG AS ZEN_AVG_100
+,      TENPO_DATA.SIBU_AVG AS SIBU_AVG_100
+,      SV_AVG.HYOUKA_DATA AS SV_SIBU_AVG_100
+,      TENPO_DATA.COMPANY_CD 
+,      TENPO_DATA.ONER_CD 
+,      TENPO_DATA.ONER_NAME 
+,      TENPO_DATA.TENPO_POINT_DATA AS TOKUTEN_100 
+
+FROM BM31MSPM BM31 
+LEFT JOIN ( 
+	SELECT BS04.NENDO     
+	,      BS04.KAI     
+	,      BS04.COMPANY_CD     
+	,      BS04.ONER_CD     
+	,      BM11.ONER_NAME_KJ AS ONER_NAME 
+	,      BS04.KOUMOKU_NO     
+	,      BS04.KOUMOKU_SUB     
+	,      BS04.BNR_L     
+	,      BS04.BNR_M     
+	,      BS04.ZEN_AVG    
+	,      BS04.SIBU_AVG    
+	,      DECIMAL(ROUND(AVG(BS04.HYOUKA_DATA),2),5,2) AS TENPO_POINT_DATA  
+	FROM BS04MSPS BS04     
+	,    BM11ONER BM11
+	WHERE BS04.NENDO = /*nendo*/''     
+	AND   BS04.KAI = /*kai*/''     
+	AND   BS04.COMPANY_CD = /*companyCd*/'' 
+	AND   BS04.MISE_CD IN /*miseCd*/('')    
+	AND   BS04.HYOUKA_KBN = '1'    
+	AND   BS04.BNR_L <> '99'     
+    AND   BM11.COMPANY_CD = BS04.COMPANY_CD
+	AND   BM11.ONER_CD = BS04.ONER_CD     
+	GROUP BY BS04.NENDO     
+	,        BS04.KAI     
+	,        BS04.COMPANY_CD     
+	,        BS04.ONER_CD     
+	,        BM11.ONER_NAME_KJ
+	,        BS04.KOUMOKU_NO     
+	,        BS04.KOUMOKU_SUB     
+	,        BS04.BNR_L     
+	,        BS04.BNR_M     
+	,        BS04.ZEN_AVG    
+	,        BS04.SIBU_AVG    
+
+) TENPO_DATA
+ON (    TENPO_DATA.NENDO = BM31.NENDO
+    AND TENPO_DATA.KAI = BM31.KAI
+    AND TENPO_DATA.BNR_L = BM31.BNR_L
+    AND TENPO_DATA.BNR_M = BM31.BNR_M
+    AND TENPO_DATA.KOUMOKU_NO = BM31.KOUMOKU_NO
+    AND TENPO_DATA.KOUMOKU_SUB = BM31.KOUMOKU_SUB
+)
+LEFT JOIN ( 
+	SELECT DISTINCT BS04.KOUMOKU_NO 
+	,      BS04.KOUMOKU_SUB    
+	,      BS04.BNR_L    
+	,      BS04.BNR_M    
+	,      AVG(BS04.HYOUKA_DATA) AS HYOUKA_DATA    
+	FROM BS04MSPS BS04    
+	WHERE BS04.NENDO = /*nendo*/''     
+	AND   BS04.KAI = /*kai*/''     
+	AND   BS04.COMPANY_CD = /*companyCd*/'' 
+	AND   BS04.MISE_CD IN /*miseCd*/('')     
+	AND   BS04.HYOUKA_KBN = '1'    
+	AND   BS04.BNR_L <> '99'     
+	
+	GROUP BY BS04.NENDO    
+	,        BS04.KAI    
+	,        BS04.BNR_L    
+	,        BS04.BNR_M    
+	,        BS04.KOUMOKU_NO    
+	,        BS04.KOUMOKU_SUB    
+
+) SV_AVG     
+ON (     
+	    SV_AVG.KOUMOKU_NO = BM31.KOUMOKU_NO    
+	AND SV_AVG.KOUMOKU_SUB = BM31.KOUMOKU_SUB    
+	AND SV_AVG.BNR_L = BM31.BNR_L    
+	AND SV_AVG.BNR_M = BM31.BNR_M    
+) 
+WHERE BM31.NENDO = /*nendo*/'' 
+AND   BM31.KAI = /*kai*/'' 
+AND   BM31.COMPANY_CD = /*companyCd*/'' 
+AND   BM31.HYOUKA_KBN = '1' 
+AND   BM31.BNR_L <> '99' 
+
+ORDER BY BM31.BNR_L 
+	,      BM31.BNR_L_NAME 
+	,      BM31.BNR_M 
+	,      BM31.BNR_M_NAME 
+	,      BM31.KOUMOKU_NO 
+	,      BM31.KOUMOKU_SUB  
+    ,      TENPO_DATA.ONER_CD 

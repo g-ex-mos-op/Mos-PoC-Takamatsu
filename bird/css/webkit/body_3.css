@@ -1,0 +1,129 @@
+/* ボディタイトルの設定 */
+.body_title{
+  width					: 100%;
+  font-size			: medium;
+  color					: white;
+  background-color	: #8B4513;
+  text-align			: left;
+}
+
+/* 見出しの設定 */
+.body_caption{
+  color                 : white;
+  background-color      : #8B4513;
+  text-align            : left;
+}
+
+/* テーブルヘッダデフォルト設定 パターン１*/
+table.body_table tr th{
+  background-color      : #D2691E;
+}
+/* 見出しの設定 */
+.body_caption1, table.body_table2 tr.body_caption1 td{
+  background-color   : #D2691E;
+}
+
+/* テーブルヘッダデフォルト設定 パターン２*/
+/* ★★★統合予定★★★ */
+table.body_table2 tr th , table.body_table tr th.body_header3{
+  color                 : #8B4513;
+  background-color      : #FFCC33;
+  text-align            : left;
+}
+
+/* 項目ヘッダ４の設定（デフォルトヘッダ色変更用） */
+table.body_table2 tr th.body_header4{
+  color                 : white;
+  background-color      : #FFCC66;
+  text-align            : center;
+}
+/* 水平方向ヘッダ追加設定 */
+table tr.header_row th {
+	text-align			: center;
+}
+
+/* 総合営業日報・タブの設定 */
+.tab_area {
+  background-color      : #FFD700;
+}
+
+/* リンクの設定 */
+a.body_non_selected_link{
+  text-decoration       : none;
+  font-weight           : bold;
+  color                 : #8B4513;
+}
+
+/* 選択(アクティブ)の設定 */
+.body_active_cell{
+  background-color      : #8B4513;
+}
+
+/* 非選択(非アクティブ)の設定 */
+.body_non_active_cell{
+  color                 : #8B4513;
+}
+.body_non_active_cell a{
+  color						: #8B4513;
+}
+
+/* タブ選択(アクティブ)の設定 */
+.body_active_tab{
+  background-color		: #FFD700;
+}
+/* ulを使用したタブ */
+.list_tab {
+    margin              : 0px;
+    padding             : 0px;
+    color               : #8B4513;
+    background-color    : #C0C0C0;
+    list-style-type     : none;
+    float               : left;
+	border-width        : 3px;
+	border-right-style  : outset;	
+	border-top-style    : outset;
+    text-align          : center;
+    font-weight         : bold;
+}
+
+/* ulを使用したタブ(タブヘッダー) */
+.list_tab2 {
+    margin              : 0px;
+    padding             : 0px;
+    background-color    : #8B4513;
+    list-style-type     : none;
+    float               : left;
+}
+
+/* ulを使用したタブ(アクティブなタブ) */
+.list_tab .selected_tab {
+    color               : white;
+    background-color    : #8B4513;
+    width               : 100%;
+    text-decoration     : none;
+    font-weight         : bold;
+}
+
+/* ulを使用したタブ(非アクティブなタブ文字色) */
+.list_tab * a {
+  text-decoration       : none;
+  font-weight           : bold;
+  color                 : #8B4513;
+}
+.visitelink a:link {
+
+}
+.visitelink a:visited {
+  color                 : darkgoldenrod;
+}
+.visitelink a:hover {
+
+}
+.visitelink a:active {
+  color                 : darkgoldenrod;
+}
+.link2_base
+{
+	font-size:20pt;
+	color:#FFC700;
+}

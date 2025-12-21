@@ -1,0 +1,74 @@
+<html xmlns:m="http://www.seasar.org/maya" m:extends="/jsf/layout/layoutNoNavi.html">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Windows-31j" />
+<title>アカウント情報照会(本部) </title>
+</head>
+<body>
+<span m:inject="f:param" m:name="layoutTitle" m:value="アカウント情報照会"/>
+<span m:inject="s:insert" m:name="bodyTitleName">■アカウント情報照会　</span>
+<span m:inject="f:param" m:name="viewIdValue" m:value="BBA002V04"/>
+<span m:inject="s:insert" m:name="body">
+
+<form>
+	<input type="hidden" m:id="viewId" m:value="#{viewIdValue}"/>
+	<input type="hidden" m:id="initMenuId" m:value="#{menuAction.initMenuId}"/>
+	<input type="hidden" m:id="initSubMenuId" m:value="#{menuAction.initSubMenuId}"/>
+	<input type="button" value="戻る" m:action="#{accountRefAction.back}" />
+</form>
+	<table class="body_table2" style="margin-top:4px;width:98%;">
+	    <colgroup>
+		<col style="width:180px;"/>
+		<col style="width:310px;"/>
+		<col style="width:155px;"/>
+		<col style="width:*;"/>
+		</colgroup>
+	<tr>
+		<th>ユーザータイプ </th>
+		<td colspan=3>本部</td>
+	</tr>
+	<tr>
+		<th>ユーザーID</th> 
+		<td colspan=3><span m:inject="h:outputText" m:value="#{accountRefDto.userInfo.userId}" /></td>
+	</tr>
+	<tr> 
+		<th>ユーザー名</th>
+		<td><span m:converter="#{characterEncodingConverter}" m:inject="h:outputText" m:value="#{accountRefDto.userInfo.userNameKj}" /></td>
+		<th>ユーザー名（カナ）</th>
+		<td><span m:converter="#{characterEncodingConverter}" m:inject="h:outputText" m:value="#{accountRefDto.userInfo.userNameKana}" /></td>
+	</tr>
+	<tr>
+		<th>会社</th>
+		<td><span m:converter="#{characterEncodingConverter}" m:inject="h:outputText" m:value="#{accountRefDto.userCompany.rCompanyName}" /></td>
+		<th>部門</th>
+		<td><span m:converter="#{characterEncodingConverter}" m:inject="h:outputText" m:value="#{accountRefDto.userInfo.bumonName}" /></td>	
+	</tr>
+	<tr>
+		<th>業態</th>
+		<td width="300px">
+	  		<div m:inject="s:forEach" m:items="#{accountRefDto.listUserGyotai}" m:var="e" m:varindex="i">
+        	<span m:converter="#{characterEncodingConverter}" m:inject="h:outputText" m:value="#{e.gyotaiName}"/><br/>
+	  		</div>
+		</td>
+		<th>オーナーコード</th>
+		<td width="300px"><span m:inject="h:outputText" m:value="#{accountRefDto.userOner.onerCd}" /></td>	
+	</tr>
+	<tr>
+		<th>リモード制限</th>
+		<td width="300px">
+			&nbsp;<span m:converter="#{characterEncodingConverter}" m:inject="h:outputText" m:value="#{accountRefDto.labelLimitKbn}" />
+		</td>
+		<th>使用停止</th>
+		<td width="300px">
+			使用停止&nbsp;<span m:inject="h:outputText" m:value="#{accountRefDto.labelStopFlg}" />
+		</td>	
+	</tr>
+	<tr>
+		<th>メールアドレス</th>
+		<td colspan=3><span m:inject="h:outputText" m:value="#{accountRefDto.userInfo.mailAdd}"/></td>
+	</tr>
+</table>
+
+</span>
+
+</body>
+</html>

@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="Shift_JIS"?>
+<!DOCTYPE components PUBLIC
+    "-//SEASAR//DTD S2Container 2.3//EN"
+    "http://www.seasar.org/dtd/components23.dtd">
+<components namespace='docform'>
+	<include path="dao.dicon"/>
+	<include path="jp/co/isid/mos/bird/common/dicon/birdCommon.dicon"/>
+	<include path="jp/co/isid/mos/bird/framework/dicon/birdInterceptor.dicon"/>
+	<!-- インターセプターを自動登録 -->
+	<component class="org.seasar.framework.container.autoregister.AspectAutoRegister">
+	    <property name="interceptor">birdInterceptor.actionInterceptorChain</property>
+	    <initMethod name="addClassPattern">
+	        <arg>"jp.co.isid.mos.bird"</arg>
+	        <arg>".*ActionImpl"</arg>
+	    </initMethod>
+	    <initMethod name="registerAll"/>
+	</component>
+	<component class="org.seasar.framework.container.autoregister.AspectAutoRegister">
+	    <property name="interceptor">birdInterceptor.logicInterceptorChain</property>
+	    <initMethod name="addClassPattern">
+	        <arg>"jp.co.isid.mos.bird"</arg>
+	        <arg>".*LogicImpl"</arg>
+	    </initMethod>
+	    <initMethod name="registerAll"/>
+	</component>
+	<!-- DAO -->
+	<component name="mstUserDao" class="jp.co.isid.mos.bird.framework.dao.MstUserDao">
+		<aspect>dao.interceptor</aspect>
+	</component>
+	<component name="docformViewShozokuInfoDao" class="jp.co.isid.mos.bird.communication.docform.dao.UIViewShozokuInfoDao">
+		<aspect>dao.interceptor</aspect>
+	</component>
+	<component name="docformMstCategoryInfoDao" class="jp.co.isid.mos.bird.communication.docform.dao.MstCategoryInfoDao">
+		<aspect>dao.interceptor</aspect>
+	</component>
+	<component name="docformUIDocFormDao" class="jp.co.isid.mos.bird.communication.docform.dao.UIDocFormDao">
+		<aspect>dao.interceptor</aspect>
+	</component>
+
+	<!-- 対象情報種別 -->
+	<component name="targetInfoShu" class="java.util.ArrayList">
+		<initMethod name="add" >
+			<arg>"03"</arg>
+		</initMethod>
+		<initMethod name="add" >
+			<arg>"04"</arg>
+		</initMethod>
+	</component>
+
+	<!-- DTO -->
+	<component name="docformDto" class="jp.co.isid.mos.bird.communication.docform.dto.DocFormDto" instance="session">
+		<property name="listInfoShu">targetInfoShu</property>
+	</component>
+	<component name="pullDownMenuDto" class="jp.co.isid.mos.bird.framework.dto.PullDownMenuDto" autoBinding="none" instance="session"/>
+	<component name="fullTextSearchDocDto" class="jp.co.isid.mos.bird.communication.docform.dto.FullTextSearchDocDto"  instance="request"/>
+	<component name="fullTextSearchFormDto" class="jp.co.isid.mos.bird.communication.docform.dto.FullTextSearchFormDto" instance="request"/>
+	<component name="docformReqDto" class="jp.co.isid.mos.bird.communication.docform.dto.RequestDto" instance="request"/>
+	<!-- LOGIC -->
+	<component name="docformGetDocFormInfoLogic" class="jp.co.isid.mos.bird.communication.docform.logic.impl.GetDocFormInfoLogicImpl"/>
+	<component name="docformDocFormDownloadLogic" class="jp.co.isid.mos.bird.communication.docform.logic.impl.DocFormDownloadLogicImpl"/>
+	<component name="docformGetDocFormShozokuLogic" class="jp.co.isid.mos.bird.communication.docform.logic.impl.GetDocFormShozokuLogicImpl"/>
+	<component name="fullTextSearchLogic" class="jp.co.isid.mos.bird.framework.logic.impl.FullTextSearchLogicImpl"/>
+	<component name="docformInitializeLogic" class="jp.co.isid.mos.bird.communication.docform.logic.impl.InitializeLogicImpl"/>
+	<component name="docformSearchLogic" class="jp.co.isid.mos.bird.communication.docform.logic.impl.SearchLogicImpl"/>
+
+	<!-- ENTITY -->
+	<!-- アクション -->
+	<component name="docformAction" class="jp.co.isid.mos.bird.communication.docform.action.impl.DocFormActionImpl" instance="request">
+		<property name="docFormDto">docformDto</property>
+		<property name="fullTextSearchDocDto">fullTextSearchDocDto</property>
+		<property name="fullTextSearchFormDto">fullTextSearchFormDto</property>
+		<property name="docformReqDto">docformReqDto</property>
+	</component>
+	<component name="docformFileDownlodAction" class="jp.co.isid.mos.bird.framework.action.impl.FileDownloadActionImpl" instance="request">
+		 <property name="downloadDto">docformDto</property>
+		 <property name="downloadLogic">docformDocFormDownloadLogic</property>
+	</component>
+
+	<!-- コンバーター -->
+	<component name="dateConverter" class="jp.co.isid.mos.bird.framework.text.converter.DateConverter" instance="request">
+		<arg>@jp.co.isid.mos.bird.framework.util.formatter.DateFormatter@DATE_TYPE_YMD</arg>
+		<arg>@jp.co.isid.mos.bird.framework.util.formatter.DateFormatter@PATTERN_SLASH</arg>
+	</component>
+	<component name="changeLineRefConverter" class="jp.co.isid.mos.bird.framework.text.converter.ChangeLineRefConverter" instance="request"/>
+
+</components>

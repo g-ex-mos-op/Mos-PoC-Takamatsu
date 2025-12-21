@@ -1,0 +1,336 @@
+<html xmlns:m="http://www.seasar.org/maya" m:action="#{projectPlanOfferEditAction.initialize}" m:extends="/jsf/layout/layoutNoNavi.html">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Windows-31j"/>
+<meta http-equiv="Content-Style-Type" content="text/css"/>
+<link href="./css/main.css" rel="stylesheet" type="text/css"/>
+<link href="./css/header.css" rel="stylesheet" type="text/css"/>
+<link href="./css/navi.css" rel="stylesheet" type="text/css"/>
+<link href="./css/body.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="./js/bird.js"></script>
+</head>
+<body>
+  <span m:inject="f:param" m:name="layoutTitle" m:value="事業方針説明会申込　編集画面"/>
+  <span m:inject="f:param" m:name="onLoadName" m:value="bodyLoad();"/>
+  <span m:inject="s:insert" m:name="bodyTitleName">■事業方針説明会申込</span>
+  <span m:inject="f:param" m:name="viewIdValue" m:value="BEN011V01"/>
+  <span m:inject="s:insert" m:name="body">
+<STYLE type="text/css" media="screen">
+<!--
+/* 入力フィールドの右詰入力へ指定するためのスタイルシート */
+.ratio_style {
+  text-align       : right;
+  background-color : #FFFFFF;
+  color            : black;
+  ime-mode    : disabled;
+}
+//-->
+</STYLE>
+  <script type="text/javascript">
+  <!--
+    function bodyLoad() {
+      if(document.projectplanoffer.elements['projectplanoffer:prmTabNo'].value == '0') {
+        changeTabArea();
+        if(document.projectplanoffer.elements['projectplanoffer:errFlg'].value == '') {
+          document.projectplanoffer.elements['projectplanoffer:prmDutySoufuName'].focus();
+        } else if(document.projectplanoffer.elements['projectplanoffer:errFlg'].value == '1') {
+          focusElement("projectplanoffer");
+        }
+      } else {
+	   //店コード設定
+	   var no = document.projectplanoffer.elements['projectplanoffer:prmTabNo'].value - 1;
+       if(no >= 0) {
+	       var obj = 'projectplanoffer:join_' + no + ':prmMiseCd1';
+
+		   document.projectplanoffer.elements[obj].value =
+		       document.projectplanoffer.elements['projectplanoffer:prmMiseCd'].value;
+	        changeTabArea(document.projectplanoffer.elements['projectplanoffer:prmTabNo'].value);
+
+	        if(document.projectplanoffer.elements['projectplanoffer:errFlg'].value == '1') {
+	          focusElement("projectplanoffer");
+	        } else {
+	          document.projectplanoffer.elements['projectplanoffer:join_'+ no + ':lNameKna'].focus();
+	        }
+	      }
+	   }
+    }
+    /**
+	  * 申込取消ボタン押下処理
+	  *
+	  * 2012/06/13 修正
+      */
+    function clearForm(seqNo, formobj) {
+		var elmDivs = formobj.getElementsByTagName("div");
+		var targetDiv;
+		for(i=0; i<elmDivs.length; i++) {
+			var elmDiv = elmDivs[i];
+			if (elmDiv.className.indexOf("staff_div"+seqNo)>=0) {
+				targetDiv = elmDiv;
+				break;
+			}
+		}
+		if(targetDiv==null) {
+			return;
+		}
+		if(document.all){  // IE
+			doClear(targetDiv.all);
+		}else{ // IE以外
+			doClear(targetDiv.getElementsByTagName('input'));
+			doClear(targetDiv.getElementsByTagName('select'));
+		}
+	}
+	/**
+	  * 取消処理
+	  *
+	  * 2015/09/17 修正
+	  */
+	function doClear(list) {
+		for (i = 0; i <list.length; i++) {
+			if (list[i].type == "text") {
+				list[i].value = "";
+			} else if (list[i].type == "radio") {
+				list[i].checked = false;
+			} else if (list[i].type == "select-one") {
+				list[i].options[0].selected = "0";
+			} else if (list[i].type == "hidden") {
+				list[i].value = "";
+			}
+		}
+	}
+
+    function changeMiseCd(tabNo, i){
+      var f=document.forms['projectplanoffer'];
+   	  var obj = 'projectplanoffer:join_' + i + ':prmMiseCd1';
+
+   	  f.elements['projectplanoffer:prmMiseCd'].value = document.projectplanoffer.elements[obj].value;
+	  f.elements['projectplanoffer:prmTabNo'].value = tabNo;
+	  f.elements['projectplanoffer:__link_clicked__'].value='projectplanoffer:changeMiseAction';
+	  f.submit();
+	  return false;
+	}
+
+	function callStaffForm() {
+		var f=document.forms['projectplanoffer'];
+		f.elements['projectplanoffer:__link_clicked__'].value='projectplanoffer:callStaffForm';
+		f.submit();
+		return false;
+	}
+
+	function changeTab(pTabNo, tabNo){
+		var f=document.forms['projectplanoffer'];
+		f.elements['projectplanoffer:prmPrevTabNo'].value = pTabNo;
+		f.elements['projectplanoffer:prmTabNo'].value = tabNo;
+		f.elements['projectplanoffer:__link_clicked__'].value='projectplanoffer:changeTabAction';
+		f.submit();
+		return false;
+	}
+
+	function backMove(confirmMsg){
+		var f=document.forms['projectplanoffer'];
+        if(confirm(confirmMsg)){
+		  f.elements['projectplanoffer:__link_clicked__'].value='projectplanoffer:backMove';
+		  f.submit();
+		}
+		return false;
+	}
+
+	function execRegist(){
+		var f=document.forms['projectplanoffer'];
+		f.elements['projectplanoffer:__link_clicked__'].value='projectplanoffer:registOfferAction';
+		f.submit();
+		return false;
+	}
+  //-->
+  </script>
+  <form m:id="projectplanoffer">
+	<input type="hidden" m:id="viewId" m:value="#{viewIdValue}"/>
+	<input type="hidden" m:id="initMenuId" m:value="#{menuAction.initMenuId}"/>
+	<input type="hidden" m:id="initSubMenuId" m:value="#{menuAction.initSubMenuId}"/>
+	<input type="hidden" m:id="windowId" m:value="#{projectPlanOfferDto.windowId}"/>
+	<input type="hidden" m:id="prmTabNo" m:value="#{projectPlanOfferDto.prmTabNo}"/>
+	<input type="hidden" m:id="prmPrevTabNo" m:value="#{projectPlanOfferDto.prmPrevTabNo}"/>
+	<input type="hidden" m:id="prmEditKbn" m:value="#{projectPlanOfferDto.prmEditKbn}"/>
+    <input type="hidden" m:id="prmMiseCd" m:value="#{projectPlanOfferDto.prmMiseCd}"/>
+	<input type="hidden" m:id="errFlg" m:value="#{projectPlanOfferDto.errFlg}"/>
+	<a m:id="changeMiseAction" m:action="#{projectPlanOfferEditAction.changeMise}"/>
+	<a m:id="backMove" m:action="#{projectPlanOfferEditAction.backMove}"/>
+	<a m:id="changeTabAction" m:action="#{projectPlanOfferEditAction.changeTab}" />
+	<a m:id="callStaffForm" m:action="#{projectPlanOfferEditAction.callStaffForm}"/>
+	<a m:id="registOfferAction" m:action="#{projectPlanOfferEditAction.registOffer}"/>
+	<div m:rendered="#{projectPlanOfferDto.miseListSize == 0}">
+	<table width="850" cellspacing="0" cellpadding="0">
+	    <tr>
+	      <td width="50"><input type="button" value="戻る" class="operation_button" m:onclick="return backMove('編集中の内容がある場合は破棄されます。よろしいですか？');"  onDblClick="return false"/></td>
+	    </tr>
+	</table>
+	</div>
+	<div m:rendered="#{projectPlanOfferDto.miseListSize > 0}">
+	<table width="860px" cellspacing="0" cellpadding="0">
+	    <tr>
+	      <td width="50"><input type="button" value="戻る" class="operation_button" m:onclick="return backMove('編集中の内容がある場合は破棄されます。よろしいですか？');"  onDblClick="return false"/></td>
+	      <td width="90"><input type="button" value="登録・終了" class="operation_button" m:onclick="execRegist()"  onDblClick="return false"/></td>
+	      <td>&nbsp;</td>
+	      <div m:rendered="#{projectPlanOfferDto.prmTabNo != '0'}">
+	      <td width="80"><input type="button" value="申込取消" class="operation_button" m:onclick="clearForm(#{projectPlanOfferDto.prmTabNo},this.form);"  onDblClick="return false"/></td>
+	      </div>
+	    </tr>
+	    <tr><td style="height:4px"></td></tr>
+	    <tr>
+	      <td colspan="4"><font color="red">*</font>は必須項目です。</td>
+	    </tr>
+	</table>
+	<table style="margin-top:4px" width="860px" cellspacing="0" cellpadding="0">
+	    <tr>
+	      <td class="body_non_active_cell tab_change_area_0" width="150px">
+	       <a href="#" m:onclick="changeTab('#{projectPlanOfferDto.prmTabNo}','0');" class="body_selected_link" name="body_anchor_area_0" m:passthrough="true">申込責任者</a>
+	      </td>
+	      <td class="body_non_active_cell tab_change_area_1" width="150px">
+	        <a href="#" m:onclick="changeTab('#{projectPlanOfferDto.prmTabNo}','1');" class="body_selected_link" name="body_anchor_area_1" m:passthrough="true">出席者１</a>
+	      </td>
+	      <td class="body_non_active_cell tab_change_area_2" width="150px">
+            <a href="#" m:onclick="changeTab('#{projectPlanOfferDto.prmTabNo}','2');" class="body_selected_link" name="body_anchor_area_2" m:passthrough="true">出席者２</a>
+	      </td>
+	      <td class="body_non_active_cell tab_change_area_3" width="150px">
+	        <a href="#" m:onclick="changeTab('#{projectPlanOfferDto.prmTabNo}','3');" class="body_selected_link" name="body_anchor_area_3" m:passthrough="true">出席者３</a>
+	      </td>
+	      <td width="*">&nbsp;</td>
+	    </tr>
+	   <tr style="height:4px;"><td class="body_caption" colspan="5"></td></tr>
+	</table>
+	<!-- tab0:申込責任者 -->
+    <div m:class="#{(projectPlanOfferDto.prmTabNo == '0') ? 'visible_tab' : 'invisible_tab'}" name="tab_change_area_0">
+	    <table  width="860px" class="body_table2 font_size_14">
+	      <tr>
+	        <th width="110px">会社名</th>
+	        <td colspan="3"><span m:converter="#{characterEncodingConverter}" m:value="#{projectPlanOfferDto.prmDutyOnerName}"/>
+	        <input type="hidden"  class="imeon" m:id="prmDutyOnerName" m:value="#{projectPlanOfferDto.prmDutyOnerName}"/></td>
+	      </tr>
+	      <tr>
+	        <th>連絡先名<font color="red">*</font></th>
+	        <td><input m:id="prmDutySoufuName" class="imeon width_210" type="text" m:maxlength="20" size="40" m:value="#{projectPlanOfferDto.prmDutySoufuName}"/></td>
+	        <th width="110px">電話番号<font color="red">*</font></th>
+	        <td><input m:id="prmDutyTel" class="imenotuse width_210" type="text" m:maxlength="15" size="40" m:value="#{projectPlanOfferDto.prmDutyTel}"/></td>
+	      </tr>
+	      <tr>
+	        <th>申込責任者<font color="red">*</font></th>
+	        <td><input m:id="prmDutyName" class="imeon width_210" type="text" m:maxlength="20" size="40" m:value="#{projectPlanOfferDto.prmDutyName}"/></td>
+	        <th>役職</th>
+	        <td><input m:id="prmDutyJobType"  class="imeon width_210" type="text" m:maxlength="10" size="40" m:value="#{projectPlanOfferDto.prmDutyJobType}"/></td>
+	      </tr>
+	      <tr>
+	        <th>住所<font color="red">*</font></th>
+	        <td colspan="3">
+	          <div style="float:left;">〒</div>
+	          <div style="float:left; width:97px;">
+	          <input m:id="prmDutyZip" class="imenotuse width_86" type="text" m:maxlength="8" size="15" m:value="#{projectPlanOfferDto.prmDutyZip}" style="float:left;"/>
+			  </div>
+	          <div style="float:left;">
+				<input m:id="prmDutyAddress1" class="imeon width_450" type="text" m:maxlength="60" size="84" m:value="#{projectPlanOfferDto.prmDutyAddress1}" m:converter="#{projectPlanOfferCharacterEncodingConverter}"/><br/>
+				<input m:id="prmDutyAddress2"  class="imeon width_450" type="text" m:maxlength="60" size="84" m:value="#{projectPlanOfferDto.prmDutyAddress2}" m:converter="#{projectPlanOfferCharacterEncodingConverter}"/><br/>
+				<input m:id="prmDutyAddress3"  class="imeon width_450" type="text" m:maxlength="60" size="84" m:value="#{projectPlanOfferDto.prmDutyAddress3}" m:converter="#{projectPlanOfferCharacterEncodingConverter}"/>
+	          </div>
+	        </td>
+	  	  </tr>
+	    </table>
+    </div>
+	<!-- tab1～３:申込責任者1、２，３ -->
+	<div m:id="join" m:inject="s:forEach" m:items="#{projectPlanOfferDto.prmJoinPersonList}" m:var="joinPers" m:varindex="i">
+	<div m:class="#{(projectPlanOfferDto.prmTabNo == i + 1) ? 'visible_tab' : 'invisible_tab'} staff_div#{i+1}">
+	<input m:id="tabNo" type="hidden" m:value="#{joinPers.tabNo}"/>
+        <table  width="860" class="body_table2 font_size_14">
+          <tr>
+            <th>支部名</th>
+            <td colspan="2">
+            <span m:converter="#{characterEncodingConverter}" m:value="#{projectPlanOfferDto.sibuName}"/></td>
+	        <th>店舗<font color="red">*</font></th>
+	        <td>
+			  <div m:rendered="#{projectPlanOfferDto.miseListSize > 0}">
+			    <div class="hideArea">
+                    <select class="width_300" m:id="prmMiseCd1"
+		                  m:items="#{projectPlanOfferDto.condListMise}"
+		                  m:itemValue="miseCd"
+		                  m:itemlabel="miseNameKj"
+		                  m:onchange="changeMiseCd('#{joinPers.tabNo}', '#{i}')" >
+		            </select>
+			    </div>
+			  </div>
+	        </td>
+	      </tr>
+	      <tr>
+	        <th width="200">フリガナ<font color="red">*</font><input type="button" value="スタッフ選択" class="operation_button" style="width:85px;" m:onclick="callStaffForm();"/></th>
+	        <td width="131"><input m:id="lNameKna" class="imeon width_72" type="text" m:maxlength="10" size="12" m:value="#{joinPers.lNameKna}"/> (氏）</td>
+	        <td width="131"><input m:id="fNameKna" class="imeon width_72" type="text" m:maxlength="10" size="12" m:value="#{joinPers.fNameKna}"/>（名）</td>
+	        <th width="145">性別<font color="red">*</font></th>
+	        <td width="235" >
+			  <span m:inject="s:selectOneRadio2" m:id = "sex" m:value="#{joinPers.sex}">
+				  <input type="radio" m:value="0"/>男&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				  <input type="radio" m:value="1"/>女
+			  </span>
+	        </td>
+	      </tr>
+	      <tr>
+	        <th>氏名<font color="red">*</font></th>
+	        <td><input m:id="lNameKj"  class="imeon width_72" type="text" m:maxlength="10" size="12" m:value="#{joinPers.lNameKj}"/>（氏）</td>
+	        <td><input m:id="fNameKj"  class="imeon width_72" type="text" m:maxlength="10" size="12" m:value="#{joinPers.fNameKj}"/>（名）</td>
+	        <th>年齢<font color="red">*</font></th>
+	        <td><input m:id="age" m:class="imenotuse ratio_style" type="text" m:maxlength="3" size="6" m:value="#{joinPers.age}"/>&nbsp;歳</td>
+	      </tr>
+          <tr>
+            <th>チェーン方針説明会<font color="red">*</font></th>
+            <td colspan="2" width="230">
+			  <span m:inject="s:selectOneRadio2" m:id = "jigyoFlg0" m:value="#{joinPers.jigyoFlg}">
+				  <input type="radio" m:value="0"/>出席&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				  <input type="radio" m:value="1"/>欠席
+			  </span>
+            </td>
+	        <th>懇親会<font color="red">*</font></th>
+	        <td>
+			  <span m:inject="s:selectOneRadio2" m:id = "konshinFlg0"  m:value="#{joinPers.konshinFlg}">
+				  <input type="radio" m:value="0"/>出席&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				  <input type="radio" m:value="1"/>欠席
+			  </span>
+	        </td>
+	      </tr>
+          <tr>
+            <th>共栄会定時総会<font color="red">*</font></th>
+            <td colspan="2">
+			  <span m:inject="s:selectOneRadio2" m:id = "kyoeiFlg0" m:value="#{joinPers.kyoeiFlg}">
+				  <input type="radio" m:value="0"/>出席&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				  <input type="radio" m:value="1"/>欠席
+			  </span>
+            </td>
+	        <th>本部手配宿泊<font color="red">*</font></th>
+	        <td>
+			  <span m:inject="s:selectOneRadio2" m:id = "shukuhakuFlg0" m:value="#{joinPers.shukuhakuFlg}">
+				  <input type="radio" m:value="0"/>無&nbsp;&nbsp;&nbsp;
+				  <input type="radio" m:value="1"/>シングル&nbsp;&nbsp;&nbsp;
+				  <input type="radio" m:value="2"/>ツイン&nbsp;&nbsp;&nbsp;
+			  </span>
+	        </td>
+	      </tr>
+          <tr>
+            <th>備考</th>
+            <td colspan="4"><input m:id="note"  class="imeon width_590" type="text" m:maxlength="50" size="115" m:value="#{joinPers.note}"/></td>
+	      </tr>
+          <tr>
+            <th>チェーン方針説明会<br>欠席理由</th>
+            <td  colspan="4"><input m:id="absenceReason" class="imeon width_590" type="text" m:maxlength="50" size="115" m:value="#{joinPers.absenceReason}"/></td>
+	      </tr>
+        </table>
+    </div>
+    </div>
+	<div style="line-height:4px;"><br/></div>
+    <!-- tab1～３:申込責任者1、２，３ -->
+    <table width="860px" cellspacing="0" cellpadding="0" class="body_table2">
+	    <tr>
+	      <td width="98%">
+	        <pre style="margin-top:0px;margin-bottom:0px"><span m:converter="#{characterEncodingConverter}" m:value="#{projectPlanOfferDto.noticeTxt}"/></pre>
+          </td>
+	    </tr>
+    </table>
+    <!-- 申込取消用-->
+	<input type="hidden" m:id="firstMiseCd" m:value="#{projectPlanOfferDto.firstMiseCd}"/>
+	</div>
+  </form>
+  </span>
+</body>
+</html>

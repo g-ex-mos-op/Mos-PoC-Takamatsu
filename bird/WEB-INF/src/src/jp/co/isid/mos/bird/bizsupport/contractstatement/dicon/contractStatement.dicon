@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE components PUBLIC "-//SEASAR//DTD S2Container 2.3//EN"
+	"http://www.seasar.org/dtd/components23.dtd">
+<components namespace="contractStatement">
+    <include path="dao.dicon"/>
+    <include path="jp/co/isid/mos/bird/common/dicon/birdCommon.dicon"/>
+    <include path="jp/co/isid/mos/bird/common/dicon/birdCommonConst.dicon"/>
+	<include path="jp/co/isid/mos/bird/framework/dicon/birdInterceptor.dicon"/>
+	
+	<!-- インターセプターを自動登録 -->
+	<component class="org.seasar.framework.container.autoregister.AspectAutoRegister">
+	    <property name="interceptor">birdInterceptor.actionInterceptorChain</property>
+	    <initMethod name="addClassPattern">
+	        <arg>"jp.co.isid.mos.bird"</arg>
+	        <arg>".*ActionImpl"</arg>
+	    </initMethod>
+	    <initMethod name="registerAll"/>
+	</component> 
+	<component class="org.seasar.framework.container.autoregister.AspectAutoRegister">
+	    <property name="interceptor">birdInterceptor.logicInterceptorChain</property>
+	    <initMethod name="addClassPattern">
+	        <arg>"jp.co.isid.mos.bird"</arg>
+	        <arg>".*LogicImpl"</arg>
+	    </initMethod>
+	    <initMethod name="registerAll"/>  
+	</component>
+	
+	<!-- DAO -->
+	<component name="contractStatementDao" class="jp.co.isid.mos.bird.bizsupport.contractstatement.dao.UIKeisanshoListDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<!-- LOGIC -->
+	<component name="contractStatementLogic" class="jp.co.isid.mos.bird.bizsupport.contractstatement.logic.impl.GetKeisanshoListLogicImpl"/>
+	<component name="contractStatementDownloadLogic" class="jp.co.isid.mos.bird.bizsupport.contractstatement.logic.impl.KeisanshoDownloadLogicImpl"/>
+	
+	<!-- DTO -->
+	<component name="contractStatementDto" class="jp.co.isid.mos.bird.bizsupport.contractstatement.dto.ContractStatementDto" instance="session">
+		<property name="listAllData">null</property>
+		<property name="listData">null</property>
+	</component>
+	
+	<!-- ACTION -->
+	<component name="contractStatementAction" class="jp.co.isid.mos.bird.bizsupport.contractstatement.action.impl.ContractStatementActionImpl" instance="request"/>
+	<component name="contractStatementDownloadAction" class="jp.co.isid.mos.bird.framework.action.impl.FileDownloadActionImpl" instance="request">
+		<property name="downloadDto">contractStatementDto</property>
+		<property name="downloadLogic">contractStatementDownloadLogic</property>
+	</component>
+	
+	<!-- CONVERTER -->
+	<component name="contractStatementConverterYMD" class="jp.co.isid.mos.bird.framework.text.converter.DateConverter" instance="request">
+		<arg>@jp.co.isid.mos.bird.framework.util.formatter.DateFormatter@DATE_TYPE_YMD</arg>
+		<arg>@jp.co.isid.mos.bird.framework.util.formatter.DateFormatter@PATTERN_SLASH</arg>
+	</component>
+	<component name="contractStatementConverterYM" class="jp.co.isid.mos.bird.framework.text.converter.DateConverter" instance="request">
+		<arg>@jp.co.isid.mos.bird.framework.util.formatter.DateFormatter@DATE_TYPE_YM</arg>
+		<arg>@jp.co.isid.mos.bird.framework.util.formatter.DateFormatter@PATTERN_MONTH_KANJI_YM</arg>
+	</component>
+</components>

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="Shift_JIS"?>
+<!DOCTYPE components PUBLIC "-//SEASAR//DTD S2Container//EN"
+	"http://www.seasar.org/dtd/components.dtd">
+<components namespace="pmossles">
+	<include path="jp/co/isid/mos/bird/pmossles/login/dicon/pmosLogin.dicon"/>
+</components>

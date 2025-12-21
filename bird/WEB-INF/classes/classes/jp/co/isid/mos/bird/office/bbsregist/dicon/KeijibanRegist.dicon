@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="Shift_JIS"?>
+<!DOCTYPE components PUBLIC "-//SEASAR2.1//DTD S2Container//EN"
+	"http://www.seasar.org/dtd/components21.dtd">
+<components namespace='bbsregist'>
+	<include path="dao.dicon"/>
+	<include path="jp/co/isid/mos/bird/common/dicon/birdCommon.dicon"/>
+	<include path="jp/co/isid/mos/bird/framework/dicon/birdInterceptor.dicon"/>
+	
+
+	<!-- インターセプターを自動登録 -->
+	<component 
+	  class="org.seasar.framework.container.autoregister.AspectAutoRegister">
+	    <property name="interceptor">birdInterceptor.actionInterceptorChain</property>
+	    <initMethod name="addClassPattern">
+	        <arg>"jp.co.isid.mos.bird"</arg>
+	        <arg>".*ActionImpl"</arg>
+	    </initMethod>
+	    <initMethod name="registerAll"/>
+	</component> 
+	<component 
+	  class="org.seasar.framework.container.autoregister.AspectAutoRegister">
+	    <property name="interceptor">birdInterceptor.logicInterceptorChain</property>
+	    <initMethod name="addClassPattern">
+	        <arg>"jp.co.isid.mos.bird"</arg>
+	        <arg>".*LogicImpl"</arg>
+	    </initMethod>
+	    <initMethod name="registerAll"/>  
+	</component>
+
+	<!-- DAO -->
+	<component name="UIKeijibanDao" class="jp.co.isid.mos.bird.office.bbsregist.dao.UIKeijibanDao">
+		<aspect>dao.interceptor</aspect>
+	</component>
+	<component name="ctlGamenRoleDao" class="jp.co.isid.mos.bird.framework.dao.CtlGamenRoleDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+
+
+	<!-- DTO -->
+	<component name="keijibanConditionDto" class="jp.co.isid.mos.bird.office.bbsregist.dto.KeijibanConditionDto" instance="session"/>
+	<component name="keijibanRegistDto" class="jp.co.isid.mos.bird.office.bbsregist.dto.KeijibanRegistDto" instance="session"/>
+	<component name="pullDownMenuDto" class="jp.co.isid.mos.bird.framework.dto.PullDownMenuDto" instance="session"/>
+
+
+	<!-- LOGIC -->
+	<component name="countKeijibanLogic" class="jp.co.isid.mos.bird.office.bbsregist.logic.impl.CountKeijibanLogicImpl"/>
+	<component name="getKeijibanInfoLogic" class="jp.co.isid.mos.bird.office.bbsregist.logic.impl.GetKeijibanInfoLogicImpl"/>
+
+	<component name="checkEditAllowedLogic" class="jp.co.isid.mos.bird.office.bbsregist.logic.impl.CheckEditAllowedLogicImpl"/>
+	<component name="checkKeijibanInfoLogic" class="jp.co.isid.mos.bird.office.bbsregist.logic.impl.CheckKeijibanInfoLogicImpl"/>
+	<component name="regKeijibanLogicImpl" class="jp.co.isid.mos.bird.office.bbsregist.logic.impl.RegKeijibanLogicImpl">
+		<aspect>j2ee.requiresNewTx</aspect>
+	</component>
+	<component name="downloadKeijibanTenpuConditionLogic" class="jp.co.isid.mos.bird.office.bbsregist.logic.impl.DownloadKeijibanTenpuConditionLogicImpl"/>
+	<component name="downloadKeijibanTenpuRefLogic" class="jp.co.isid.mos.bird.office.bbsregist.logic.impl.DownloadKeijibanTenpuRefLogicImpl"/>
+	
+	<component name="uploadKeijibanTenpuLogic" class="jp.co.isid.mos.bird.office.bbsregist.logic.impl.UploadKeijibanTenpuLogicImpl"/>
+	<component name="getGamenRoleLogic" class="jp.co.isid.mos.bird.framework.logic.impl.GetGamenRoleLogicImpl"/>
+
+
+	<!-- ENTITY -->
+	<component class="jp.co.isid.mos.bird.framework.control.BirdUserInfo"/>
+	<component class="jp.co.isid.mos.bird.framework.control.BirdDateInfo"/>
+	
+	<!-- アクション -->
+	<component name="keijibanConditionAction" class="jp.co.isid.mos.bird.office.bbsregist.action.impl.KeijibanConditionActionImpl" instance="request">
+		<property name="keijibanConditionDto">keijibanConditionDto</property>
+	</component>
+	<component name="keijibanRegistAction" class="jp.co.isid.mos.bird.office.bbsregist.action.impl.KeijibanRegistActionImpl" instance="request">
+		<property name="keijibanConditionDto">keijibanConditionDto</property>
+		<property name="keijibanRegistDto">keijibanRegistDto</property>
+	</component>
+
+	<component name="keijibanReferenceAction" class="jp.co.isid.mos.bird.office.bbsregist.action.impl.KeijibanReferenceActionImpl" instance="request">
+		<property name="keijibanConditionDto">keijibanConditionDto</property>
+		<property name="keijibanRegistDto">keijibanRegistDto</property>
+	</component>
+
+	
+	<!-- ファイルアップロード共通アクション-->	
+	<component name="keijibanRegistUploadTenpuAction" class="jp.co.isid.mos.bird.framework.action.impl.FileUploadActionImpl" instance="request"/>
+
+	<!-- ファイルダウンロード共通アクション-->
+	<component name="keijibanRegistDownLoadTenpuCodAction" class="jp.co.isid.mos.bird.framework.action.impl.FileDownloadActionImpl" instance="request">
+		<property name="downloadDto">keijibanConditionDto</property>
+		<property name="downloadLogic">downloadKeijibanTenpuConditionLogic</property>
+	</component>
+	<component name="keijibanRegistDownLoadTenpuRefAction" class="jp.co.isid.mos.bird.framework.action.impl.FileDownloadActionImpl" instance="request">
+		<property name="downloadDto">keijibanRegistDto</property>
+		<property name="downloadLogic">downloadKeijibanTenpuRefLogic</property>
+	</component>
+	
+	<!-- コンバータ -->
+	<component name="keijibanRegistChangeLineEditConverter" class="jp.co.isid.mos.bird.framework.text.converter.ChangeLineEditConverter" instance="request"/>
+	<component name="keijibanRegistChangeLineRefConverter" class="jp.co.isid.mos.bird.framework.text.converter.ChangeLineRefConverter" instance="request"/>
+
+
+</components>

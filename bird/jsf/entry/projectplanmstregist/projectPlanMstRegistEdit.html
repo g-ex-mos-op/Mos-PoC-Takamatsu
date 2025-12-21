@@ -1,0 +1,109 @@
+<html xmlns:m="http://www.seasar.org/maya" m:action="#{projectPlanMstRegistEditAction.initialize}" m:extends="/jsf/layout/layoutNoNavi.html">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Windows-31j"/>
+<meta http-equiv="Content-Style-Type" content="text/css"/>
+<title>事業方針説明会マスタ登録</title>
+</head>
+<body>
+<span m:inject="f:param" m:name="layoutTitle" m:value="事業方針説明会マスタ登録(編集画面)"/>
+<span m:inject="s:insert" m:name="bodyTitleName">■事業方針説明会マスタ登録(編集画面)</span>
+<span m:inject="f:param" m:name="onLoadName" m:value="initField()"/>
+<span m:inject="f:param" m:name="viewIdValue" m:value="BEN010V02"/>
+<div m:inject="s:insert" m:name="body">
+<style type="text/css">
+<!--
+.date_field {
+	width				: 80px;
+}
+.disable_field {
+	width				: 80px;
+	background-color	: gainsboro;
+	color				: black;
+}
+-->
+</style>
+
+<script type="text/javascript">
+<!--
+function initField() {
+	focusElement("projectPlanMstRegistEdit");
+}
+//-->
+</script>
+
+<form m:id="projectPlanMstRegistEdit" onkeydown="return setDefaultSubmitButton('projectPlanMstRegistEdit', 'btnExecute');">
+<input type="hidden" m:id="viewId" m:value="#{viewIdValue}" />
+<input type="hidden" m:id="initMenuId" m:value="#{menuAction.initMenuId}"/>
+<input type="hidden" m:id="initSubMenuId" m:value="#{menuAction.initSubMenuId}"/>
+<input type="hidden" m:id="windowId" m:value="#{projectPlanMstRegistDto.windowId}"/>
+
+<input type="submit" value="戻る" m:action="#{projectPlanMstRegistEditAction.back}"/>&nbsp;&nbsp;
+<input type="submit" value="確認" m:id="btnExecute" m:action="#{projectPlanMstRegistEditAction.confirm}"/>
+
+<table class="body_table2" style="margin-top:4px;">
+	<tr>
+		<th>対象処理</th>
+		<td colspan="3">
+			<span m:converter="#{characterEncodingConverter}" m:value="#{projectPlanMstRegistDto.modeTypeKj}"/>
+		</td>
+	</tr>
+	<tr>
+		<th>開催日</th>
+		<td colspan="3">
+			<input type="text" m:id="execDt" m:value="#{projectPlanMstRegistDto.entityMstData.execDt}"
+			       m:converter="#{projectPlanMstRegistDateConverter}"
+			       maxlength="10" m:readonly="#{projectPlanMstRegistDto.readOnly}"
+			       m:class="#{(!projectPlanMstRegistDto.readOnly) ? 'date_field' : 'disable_field'}"
+			       style="ime-mode:disabled"/>
+			YYYY/MM/DD
+		</td>
+	</tr>
+	<tr>
+		<th>説明会名称</th>
+		<td colspan="3"><input type="text" m:id="entryTitle" m:value="#{projectPlanMstRegistDto.entityMstData.entryTitle}"
+		                       style="width:640px;" maxlength="50"/></td>
+	</tr>
+	<tr>
+		<th style="width:160px;">オーナー：表示開始</th>
+		<td style="width:240px;"><input type="text" m:id="onerDispFrom" m:value="#{projectPlanMstRegistDto.entityMstData.onerDispFrom}" m:converter="#{projectPlanMstRegistDateConverter}" maxlength="10" m:readonly="#{projectPlanMstRegistDto.readOnly}" m:class="#{(!projectPlanMstRegistDto.readOnly) ? 'date_field' : 'disable_field'}" style="ime-mode:disabled"/>YYYY/MM/DD</td>
+		<th style="width:160px;">本部：表示開始</th>
+		<td style="width:240px;"><input type="text" m:id="dispFrom" m:value="#{projectPlanMstRegistDto.entityMstData.dispFrom}" m:converter="#{projectPlanMstRegistDateConverter}" maxlength="10" m:readonly="#{projectPlanMstRegistDto.readOnly}" m:class="#{(!projectPlanMstRegistDto.readOnly) ? 'date_field' : 'disable_field'}" style="ime-mode:disabled"/>YYYY/MM/DD</td>
+	</tr>
+	<tr>
+		<th>オーナー：申込開始</th>
+		<td><input type="text" m:id="onerEntryFrom" m:value="#{projectPlanMstRegistDto.entityMstData.onerEntryFrom}" m:converter="#{projectPlanMstRegistDateConverter}"maxlength="10" m:readonly="#{projectPlanMstRegistDto.readOnly}" m:class="#{(!projectPlanMstRegistDto.readOnly) ? 'date_field' : 'disable_field'}" style="ime-mode:disabled"/>YYYY/MM/DD</td>
+		<th>本部：申込開始</th>
+		<td><input type="text" m:id="entryFrom" m:value="#{projectPlanMstRegistDto.entityMstData.entryFrom}" m:converter="#{projectPlanMstRegistDateConverter}" maxlength="10" m:readonly="#{projectPlanMstRegistDto.readOnly}" m:class="#{(!projectPlanMstRegistDto.readOnly) ? 'date_field' : 'disable_field'}" style="ime-mode:disabled"/>YYYY/MM/DD</td>
+	</tr>
+	<tr>
+		<th>オーナー：申込終了</th>
+		<td><input type="text" m:id="onerEntryTo" m:value="#{projectPlanMstRegistDto.entityMstData.onerEntryTo}" m:converter="#{projectPlanMstRegistDateConverter}" class="date_field" maxlength="10" style="ime-mode:disabled"/>YYYY/MM/DD</td>
+		<th>本部：申込終了</th>
+		<td><input type="text" m:id="entryTo" m:value="#{projectPlanMstRegistDto.entityMstData.entryTo}" m:converter="#{projectPlanMstRegistDateConverter}" class="date_field" maxlength="10" style="ime-mode:disabled"/>YYYY/MM/DD</td>
+	</tr>
+	<tr>
+		<th>オーナー：表示終了</th>
+		<td><input type="text" m:id="onerDispTo" m:value="#{projectPlanMstRegistDto.entityMstData.onerDispTo}" m:converter="#{projectPlanMstRegistDateConverter}" class="date_field" maxlength="10" style="ime-mode:disabled"/>YYYY/MM/DD</td>
+		<th>本部：表示終了</th>
+		<td><input type="text" m:id="dispTo" m:value="#{projectPlanMstRegistDto.entityMstData.dispTo}" m:converter="#{projectPlanMstRegistDateConverter}" class="date_field" maxlength="10" style="ime-mode:disabled"/>YYYY/MM/DD</td>
+	</tr>
+	<tr>
+		<th>委任状</th>
+		<td colspan="3"><input type="text" m:id="note"
+		                       m:value="#{projectPlanMstRegistDto.entityMstData.note}"
+		                       style="width:640px;" maxlength="50"/></td>
+	</tr>
+	<tr>
+		<th>注意事項</th>
+		<td colspan="3">
+			<textarea m:rows="16" m:cols="89" style="width:640px;" 
+			          m:id="notice1" wrap="soft"
+			          m:value="#{projectPlanMstRegistDto.entityMstData.notice1}"></textarea></td>
+	</tr>
+</table>
+
+</form>
+
+</div>
+</body>
+</html>

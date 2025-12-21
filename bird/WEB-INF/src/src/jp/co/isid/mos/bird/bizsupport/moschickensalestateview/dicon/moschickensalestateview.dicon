@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="Shift_JIS"?>
+<!DOCTYPE components PUBLIC "-//SEASAR//DTD S2Container 2.3//EN"
+    "http://www.seasar.org/dtd/components23.dtd">
+<components namespace="moschickensalestateview">
+    <include path="dao.dicon"/>
+    <include path="jp/co/isid/mos/bird/common/dicon/birdCommon.dicon"/>
+	<include path="jp/co/isid/mos/bird/framework/dicon/birdInterceptor.dicon"/>
+
+	<component class="org.seasar.framework.container.autoregister.AspectAutoRegister">
+	    <property name="interceptor">birdInterceptor.actionInterceptorChain</property>
+	    <initMethod name="addClassPattern">
+	        <arg>"jp.co.isid.mos.bird"</arg>
+	        <arg>".*ActionImpl"</arg>
+	    </initMethod>
+	    <initMethod name="registerAll"/>
+	</component> 
+	<component 
+	  class="org.seasar.framework.container.autoregister.AspectAutoRegister">
+	    <property name="interceptor">birdInterceptor.logicInterceptorChain</property>
+	    <initMethod name="addClassPattern">
+	        <arg>"jp.co.isid.mos.bird"</arg>
+	        <arg>".*LogicImpl"</arg>
+	    </initMethod>
+	    <initMethod name="registerAll"/>  
+	</component>
+	
+	<!-- OTHER -->
+	<component class="jp.co.isid.mos.bird.framework.control.BirdUserInfo" instance="session"/>
+	<component class="jp.co.isid.mos.bird.framework.control.BirdDateInfo" instance="session"/>
+
+	<!-- DAO -->
+	<component name="uiTitleInfoDao" class="jp.co.isid.mos.bird.bizsupport.moschickensalestateview.dao.UITitleInfoDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="uiShohinGroupInfoDao" class="jp.co.isid.mos.bird.bizsupport.moschickensalestateview.dao.UIShohinGroupInfoDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="uiMiseInfoDao" class="jp.co.isid.mos.bird.bizsupport.moschickensalestateview.dao.UIMiseInfoDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="uiDayMenuInfoDao" class="jp.co.isid.mos.bird.bizsupport.moschickensalestateview.dao.UIDayMenuInfoDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="uiSaleStateInfoDao" class="jp.co.isid.mos.bird.bizsupport.moschickensalestateview.dao.UISaleStateInfoDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+
+	<!-- LOGIC -->
+	<component name="getShohinGroupInfoLogic" class="jp.co.isid.mos.bird.bizsupport.moschickensalestateview.logic.impl.GetShohinGroupInfoLogicImpl"/>
+	<component name="getTitleInfoLogic" class="jp.co.isid.mos.bird.bizsupport.moschickensalestateview.logic.impl.GetTitleInfoLogicImpl"/>
+	<component name="getMiseInfo" class="jp.co.isid.mos.bird.bizsupport.moschickensalestateview.logic.impl.GetMiseInfoLogicImpl"/>
+	<component name="getSaleStateTotalInfoLogic" class="jp.co.isid.mos.bird.bizsupport.moschickensalestateview.logic.impl.GetSaleStateTotalInfoLogicImpl"/>
+	<component name="getSaleStateInfoLogic" class="jp.co.isid.mos.bird.bizsupport.moschickensalestateview.logic.impl.GetSaleStateInfoLogicImpl"/>
+	<component name="getDayMenuSumInfoLogic" class="jp.co.isid.mos.bird.bizsupport.moschickensalestateview.logic.impl.GetDayMenuSumInfoLogicImpl"/>
+
+	<!-- DTO -->
+	<component name="pullDownMenuDto" class="jp.co.isid.mos.bird.framework.dto.PullDownMenuDto" autoBinding="none" instance="session"/>
+	<component name="ownerSearchDto" class="jp.co.isid.mos.bird.commonform.ownersearch.dto.OwnerSearchDto" autoBinding="none" instance="session"/>
+	<component name="mosChickenSaleStateViewDto" class="jp.co.isid.mos.bird.bizsupport.moschickensalestateview.dto.MosChickenSaleStateViewDto" autoBinding="none" instance="session"/>	
+
+	<!-- ACTION -->
+	<component name="mosChickenSaleStateViewCondAction" class="jp.co.isid.mos.bird.bizsupport.moschickensalestateview.action.impl.MosChickenSaleStateViewConditionActionImpl" instance="request">
+		<property name="mosChickenSaleStateViewDto">mosChickenSaleStateViewDto</property>
+	</component>
+	<component name="mosChickenSaleStateViewResultAction" class="jp.co.isid.mos.bird.bizsupport.moschickensalestateview.action.impl.MosChickenSaleStateViewResultActionImpl" instance="request">
+		<property name="mosChickenSaleStateViewDto">mosChickenSaleStateViewDto</property>
+	</component>	
+
+	<!-- CONVERTER -->
+	<component name="numericConverter" class="jp.co.isid.mos.bird.framework.text.converter.NumericConverter" instance="request"/>
+</components>

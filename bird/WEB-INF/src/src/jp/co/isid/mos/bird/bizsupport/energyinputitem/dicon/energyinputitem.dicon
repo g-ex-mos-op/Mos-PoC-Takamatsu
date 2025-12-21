@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="Shift_JIS"?>
+<!DOCTYPE components PUBLIC "-//SEASAR//DTD S2Container 2.3//EN"
+    "http://www.seasar.org/dtd/components23.dtd">
+<components namespace="energyinputitem">
+    <include path="dao.dicon"/>
+    <include path="jp/co/isid/mos/bird/common/dicon/birdCommon.dicon"/>
+	<include path="jp/co/isid/mos/bird/framework/dicon/birdInterceptor.dicon"/>
+
+	<component
+	  class="org.seasar.framework.container.autoregister.AspectAutoRegister">
+	    <property name="interceptor">birdInterceptor.actionInterceptorChain</property>
+	    <initMethod name="addClassPattern">
+	        <arg>"jp.co.isid.mos.bird"</arg>
+	        <arg>".*ActionImpl"</arg>
+	    </initMethod>
+	    <initMethod name="registerAll"/>
+	</component> 
+	<component
+	  class="org.seasar.framework.container.autoregister.AspectAutoRegister">
+	    <property name="interceptor">birdInterceptor.logicInterceptorChain</property>
+	    <initMethod name="addClassPattern">
+	        <arg>"jp.co.isid.mos.bird"</arg>
+	        <arg>".*LogicImpl"</arg>
+	    </initMethod>
+	    <initMethod name="registerAll"/>
+	</component>
+
+	<!-- DAO -->
+	<component name="energyinputitemMstMeterKanriDao" class="jp.co.isid.mos.bird.bizsupport.energyinputitem.dao.MstMeterKanriDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<!-- LOGIC -->
+	<component name="energyinputitemConditionInfoLogic" class="jp.co.isid.mos.bird.bizsupport.energyinputitem.logic.impl.ConditionInfoLogicImpl"/>
+	<component name="energyinputitemCheckLogic" class="jp.co.isid.mos.bird.bizsupport.energyinputitem.logic.impl.EnergyInputItemCheckLogicImpl"/>
+	<component name="energyinputitemGetDataLogic" class="jp.co.isid.mos.bird.bizsupport.energyinputitem.logic.impl.EnergyInputItemGetDataLogicImpl"/>
+	<component name="energyinputitemRegistLogic" class="jp.co.isid.mos.bird.bizsupport.energyinputitem.logic.impl.EnergyInputItemRegistLogicImpl">
+		<aspect>j2ee.requiresNewTx</aspect>
+	</component>
+	
+	<!-- DTO -->
+	<component name="energyinputitemSessionDto" class="jp.co.isid.mos.bird.bizsupport.energyinputitem.dto.EnergyInputItemDto" autoBinding="none" instance="session">
+		<property name="companyCd">'00'</property>
+	</component>
+	<component name="energyinputitemRequestDto" class="jp.co.isid.mos.bird.bizsupport.energyinputitem.dto.EnergyInputItemRequestDto" autoBinding="none" instance="request"/>
+
+	<!-- ACTION -->
+	<component name="energyinputitemCondAction" class="jp.co.isid.mos.bird.bizsupport.energyinputitem.action.impl.EnergyInputItemCondActionImpl" instance="request"/>
+	<component name="energyinputitemEditAction" class="jp.co.isid.mos.bird.bizsupport.energyinputitem.action.impl.EnergyInputItemEditActionImpl" instance="request"/>
+	<component name="energyinputitemConfirmAction" class="jp.co.isid.mos.bird.bizsupport.energyinputitem.action.impl.EnergyInputItemConfirmActionImpl" instance="request"/>
+	<!-- Formatter -->
+
+	<!-- Converter -->
+	
+</components>

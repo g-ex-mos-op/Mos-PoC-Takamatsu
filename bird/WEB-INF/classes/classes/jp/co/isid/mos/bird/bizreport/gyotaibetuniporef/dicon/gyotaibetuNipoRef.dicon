@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="Shift_JIS"?>
+<!DOCTYPE components PUBLIC "-//SEASAR//DTD S2Container 2.3//EN"
+    "http://www.seasar.org/dtd/components23.dtd">
+<components namespace="gyotaibetuNipoRef">
+    <include path="dao.dicon"/>
+	<include path="jp/co/isid/mos/bird/framework/dicon/birdInterceptor.dicon"/>
+	<include path="jp/co/isid/mos/bird/bizreport/common/dicon/bizreportCommon.dicon" />
+	<include path="jp/co/isid/mos/bird/storeinfo/miseref/dicon/miseRef.dicon"/>
+	<include path="jp/co/isid/mos/bird/common/dicon/birdCommon.dicon"/>
+
+	<component
+	  class="org.seasar.framework.container.autoregister.AspectAutoRegister">
+	    <property name="interceptor">birdInterceptor.actionInterceptorChain</property>
+	    <initMethod name="addClassPattern">
+	        <arg>"jp.co.isid.mos.bird"</arg>
+	        <arg>".*ActionImpl"</arg>
+	    </initMethod>
+	    <initMethod name="registerAll"/>
+	</component> 
+	
+	<component
+	  class="org.seasar.framework.container.autoregister.AspectAutoRegister">
+	    <property name="interceptor">birdInterceptor.logicInterceptorChain</property>
+	    <initMethod name="addClassPattern">
+	        <arg>"jp.co.isid.mos.bird"</arg>
+	        <arg>".*LogicImpl"</arg>
+	    </initMethod>
+	    <initMethod name="registerAll"/>
+	</component>
+
+	<component class="jp.co.isid.mos.bird.framework.control.BirdUserInfo" instance="session"/>
+	<component class="jp.co.isid.mos.bird.framework.control.BirdDateInfo" instance="session"/>
+	
+	<!-- DAO -->
+	<component name="uISibuListInfoDao" class="jp.co.isid.mos.bird.bizreport.gyotaibetuniporef.dao.UISibuListInfoDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="uIMiseListInfoDao" class="jp.co.isid.mos.bird.bizreport.gyotaibetuniporef.dao.UIMiseListInfoDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="uIYagoListInfoDao" class="jp.co.isid.mos.bird.bizreport.gyotaibetuniporef.dao.UIYagoListInfoDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+
+	<!-- DTO -->
+	<component name="gyotaibetuNipoRefMapResultDto" class="jp.co.isid.mos.bird.bizreport.common.dto.NipoRefResultMapDto" instance="session"/>
+	<component name="gyotaibetuNipoRefResultDto" class="jp.co.isid.mos.bird.bizreport.gyotaibetuniporef.dto.GyotaibetuNipoRefResultDto" instance="request">
+		<property name="listView">new java.util.ArrayList(0)</property>
+	</component>
+	<component name="newSvSearchDto" class="jp.co.isid.mos.bird.commonform.svsearchnew.dto.SvSearchDto" instance="session">
+		<property name="RCompanyCdList">new java.util.ArrayList(0)</property>
+		<property name="sibuCd">null</property>
+	</component>
+		
+	<!-- Action -->
+	<component name="gyotaibetuNipoRefConditionAction" class="jp.co.isid.mos.bird.bizreport.gyotaibetuniporef.action.impl.GyotaibetuNipoRefConditionActionImpl" instance="request"/>
+	<component name="gyotaibetuNipoRefSibuAction" class="jp.co.isid.mos.bird.bizreport.gyotaibetuniporef.action.impl.GyotaibetuNipoRefSibuActionImpl" instance="request">
+		<property name="gyotaibetuNipoMiseCsvOutputLogic">gyotaibetuNipoMiseCsvOutputLogic</property>
+		<property name="gyotaibetuNipoSibuCsvOutputLogic">gyotaibetuNipoSibuCsvOutputLogic</property>
+		<property name="csvOutputLogic">null</property>
+		<property name="csvOutputDto">bizreportCommon.nipoRefResultParameterDto</property>
+	</component>	
+	<component name="gyotaibetuNipoRefOnerAction" class="jp.co.isid.mos.bird.bizreport.gyotaibetuniporef.action.impl.GyotaibetuNipoRefOnerActionImpl" instance="request">
+		<property name="csvOutputLogic">gyotaibetuNipoMiseCsvOutputLogic</property>
+		<property name="csvOutputDto">bizreportCommon.nipoRefResultParameterDto</property>
+	</component>
+	<component name="gyotaibetuNipoRefMiseAction" class="jp.co.isid.mos.bird.bizreport.gyotaibetuniporef.action.impl.GyotaibetuNipoRefMiseActionImpl" instance="request">
+		<property name="csvOutputLogic">gyotaibetuNipoMiseCsvOutputLogic</property>
+		<property name="csvOutputDto">bizreportCommon.nipoRefResultParameterDto</property>
+	</component>	
+	
+	<!-- Logic -->
+	<component name="gyotaibetuNipoRefSibuLogic" class="jp.co.isid.mos.bird.bizreport.gyotaibetuniporef.logic.impl.GyotaibetuNipoRefSibuLogicImpl"/>
+	<component name="gyotaibetuNipoRefMiseLogic" class="jp.co.isid.mos.bird.bizreport.gyotaibetuniporef.logic.impl.GyotaibetuNipoRefMiseLogicImpl"/>
+	<component name="gyotaibetuNipoRefOnerLogic" class="jp.co.isid.mos.bird.bizreport.gyotaibetuniporef.logic.impl.GyotaibetuNipoRefOnerLogicImpl"/>
+	<component name="gyotaibetuNipoSearchLogic" class="jp.co.isid.mos.bird.bizreport.gyotaibetuniporef.logic.impl.GyotaibetuNipoSearchLogicImpl"/>
+	<component name="gyotaibetuNipoSibuCsvOutputLogic" class="jp.co.isid.mos.bird.bizreport.gyotaibetuniporef.logic.impl.GyotaibetuNipoSibuCsvOutputLogicImpl"/>
+	<component name="gyotaibetuNipoMiseCsvOutputLogic" class="jp.co.isid.mos.bird.bizreport.gyotaibetuniporef.logic.impl.GyotaibetuNipoMiseCsvOutputLogicImpl"/>
+	<component name="bizreportNumericCnvt" class="jp.co.isid.mos.bird.framework.text.converter.NumericConverter" instance="request">
+		<arg>"#,##0"</arg><arg>true</arg>
+	</component>
+	
+</components>

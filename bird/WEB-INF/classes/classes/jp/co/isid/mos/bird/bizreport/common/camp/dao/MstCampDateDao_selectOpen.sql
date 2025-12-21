@@ -1,0 +1,55 @@
+SELECT distinct
+       BM60.CAMP_ID
+,      BM60.COMPANY_CD
+,      RTRIM(BM60.CAMP_TITLE) AS CAMP_TITLE
+,      BM60.CAMP_FROM
+,      BM60.CAMP_TO
+,      BM60.DISP_FROM
+,      BM60.DISP_TO
+,      BM60.YOBI_FROM
+,      BM60.YOBI_TO
+,      BM60.FIRST_TMSP
+FROM BM60CPDT BM60
+,    BM01TENM BM01
+,    BM65CPMS BM65
+/*IF userTypeCd == "02" */
+,    BM06UONR BM06
+/*END*/
+/*IF userTypeCd == "03" */
+,    BM07UTEN BM07
+/*END*/
+WHERE BM60.COMPANY_CD = /*companyCd*/'00'
+AND   BM60.DISP_FROM <= /*sysDate*/'20080123'
+AND   BM60.DISP_TO >= /*sysDate*/'20080123'
+AND   BM01.COMPANY_CD = /*companyCd*/'00'
+AND   BM01.COMPANY_CD = BM65.COMPANY_CD
+AND   BM01.MISE_CD = BM65.MISE_CD
+AND   BM65.CAMP_ID = BM60.CAMP_ID
+
+/*IF userTypeCd == "02" */
+AND   BM06.USER_ID    = /*userId*/'99990003'
+AND   BM06.COMPANY_CD = BM01.COMPANY_CD
+AND   BM06.ONER_CD    = BM01.ONER_CD
+/*END*/
+/*IF userTypeCd == "03" */
+AND   BM07.USER_ID    = /*userId*/'99990003'
+AND   BM07.COMPANY_CD = BM01.COMPANY_CD
+AND   BM07.MISE_CD    = BM01.MISE_CD
+/*END*/
+/*IF userTypeCd == "01" && limitFlg==true */
+AND   BM01.SIBU_CD IN ( 
+         SELECT   BM51.SIBU_CD 
+         FROM     BM51SVSB BM51
+         WHERE  BM51.COMPANY_CD = /*companyCd*/'00'
+         AND    BM51.SV_CD = /*userId*/'9999000a'
+         GROUP BY BM51.SIBU_CD 
+          ) 
+/*END*/
+ORDER BY 
+/*IF sortCol == 1*/
+CAMP_FROM desc
+/*END*/
+/*IF sortCol == 2*/
+DISP_FROM desc
+/*END*/
+,BM60.CAMP_ID DESC

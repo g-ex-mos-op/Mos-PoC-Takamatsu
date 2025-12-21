@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="Shift_JIS"?>
+<!DOCTYPE components PUBLIC "-//SEASAR//DTD S2Container 2.3//EN"
+    "http://www.seasar.org/dtd/components23.dtd">
+<components namespace="miseOnerSearch">
+    <include path="dao.dicon"/>
+	<include path="jp/co/isid/mos/bird/framework/dicon/birdInterceptor.dicon"/>
+    <include path="jp/co/isid/mos/bird/common/dicon/birdPortal.dicon"/>
+
+	<component
+	  class="org.seasar.framework.container.autoregister.AspectAutoRegister">
+	    <property name="interceptor">birdInterceptor.actionInterceptorChain</property>
+	    <initMethod name="addClassPattern">
+	        <arg>"jp.co.isid.mos.bird"</arg>
+	        <arg>".*ActionImpl"</arg>
+	    </initMethod>
+	    <initMethod name="registerAll"/>
+	</component> 
+	<component
+	  class="org.seasar.framework.container.autoregister.AspectAutoRegister">
+	    <property name="interceptor">birdInterceptor.logicInterceptorChain</property>
+	    <initMethod name="addClassPattern">
+	        <arg>"jp.co.isid.mos.bird"</arg>
+	        <arg>".*LogicImpl"</arg>
+	    </initMethod>
+	    <initMethod name="registerAll"/>
+	</component>
+
+	<!-- DAO -->
+	<component name="miseOnerSearchUIInfoDao" class="jp.co.isid.mos.bird.commonform.miseonersearch.dao.UISearchInfoDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<!-- Logic -->
+	<component name="miseOnerSearchLogic" class="jp.co.isid.mos.bird.commonform.miseonersearch.logic.impl.SearchLogicImpl">
+		<property name="miseOnerSearchUIInfoDao">miseOnerSearchUIInfoDao</property>
+	</component>
+
+	<!-- DTO -->
+	<component name="portalSearchInfoDto" class="jp.co.isid.mos.bird.common.dto.PortalSearchInfoDto" instance="request"/>
+	<component name="miseOnerSearchSesDto" class="jp.co.isid.mos.bird.commonform.miseonersearch.dto.SessionDto" instance="session">
+		<property name="maxSize">5</property>
+	</component>
+	<component name="miseOnerSearchReqDto" class="jp.co.isid.mos.bird.commonform.miseonersearch.dto.RequestDto" instance="request">
+		<property name="miseOnerSearchSesDto">miseOnerSearchSesDto</property>
+		<property name="listSearchData">null</property>
+	</component>
+
+	<!-- Action -->
+	<component name="miseOnerSearchAction" class="jp.co.isid.mos.bird.commonform.miseonersearch.action.impl.SearchActionImpl" instance="request"/>
+
+	<!-- Converter -->
+</components>
+

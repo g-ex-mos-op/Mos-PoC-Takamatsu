@@ -1,0 +1,512 @@
+<html xmlns:m="http://www.seasar.org/maya" m:action="#{mlEntryEditAction.initialize}" m:extends="/jsf/layout/layoutNoNavi.html">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Windows-31j" />
+<title></title>
+</head>
+<body>
+<span m:inject="f:param" m:name="layoutTitle" m:value="マスターライセンス受験申込"/>
+<span m:inject="s:insert" m:name="bodyTitleName">■マスターライセンス受験申込</span>
+<span m:inject="f:param" m:name="onLoadName" m:value="bodyLoad()"/>
+<span m:inject="f:param" m:name="viewIdValue" m:value="BEN008V02"/>
+<span m:inject="s:insert" m:name="body">
+<style type="text/css">
+<!--
+.disable_field {
+	background-color	: gainsboro;
+	color				: black;
+}
+    /**
+     * スクロール
+     * 作成日：2010/10/28
+     */
+	.scroll_area {
+		width:	  100%;
+		height:	  410px;
+		overflow: auto;
+	}
+-->
+</style>
+<SCRIPT LANGUAGE="javascript">
+<!--
+
+function bodyLoad() {
+  focusElement('mlEntryEdit');
+
+  var f = document.forms['mlEntryEdit'];
+  selectedStaff = f.elements['mlEntryEdit:selectedStaff'].value;
+  addStaffIndex = f.elements['mlEntryEdit:addStaffIndex'].value;
+//  addStaffFlg = f.elements['mlEntryEdit:addStaffFlg'].value;
+  addStaffFlg = false;
+  editStaffFlg = f.elements['mlEntryEdit:editStaffFlg'].value;
+
+  if(f.elements['mlEntryEdit:selectedStaff'].value != '') {
+	var index = f.elements['mlEntryEdit:addStaffIndex'].value;
+
+    //スタッフ選択ボタンにフォーカスをあわせる
+    var btnObjArray = document.getElementsByTagName("input");
+    for (var i = 0; i < btnObjArray.length; i++) {
+      var btnObj = btnObjArray[i];
+      if (btnObj.name == "selectStaffBtn" + index) {
+        btnObj.focus();
+        break;
+      }
+    }
+
+	f.elements['mlEntryEdit:selectedStaff'].value = '';
+  }
+
+  if(editStaffFlg == 'true'){
+  	var index = f.elements['mlEntryEdit:addStaffIndex'].value;
+
+    //スタッフ編集ボタンにフォーカスをあわせる
+    var btnObjArray = document.getElementsByTagName("input");
+    for (var i = 0; i < btnObjArray.length; i++) {
+      var btnObj = btnObjArray[i];
+      if (btnObj.name == "editStaffBtn" + index) {
+        btnObj.focus();
+        break;
+      }
+  	}
+  }
+
+  if(addStaffFlg == 'true'){
+  	var index = f.elements['mlEntryEdit:addStaffIndex'].value;
+
+    //スタッフ新規ボタンにフォーカスをあわせる
+    var btnObjArray = document.getElementsByTagName("input");
+    for (var i = 0; i < btnObjArray.length; i++) {
+      var btnObj = btnObjArray[i];
+      if (btnObj.name == "addStaffBtn" + index) {
+        btnObj.focus();
+        break;
+      }
+  	}
+  }
+
+}
+
+
+function releaseDisable() {
+  var targetForm = document.forms['mlEntryEdit'];
+  var i=0;
+  for (i=0; i<targetForm.elements.length; i++) {
+    type = targetForm.elements[i].type;
+    //チェック対象エレメント名称
+    var targetName =targetForm.elements[i].name;
+    if ((targetName.indexOf("sex") > 0 ) && type == "radio") {
+	  targetForm.elements[i].disabled = false;
+    }
+    if ((targetName.indexOf("abilityFlg") > 0 ) && type == "checkbox") {
+	  targetForm.elements[i].disabled = false;
+	  if(targetForm.elements[i].checked == true) targetForm.elements[i].value = true;
+	  else targetForm.elements[i].value = false;
+    }
+    if ((targetName.indexOf("examFlg") > 0 ) && type == "checkbox") {
+	  targetForm.elements[i].disabled = false;
+	  if(targetForm.elements[i].checked == true) targetForm.elements[i].value = true;
+	  else targetForm.elements[i].value = false;
+    }
+    if ((targetName.indexOf("interviewFlg") > 0 ) && type == "checkbox") {
+	  targetForm.elements[i].disabled = false;
+	  if(targetForm.elements[i].checked == true) targetForm.elements[i].value = true;
+	  else targetForm.elements[i].value = false;
+    }
+
+  }//end of for
+
+  return true;
+}
+
+
+function doAction() {
+	var f=document.forms['mlEntryEdit'];
+	f.target='';
+	f.elements['mlEntryEdit:__link_clicked__'].value='mlEntryEdit:dummyAction';
+	f.submit();
+	return false;
+}
+
+
+function setIndex(index) {
+    var f = document.forms['mlEntryEdit'];
+    f.elements['mlEntryEdit:addStaffIndex'].value = index;
+}
+
+
+
+
+//申込取消
+function torikesi(index) {
+
+  var f = document.forms['mlEntryEdit'];
+
+  var objBaseName = "";
+  for (i = 0; i < f.elements.length; i++) {
+    type = f.elements[i].type;
+    var nameLength = f.elements[i].name.length;
+    if (f.elements[i].name.lastIndexOf(index + ':staffId') > 0) {
+      objBaseName = f.elements[i].name.substring(0, nameLength - 7);
+      break;
+    }
+  }
+
+  // チェックボックスを初期化
+  document.getElementById(objBaseName + "abilityFlg").disabled = false;
+  document.getElementById(objBaseName + "abilityFlg").checked = true;
+  document.getElementById(objBaseName + "abilityFlg").disabled = true;
+  document.getElementById(objBaseName + "examFlg").disabled = false;
+  document.getElementById(objBaseName + "examFlg").checked = true;
+  document.getElementById(objBaseName + "examFlg").disabled = true;
+  document.getElementById(objBaseName + "interviewFlg").disabled = false;
+  document.getElementById(objBaseName + "interviewFlg").checked = true;
+  document.getElementById(objBaseName + "interviewFlg").disabled = true;
+
+  // ラジオボタンを初期化
+  document.getElementById(objBaseName + "sex_radio1").disabled = false;
+  document.getElementById(objBaseName + "sex_radio2").disabled = false;
+  document.getElementById(objBaseName + "sex_radio1").click();
+  document.getElementById(objBaseName + "sex_radio1").disabled = true;
+  document.getElementById(objBaseName + "sex_radio2").disabled = true;
+  f.elements[objBaseName + 'placeCd'].selectedIndex = 0;
+
+  f.elements[objBaseName + 'staffId'].value = "";
+  f.elements[objBaseName + 'job'].value = "";
+  f.elements[objBaseName + 'empExpYear'].value = "";
+  f.elements[objBaseName + 'empExpMonth'].value = "";
+  f.elements[objBaseName + 'paExpYear'].value = "";
+  f.elements[objBaseName + 'paExpMonth'].value = "";
+  f.elements[objBaseName + 'note'].value = "";
+  f.elements[objBaseName + 'examNo'].value = "";
+  f.elements[objBaseName + 'dispExamNo'].value = f.elements['mlEntryEdit:EXAM_NEW_MSG'].value;
+
+  //ラベルを消す
+  var labelObjArray = document.getElementsByTagName("span");
+  for (var i = 0; i < labelObjArray.length; i++) {
+    var labelObj = labelObjArray[i];
+    var labelClassName = labelObj.className;
+    if (labelClassName == null) {
+    	continue;
+    }
+    if (labelClassName == "staffNameKj" + index) {
+      labelObj.innerText = "";
+    }
+    if (labelClassName == "staffNameKna" + index) {
+      labelObj.innerText = "";
+    }
+    if (labelClassName == "miseNameKj" + index) {
+      labelObj.innerText = "";
+    }
+    if (labelClassName == "reentryBaseYear" + index) {
+      labelObj.innerText = "";
+    }
+  }
+
+}
+
+//スタッフ選択
+function selectStaff(index) {
+//	releaseDisable();
+	setIndex(index);
+	var f=document.forms['mlEntryEdit'];
+
+	f.elements['mlEntryEdit:selectedStaff'].value = index;
+
+	f.elements['mlEntryEdit:__link_clicked__'].value='mlEntryEdit:selectStaff';
+	f.submit();
+	return false;
+}
+//スタッフ追加
+function addStaff(index) {
+//	releaseDisable();
+	setIndex(index);
+	var f=document.forms['mlEntryEdit'];
+
+	f.elements['mlEntryEdit:__link_clicked__'].value='mlEntryEdit:addStaff';
+	f.submit();
+	return false;
+}
+//スタッフ編集
+function editStaff(index) {
+//	releaseDisable();
+	setIndex(index);
+	var f=document.forms['mlEntryEdit'];
+
+	for (i = 0; i < f.elements.length; i++) {
+	  type = f.elements[i].type;
+	  if ('hidden' == type) {
+	    var nameLength = f.elements[i].name.length;
+	    if (f.elements[i].name.lastIndexOf(index + ':staffId') > 0) {
+	      staffId = f.elements[i].value;
+		  break;
+	    }
+	  }
+	}
+	if(staffId=='') {
+	  return false;
+	}
+	f.elements['mlEntryEdit:editStaffId'].value = staffId;
+
+	f.elements['mlEntryEdit:__link_clicked__'].value='mlEntryEdit:editStaff';
+	f.submit();
+	return false;
+}
+
+//-->
+</SCRIPT>
+
+<form m:id="mlEntryEdit" m:onkeydown="return setDefaultSubmitButton('mlEntryEdit','btnExecute');">
+<input type="hidden" m:id="viewId" m:value="#{viewIdValue}"/>
+<input type="hidden" m:id="initMenuId" m:value="#{menuAction.initMenuId}"/>
+<input type="hidden" m:id="initSubMenuId" m:value="#{menuAction.initSubMenuId}"/>
+<input type="hidden" m:id="addStaffIndex" m:value="#{mlEntryDto.addStaffIndex}"/>
+<input type="hidden" m:id="editStaffId" m:value="#{mlEntryDto.editStaffId}"/>
+<input type="hidden" m:id="insupNum" m:value="#{mlEntryDto.insupEntryStateNum}"/>
+<input type="hidden" m:id="staffCnt" m:value="#{mlEntryDto.staffCnt}"/>
+<input type="hidden" m:id="selectedStaff" m:value="#{mlEntryDto.selectedStaff}"/>
+<input type="hidden" m:id="listEntryStateRegistSize" m:value="#{mlEntryDto.listEntryStateRegistSize}"/>
+<input type="hidden" m:id="editStaffFlg" m:value="#{mlEntryDto.editStaffFlg}"/>
+<input type="hidden" m:id="addStaffFlg" m:value="#{mlEntryDto.addStaffFlg}"/>
+
+<a m:id="selectStaff" m:action="#{mlEntryEditAction.selectStaff}"/><!--スタッフ選択-->
+<a m:id="addStaff" m:action="#{mlEntryEditAction.addStaff}"/><!--スタッフ追加-->
+<a m:id="editStaff" m:action="#{mlEntryEditAction.editStaff}"/><!--スタッフ編集-->
+
+<input type="button" value="戻る"       class="operation_button" m:action="#{mlEntryEditAction.cancel}"/>
+<input type="button" value="入力欄追加" class="operation_button" m:action="#{mlEntryEditAction.addRow}"/>
+<input type="button" value="登録・終了" class="operation_button" m:id="btnExecute" m:action="#{mlEntryEditAction.regist}"/>
+<table class="body_table2" width="660" style="margin-top:5px; margin-bottom:5px;table-layout:fixed;">
+  <tr>
+    <th style="text-align:center;" width="513">タイトル</th>
+    <th style="text-align:center;" width="147">実施期間</th>
+  </tr>
+  <tr>
+    <td>
+      <span m:converter="#{characterEncodingConverter}" m:value="#{mlEntryDto.selectEntryMst.entryTitle}"
+            m:converter="#{mlEntryCharacterEncodingConverter}"/>
+    </td>
+    <td>
+      <span m:value="#{mlEntryDto.selectEntryMst.kaisaiDtFrom}"
+            m:converter="#{mlEntryDateConverter1}"/>～
+            <span m:value="#{mlEntryDto.selectEntryMst.kaisaiDtTo}"
+                  m:converter="#{mlEntryDateConverter1}"/>
+    </td>
+  </tr>
+</table>
+<!--スクロール開始-->
+<div class="scroll_area">
+<!-- Mosikomi Saki Infomation -->
+※再エントリーは昨年の情報を掲載しています。<br/>
+受験票送付先は、受験票と受験案内の送り先となります。申込担当者を入力して下さい。
+<table class="body_table2" width="685px" style="margin-bottom:5px;table-layout:fixed;">
+  <col width="120px"/>
+  <col width="130px"/>
+  <col width="120px"/>
+  <col width="160px"/>
+  <col width="155px"/>
+<caption class="body_caption1" style="text-align:left; padding:2px 0px;">■受験票送付先</caption>
+  <tr>
+    <th>氏名</th>
+    <td colspan="2">
+    	<input type="text" class="imeon width_190" m:id="TantoName" m:size="40" m:maxlength="20" m:value="#{mlEntryDto.uiEntryOnerTanto.name}" m:converter="#{mlEntryCharacterEncodingConverter}"/>
+    </td>
+    <th>電話番号</th>
+    <td>
+    	<input type="text" class="imenotuse width_120" m:id="TantoTel" m:size="24" m:maxlength="15" m:value="#{mlEntryDto.uiEntryOnerTanto.tel}" m:converter="#{mlEntryCharacterEncodingConverter}"/>
+    </td>
+  </tr>
+  <tr>
+    <th rowspan="3">住所</th>
+    <td>
+    	〒<input type="text" class="imenotuse width_62" m:size="10" m:maxlength="8" m:id="TantoZip" m:value="#{mlEntryDto.uiEntryOnerTanto.zip}" m:converter="#{mlEntryZipConverter}"/>
+    </td>
+    <td colspan="3">
+  	    <input type="text" class="imeon width_255" m:size="50" m:maxlength="15" m:id="TantoAddress1" m:value="#{mlEntryDto.uiEntryOnerTanto.address1}" m:converter="#{mlEntryCharacterEncodingConverter}"/>
+    </td>
+  </tr>
+  <tr>
+    <td></td>
+    <td colspan="3">
+  	    <input type="text" class="imeon width_255" m:size="50" m:maxlength="15" m:id="TantoAddress2" m:value="#{mlEntryDto.uiEntryOnerTanto.address2}" m:converter="#{mlEntryCharacterEncodingConverter}"/>
+    </td>
+  </tr>
+  <tr>
+    <td></td>
+    <td colspan="3">
+  	    <input type="text" class="imeon width_255" m:size="50" m:maxlength="15" m:id="TantoAddress3" m:value="#{mlEntryDto.uiEntryOnerTanto.address3}" m:converter="#{mlEntryCharacterEncodingConverter}"/>
+    </td>
+  </tr>
+  <tr>
+    <th>送付先</th>
+    <td colspan="2">事業所名または店名／部署名など</td>
+    <td colspan="2">
+    	<input type="text" class="imeon width_255" m:size="50" m:maxlength="20" m:id="TantoSoufuName" m:value="#{mlEntryDto.uiEntryOnerTanto.soufuName}" m:converter="#{mlEntryZipConverter}"/>
+    </td>
+  </tr>
+</table>
+<!-- Hokoku Saki Infomation -->
+結果報告先は、受験される方の上司を入力して下さい。
+<table class="body_table2" style="width:685px; margin-bottom:5px;table-layout:fixed;">
+  <col width="120px"/>
+  <col width="130px"/>
+  <col width="120px"/>
+  <col width="160px"/>
+  <col width="155px"/>
+<caption class="body_caption1" style="text-align:left; padding:2px 0px;">■結果報告先</caption>
+  <tr>
+    <th>氏名</th>
+    <td colspan="2">
+    	<input type="text" class="imeon width_190" m:id="KekkaHokokuName" m:size="40" m:maxlength="20" m:value="#{mlEntryDto.uiEntryOnerKekkaHokoku.name}" m:converter="#{mlEntryCharacterEncodingConverter}"/>
+    </td>
+    <th>電話番号</th>
+    <td>
+    	<input type="text" class="imenotuse width_120" m:id="KekkaHokokuTel" m:size="24" m:maxlength="15" m:value="#{mlEntryDto.uiEntryOnerKekkaHokoku.tel}" m:converter="#{mlEntryCharacterEncodingConverter}"/>
+    </td>
+  </tr>
+  <tr>
+    <th rowspan="3">住所</th>
+    <td>
+    	〒<input type="text" class="imenotuse width_62" m:size="10" m:maxlength="8" m:id="KekkaHokokuZip" m:value="#{mlEntryDto.uiEntryOnerKekkaHokoku.zip}" m:converter="#{mlEntryZipConverter}"/>
+    </td>
+    <td colspan="3">
+  	    <input type="text" class="imeon width_255" m:size="50" m:maxlength="15" m:id="KekkaHokokuAddress1" m:value="#{mlEntryDto.uiEntryOnerKekkaHokoku.address1}" m:converter="#{mlEntryCharacterEncodingConverter}"/>
+    </td>
+  </tr>
+  <tr>
+  	<td></td>
+    <td colspan="3">
+  	    <input type="text" class="imeon width_255" m:size="50" m:maxlength="15" m:id="KekkaHokokuAddress2" m:value="#{mlEntryDto.uiEntryOnerKekkaHokoku.address2}" m:converter="#{mlEntryCharacterEncodingConverter}"/>
+    </td>
+  </tr>
+  <tr>
+  	<td></td>
+    <td colspan="3">
+  	    <input type="text" class="imeon width_255" m:size="50" m:maxlength="15" m:id="KekkaHokokuAddress3" m:value="#{mlEntryDto.uiEntryOnerKekkaHokoku.address3}" m:converter="#{mlEntryCharacterEncodingConverter}"/>
+    </td>
+  </tr>
+  <tr>
+    <th>送付先</th>
+    <td colspan="2">事業所名または店名／部署名など</td>
+    <td colspan="2">
+		<input type="text" class="imeon width_255" m:size="50" m:maxlength="20" m:id="KekkaHokokuSoufuName" m:value="#{mlEntryDto.uiEntryOnerKekkaHokoku.soufuName}" m:converter="#{mlEntryZipConverter}"/>
+    </td>
+  </tr>
+</table>
+※<font color="red">マスターライセンス受験申込はベーシック研修又は出張ベーシック研修を修了していることが必須となります。</font><br/>
+<!-- Entry List -->
+<div m:inject="s:forEach" m:items="#{mlEntryDto.listEntryStateRegist}" m:var="e" m:varIndex="i">
+
+<input type="hidden" m:id="stateFlg" m:value="#{e.stateFlg}"/>
+<input type="hidden" m:id="beforeFlg" m:value="#{e.beforeFlg}"/>
+<input type="hidden" m:id="sub1Result" m:value="#{e.sub1Result}"/>
+<input type="hidden" m:id="sub2Result" m:value="#{e.sub2Result}"/>
+<input type="hidden" m:id="sub3Result" m:value="#{e.sub3Result}"/>
+<input type="hidden" m:id="examNo" m:value="#{e.examNo}"/>
+<input type="hidden" m:id="entryPlaceCd" m:value="#{e.entryPlaceCd}"/>
+<input type="hidden" m:id="insertFlg" m:value="#{e.insertFlg}"/>
+<input type="hidden" m:id="totalLastYear" m:value="#{e.totalLastYear}"/>
+<input type="hidden" m:id="totalLastKai" m:value="#{e.totalLastKai}"/>
+<input type="hidden" m:id="totalResult" m:value="#{e.totalResult}"/>
+
+  <table width="900px" class="body_table2" style="#{i==0?'':'border-top-style:none'}">
+    <col width="150px"/>
+    <col width="290px"/>
+    <col width="100px"/>
+    <col width="200px"/>
+    <col class="mlentryselect_col_width1"/>
+    <col class="mlentryselect_col_width"/>
+
+    <tr>
+      <th class="body_header4" colspan="5" m:style="text-align:left;border-right-style:none;border-top-style:none;"><span m:value="エントリー者#{e.entryNo}"/></th>
+      <th class="body_header4" m:style="text-align:right;border-left-style:none;border-top-style:none;"><input type="button" m:value="申込取消" m:onclick="torikesi(#{i})"/></th>
+    </tr>
+
+    <tr>
+      <th>エントリー項目</th>
+      <td>
+      	<span>
+          <input type="checkbox" m:id="abilityFlg" m:disabled="#{e.stateFlg=='0'||e.stateFlg=='2'||e.abilityChk =='1'||e.abilityChk=='2' ? true : false}"
+              m:value="#{e.abilityFlg}" />能力&nbsp;
+          <input type="checkbox" m:id="examFlg" m:disabled="#{e.stateFlg=='0'||e.stateFlg=='2'||e.examChk=='1'||e.examChk=='2' ? true : false}"
+              m:value="#{e.examFlg}" />筆記&nbsp;
+          <input type="checkbox" m:id="interviewFlg" m:disabled="#{e.stateFlg=='0'||e.stateFlg=='2'||e.interviewChk=='1'||e.interviewChk=='2' ? true : false}"
+              m:value="#{e.interviewFlg}" />面接&nbsp;
+        </span>
+      </td>
+      <th>エントリー</th>
+      <td colspan="3">
+	      <input type="text" id="dispExamNo" size="26" class="disable_field" m:value="#{e.entryMsg}" readonly="true"/>
+      </td>
+    </tr>
+
+    <tr>
+      <th>氏名<input type="button" value="スタッフ選択" class="operation_button" name="selectStaffBtn#{i}" m:onclick="return selectStaff(#{i});"/></th>
+      <td><span class="staffNameKj#{i}" m:value="#{e.staffNameKj}" /><input type="hidden" m:id="staffId" m:value="#{e.staffId}"/></td>
+      <td colspan="4">
+        <input type="button" m:value="スタッフ編集" name="editStaffBtn#{i}" class="operation_button" m:onclick="return editStaff(#{i});"/>
+      </td>
+    </tr>
+
+    <tr>
+      <th>フリガナ</th>
+      <td><span m:converter="#{characterEncodingConverter}" class="staffNameKna#{i}" m:value="#{e.staffNameKna}"/></td>
+      <th colspan="2">再エントリー基準年度</th>
+      <td colspan="2"><span class="reentryBaseYear#{i}"><span m:value="#{e.reentryBaseYear}"/><span m:rendered="#{e.reentryBaseYear != ''}">年度</span></span></td>
+    </tr>
+
+    <tr>
+	  <th>店舗名称</th>
+	  <td><span m:converter="#{characterEncodingConverter}" class="miseNameKj#{i}" m:value="#{e.miseNameKj}"/></td>
+      <th>性別</th>
+      <td>
+        <span m:converter="#{characterEncodingConverter}" m:inject="s:selectOneRadio2" m:id="sex" m:value="#{e.sex}">
+          <input type="radio" m:id="sex_radio1" m:disabled="true" m:value="0"/>男　
+          <input type="radio" m:id="sex_radio2" m:disabled="true" m:value="1"/>女
+        </span>
+      </td>
+      <th>職位</th>
+      <td><input type="text" class="imeon width_120" m:id="job" m:size="20" m:maxlength="10" m:value="#{e.job}"/></td>
+    </tr>
+
+    <tr>
+      <th>店舗経験</th>
+      <td colspan="3">
+        社員歴：<input type="text" class="imenotuse width_35"  m:id="empExpYear" m:size="5" m:maxlength="2" m:style="text-align:right;" m:value="#{e.empExpYear}" m:converter="#{mlEntryNumericConverter}"/>年
+        <input type="text" class="imenotuse width_35"  m:id="empExpMonth" m:size="5" m:maxlength="2" m:style="text-align:right;" m:value="#{e.empExpMonth}" m:converter="#{mlEntryNumericConverter}"/>月
+        　&nbsp;&nbsp;
+        パート・アルバイト歴：<input type="text" class="imenotuse width_35"  m:id="paExpYear" m:size="5" m:maxlength="2" m:style="text-align:right;" m:value="#{e.paExpYear}" m:converter="#{mlEntryNumericConverter}"/>年
+        <input type="text" class="imenotuse width_35"  m:id="paExpMonth" m:size="5" m:maxlength="2" m:style="text-align:right;" m:value="#{e.paExpMonth}" m:converter="#{mlEntryNumericConverter}"/>月
+      </td>
+      <th>受験希望地</th>
+      <td>
+        <select m:id="placeCd" m:value="#{e.entryPlaceCd}"
+                m:items="#{mlEntryDto.listPlace}"
+                m:itemValue="placeCd"
+                m:itemLabel="placeName">
+            <option value="">希望地を選択して下さい。</option>
+            <option value="XXXXX">XXXXX</option>
+            <option value="OHTER">その他</option>
+        </select>
+      </td>
+    </tr>
+
+    <tr>
+      <th>備考</th>
+      <td colspan="5">
+        <input type="text" class="imeon width_570" m:id="note" m:size="112" m:maxlength="50" m:value="#{e.note}" m:converter="#{mlEntryCharacterEncodingConverter}"/>
+      </td>
+    </tr>
+
+  </table>
+
+</div>
+</div>
+<input type="hidden" m:id="h_rintenDtDisp" m:value="#{mlEntryDto.selectEntryMst.rintenDtDisp}"/>
+<input type="hidden" id="EXAM_NEW_MSG" m:value="#{mlEntryDto.examNewMsg}"/>
+<input type="hidden" id="EXAM_MSG" m:value="#{mlEntryDto.examMsg}"/>
+<input type="hidden" id="NO_SELECT_STAFF_MSG" m:value="#{mlEntryDto.noSelectStaffMsg}"/>
+
+</form>
+
+</span>
+</body>
+</html>

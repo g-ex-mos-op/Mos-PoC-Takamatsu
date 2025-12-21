@@ -1,0 +1,256 @@
+<html xmlns:m="http://www.seasar.org/maya" m:extends="/jsf/layout/layoutNoNavi.html" m:action="#{mosChickenrefconflistConditionAction.initialize}">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=Windows-31j" />
+  <title>予約販売確認表</title>
+ </head>
+
+ <body>
+  <span m:inject="f:param" m:name="layoutTitle" m:value="予約販売確認表"/>
+  <span m:inject="s:insert" m:name="bodyTitleName">■予約販売確認表</span>
+  <span m:inject="f:param" m:name="onLoadName" m:value="init();"/>
+  <span m:inject="f:param" m:name="viewIdValue" m:value="BBS020V01"/>
+  <span m:inject="s:insert" m:name="body">
+  <STYLE type="text/css" media="screen">
+   <!--
+   /* テーブルヘッダデフォルト設定 パターン２*/
+   /* テーブルヘッダのセンタリング用 */
+   table.body_table2 tr th{
+     text-align            : center;
+     border                : 1px solid;
+   //-->
+   </STYLE>  
+  <script type="text/javascript">
+  <!--
+   function onerSearch(){
+    userTypeCode = document.forms['mssChousaDataSelect'].elements['mssChousaDataSelect:usertypeCd'].value;
+    document.forms['mosChickenrefConfListSelect'].elements['mosChekenRevSelect:__link_clicked__'].value='mosChickenrefConfListSelect:onerSearch';
+    document.forms['mosChickenrefConfListSelect'].submit();
+   }
+
+   function init(){
+   
+    initShoriFlg = document.forms['mosChickenrefConfListSelect'].elements['mosChickenrefConfListSelect:initShoriFlg'].value;
+    titleCnt = document.forms['mosChickenrefConfListSelect'].elements['mosChickenrefConfListSelect:titleCnt'].value;
+    miseCnt = document.forms['mosChickenrefConfListSelect'].elements['mosChickenrefConfListSelect:miseCnt'].value;
+    cnpDays = document.forms['mosChickenrefConfListSelect'].elements['mosChickenrefConfListSelect:cnpDays'].value;
+    if(initShoriFlg == '1') {
+     if(titleCnt != 0){
+	  if(titleCnt > 1){
+	     document.forms['mosChickenrefConfListSelect'].elements['mosChickenrefConfListSelect:title'].focus();
+	  }else{
+       if(miseCnt > 1){
+	      document.forms['mosChickenrefConfListSelect'].elements['mosChickenrefConfListSelect:miseCd'].focus();
+ 	   }else{
+        if(cnpDays > 1){
+	      document.forms['mosChickenrefConfListSelect'].elements['mosChickenrefConfListSelect:date'].focus();
+        }else{
+ 	     document.forms['mosChickenrefConfListSelect'].elements['mosChickenrefConfListSelect:hour'].focus();
+        }
+	   }
+	  }
+	 }
+    }else if(initShoriFlg == '0'){
+     document.forms['mosChickenrefConfListSelect'].elements['mosChickenrefConfListSelect:onerCd'].focus();
+    }
+   }
+   function changeTitle(){
+    document.mosChickenrefConfListSelect.elements['mosChickenrefConfListSelect:__link_clicked__'].value='mosChickenrefConfListSelect:changeTitle';
+    document.mosChickenrefConfListSelect.submit();
+    return false;
+   }
+   function typeA() {
+    loadingFlg = document.forms['mosChickenrefConfListSelect'].elements['mosChickenrefConfListSelect:loadingFlg'].value;
+	   	document.mosChickenrefConfListSelect.elements['mosChickenrefConfListSelect:__link_clicked__'].value='mosChickenrefConfListSelect:typeA';
+    	document.mosChickenrefConfListSelect.submit();   
+   }
+   function typeB() {
+    loadingFlg = document.forms['mosChickenrefConfListSelect'].elements['mosChickenrefConfListSelect:loadingFlg'].value;
+	   	document.mosChickenrefConfListSelect.elements['mosChickenrefConfListSelect:__link_clicked__'].value='mosChickenrefConfListSelect:typeB';
+    	document.mosChickenrefConfListSelect.submit();   
+   }
+
+   -->
+   </script>
+
+   <form m:id="mosChickenrefConfListSelect" onKeyDown="return setDefaultSubmitButton('mosChickenrefConfListSelect','onerExec');">
+    <!-- 複数window対応 -->
+    <input type="hidden" m:id="windowId" m:value="#{mosChickenRefConfListCondDto.windowId}"/>
+    <input type="hidden" m:id="initShoriFlg" m:value="#{mosChickenRefConfListCondDto.initShoriFlg}"/>
+    <input type="hidden" m:id="type" m:value="#{mosChickenRefConfListDto.pdfType}"/>
+	<input type="hidden" id="loadingFlg" value="ON"/>
+    <input type="hidden" m:id="titleCnt" m:value="#{mosChickenRefConfListCondDto.titleCnt}"/>
+    <input type="hidden" m:id="cnpDays" m:value="#{mosChickenRefConfListCondDto.cnpDays}"/>
+    <input type="hidden" m:id="miseCnt" m:value="#{mosChickenRefConfListCondDto.miseCnt}"/>
+	<input type="hidden" m:id="viewId" m:value="#{viewIdValue}"/>
+    <a m:id="changeTitle" m:action="#{mosChickenrefconflistConditionAction.changeTitle}"/>
+	<a m:id="typeA" m:action="#{pdfMosChikenRefConfTypeAAction.downloadPDF}"/>    
+	<a m:id="typeB" m:action="#{pdfMosChikenRefConfTypeBAction.downloadPDF}"/>    
+    <span m:rendered="#{mosChickenRefConfListCondDto.initShoriFlg == 0}">
+     <table width="320">
+        <tr>
+            <td width="270">
+				<table class="body_table" width="270">
+					<tr>
+						<th width="120" style="text-align:left; border-right-width: 0;">
+							オーナー
+						</th>
+						<th width="50" style="border-left-width: 0;">
+					        <input type="submit" m:id="onerSerch" value="検索" m:action="#{mosChickenrefconflistConditionAction.onerSearch}"/>
+	    				</th>
+						<td width="100">
+					        <input type="text" m:id="onerCd" m:size="10" m:maxlength="5" class="imenotuse" m:value="#{mosChickenRefConfListCondDto.onerCd}"/>
+						</td>
+                    </tr>
+                </table>
+            </td>
+            <td width="50">
+		        <input type="submit" value="実行" m:id="onerExec" m:action="#{mosChickenrefconflistConditionAction.honbuExec}"/>
+            </td>
+        </tr>
+     </table>
+    </span>
+    <span m:rendered="#{mosChickenRefConfListCondDto.initShoriFlg == 1}">
+     <span m:rendered="#{mosChickenRefConfListCondDto.titleCnt == 0}">
+        <b>現在対象期間中のデータはありません。</b>
+     </span>
+     <span m:rendered="#{mosChickenRefConfListCondDto.titleCnt != 0}">
+      <span m:rendered="#{mosChickenRefConfListCondDto.userTypeCd == 01}">
+       <table>
+        <tr>
+         <td>
+          <input type="submit" value="戻る" m:action="#{mosChickenrefconflistConditionAction.honbuUserBack}"/>
+         </td>
+        </tr>
+       </table>
+      </span>
+      <table class="body_table" width="740px">
+       <tr>
+        <th nowrap=" nowrap">タイトル</th>
+        <td>
+         <span m:rendered = "#{mosChickenRefConfListCondDto.titleCnt > 1}">
+          <div class="hideArea">
+           <select class="condition_field" style="width:288px;"
+            m:id="title"
+            m:value="#{mosChickenRefConfListDto.ckanriNo}"
+            m:items="#{mosChickenRefConfListCondDto.listCamp}"
+            m:itemValue="ckanriNo"
+            m:itemLabel="title"
+            m:onChange="changeTitle()">
+           </select>
+          </div>
+         </span>
+         <span m:rendered = "#{mosChickenRefConfListCondDto.titleCnt == 1}">
+          <input type="hidden" m:id="ckanriNo1" m:value="#{mosChickenRefConfListDto.ckanriNo}"/>
+          <span m:converter="#{characterEncodingConverter}" m:value="#{mosChickenRefConfListDto.title}"/>
+          <input type="hidden" m:id="titleNm" m:value="#{mosChickenRefConfListDto.title}"/>
+         </span>
+        </td>
+        <th nowrap=" nowrap">対象店舗</th>
+        <td width="290px">
+         <span m:rendered = "#{mosChickenRefConfListCondDto.miseCnt > 1}">
+          <div class="hideArea">
+           <select class="condition_field" style="width:250px;"
+            m:id="miseCd"
+            m:value="#{mosChickenRefConfListDto.miseCd}"
+            m:items="#{mosChickenRefConfListCondDto.listOnerMise}"
+            m:itemValue="miseCd"
+            m:itemLabel="miseNameKj">
+           </select>
+          </div>
+         </span>
+         <span m:rendered = "#{mosChickenRefConfListCondDto.miseCnt == 1}">
+          <span m:converter="#{characterEncodingConverter}" m:value="#{mosChickenRefConfListDto.miseNmKj}"/>
+          <input type="hidden" m:id="miseCd1" m:value="#{mosChickenRefConfListDto.miseCd}"/>
+          <input type="hidden" m:id="miseNmKj" m:value="#{mosChickenRefConfListDto.miseNmKj}"/>
+         </span>
+        </td>
+       </tr>
+       <tr>
+        <th nowrap=" nowrap">対象日付</th>
+        <td>
+         <span m:rendered = "#{mosChickenRefConfListCondDto.cnpDays > 1}">
+         <div class="hideArea">
+          <select class="condition_field" style="width:100px;"
+           m:id="date"
+           m:value="#{mosChickenRefConfListDto.reserveDate}"
+           m:items="#{mosChickenRefConfListCondDto.listDate}"
+           m:itemValue="#{mosChickenRefConfListCondDto.listDate}"
+           m:itemLabel="#{mosChickenRefConfListCondDto.listDate}">
+           <option value="">選択</option>
+          </select>
+         </div>
+         </span>
+         <span m:rendered = "#{mosChickenRefConfListCondDto.cnpDays == 1}">
+          <span m:value="#{mosChickenRefConfListDto.reserveDate}"/>
+          <input type="hidden" m:id="reserveDate" m:value="#{mosChickenRefConfListDto.reserveDate}"/>
+         </span>
+        </td>
+        <th>
+         時間帯
+        </th>
+        <td>
+         <div class="hideArea">
+          <select class="condition_field" style="width:100px;"
+            m:id="hour"
+           m:value="#{mosChickenRefConfListDto.reserveHourFrom}"
+           m:items="#{mosChickenRefConfListCondDto.listReserveFrom}"
+           m:itemValue="#{mosChickenRefConfListCondDto.listReserveFrom}"
+           m:itemLabel="#{mosChickenRefConfListCondDto.listReserveFrom}">
+           <option value="">選択</option>
+          </select>
+            ～
+          <select class="condition_field" style="width:100px;"
+           m:value="#{mosChickenRefConfListDto.reserveHourTo}"
+           m:items="#{mosChickenRefConfListCondDto.listReserveTo}"
+           m:itemValue="#{mosChickenRefConfListCondDto.listReserveTo}"
+           m:itemLabel="#{mosChickenRefConfListCondDto.listReserveTo}">
+           <option value="">選択</option>
+          </select>
+         </div>
+        </td>
+       </tr>
+       <tr>
+        <th nowrap=" nowrap">プレミアム</th>
+        <td nowrap=" nowrap">
+		<span m:inject="s:selectOneRadio2" m:value="#{mosChickenRefConfListDto.premiumFlg}">
+			<input type="radio" name="premiumFlg" m:value=""/>&nbsp;すべて&nbsp;
+			<input type="radio" name="premiumFlg" m:value="1"/>&nbsp;済のみ&nbsp;
+			<input type="radio" name="premiumFlg" m:value="0"/>&nbsp;未のみ&nbsp;
+         </span>
+        </td>
+        <th nowrap=" nowrap">代金</th>
+        <td nowrap=" nowrap">
+		<span m:inject="s:selectOneRadio2" m:value="#{mosChickenRefConfListDto.paymentFlg}">
+			<input type="radio" name="daikinFlg" m:value=""/>&nbsp;すべて&nbsp;
+			<input type="radio" name="daikinFlg" m:value="1"/>&nbsp;済のみ&nbsp;
+			<input type="radio" name="daikinFlg" m:value="0"/>&nbsp;未のみ&nbsp;
+         </span>
+        </td>
+       </tr>
+      </table>
+      <table width="320px">
+	   <tr>
+	    <td width="300px" align="center">
+	     <input type="button" value="PDFダウンロード(Aタイプ)" m:name="mosChickenrefConfListSelect:typeA" m:onclick="typeA();" onDblClick="return false"/>
+	    </td>
+        <td width="300px" align="center">
+	     <input type="button" value="PDFダウンロード(Bタイプ)" m:name="mosChickenrefConfListSelect:typeB" m:onclick="typeB();" onDblClick="return false"/>
+	    </td>
+       </tr>
+      </table>
+     </span>
+    <hr>
+    
+    店コード：<input type="text" m:value="#{mosChickenRefConfListDto2.miseCdFrom}"/>～<input type="text" m:value="#{mosChickenRefConfListDto2.miseCdTo}"/><br/>
+    <input type="button" value="全店 Aタイプ" m:action="#{mosChickenrefconflistConditionAction2.execAll}" maxlength="5">
+        <span m:inject="f:param" m:name="type" m:value="A"/>
+    </input>
+    <input type="button" value="全店 Bタイプ"m:action="#{mosChickenrefconflistConditionAction2.execAll}" maxlength="5">
+        <span m:inject="f:param" m:name="type" m:value="B"/>
+    </input>
+    </span>
+    
+   </form>
+  </span>
+ </body>
+</html>

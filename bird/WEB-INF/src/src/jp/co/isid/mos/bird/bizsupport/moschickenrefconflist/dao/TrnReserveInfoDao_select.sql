@@ -1,0 +1,69 @@
+SELECT BT70.CKANRI_NO
+   ,   BT70.COMPANY_CD
+   ,   BT70.MISE_CD
+   ,   BT70.SEQ_NO
+   ,   BT70.RESERVE_DT
+   ,   BT70.ACCEPT_DT
+   ,   BT70.RESERVE_HH
+   ,   BT70.RESERVE_MM
+   ,   rtrim(BT70.REMARK) as REMARK
+   ,   BT70.PAYMENT_FLG
+   ,   BT70.PREMIUM_FLG
+   ,   rtrim(BT70.MEMO) as MEMO
+   ,   BT70.CANCEL_FLG
+   ,   BT70.CANCEL_DT
+   ,   SUM(DECIMAL(BT71.UCHI_TANKA*BT71.RESERVE_AMT, 9, 0)) as TOTAL_MONEY
+FROM   BT70CRSV BT70
+LEFT JOIN (
+	SELECT BT71.CKANRI_NO
+	   ,   BT71.COMPANY_CD
+	   ,   BT71.MISE_CD
+	   ,   BT71.SEQ_NO
+	   ,   UCHI_TANKA
+	   ,   BT71.RESERVE_AMT
+	FROM BM38MMNU BM38
+	,    BT71CRSD BT71
+	        WHERE BM38.MISE_CD =/*miseCd*/'00080'
+	        AND   BM38.COMPANY_CD =/*companyCd*/'00'
+	        AND   BT71.MISE_CD    =  BM38.MISE_CD 
+	        AND   BT71.COMPANY_CD = BM38.COMPANY_CD 	
+	        AND   BT71.CKANRI_NO  =/*ckanriNo*/'200632'
+	        AND   BT71.RESERVE_AMT > 0
+	AND  BM38.MENU_CD  = BT71.MENU_CD
+) BT71
+ON (BT70.CKANRI_NO = BT71.CKANRI_NO
+AND BT70.COMPANY_CD = BT71.COMPANY_CD
+AND BT70.MISE_CD = BT71.MISE_CD
+AND BT70.SEQ_NO = BT71.SEQ_NO
+)
+WHERE  BT70.CKANRI_NO = /*ckanriNo*/'200632'
+AND    BT70.MISE_CD   = /*miseCd*/'00080'
+AND    BT70.COMPANY_CD = /*companyCd*/'00'   
+AND    BT70.RESERVE_DT = /*reserveDt*/'20061224'   
+AND    BT70.CANCEL_FLG = '0'   
+AND    BT70.RESERVE_HH >= /*reserveFrom*/'00' 
+AND    BT70.RESERVE_HH < /*reserveTo*/'24'
+/*IF premiumFlg != null && premiumFlg != ""*/
+AND    BT70.PREMIUM_FLG = /*premiumFlg*/'0'
+/*END*/
+/*IF paymentFlg != null && paymentFlg != ""*/
+AND    BT70.PAYMENT_FLG = /*paymentFlg*/'0'
+/*END*/
+GROUP BY BT70.CKANRI_NO
+   ,     BT70.COMPANY_CD
+   ,     BT70.MISE_CD
+   ,     BT70.SEQ_NO
+   ,     BT70.RESERVE_DT
+   ,     BT70.ACCEPT_DT
+   ,     BT70.RESERVE_HH
+   ,     BT70.RESERVE_MM
+   ,     rtrim(BT70.REMARK) 
+   ,     BT70.PAYMENT_FLG
+   ,     BT70.PREMIUM_FLG
+   ,     rtrim(BT70.MEMO) 
+   ,     BT70.CANCEL_FLG
+   ,     BT70.CANCEL_DT
+
+ORDER BY RESERVE_HH
+,        RESERVE_MM
+,		 SEQ_NO

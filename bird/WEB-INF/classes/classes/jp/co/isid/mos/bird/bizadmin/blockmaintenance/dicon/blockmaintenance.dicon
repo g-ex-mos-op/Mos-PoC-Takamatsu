@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE components PUBLIC "-//SEASAR//DTD S2Container 2.3//EN"
+	"http://www.seasar.org/dtd/components23.dtd">
+<components namespace="blockmaintenance">
+	<include path="dao.dicon"/>
+	<include path="jp/co/isid/mos/bird/common/dicon/birdCommon.dicon"/>
+	<include path="jp/co/isid/mos/bird/framework/dicon/birdInterceptor.dicon"/>
+	
+	<!-- インターセプターを自動登録 -->
+	<component class="org.seasar.framework.container.autoregister.AspectAutoRegister">
+	    <property name="interceptor">birdInterceptor.actionInterceptorChain</property>
+	    <initMethod name="addClassPattern">
+	        <arg>"jp.co.isid.mos.bird"</arg>
+	        <arg>".*ActionImpl"</arg>
+	    </initMethod>
+	    <initMethod name="registerAll"/>
+	</component> 
+	<component class="org.seasar.framework.container.autoregister.AspectAutoRegister">
+	    <property name="interceptor">birdInterceptor.logicInterceptorChain</property>
+	    <initMethod name="addClassPattern">
+	        <arg>"jp.co.isid.mos.bird"</arg>
+	        <arg>".*LogicImpl"</arg>
+	    </initMethod>
+	    <initMethod name="registerAll"/>  
+	</component>
+	<!-- DTO -->
+	<component name="pullDownMenuDto"   class="jp.co.isid.mos.bird.framework.dto.PullDownMenuDto" autoBinding="none" instance="session"/>
+	<component name="blockMainteSesDto" class="jp.co.isid.mos.bird.bizadmin.blockmaintenance.dto.SessionDto" instance="session">
+		<property name="listCompany">null</property>
+		<property name="listSibu">null</property>
+		<property name="listBlock">null</property>
+		<property name="listDispBlock">null</property>
+		<property name="listSearchData">null</property>
+	</component>
+	<component name="blockMainteReqDto" class="jp.co.isid.mos.bird.bizadmin.blockmaintenance.dto.RequestDto" instance="request" />
+
+	<!-- DAO -->
+	<component name="blockMainteCodBlockDao" class="jp.co.isid.mos.bird.bizadmin.blockmaintenance.dao.CodBlockDao">
+		<aspect>dao.interceptor</aspect>
+	</component>
+	<component name="blockMainteUIMiseBlockInfoDao" class="jp.co.isid.mos.bird.bizadmin.blockmaintenance.dao.UIMiseBlockInfoDao">
+		<aspect>dao.interceptor</aspect>
+	</component>
+	<!-- LOGIC -->
+	<component name="blockMainteConditionLogic"      class="jp.co.isid.mos.bird.bizadmin.blockmaintenance.logic.impl.ConditionLogicImpl"/>
+	<component name="blockMainteSearchLogic"         class="jp.co.isid.mos.bird.bizadmin.blockmaintenance.logic.impl.SearchLogicImpl"/>
+	<component name="blockMainteMoveBlockLogic"      class="jp.co.isid.mos.bird.bizadmin.blockmaintenance.logic.impl.MoveBlockLogicImpl"/>
+	<component name="blockMainteResetBlockLogic"     class="jp.co.isid.mos.bird.bizadmin.blockmaintenance.logic.impl.ResetBlockLogicImpl"/>
+	<component name="blockMainteCheckInputDataLogic" class="jp.co.isid.mos.bird.bizadmin.blockmaintenance.logic.impl.CheckInputDataLogicImpl"/>
+	<component name="blockMainteRegistLogic"         class="jp.co.isid.mos.bird.bizadmin.blockmaintenance.logic.impl.RegistLogicImpl">
+		<aspect>j2ee.requiresNewTx</aspect>
+	</component>
+
+	<!-- ACTION -->
+	<component name="blockMainteConditionAction" class="jp.co.isid.mos.bird.bizadmin.blockmaintenance.action.impl.ConditionActionImpl" instance="request" />
+	<component name="blockMainteEditAction"      class="jp.co.isid.mos.bird.bizadmin.blockmaintenance.action.impl.EditActionImpl" instance="request" />
+	<component name="blockMainteConfirmAction"   class="jp.co.isid.mos.bird.bizadmin.blockmaintenance.action.impl.ConfirmActionImpl" instance="request" />
+	<!-- CONVERTER -->
+</components>

@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="Shift_JIS"?>
+<!DOCTYPE components PUBLIC "-//SEASAR//DTD S2Container 2.3//EN" "http://www.seasar.org/dtd/components23.dtd">
+<components namespace="rankRef">
+	<include path="dao.dicon"/>
+	<include path="jp/co/isid/mos/bird/framework/dicon/birdInterceptor.dicon"/>
+	
+	<!-- インターセプターを自動登録 -->
+	<component class="org.seasar.framework.container.autoregister.AspectAutoRegister">
+	    <property name="interceptor">birdInterceptor.actionInterceptorChain</property>
+	    <initMethod name="addClassPattern">
+	        <arg>"jp.co.isid.mos.bird"</arg>
+	        <arg>".*ActionImpl"</arg>
+	    </initMethod>
+	    <initMethod name="registerAll"/>
+	</component> 
+	<component class="org.seasar.framework.container.autoregister.AspectAutoRegister">
+	    <property name="interceptor">birdInterceptor.logicInterceptorChain</property>
+	    <initMethod name="addClassPattern">
+	        <arg>"jp.co.isid.mos.bird"</arg>
+	        <arg>".*LogicImpl"</arg>
+	    </initMethod>
+	    <initMethod name="registerAll"/>  
+	</component>
+
+	<!-- OTHER -->
+	<component class="jp.co.isid.mos.bird.framework.control.BirdUserInfo" instance="session"/>
+	<component class="jp.co.isid.mos.bird.framework.control.BirdDateInfo" instance="session"/>
+	<!-- DAO -->
+	<component name="codCompanyDao" class="jp.co.isid.mos.bird.common.dao.CodCompanyDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="rankRefUIRankDao" class="jp.co.isid.mos.bird.analysis.rankref.dao.UIRankDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+
+	<!-- Entity -->
+
+	<!-- DTO -->
+	<component name="pullDownMenuDto" class="jp.co.isid.mos.bird.framework.dto.PullDownMenuDto" autoBinding="none" instance="session"/>
+	<component name="rankRefSesDto" class="jp.co.isid.mos.bird.analysis.rankref.dto.SessionDto" autoBinding="none" instance="session"/>
+	<component name="rankRefReqDto" class="jp.co.isid.mos.bird.analysis.rankref.dto.RequestDto" autoBinding="none" instance="request">
+		<property name="rankRefSesDto">rankRefSesDto</property>
+	</component>
+	<component name="rankRefViewDto" class="jp.co.isid.mos.bird.analysis.rankref.dto.RequestDto" autoBinding="none" instance="request">
+		<property name="rankRefSesDto">rankRefSesDto</property>
+	</component>
+
+	<!-- LOGIC -->
+	<component name="rankRefConditionLogic" class="jp.co.isid.mos.bird.analysis.rankref.logic.impl.ConditionLogicImpl"/>
+	<component name="rankRefSearchLogic" class="jp.co.isid.mos.bird.analysis.rankref.logic.impl.SearchLogicImpl"/>
+	<component name="rankRefCsvLogic" class="jp.co.isid.mos.bird.analysis.rankref.logic.impl.CsvLogicImpl"/>
+
+	<!-- ACTION -->
+	<component name="rankRefViewAction" class="jp.co.isid.mos.bird.analysis.rankref.action.impl.ViewActionImpl" instance="request">
+		<property name="csvOutputDto">rankRefViewDto</property>
+		<property name="csvOutputLogic">rankRefCsvLogic</property>
+	</component>
+	
+	<!-- CONVERTER -->
+	<component name="dateCnvtKjYM" class="jp.co.isid.mos.bird.framework.text.converter.DateConverter" instance="request">
+		<arg>@jp.co.isid.mos.bird.framework.util.formatter.DateFormatter@DATE_TYPE_YM</arg>
+		<arg>@jp.co.isid.mos.bird.framework.util.formatter.DateFormatter@PATTERN_MONTH_KANJI_YM</arg>
+	</component>
+	<!-- CONVERTER -->
+	<component name="dateCnvtYM" class="jp.co.isid.mos.bird.framework.text.converter.DateConverter" instance="request">
+		<arg>@jp.co.isid.mos.bird.framework.util.formatter.DateFormatter@DATE_TYPE_YM</arg>
+		<arg>@jp.co.isid.mos.bird.framework.util.formatter.DateFormatter@PATTERN_MONTH_SLASH</arg>
+	</component>
+	<component name="bizreportNumericCnvt" class="jp.co.isid.mos.bird.framework.text.converter.NumericConverter" instance="request">
+		<arg>"#,##0"</arg><arg>true</arg>
+	</component>
+	<component name="numCvtScale2" class="jp.co.isid.mos.bird.framework.text.converter.NumericConverter" instance="request">
+		<arg>2</arg>
+	</component>
+</components>

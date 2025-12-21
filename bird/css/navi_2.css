@@ -1,0 +1,56 @@
+/* ナビエリアの設定 */
+table.navi{
+  background-color      : #EEFFFF;
+}
+/* ナビエリア2の設定 */
+table.navi2{
+  background-color      : #C0E0F0;
+  color                 : blue;
+}
+
+/* ナビエリア見出しの設定 */
+.navi_caption{
+  background-color      : #000080;
+}
+
+/* ナビエリア2フィールド2のリンク文字設定 */
+.navi2_field2 a{
+  color						: blue;
+  font-weight				: normal;
+}
+
+/* ナビエリアタイトルの設定 */
+.navi_title{
+  width						: 100%;
+  color						: white;
+  background-color		: #000080;
+  text-align				: left;
+}
+/* ナビエリア項目ヘッダの設定 */
+.navi_header{
+  color						: white;
+  background-color		: #CC99CC;
+  text-align				: center;
+}
+
+/* ナビエリア2項目ヘッダの設定 */
+.navi2_header{
+  height					: 20px;
+  background-color		: #000080;
+  color						: white;
+}
+
+/* ナビエリア選択(アクティブ)の設定 */
+.navi_active_cell{
+  background-color      : navy;
+}
+/* ナビエリア非選択(非アクティブ)の設定 */
+.navi_non_active_cell{
+  color                 : navy;
+}
+
+/* リンクの設定（非アクティブ） */
+a.navi_non_selected_link{
+  text-decoration			: none;
+  color						: #000080;
+}

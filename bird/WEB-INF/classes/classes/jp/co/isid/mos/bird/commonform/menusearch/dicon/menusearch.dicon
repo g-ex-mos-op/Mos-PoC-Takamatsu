@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="Shift_JIS"?>
+<!DOCTYPE components PUBLIC "-//SEASAR//DTD S2Container 2.3//EN"
+    "http://www.seasar.org/dtd/components23.dtd">
+<components namespace="menuSearch">
+    <include path="dao.dicon"/>
+	<include path="jp/co/isid/mos/bird/framework/dicon/birdInterceptor.dicon"/>
+
+	<component
+	  class="org.seasar.framework.container.autoregister.AspectAutoRegister">
+	    <property name="interceptor">birdInterceptor.actionInterceptorChain</property>
+	    <initMethod name="addClassPattern">
+	        <arg>"jp.co.isid.mos.bird"</arg>
+	        <arg>".*ActionImpl"</arg>
+	    </initMethod>
+	    <initMethod name="registerAll"/>
+	</component> 
+	<component
+	  class="org.seasar.framework.container.autoregister.AspectAutoRegister">
+	    <property name="interceptor">birdInterceptor.logicInterceptorChain</property>
+	    <initMethod name="addClassPattern">
+	        <arg>"jp.co.isid.mos.bird"</arg>
+	        <arg>".*LogicImpl"</arg>
+	    </initMethod>
+	    <initMethod name="registerAll"/>
+	</component>
+
+	<!-- DAO -->
+	<component name="menuSearchUIMenuInfoDao" class="jp.co.isid.mos.bird.commonform.menusearch.dao.UIMenuInfoDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="menuSearchCodMenuBunruiDao" class="jp.co.isid.mos.bird.commonform.menusearch.dao.CodMenuBunruiDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+
+	<!-- Logic -->
+	<component name="menuSearchConditionLogic" class="jp.co.isid.mos.bird.commonform.menusearch.logic.impl.ConditionLogicImpl">
+		<property name="menuSearchCodMenuBunruiDao">menuSearchCodMenuBunruiDao</property>
+	</component>
+	<component name="menuSearchLogic" class="jp.co.isid.mos.bird.commonform.menusearch.logic.impl.SearchLogicImpl">
+		<property name="menuSearchUIMenuInfoDao">menuSearchUIMenuInfoDao</property>
+	</component>
+
+	<!-- DTO -->
+	<component name="menuSearchDto" class="jp.co.isid.mos.bird.commonform.menusearch.dto.MenuSearchDto" instance="request"/>
+	<component name="menuSearchReqDto" class="jp.co.isid.mos.bird.commonform.menusearch.dto.RequestDto" instance="request">
+		<property name="listSearchData">null</property>
+	</component>
+	<component name="menuSearchSesDto" class="jp.co.isid.mos.bird.commonform.menusearch.dto.SessionDto" instance="session">
+		<property name="maxSize">5</property>
+	</component>
+
+	<!-- Action -->
+	<component name="menuSearchAction" class="jp.co.isid.mos.bird.commonform.menusearch.action.impl.SearchActionImpl" instance="request"/>
+
+	<!-- Converter -->
+</components>
+

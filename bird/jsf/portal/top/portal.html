@@ -1,0 +1,305 @@
+<html xmlns:m="http://www.seasar.org/maya" m:action="#{portalTopAction.initialize}" m:extends="/jsf/layout/layoutNoNavi.html">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Windows-31j" />
+<title></title>
+</head>
+<body height="100%">
+<span m:inject="f:param" m:name="layoutTitle" m:value="ポータルトップ"/>
+<span m:inject="s:insert" m:name="bodyTitleName">■ポータルトップ</span>
+<span m:inject="f:param" m:name="onLoadName" m:value="load()"/>
+<span m:inject="f:param" m:name="viewIdValue" m:value="BPO001V01"/>
+<span m:inject="s:insert" m:name="body">
+<SCRIPT LANGUAGE="javascript">
+<!--
+function load() {
+	if(document.portalForm.elements['portalForm:pswAlert'] != null) {
+		alert(document.portalForm.elements['portalForm:pswAlert'].value);
+	}
+}
+// -->
+</SCRIPT>
+<style type="text/css">
+<!--
+.ifram_style_Link {
+	height:476px;
+}
+.ifram_style_Tutatu {
+	height:18px;
+}
+.ifram_style_Sokuho {
+	height:310px;
+}
+.ifram_style_Osirase {
+	height:183px;
+}
+.ifram_style_Schedule {
+	height:183px;
+}
+-->
+</style>
+<form m:id="portalForm" class="element_browser">
+	<span m:rendered="#{portalTopDto.pswAlert}">
+	<input type="hidden" m:id="pswAlert" m:value="#{portalTopDto.pswdAlertMsg}"/>
+	</span>
+	<input type="hidden" m:id="viewId" m:value="#{viewIdValue}"/>
+	<table class="hiddenBody" width="100%">
+		<tr m:rendered="#{birdUserInfo.browserType != 'trident'}"> <!-- IE以外の場合 -->
+			<th valign="top"rowspan="3" width="240px">
+				<table class="hiddenBody" width="100%">
+					<tr valign="top">
+						<td>
+					<iframe class="ifram_style_Link"
+					        src="#{request.contextPath}/jsf/portal/top/loading.html?callHtml='portalLink.html'"
+					        align="left" scrolling="no" frameborder="0">
+					この部分は iframe 対応のブラウザで見てください。</iframe>
+						</td>
+					</tr>
+					<tr m:rendered="#{portalTopDto.actTutatuMemnu}" valign="bottom">
+						<td>
+					<iframe class="ifram_style_Tutatu"
+					        src="#{request.contextPath}/jsf/portal/top/loading.html?callHtml='portalTutatu.html'"
+					        align="left" scrolling="no" frameborder="0">
+					この部分は iframe 対応のブラウザで見てください。</iframe>
+						</td>
+					</tr>
+				</table>
+			</th>
+			<td rowspan="3" width="10px"></td>
+			<td colspan="3" valign="top">
+				<iframe align="left" src="#{request.contextPath}/jsf/portal/top/loading.html?callHtml='portalSokuho.html'" class="ifram_style_Sokuho" scrolling="yes" frameborder="0">
+					この部分は iframe 対応のブラウザで見てください。
+				</iframe>
+				<table class="portal_table_style" width="100%">
+					<tr style="height:3px;"/>
+					<tr style="width:100%;padding:0px;">
+					<span m:rendered="#{birdUserInfo.mstUser.userTypeCd=='01'}">
+						<td width="350px">
+							<iframe align="left" src="#{request.contextPath}/jsf/portal/top/loading.html?callHtml='portalSchedule.html'" class="ifram_style_Schedule" scrolling="no" frameborder="0">
+							この部分は iframe 対応のブラウザで見てください。
+							</iframe>
+						</td>
+						<td width="3px"></td>
+					</span>
+						<td width="*">
+							<iframe align="left" src="#{request.contextPath}/jsf/portal/top/loading.html?callHtml='portalOsirase.html'" class="ifram_style_Osirase" scrolling="no" frameborder="0">
+							この部分は iframe 対応のブラウザで見てください。
+							</iframe>
+						</td>
+					</tr>
+				</table>
+			</td>
+		</tr>
+		<tr m:rendered="#{birdUserInfo.browserType == 'trident'}"> <!-- IEの場合 -->
+			<th rowspan="3" width="240px">
+				<table class="hiddenBody" width="100%">
+					<tr valign="top">
+						<td>
+					<iframe class="ifram_style_Link"
+					        src="#{request.contextPath}/jsf/portal/top/loading.html?callHtml='portalLink.html'"
+					        align="left" scrolling="no" frameborder="0">
+					この部分は iframe 対応のブラウザで見てください。</iframe>
+						</td>
+					</tr>
+					<tr m:rendered="#{portalTopDto.actTutatuMemnu}" valign="bottom">
+						<td>
+					<iframe class="ifram_style_Tutatu"
+					        src="#{request.contextPath}/jsf/portal/top/loading.html?callHtml='portalTutatu.html'"
+					        align="left" scrolling="no" frameborder="0">
+					この部分は iframe 対応のブラウザで見てください。</iframe>
+						</td>
+					</tr>
+				</table>
+			</th>
+			<td rowspan="3" width="10px"></td>
+			<td colspan="3" valign="top">
+				<iframe align="left" src="#{request.contextPath}/jsf/portal/top/loading.html?callHtml='portalSokuho.html'" class="ifram_style_Sokuho" scrolling="no" frameborder="0">
+				この部分は iframe 対応のブラウザで見てください。
+				</iframe>
+			</td>
+		</tr>
+		<tr m:rendered="#{birdUserInfo.browserType == 'trident'}" style="height:3px;"/> <!-- IEの場合 -->
+		<tr m:rendered="#{birdUserInfo.browserType == 'trident'}" valign="top"> <!-- IEの場合 -->
+			<span m:rendered="#{birdUserInfo.mstUser.userTypeCd=='01'}">
+			<td width="350px">
+				<iframe align="left" src="#{request.contextPath}/jsf/portal/top/loading.html?callHtml='portalSchedule.html'" class="ifram_style_Schedule" scrolling="no" frameborder="0">
+				この部分は iframe 対応のブラウザで見てください。
+				</iframe>
+			</td>
+			<td width="3px"></td>
+			</span>
+			<td width="*">
+				<iframe align="left" src="#{request.contextPath}/jsf/portal/top/loading.html?callHtml='portalOsirase.html'" class="ifram_style_Osirase" scrolling="no" frameborder="0">
+				この部分は iframe 対応のブラウザで見てください。
+				</iframe>
+			</td>
+		</tr>
+	</table>
+	<input type="text" m:id="dummyEnter" style="display:none"/>
+</form>
+	<style type="text/css">
+	<!--
+	.body_caption td {
+		padding:2px 1px;
+	}
+	table.body_table2 {
+		width:100%;
+	}
+	/* テーブルヘッダデフォルト設定 パターン２*/
+	/* テーブルヘッダのセンタリング用 */
+	table.body_table2 tr th{
+	  text-align            : center;
+	  font-size:11pt;
+	}
+	/* 表：数値項目表示(背景色：緑) */
+	table.body_table2 tr td.body_sum5{
+	  background-color      : #FFC0A0;
+	}
+	.scroll_area01 {
+	    width:100%;
+		height:	  253px;
+		overflow: auto;
+	}
+	.scroll_area02, .scroll_area03 {
+	    width:100%;
+		height:	  277px;
+		overflow: auto;
+	}
+	.width_dt {
+	    width:40px;
+	}
+	.width_uriage {
+	    width:80px;
+	}
+	.width_Hiritu {
+	    width:51px;
+	}
+	table.body_table2 tr td{
+	  text-align            : right;
+	}
+	.dwnldBt_report {
+	    width:175px;
+	}
+	.dwnldBt_lastMonthreport {
+	    width:125px;
+	}
+	table.body_table2 tr th.zennenFontSize {
+		font-size:8pt;
+	}
+	-->
+	</style>
+
+<!--売上速報　印刷用-->
+<div class="element_print">
+	<table cellpadding="0" cellspacing="0">
+		<tr>
+			<th class="body_caption">&nbsp;対象日：<span m:value="#{birdDateInfo.appDate}" m:converter="#{dateConverterYMDEKj}"/>&nbsp;</th>
+		</tr>
+	</table>
+	<span m:inject="s:forEach" m:items="#{portalTopDto.listSokuho}" m:var="uiTab" m:varIndex="t">
+		<div m:rendered="#{birdUserInfo.mstUser.userTypeCd=='01'}"
+		     style="#{t>=1?'margin-top:10px;':''}">
+			【 <span m:converter="#{characterEncodingConverter}" m:value="#{uiTab.keyName}"/>タブ 】</div>
+			<div class="#{uiTab.key=='0'? '':'in'}visible_tab tab_change_area_#{uiTab.key}">
+			<span m:inject="s:forEach" m:items="#{uiTab.listData}" m:var="uiSegment" m:varindex="s">
+				<table width="100%" cellspacing="0" cellpadding="0">
+				  <tr m:rendered="#{s>=1}" style="height:8px;"><td></td></tr>
+				  <span m:inject="s:forEach" m:items="#{uiSegment.listData}" m:var="uiData" m:varindex="i">
+				  <tr m:rendered="#{i==0}" class="body_caption">
+				    <td m:rendered="#{birdUserInfo.mstUser.userTypeCd=='01'}">
+					    <span m:converter="#{characterEncodingConverter}" m:value="#{uiSegment.keyName}"/>&nbsp;&nbsp;計画比当月見込：<span m:converter="#{characterEncodingConverter}" m:value="#{uiData.yosanhiMikomi}"/>％
+						&nbsp;&nbsp;&nbsp;<span m:value="#{portalTopDto.appLastMonthDay}" m:converter="#{dateConverterM}"/>月末店舗数：<span m:value="#{uiData.tenpoCount}" m:converter="#{numericConverter}"/>店
+						&nbsp;&nbsp;&nbsp;前年<span m:value="#{portalTopDto.appLastMonthDay}" m:converter="#{dateConverterM}"/>月末店舗数：<span m:value="#{uiData.zenTenpoCount}" m:converter="#{numericConverter}"/>店
+				    </td>
+				    <td m:rendered="#{birdUserInfo.mstUser.userTypeCd=='02'}">
+					    <span m:value="#{uiSegment.keyName}"/>&nbsp;&nbsp;&nbsp;店舗数：<span m:value="#{uiData.tenpoCount}" m:converter="#{numericConverter}"/>
+				    </td>
+				    <td m:rendered="#{birdUserInfo.mstUser.userTypeCd=='03'}">
+					    <span m:converter="#{characterEncodingConverter}" m:value="#{uiSegment.keyName}"/>
+				    </td>
+				  </tr>
+				  </span>
+				  <tr style="height:3px;"><td></td></tr>
+				  <tr>
+					<td>
+					  <table class="body_table2">
+					  	<colgroup>
+					  		<col class="width_dt"/>
+					  		<col /><col /><col class="width_Hiritu"/>
+					  		<col /><col class="width_Hiritu"/>
+					  		<col></col><col class="width_Hiritu"/>
+					  	</colgroup>
+						  <tr>
+						  	<th></th>
+						  	<th>売上額</th>
+						  	<th m:rendered="#{birdUserInfo.mstUser.userTypeCd=='01'}">計画額</th><th m:rendered="#{birdUserInfo.mstUser.userTypeCd=='01'}">計画比</th>
+						  	<th m:rendered="#{birdUserInfo.mstUser.userTypeCd!='01'}">予算額</th><th m:rendered="#{birdUserInfo.mstUser.userTypeCd!='01'}">予算比</th>
+						  	<th class="#{birdUserInfo.mstUser.userTypeCd=='01' && uiTab.key=='1'?'zennenFontSize':''}">前年同<span m:value="#{birdUserInfo.mstUser.userTypeCd=='01'?'月':'曜'}"/>
+						  	<span m:inject="h:outputText" value="#{birdUserInfo.mstUser.userTypeCd=='01' && uiTab.key=='1'?'<br/>営業日補正':''}" escape="false"/></th><th>前年比</th>
+						  	<th>前年同日</th><th>前年比</th>
+						  </tr>
+						  <span m:inject="s:forEach" m:items="#{uiSegment.listData}" m:var="uiData" m:varindex="i">
+						  <tr>
+						  	<th><span m:converter="#{characterEncodingConverter}" m:value="#{uiData.dtName}"/></th>
+						  	<td><span m:value="#{uiData.uriage}" m:converter="#{numericConverter}"/></td>
+						  	<td><span m:value="#{uiData.yosan}" m:converter="#{numericConverter}"/></td>
+						  	<td><span m:value="#{uiData.yosanHi}" m:converter="#{numericConverter}"/></td>
+						  	<td><span m:value="#{uiTab.key=='1'?uiData.zenUriageNet:uiData.zenUriage}" m:converter="#{numericConverter}"/></td>
+						  	<td><span m:value="#{uiTab.key=='1'?uiData.uriageZenHiNet:uiData.uriageZenHi}" m:converter="#{numericConverter}"/></td>
+						  	<td><span m:value="#{uiData.zenUriageDoujitu}" m:converter="#{numericConverter}"/></td>
+						  	<td class="#{uiData.dtType!='1'?'body_sum5':''}"><span m:value="#{uiData.uriageZenHiDoujitu}" m:converter="#{numericConverter}"/></td>
+						  </tr>
+						  </span>
+					  </table>
+				 	</td>
+				  </tr>
+				  <tr style="height:5px;"/>
+				  <tr>
+					<td>
+					  <table class="body_table2">
+					  	<colgroup>
+					  		<col class="width_dt"/>
+					  		<col/>
+					  		<col/><col class="width_Hiritu"/>
+					  		<col/><col class="width_Hiritu"/>
+					  		<col class=""/>
+					  		<col class=""/><col class="width_Hiritu"/>
+					  		<col class=""/><col class="width_Hiritu"/>
+					  	</colgroup>
+						  <tr>
+						  	<th></th>
+						  	<th>客数</th>
+						  	<th class="#{birdUserInfo.mstUser.userTypeCd=='01' && uiTab.key=='1'?'zennenFontSize':''}">前年同<span m:value="#{birdUserInfo.mstUser.userTypeCd=='01'?'月':'曜'}"/>
+						  		<span m:inject="h:outputText" value="#{birdUserInfo.mstUser.userTypeCd=='01' && uiTab.key=='1'?'<br/>営業日補正':''}" escape="false"/></th><th style="">前年比</th>
+						  	<th>前年同日</th><th>前年比</th>
+						  	<th class="#{birdUserInfo.mstUser.userTypeCd=='01' && uiTab.key=='1'?'zennenFontSize':''}">客単価</th>
+						  	<th class="#{birdUserInfo.mstUser.userTypeCd=='01' && uiTab.key=='1'?'zennenFontSize':''}">前年<span m:inject="h:outputText" value="#{uiTab.key!='1'?'<br/>':''}" escape="false"/>同<span m:value="#{birdUserInfo.mstUser.userTypeCd=='01'?'月':'曜'}"/>
+						  	<span m:inject="h:outputText" value="#{birdUserInfo.mstUser.userTypeCd=='01' && uiTab.key=='1'?'<br/>営業日補正':''}" escape="false"/></th>
+						  	<th>前年比</th>
+						  	<th>前年<br/>同日</th><th>前年比</th>
+						  </tr>
+						  <span m:inject="s:forEach" m:items="#{uiSegment.listData}" m:var="uiData" m:varindex="i">
+						  <tr>
+						  	<th><span m:converter="#{characterEncodingConverter}" m:value="#{uiData.dtName}"/></th>
+						  	<td><span m:value="#{uiData.kyakusu}" m:converter="#{numericConverter}"/></td>
+						  	<td><span m:value="#{uiTab.key=='1'?uiData.zenKyakusuNet:uiData.zenKyakusu}" m:converter="#{numericConverter}"/></td>
+						  	<td><span m:value="#{uiTab.key=='1'?uiData.kyakusuZenHiNet:uiData.kyakusuZenHi}" m:converter="#{numericConverter}"/></td>
+						  	<td><span m:value="#{uiData.zenKyakusuDoujitu}" m:converter="#{numericConverter}"/></td>
+						  	<td><span m:value="#{uiData.kyakusuZenHiDoujitu}" m:converter="#{numericConverter}"/></td>
+						  	<td><span m:value="#{uiData.kyakutanka}" m:converter="#{numericConverter}"/></td>
+						  	<td><span m:value="#{uiTab.key=='1'?uiData.zenKyakutankaNet:uiData.zenKyakutanka}" m:converter="#{numericConverter}"/></td>
+						  	<td><span m:value="#{uiTab.key=='1'?uiData.kyakutankaZenHiNet:uiData.kyakutankaZenHi}" m:converter="#{numericConverter}"/></td>
+						  	<td><span m:value="#{uiData.zenKyakutankaDoujitu}" m:converter="#{numericConverter}"/></td>
+						  	<td class="#{uiData.dtType!='1'?'body_sum5':''}"><span m:value="#{uiData.kyakutankaZenHiDoujitu}" m:converter="#{numericConverter}"/></td>
+						  </tr>
+						  </span>
+					  </table>
+					</td>
+				  </tr>
+				</table>
+			</span>
+		</div>
+		</span>
+</div>
+</span>
+</body>
+</html>

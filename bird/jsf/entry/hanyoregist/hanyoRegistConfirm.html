@@ -1,0 +1,189 @@
+<html xmlns:m="http://www.seasar.org/maya" m:action="#{hanyoRegistConfirmAction.initialize}" m:extends="/jsf/layout/layoutNoNavi.html">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Windows-31j" />
+<title>研修エントリーマスタ登録</title>
+</head>
+<body>
+<span m:inject="f:param" m:name="layoutTitle" m:value="研修エントリーマスタ登録（確認画面）"/>
+<span m:inject="s:insert" m:name="bodyTitleName">■研修エントリーマスタ登録（確認画面）</span>
+<span m:inject="f:param" m:name="onLoadName" m:value=""/>
+<span m:inject="f:param" m:name="onKeyDownName" m:value="setDefaultSubmitButton('hanyoRegistConfirm', 'btnExecute');"/>
+<span m:inject="f:param" m:name="viewIdValue" m:value="BEN004V03"/>
+<span m:inject="s:insert" m:name="body">
+<style type="text/css">
+<!--
+-->
+</style>
+<SCRIPT LANGUAGE="javascript">
+<!--
+function exec() {
+  if (document.hanyoRegistConfirm.elements['hanyoRegistConfirm:editMode'].value == 'true') {
+    if (!confirm(document.hanyoRegistConfirm.elements['hanyoRegistConfirm:deleteConfirmMsg'].value)) {
+      return false;
+    }
+  }
+}
+//-->
+</SCRIPT>
+<form m:id="hanyoRegistConfirm">
+<input type="hidden" m:id="viewId" m:value="#{viewIdValue}"/>
+<input type="hidden" m:id="initMenuId" m:value="#{menuAction.initMenuId}"/>
+<input type="hidden" m:id="initSubMenuId" m:value="#{menuAction.initSubMenuId}"/>
+<input type="hidden" m:id="editMode" m:value="#{hanyoRegistDto.modeDelete}"/>
+<input type="hidden" m:id="deleteConfirmMsg" m:value="#{hanyoRegistDto.deleteConfirmMsg}" />
+<input type="hidden" m:id="sessionKey" m:value="#{hanyoRegistSessionKeyDto.sessionKey}"/>
+<input type="submit" value="戻る" m:action="#{hanyoRegistConfirmAction.cancel}"/>&nbsp;&nbsp;
+<input type="submit" value="終了" m:id="btnExecute" m:action="#{hanyoRegistConfirmAction.regist}" m:onclick="return exec();"/>&nbsp;&nbsp;
+<table class="body_table2" style="margin-top:4px;">
+  <tr>
+    <th width="150px">
+      研修名
+    </th>
+    <td colspan="3">
+      <span m:converter="#{characterEncodingConverter}" m:value="#{hanyoRegistDto.entryName}"/>
+    </td>
+  </tr>
+  <tr>
+    <th>
+      登録モード
+    </th>
+    <td colspan="3">
+      <span m:converter="#{characterEncodingConverter}" m:value="#{hanyoRegistDto.editModeName}"/>
+    </td>
+  </tr>
+  <tr>
+    <th>
+      開催日
+    </th>
+    <td colspan="3">
+      <span m:value="#{hanyoRegistDto.uiEntryDateKaisai.fromDt}" m:converter="#{dateConverter4HanyoRegist}"/>　～　
+      <span m:value="#{hanyoRegistDto.uiEntryDateKaisai.toDt}" m:converter="#{dateConverter4HanyoRegist}"/>
+    </td>
+  </tr>
+  <tr>
+    <th>
+      開催名
+    </th>
+    <td colspan="3">
+      <span m:value="#{hanyoRegistDto.uiEntryMst.entryTitle}" m:converter="#{characterEncodingConverter}"/>
+    </td>
+  </tr>
+  <tr>
+    <th>
+      開催場所
+    </th>
+    <td colspan="3">
+      <span m:value="#{hanyoRegistDto.uiEntryMst.entryPlace}" m:converter="#{characterEncodingConverter}"/>
+    </td>
+  </tr>
+  <tr>
+    <th>コース</th>
+    <td colspan="3">
+      <span m:converter="#{characterEncodingConverter}" m:value="#{hanyoRegistDto.uiEntryCourse.courseName}"/>
+    </td>
+  </tr>
+  <tr>
+    <th width="150px">
+      オーナー：表示開始
+    </th>
+    <td width="180px">
+      <span m:value="#{hanyoRegistDto.uiEntryDateOnerHyoji.fromDt}" m:converter="#{dateConverter4HanyoRegist}"/>
+    </td>
+    <th width="150px">
+      本部：表示開始
+    </th>
+    <td width="180px">
+      <span m:value="#{hanyoRegistDto.uiEntryDateHonbuHyoji.fromDt}" m:converter="#{dateConverter4HanyoRegist}"/>
+    </td>
+  </tr>
+  <tr>
+    <th>
+      オーナー：申込開始
+    </th>
+    <td>
+      <span m:value="#{hanyoRegistDto.uiEntryDateOnerToroku.fromDt}" m:converter="#{dateConverter4HanyoRegist}"/>
+    </td>
+    <th>
+      本部：申込開始
+    </th>
+    <td>
+      <span m:value="#{hanyoRegistDto.uiEntryDateHonbuToroku.fromDt}" m:converter="#{dateConverter4HanyoRegist}"/>
+    </td>
+  </tr>
+  <tr>
+    <th>
+      オーナー：申込終了
+    </th>
+    <td>
+      <span m:value="#{hanyoRegistDto.uiEntryDateOnerToroku.toDt}" m:converter="#{dateConverter4HanyoRegist}"/>
+    </td>
+    <th>
+      本部：申込終了
+    </th>
+    <td>
+      <span m:value="#{hanyoRegistDto.uiEntryDateHonbuToroku.toDt}" m:converter="#{dateConverter4HanyoRegist}"/>
+    </td>
+  </tr>
+  <tr>
+    <th>
+      オーナー：表示終了
+    </th>
+    <td>
+      <span m:value="#{hanyoRegistDto.uiEntryDateOnerHyoji.toDt}" m:converter="#{dateConverter4HanyoRegist}"/>
+    </td>
+    <th>
+      本部：表示終了
+    </th>
+    <td>
+      <span m:value="#{hanyoRegistDto.uiEntryDateHonbuHyoji.toDt}" m:converter="#{dateConverter4HanyoRegist}"/>
+    </td>
+  </tr>
+  <tr>
+    <th>
+      結果開始
+    </th>
+    <td>
+      <span m:value="#{hanyoRegistDto.uiEntryDateKekka.fromDt}" m:converter="#{dateConverter4HanyoRegist}"/>
+    </td>
+    <th>
+      結果終了
+    </th>
+    <td>
+      <span m:value="#{hanyoRegistDto.uiEntryDateKekka.toDt}" m:converter="#{dateConverter4HanyoRegist}"/>
+    </td>
+  </tr>
+  <tr>
+    <th>
+      定員
+    </th>
+    <td colspan="3" nowrap>
+      　申込　<span m:value="#{hanyoRegistDto.uiEntryMst.numberLimit}" m:converter="#{numericConverter}"/>　人　／　会場　<span m:value="#{hanyoRegistDto.uiEntryMst.placeLimit}" m:converter="#{numericConverter}"/>　人
+    </td>
+  </tr>
+  <tr>
+    <th>
+      備考
+    </th>
+    <td colspan="3">
+      <span m:value="#{hanyoRegistDto.uiEntryMst.note}" m:converter="#{characterEncodingConverter}"/>
+    </td>
+  </tr>
+  <tr>
+    <th>
+      注意事項
+    </th>
+    <td colspan="3">
+      <span m:value="#{hanyoRegistDto.uIEntryNotice.notice2}" m:converter="#{changeLineRefConverter}" m:escape="false"/>
+    </td>
+  </tr>
+</table>
+<input type="text" m:id="dummyEnter" style="display:none">
+</form>
+<script type="text/javascript">
+<!--
+	focusElement("hanyoRegistConfirm");
+-->
+</script>
+</span>
+</body>
+</html>

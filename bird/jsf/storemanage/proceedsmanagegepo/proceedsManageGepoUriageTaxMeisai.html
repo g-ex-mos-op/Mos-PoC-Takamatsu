@@ -1,0 +1,353 @@
+<html xmlns:m="http://www.seasar.org/maya" m:action="#{proceedsManageGepoUtMeisaiAction.initialize}" m:extends="/jsf/layout/layoutNoNavi.html">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Windows-31j"/>
+<title>売上金管理月報</title>
+</head>
+<body>
+<span m:inject="f:param" m:name="layoutTitle" m:value="売上金管理月報"/>
+<span m:inject="s:insert" m:name="bodyTitleName">■売上金管理月報</span>
+<span m:inject="f:param" m:name="onLoadName" m:value="bodyLoad();"/>
+<span m:inject="f:param" m:name="viewIdValue" m:value="BSM013V03"/>
+<span m:converter="#{characterEncodingConverter}" m:inject="f:param" m:name="lineCnt" m:rendered="#{meisaiRequestJokenDto.searchFlg}" m:value="#{meisaiRequestResultDto.tabDataListLength>10?1:2}"/>
+<span m:inject="s:insert" m:name="body">
+<style type="text/css">
+<!--
+.data_table_width {
+	width:	97.7%;
+}
+
+table.body_table2 tr td {
+	text-align            : right;
+}
+table.body_table2 tr td.eigyoDt {
+	text-align            : left;
+	font-weight:bold;
+}
+
+table.body_table2 tr th.title{
+	text-align  : center;
+}
+
+table.body_table2 tr td.total{
+	background-color : #FFC0A0;
+}
+
+-->
+</style>
+
+<script type="text/javascript">
+<!--
+var scrollMaxHeight = 330;
+
+/**
+ * 画面ロード時の初期処理
+ */
+function bodyLoad(){
+	// 画面ロードフラグOFF
+	document.proceedsManageGepoMeisai.elements['proceedsManageGepoMeisai:loadingFlg'].value = "";
+	// フォーカス設定
+	if (document.proceedsManageGepoMeisai.elements['proceedsManageGepoMeisai:companyList']!= null) {
+		if (document.proceedsManageGepoMeisai.elements['proceedsManageGepoMeisai:userType'].value == '01') {
+			document.proceedsManageGepoMeisai.elements['proceedsManageGepoMeisai:taishoTenpoText'].focus();
+		} else {
+			focusElement("proceedsManageGepoMeisai");
+		}
+	}
+}
+
+
+
+/**
+ * 検索処理
+ */
+function execSearch() {
+		if(returnLoadingStatus()){
+			settingJoken();
+			document.forms['proceedsManageGepoMeisai'].elements['proceedsManageGepoMeisai:__link_clicked__'].value='proceedsManageGepoMeisai:search';
+			document.forms['proceedsManageGepoMeisai'].submit();
+		}
+		return false;
+	}
+
+
+/**
+ * 対象店舗検索処理
+ */
+function searchMiseCd() {
+	if(returnLoadingStatus()){
+		settingJoken();
+		document.forms['proceedsManageGepoMeisai'].elements['proceedsManageGepoMeisai:__link_clicked__'].value='proceedsManageGepoMeisai:searchMiseCd';
+		document.forms['proceedsManageGepoMeisai'].submit();
+	}
+	return false;
+}
+
+/**
+ * 対象店舗リスト検索処理
+ */
+function reSearchMiseList() {
+	if (document.proceedsManageGepoMeisai.elements['proceedsManageGepoMeisai:userType'].value == "02" && returnLoadingStatus()) {
+		settingJoken();
+		document.forms['proceedsManageGepoMeisai'].elements['proceedsManageGepoMeisai:__link_clicked__'].value='proceedsManageGepoMeisai:reSearchMiseList';
+		document.forms['proceedsManageGepoMeisai'].submit();
+		return false;
+	}
+}
+
+/**
+ * ウィンドウロードステータス取得処理
+ *
+ */
+function returnLoadingStatus(){
+	if(isLoadingFlgOFF()) {
+		setLoadingFlg();
+		return true;
+	}
+	return false;
+}
+/**
+ * ウィンドウロードステータス取得処理
+ *
+ */
+function isLoadingFlgOFF(){
+	return (document.proceedsManageGepoMeisai.elements['proceedsManageGepoMeisai:loadingFlg'].value != "ON");
+}
+/**
+ * ウィンドウロードフラグ設定処理
+ *
+ *
+ */
+function setLoadingFlg() {
+	document.proceedsManageGepoMeisai.elements['proceedsManageGepoMeisai:loadingFlg'].value = "ON";
+}
+
+/**
+ * 検索条件設定
+ *
+ *
+ */
+function settingJoken() {
+
+	var meisaiForm = document.forms['proceedsManageGepoMeisai'];
+	userTypeCode = meisaiForm.elements['proceedsManageGepoMeisai:userType'].value;
+	// 会社コード
+	if (document.proceedsManageGepoMeisai.elements['proceedsManageGepoMeisai:companyList']!= null) {
+		var companyCd = meisaiForm.elements['proceedsManageGepoMeisai:companyList'].value;
+		meisaiForm.elements['proceedsManageGepoMeisai:companyCd'].value = companyCd;
+	}
+	// 店舗コード
+	var taishoTenpoCd = '';
+	if(userTypeCode == '01'){
+		taishoTenpoCd = meisaiForm.elements['proceedsManageGepoMeisai:taishoTenpoText'].value;
+		meisaiForm.elements['proceedsManageGepoMeisai:taishoTenpoCd'].value = taishoTenpoCd;
+	} else if(userTypeCode == '02') {
+		taishoTenpoCd = meisaiForm.elements['proceedsManageGepoMeisai:taishoTenpoList'].value;
+		meisaiForm.elements['proceedsManageGepoMeisai:taishoTenpoCd'].value = taishoTenpoCd;
+	}
+	// 対象年月
+	meisaiForm.elements['proceedsManageGepoMeisai:taishoYM'].value = meisaiForm.elements['proceedsManageGepoMeisai:taishoYMList'].value;
+}
+
+window.onload=function(){
+	bodyLoad();
+	var top=document.getElementById('top');
+    var bottom= document.getElementById('bottom');
+    if(bottom!=null){
+	    bottom.onscroll=function(){
+	  	  top.scrollLeft=bottom.scrollLeft
+	    }
+    }
+}
+
+-->
+</script>
+
+<form m:id="proceedsManageGepoMeisai" onKeyDown="return setDefaultSubmitButton('proceedsManageGepoMeisai','btnExecute');">
+	<input type="hidden" m:id="initMenuId" m:value="#{menuAction.initMenuId}"/>
+	<input type="hidden" m:id="initSubMenuId" m:value="#{menuAction.initSubMenuId}"/>
+	<input type="hidden" id="viewId" m:value="#{viewIdValue}"/>
+	<input type="hidden" m:id="userType" m:value="#{proceedsManageGepoDto.userType}"/>
+	<input type="hidden" id="windowId" m:value="#{meisaiRequestJokenDto.windowId}"/>
+	<input type="hidden" m:id="tabNo" m:value="#{meisaiRequestJokenDto.tabNo}"/>
+	<input type="hidden" m:id="companyCd" m:value="#{meisaiRequestJokenDto.companyCd}"/>
+	<input type="hidden" m:id="taishoTenpoCd" m:value="#{meisaiRequestJokenDto.taishoTenpoCd}"/>
+	<input type="hidden" m:id="taishoYM" m:value="#{meisaiRequestJokenDto.taishoYM}"/>
+	<input type="hidden" m:id="taishoTenpo" m:value="#{meisaiRequestJokenDto.taishoTenpo}"/>
+	<input type="hidden" id="loadingFlg" value=""/>
+	<a m:id="search" m:action="#{proceedsManageGepoUtMeisaiAction.uriageTaxResearch}"/>
+	<a m:id="searchMiseCd" m:action="#{proceedsManageGepoUtMeisaiAction.searchMiseCd}"/>
+	<a m:id="reSearchMiseList" m:action="#{proceedsManageGepoUtMeisaiAction.searchMiseList}"/>
+
+
+	<!-- 条件部 -->
+	<table m:rendered="#{meisaiRequestJokenDto.companyListSize > 0}"
+		   class="hiddenBody element_browser" style="margin-bottom:4px;">
+		<tr>
+			<td>
+				<table class="body_table">
+			    	<tr>
+				  		<th nowrap>会社</th>
+				  		<td>
+				  			<div class="hideArea" m:rendered="#{meisaiRequestJokenDto.companyListSize > 1}" >
+					    		<select m:id="companyList"
+					    				m:value="#{meisaiRequestJokenDto.companyCd}"
+					    				m:items="#{meisaiRequestJokenDto.companyList}"
+					    				m:itemValue="companyCd" m:itemLabel="companyName"
+										m:onchange="reSearchMiseList();"/>
+							</div>
+					  		<span m:rendered="#{meisaiRequestJokenDto.companyListSize == 1}">
+					  			<div m:inject="s:forEach" m:items="#{meisaiRequestJokenDto.companyList}" m:var="e" m:varindex="i">
+			                      <span m:converter="#{characterEncodingConverter}" m:value="#{e.companyName}"/>&nbsp;
+			                    </div>
+			                </span>
+				  		</td>
+				 		<!-- 本部の時、対象店舗 -->
+				  		<div m:rendered="#{proceedsManageGepoDto.userType == '01'}">
+				    		<th nowrap="nowrap">
+				    			対象店舗
+				    			<input type="button" value="検索" style="margin-left:3px;"
+				    				   onClick="searchMiseCd();" onDblClick="return false;"/>
+				    		</th>
+				    		<td>
+				    			<input m:id="taishoTenpoText" type="text" m:value="#{meisaiRequestJokenDto.taishoTenpoCd}"
+				    			       m:converter="#{codeConverter5}" m:size="10" m:maxlength="5"
+				    			       style="ime-mode:disabled;"/>
+				   			</td>
+			      		</div>
+
+				  		<!-- オーナーユーザの時、対象店舗 -->
+				  		<div m:rendered="#{proceedsManageGepoDto.userType == '02'}">
+				  			<th nowrap>対象店舗</th>
+				  			<td width="100px">
+				  				<div class="hideArea">
+				  					<select m:id="taishoTenpoList" m:value="#{meisaiRequestJokenDto.taishoTenpoCd}"
+				  							m:items="#{meisaiRequestJokenDto.taishoTenpoList}"
+						    				m:itemValue="miseCd" m:itemLabel="miseNameKj"/>
+					    		</div>
+					    	</td>
+					    </div>
+
+						<!-- 店舗ユーザの時、対象店舗 -->
+						<div m:rendered="#{proceedsManageGepoDto.userType == '03'}">
+							<th nowrap>対象店舗</th>
+							<td>
+								<span m:converter="#{characterEncodingConverter}" m:value="#{meisaiRequestJokenDto.taishoTenpo}"/>
+							</td>
+						</div>
+
+
+						<th nowrap>対象年月</th>
+			      		<td>
+			      			<div class="hideArea">
+			      				<select m:id = "taishoYMList" m:value="#{meisaiRequestJokenDto.taishoYM}"
+			      						m:items="#{proceedsManageGepoDto.meisaiTaishoYMList}"
+			      						m:itemValue="value" m:itemLabel="label"/>
+			      			</div>
+			      		</td>
+			      	</tr>
+			    </table>
+			</td>
+
+			<!-- 検索ボタン -->
+			<td>
+				<input type="button" id="btnExecute" class="operation_button" style="margin-left:3px;"
+					   onClick="execSearch();" onDblClick="return false;" m:value="再検索"/>
+			</td>
+		</tr>
+	</table>
+	<!-- 検索結果：ヘッダー部 -->
+		<table class="hiddenBody" style="margin-top:4px;margin-bottom:4px;">
+			<tr>
+				<td>
+					<table class="body_table2 element_browser">
+						<tr>
+							<th nowrap>対象店舗</th>
+							<td width="387px" style="text-align:left;"><span m:converter="#{characterEncodingConverter}" m:value="#{uriageTaxMeisaiRequestResultDto.taishoTenpo}"/>&nbsp;</td>
+						</tr>
+					</table>
+
+				</td>
+			</tr>
+		</table>
+	<!-- 検索結果 -->
+	<div m:rendered="#{meisaiRequestJokenDto.searchFlg}">
+
+
+		<!--売上金・その１-->
+		<!-- タブ -->
+		<div class="scroll_padding_head">
+		<div class="scroll_hidden margin_bottom_hidden">
+		<table class="data_table_width element_browser" cellspacing="0" cellpadding="0">
+		  <tr><td colspan="5">
+          <!-- サブタブ -->
+          <table cellspacing="0" cellpadding="0">
+          	<tr>
+			<td class="body_active_cell tab_change_area_1" width="147px">その１</td>
+		  </tr>
+		</table>
+		</td></tr>
+			<!--タブ帯行-->
+		  <tr class="body_caption" style="height:5px;"><td colspan="5"></td></tr>
+		</table>
+		</div>
+		</div>
+
+		  <div class="tab_change_area_1 visible_tab">
+		  	<span class="element_print" m:value="【売上金タブ】【その１タブ】"/>
+			<div class="scroll_padding_head">
+		    <div class="scroll_hidden margin_bottom_hidden">
+		    <table class="body_table2 data_table_width" cellspacing="0" cellpadding="0">
+					<tr class="header_row">
+						<th width="8%" class="title" rowspan="2" >営業日</th>
+						<th width="45%" class="title" colspan="6" >売上</th>
+						<th width="45%" class="title" colspan="6" >消費税</th>
+					</tr>
+				</tr class="header_row">
+						<th width="9.5%" class="title">通常税率<br>対象</th>
+						<th width="9.5%" class="title">軽減税率<br>対象</th>
+						<th width="5.5%" class="title">予備3</th>
+						<th width="5.5%" class="title">予備4</th>
+						<th width="5.5%" class="title">予備5</th>
+						<th width="9.5%" class="title">合計</th>
+						<th width="9.5%" class="title">通常税率<br>対象</th>
+						<th width="9.5%" class="title">軽減税率<br>対象</th>
+						<th width="5.5%" class="title">予備3</th>
+						<th width="5.5%" class="title">予備4</th>
+						<th width="5.5%" class="title">予備5</th>
+						<th width="9.5%" class="title">合計</th>
+				</tr>
+				</table>
+			</div>
+		</div>
+
+
+		    <div class="scroll_padding_data">
+		    <div class="scroll_standby" id="kanriGepoScroll01">
+				<table class="body_table2  data_table_width" style="border-top-width : 0px;">
+					<div m:inject="s:forEach" m:items="#{uriageTaxMeisaiRequestResultDto.uriageTaxMeisaiList}" m:var="uriageTaxMeisaiList" m:varindex="uriageTaxMeisaiListIndex">
+						<tr m:class="#{uriageTaxMeisaiList.eigyoDt==null?'body_sum5':''} non_top_border">
+							<td width="8%" class="eigyoDt"><span m:value="#{uriageTaxMeisaiList.eigyoDt==null?'合計':uriageTaxMeisaiList.eigyoDt}" m:converter="#{dateConverterDE}"/></td>
+							<td width="9.5%" class="uriage"><span m:value="#{uriageTaxMeisaiList.uriage1}" m:converter="#{bizreportNumericCnvt}"/></td>
+							<td width="9.5%" class="uriage"><span m:value="#{uriageTaxMeisaiList.uriage2}" m:converter="#{bizreportNumericCnvt}"/></td>
+							<td width="5.5%" class="uriage"><span m:value="#{uriageTaxMeisaiList.uriage3}" m:converter="#{bizreportNumericCnvt}"/></td>
+							<td width="5.5%" class="uriage"><span m:value="#{uriageTaxMeisaiList.uriage4}" m:converter="#{bizreportNumericCnvt}"/></td>
+							<td width="5.5%" class="uriage"><span m:value="#{uriageTaxMeisaiList.uriage5}" m:converter="#{bizreportNumericCnvt}"/></td>
+							<td width="9.5%" class="total"><span m:value="#{uriageTaxMeisaiList.total_uriage}" m:converter="#{bizreportNumericCnvt}"/></td>
+							<td width="9.5%" class="tax"><span m:value="#{uriageTaxMeisaiList.tax1}" m:converter="#{bizreportNumericCnvt}"/></td>
+							<td width="9.5%" class="tax"><span m:value="#{uriageTaxMeisaiList.tax2}" m:converter="#{bizreportNumericCnvt}"/></td>
+							<td width="5.5%" class="tax"><span m:value="#{uriageTaxMeisaiList.tax3}" m:converter="#{bizreportNumericCnvt}"/></td>
+							<td width="5.5%" class="tax"><span m:value="#{uriageTaxMeisaiList.tax4}" m:converter="#{bizreportNumericCnvt}"/></td>
+							<td width="5.5%" class="tax"><span m:value="#{uriageTaxMeisaiList.tax5}" m:converter="#{bizreportNumericCnvt}"/></td>
+							<td width="9.5%" class="total"><span m:value="#{uriageTaxMeisaiList.total_tax}" m:converter="#{bizreportNumericCnvt}"/></td>
+						</tr>
+					</div>
+				</table>
+			</div>
+		</div>
+	</div>
+	</div>
+	<input type="text" m:id="dummyEnter" style="display:none"/>
+</form>
+</span>
+</body>
+</html>

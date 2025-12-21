@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="Shift_JIS"?>
+<!DOCTYPE components PUBLIC "-//SEASAR//DTD S2Container 2.3//EN"
+    "http://www.seasar.org/dtd/components23.dtd">
+<components>
+	<include path="jp/co/isid/mos/bird/commonform/functionsearch/dicon/functionSearch.dicon"/>
+	<include path="jp/co/isid/mos/bird/commonform/ownersearch/dicon/ownerSearch.dicon"/>
+	<include path="jp/co/isid/mos/bird/commonform/usersearch/dicon/userSearch.dicon"/>
+	<include path="jp/co/isid/mos/bird/commonform/misesearch/dicon/miseSearch.dicon"/>
+	<include path="jp/co/isid/mos/bird/commonform/rolesearch/dicon/roleSearch.dicon"/>
+	<include path="jp/co/isid/mos/bird/commonform/businesssearch/dicon/businessSearch.dicon"/>
+	<include path="jp/co/isid/mos/bird/commonform/documentsearch/dicon/documentSearch.dicon"/>
+	<include path="jp/co/isid/mos/bird/commonform/publictargetsearch/dicon/publicTargetSearch.dicon" />	
+	<include path="jp/co/isid/mos/bird/commonform/svsearch/dicon/svSearch.dicon"/>
+	<include path="jp/co/isid/mos/bird/commonform/svsearchnew/dicon/svSearch.dicon"/>
+	<include path="jp/co/isid/mos/bird/commonform/menusearch/dicon/menusearch.dicon"/>
+	<include path="jp/co/isid/mos/bird/commonform/screensearch/dicon/screensearch.dicon"/>
+	<include path="jp/co/isid/mos/bird/commonform/miseonersearch/dicon/miseonersearch.dicon"/>
+
+</components>

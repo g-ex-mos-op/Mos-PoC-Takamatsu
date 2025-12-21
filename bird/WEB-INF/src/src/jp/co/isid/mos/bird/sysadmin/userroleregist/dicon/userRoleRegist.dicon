@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="Shift_JIS"?>
+<!DOCTYPE components PUBLIC "-//SEASAR//DTD S2Container 2.3//EN"
+    "http://www.seasar.org/dtd/components23.dtd">
+
+<components namespace="userRoleRegist">
+    <include path="dao.dicon"/>
+    <include path="jp/co/isid/mos/bird/common/dicon/birdCommon.dicon"/>
+	<include path="jp/co/isid/mos/bird/framework/dicon/birdInterceptor.dicon"/>
+
+	<component class="org.seasar.framework.container.autoregister.AspectAutoRegister">
+	    <property name="interceptor">birdInterceptor.actionInterceptorChain</property>
+	    <initMethod name="addClassPattern">
+	        <arg>"jp.co.isid.mos.bird"</arg>
+	        <arg>".*ActionImpl"</arg>
+	    </initMethod>
+	    <initMethod name="registerAll"/>
+	</component> 
+	<component 
+	  class="org.seasar.framework.container.autoregister.AspectAutoRegister">
+	    <property name="interceptor">birdInterceptor.logicInterceptorChain</property>
+	    <initMethod name="addClassPattern">
+	        <arg>"jp.co.isid.mos.bird"</arg>
+	        <arg>".*LogicImpl"</arg>
+	    </initMethod>
+	    <initMethod name="registerAll"/>  
+	</component>	
+	
+	<component name="ctlGamenRoleDao" class="jp.co.isid.mos.bird.framework.dao.CtlGamenRoleDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="uiUserMiseDao" class="jp.co.isid.mos.bird.framework.dao.UIUserMiseDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="uiUserOnerDao" class="jp.co.isid.mos.bird.framework.dao.UIUserOnerDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="uiBirdUserDao" class="jp.co.isid.mos.bird.framework.dao.UIBirdUserDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="uIRoleDao" class="jp.co.isid.mos.bird.sysadmin.userroleregist.dao.UIRoleDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="uIBirdUserDao" class="jp.co.isid.mos.bird.sysadmin.userroleregist.dao.UIBirdUserDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="ctlUserRoleDao" class="jp.co.isid.mos.bird.sysadmin.userroleregist.dao.CtlUserRoleDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	
+	<component name="userRoleRegistGetGamenRoleLogic" class="jp.co.isid.mos.bird.framework.logic.impl.GetGamenRoleLogicImpl"/>
+	<component name="GetBirdUserLogic" class="jp.co.isid.mos.bird.framework.logic.impl.GetBirdUserLogicImpl"/>
+	<component name="userRoleRegistSearchRoleLogic" class="jp.co.isid.mos.bird.sysadmin.userroleregist.logic.impl.SearchRoleLogicImpl"/>
+	<component name="userRoleRegistUpdateUserRoleLogic" class="jp.co.isid.mos.bird.sysadmin.userroleregist.logic.impl.UpdateUserRoleLogicImpl">
+		<aspect>j2ee.requiresNewTx</aspect>
+	</component>
+	
+	<component class="jp.co.isid.mos.bird.framework.control.BirdUserInfo" instance="session"/>
+	<component class="jp.co.isid.mos.bird.framework.control.BirdDateInfo" instance="session"/>
+	<component class="jp.co.isid.mos.bird.sysadmin.userroleregist.entity.UIBirdUser" instance="session"/>
+	<component class="jp.co.isid.mos.bird.sysadmin.userroleregist.entity.UIRole" instance="session"/>
+	
+	<component name="gamenRoleAction" class="jp.co.isid.mos.bird.sysadmin.userroleregist.action.impl.GamenRoleActionImpl" instance="request"/>
+	<component name="getBirdUserAction" class="jp.co.isid.mos.bird.sysadmin.userroleregist.action.impl.GetBirdUserActionImpl" instance="request"/>
+	<component name="searchRoleAction" class="jp.co.isid.mos.bird.sysadmin.userroleregist.action.impl.SearchRoleActionImpl" instance="request"/>
+<!--	<component name="userInfoReferenceAction" class="jp.co.isid.mos.bird.editsample.usersearch.action.impl.U" instance="request">
+		<property name="userSearchDto">userSearchDto</property>
+		<property name="userReferenceDto">userReferenceDto</property>
+	</component>	
+-->	
+	<component name="gamenRoleDto" class="jp.co.isid.mos.bird.framework.dto.GamenRoleDto" instance="session"/>
+	<component name="birdUserListDto" class="jp.co.isid.mos.bird.framework.dto.BirdUserListDto" instance="session"/>
+	<component name="userRoleRegistDto" class="jp.co.isid.mos.bird.sysadmin.userroleregist.dto.UserRoleRegistDto" instance="session"/>
+	<component name="roleUserInfoDto" class="jp.co.isid.mos.bird.sysadmin.userroleregist.dto.RoleUserInfoDto" instance="session"/>
+	<component name="seteiKubunDto" class="jp.co.isid.mos.bird.sysadmin.userroleregist.dto.SeteiKubunDto" instance="session"/>
+	<component name="roleSearchDto" class="jp.co.isid.mos.bird.commonform.rolesearch.dto.RoleSearchDto" instance="session"/>
+	<component name="userSearchDto" class="jp.co.isid.mos.bird.commonform.usersearch.dto.UserSearchDto" instance="session"/>
+<!--	<component name="userReferenceDto" class="jp.co.isid.mos.bird.editsample.usersearch.dto.UserReferenceDto" instance="session"/> -->
+</components>

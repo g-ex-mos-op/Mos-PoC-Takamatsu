@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="Shift_JIS"?>
+<!DOCTYPE components PUBLIC "-//SEASAR//DTD S2Container 2.3//EN" "http://www.seasar.org/dtd/components23.dtd">
+<components namespace="urisokuRegist">
+	<include path="dao.dicon"/>
+	<include path="jp/co/isid/mos/bird/common/dicon/birdCommon.dicon"/>
+	<include path="jp/co/isid/mos/bird/framework/dicon/birdInterceptor.dicon"/>
+	
+	<!-- インターセプターを自動登録 -->
+	<component class="org.seasar.framework.container.autoregister.AspectAutoRegister">
+	    <property name="interceptor">birdInterceptor.actionInterceptorChain</property>
+	    <initMethod name="addClassPattern">
+	        <arg>"jp.co.isid.mos.bird"</arg>
+	        <arg>".*ActionImpl"</arg>
+	    </initMethod>
+	    <initMethod name="registerAll"/>
+	</component> 
+	<component class="org.seasar.framework.container.autoregister.AspectAutoRegister">
+	    <property name="interceptor">birdInterceptor.logicInterceptorChain</property>
+	    <initMethod name="addClassPattern">
+	        <arg>"jp.co.isid.mos.bird"</arg>
+	        <arg>".*LogicImpl"</arg>
+	    </initMethod>
+	    <initMethod name="registerAll"/>  
+	</component>
+	<!-- OTHER -->
+	<component class="jp.co.isid.mos.bird.framework.control.BirdUserInfo" instance="session"/>
+	<component class="jp.co.isid.mos.bird.framework.control.BirdDateInfo" instance="session"/>
+
+	<!-- DAO -->
+	<component name="urisokuRegistTrnUsrMiseCntDao" class="jp.co.isid.mos.bird.config.urisokuregist.dao.TrnUsrMiseCntDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="urisokuRegistUIMiseCntDao" class="jp.co.isid.mos.bird.config.urisokuregist.dao.UIMiseCntDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="urisokuRegistTrnTvcmDao" class="jp.co.isid.mos.bird.config.urisokuregist.dao.TrnTvcmDao">
+		<aspect>dao.interceptor</aspect>
+	</component>
+	<component name="urisokuRegistUIUsrMenuDao" class="jp.co.isid.mos.bird.config.urisokuregist.dao.UIUsrMenuDao">
+		<aspect>dao.interceptor</aspect>
+	</component>
+	<component name="urisokuRegistUIUsrCampDao" class="jp.co.isid.mos.bird.config.urisokuregist.dao.UIUsrCampDao">
+		<aspect>dao.interceptor</aspect>
+	</component>
+	<component name="urisokuRegistTrnUsrShohinGroupDao" class="jp.co.isid.mos.bird.config.urisokuregist.dao.TrnUsrShohinGroupDao">
+		<aspect>dao.interceptor</aspect>
+	</component>
+	<component name="urisokuRegistTrnUsrCampDao" class="jp.co.isid.mos.bird.config.urisokuregist.dao.TrnUsrCampDao">
+		<aspect>dao.interceptor</aspect>
+	</component>
+
+	<!-- Util -->
+	<component name="urisokuRegistUtil" class="jp.co.isid.mos.bird.config.urisokuregist.util.UrisokuRegistUtil" autoBinding="none" instance="session"/>
+
+	<!-- DTO -->
+	<component name="errHtmlElementDto" class="jp.co.isid.mos.bird.framework.dto.ErrHtmlElementDto" instance="request"/>
+	<component name="menuSearchDto" class="jp.co.isid.mos.bird.commonform.menusearch.dto.MenuSearchDto" instance="request"/>
+	<component name="urisokuRegistSesDto" class="jp.co.isid.mos.bird.config.urisokuregist.dto.SessionDto" autoBinding="none" instance="session"/>
+	<component name="urisokuRegistReqDto" class="jp.co.isid.mos.bird.config.urisokuregist.dto.RequestDto" autoBinding="none" instance="request"/>
+
+	<!-- ACTION -->
+	<component name="urisokuRegistConditionAction" class="jp.co.isid.mos.bird.config.urisokuregist.action.impl.ConditionActionImpl" instance="request"/>
+	<component name="urisokuRegistEditAction" class="jp.co.isid.mos.bird.config.urisokuregist.action.impl.EditActionImpl" instance="request"/>
+	<component name="urisokuRegistConfirmAction" class="jp.co.isid.mos.bird.config.urisokuregist.action.impl.ConfirmActionImpl" instance="request">
+		<property name="urisokuRegistLogic">urisokuRegistLogic</property>
+	</component>
+	
+	
+	<!-- LOGIC -->
+	<component name="urisokuRegistGetRegistDataLogic" class="jp.co.isid.mos.bird.config.urisokuregist.logic.impl.GetRegistDataLogicImpl"/>
+	<component name="urisokuRegistGetShohinMenuLogic" class="jp.co.isid.mos.bird.config.urisokuregist.logic.impl.GetShohinMenuLogicImpl"/>
+	<component name="urisokuRegistCopyMenuDataLogic" class="jp.co.isid.mos.bird.config.urisokuregist.logic.impl.CopyMenuDataLogicImpl"/>
+	<component name="urisokuRegistCheckInputDataLogic" class="jp.co.isid.mos.bird.config.urisokuregist.logic.impl.CheckInputDataLogicImpl">
+		<property name="mstShanaiMenuDao">mstShanaiMenuDao</property>
+	</component>
+	<component name="urisokuRegistLogic" class="jp.co.isid.mos.bird.config.urisokuregist.logic.impl.RegistLogicImpl">
+		<aspect>j2ee.requiresNewTx</aspect>
+	</component>
+
+	<!-- CONVERTER -->
+	<component name="dateCnvtKjYM" class="jp.co.isid.mos.bird.framework.text.converter.DateConverter" instance="request">
+		<arg>@jp.co.isid.mos.bird.framework.util.formatter.DateFormatter@DATE_TYPE_YM</arg>
+		<arg>@jp.co.isid.mos.bird.framework.util.formatter.DateFormatter@PATTERN_MONTH_KANJI_YM</arg>
+	</component>
+</components>

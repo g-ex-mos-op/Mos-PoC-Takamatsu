@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE components PUBLIC "-//SEASAR//DTD S2Container 2.3//EN"
+	"http://www.seasar.org/dtd/components23.dtd">
+<components namespace="bunsAutoAmtRegist">
+    <include path="dao.dicon"/>
+    <include path="jp/co/isid/mos/bird/common/dicon/birdCommon.dicon"/>
+	<include path="jp/co/isid/mos/bird/framework/dicon/birdInterceptor.dicon"/>
+	
+	<!-- インターセプターを自動登録 -->
+	<component class="org.seasar.framework.container.autoregister.AspectAutoRegister">
+	    <property name="interceptor">birdInterceptor.actionInterceptorChain</property>
+	    <initMethod name="addClassPattern">
+	        <arg>"jp.co.isid.mos.bird"</arg>
+	        <arg>".*ActionImpl"</arg>
+	    </initMethod>
+	    <initMethod name="registerAll"/>
+	</component> 
+	<component class="org.seasar.framework.container.autoregister.AspectAutoRegister">
+	    <property name="interceptor">birdInterceptor.logicInterceptorChain</property>
+	    <initMethod name="addClassPattern">
+	        <arg>"jp.co.isid.mos.bird"</arg>
+	        <arg>".*LogicImpl"</arg>
+	    </initMethod>
+	    <initMethod name="registerAll"/>  
+	</component>
+	
+	<!-- DAO -->
+	<component name="bunsAutoAmtRegistCodCompanyDao" class="jp.co.isid.mos.bird.bizsupport.bunsautoamtregist.dao.CodCompanyDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="bunsAutoAmtRegistUIExistCodeDao" class="jp.co.isid.mos.bird.bizsupport.bunsautoamtregist.dao.UIExistCodeDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="bunsAutoAmtRegistUIAutoAmountDataDao" class="jp.co.isid.mos.bird.bizsupport.bunsautoamtregist.dao.UIAutoAmountDataDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="bunsAutoAmtRegistUICsvAutoAmountDataDao" class="jp.co.isid.mos.bird.bizsupport.bunsautoamtregist.dao.UICsvAutoAmountDataDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<!-- LOGIC -->
+	<component name="bunsAutoAmtRegistConditionLogic" class="jp.co.isid.mos.bird.bizsupport.bunsautoamtregist.logic.impl.ConditionLogicImpl"/>
+	<component name="bunsAutoAmtRegistSearchLogic" class="jp.co.isid.mos.bird.bizsupport.bunsautoamtregist.logic.impl.SearchLogicImpl"/>
+	<component name="bunsAutoAmtRegistCheckCodeExistLogic" class="jp.co.isid.mos.bird.bizsupport.bunsautoamtregist.logic.impl.CheckCodeExistLogicImpl"/>
+	<component name="bunsAutoAmtRegistCheckInputDataLogic" class="jp.co.isid.mos.bird.bizsupport.bunsautoamtregist.logic.impl.CheckInputDataImpl"/>
+	<component name="bunsAutoAmtRegistRegistLogic" class="jp.co.isid.mos.bird.bizsupport.bunsautoamtregist.logic.impl.RegistLogicImpl">
+		<aspect>j2ee.requiresNewTx</aspect>
+	</component>
+	<component name="bunsAutoAmtRegistOutputLogic" class="jp.co.isid.mos.bird.bizsupport.bunsautoamtregist.logic.impl.CsvOutputLogicImpl"/>
+	
+	<!-- DTO -->
+	<component name="bunsAutoAmtRegistDto" class="jp.co.isid.mos.bird.bizsupport.bunsautoamtregist.dto.BunsAutoAmtRegistDto" instance="session">
+		<property name="maxSize">5</property>
+	</component>	
+	<component name="bunsAutoAmtRegistReqDto" class="jp.co.isid.mos.bird.bizsupport.bunsautoamtregist.dto.BunsAutoAmtRegistReqDto" instance="request"/>
+	<!-- 外部のDTO -->
+	<component name="pullDownMenuDto" class="jp.co.isid.mos.bird.framework.dto.PullDownMenuDto" autoBinding="none" instance="session"/>
+	<component name="ownerSearchDto" class="jp.co.isid.mos.bird.commonform.ownersearch.dto.OwnerSearchDto" autoBinding="none" instance="session"/>
+	<component name="miseSearchDto" class="jp.co.isid.mos.bird.commonform.misesearch.dto.MiseSearchDto" autoBinding="none" instance="session"/>
+	<component name="newSvSearchDto" class="jp.co.isid.mos.bird.commonform.svsearchnew.dto.SvSearchDto" autoBinding="none" instance="session">
+			<property name="RCompanyCdList">null</property>
+	</component>
+	<component name="gamenRoleDto" class="jp.co.isid.mos.bird.framework.dto.GamenRoleDto" autoBinding="none" instance="session"/>    
+	
+	<!-- ACTION -->
+	<component name="bunsAutoAmtRegistConditionAction" class="jp.co.isid.mos.bird.bizsupport.bunsautoamtregist.action.impl.ConditionActionImpl" instance="request"/>
+	<component name="bunsAutoAmtRegistEditAction" class="jp.co.isid.mos.bird.bizsupport.bunsautoamtregist.action.impl.EditActionImpl" instance="request"/>
+	<component name="bunsAutoAmtRegistConfirmAction" class="jp.co.isid.mos.bird.bizsupport.bunsautoamtregist.action.impl.ConfirmActionImpl" instance="request"/>
+	<component name="bunsAutoAmtRegistCsvOutputAction" class="jp.co.isid.mos.bird.framework.action.impl.CsvOutput2ActionImpl" instance="request">
+		<property name="csvOutputDto">bunsAutoAmtRegistReqDto</property>
+		<property name="csvOutputLogic">bunsAutoAmtRegistOutputLogic</property>
+	</component>
+	
+	<!-- CONVERTER -->
+	<component name="bunsAutoAmtRegistCodeCnvt8" class="jp.co.isid.mos.bird.framework.text.converter.CodeConverter" instance="request">
+	    <arg>8</arg>
+		<arg>"00000000"</arg>
+	</component>
+	<component name="bunsAutoAmtRegistCodeCnvt5" class="jp.co.isid.mos.bird.framework.text.converter.CodeConverter" instance="request">
+	    <arg>5</arg>
+		<arg>"00000"</arg>
+	</component>
+	<component name="bunsAutoAmtRegistConverter1" class="jp.co.isid.mos.bird.framework.text.converter.DateConverter" instance="request">
+		<arg>@jp.co.isid.mos.bird.framework.util.formatter.DateFormatter@DATE_TYPE_YMD</arg>
+		<arg>"yyyy'/'MM'/'dd'（'E'）'"</arg>
+	</component>
+	<component name="bunsAutoAmtRegistConverter2" class="jp.co.isid.mos.bird.framework.text.converter.DateConverter" instance="request">
+		<arg>@jp.co.isid.mos.bird.framework.util.formatter.DateFormatter@DATE_TYPE_YMD</arg>
+		<arg>"yyyy'/'MM'/'dd"</arg>
+	</component>
+	<component name="bunsAutoAmtRegistNumericConverter" class="jp.co.isid.mos.bird.framework.text.converter.NumericConverter" instance="request"/>
+</components>

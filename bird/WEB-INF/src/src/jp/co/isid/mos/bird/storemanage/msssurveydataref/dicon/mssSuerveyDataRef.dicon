@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE components PUBLIC "-//SEASAR2.1//DTD S2Container//EN"
+	"http://www.seasar.org/dtd/components21.dtd">
+<components namespace="msssurveydataref">
+	<include path="dao.dicon"/>
+    <include path="jp/co/isid/mos/bird/common/dicon/birdCommon.dicon"/>	
+	<include path="jp/co/isid/mos/bird/framework/dicon/birdInterceptor.dicon"/>
+	<include path="jp/co/isid/mos/bird/storemanage/msssurveydataref/dicon/mssBatchErrProperty.dicon"/>
+	
+	<!--オートレジスト-->	
+	<component
+	  class="org.seasar.framework.container.autoregister.AspectAutoRegister">
+	    <property name="interceptor">birdInterceptor.actionInterceptorChain</property>
+	    <initMethod name="addClassPattern">
+	        <arg>"jp.co.isid.mos.bird"</arg>
+	        <arg>".*ActionImpl"</arg>
+	    </initMethod>
+	    <initMethod name="registerAll"/>
+	</component> 
+	
+	<component
+	  class="org.seasar.framework.container.autoregister.AspectAutoRegister">
+	    <property name="interceptor">birdInterceptor.logicInterceptorChain</property>
+	    <initMethod name="addClassPattern">
+	        <arg>"jp.co.isid.mos.bird"</arg>
+	        <arg>".*LogicImpl"</arg>
+	    </initMethod>
+	    <initMethod name="registerAll"/>
+	</component>
+
+
+		
+<!-- Action -->
+	<component name="mssSurveyDataRefAction" class="jp.co.isid.mos.bird.storemanage.msssurveydataref.action.impl.MssSurveyDataRefActionImpl" instance="request">
+		<aspect>batchCheckInterceptor</aspect>
+	</component>
+<!-- Dao -->
+	<component name="UIMssBatchDao" class="jp.co.isid.mos.bird.storemanage.msssurveydataref.dao.UIMssBatchDao" >
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="MssSurveyCodCompanyDao" class="jp.co.isid.mos.bird.storemanage.msssurveydataref.dao.CodCompanyDao" >
+        <aspect>dao.interceptor</aspect>
+	</component>
+<!-- Dto 	-->
+
+	<component name="mssSuerveyDataRefDto" class="jp.co.isid.mos.bird.storemanage.msssurveydataref.dto.MssSuerveyDataRefDto" instance="session" />
+	<component name="pullDownMenuDto" class="jp.co.isid.mos.bird.framework.dto.PullDownMenuDto" autoBinding="none" instance="session"/>
+	<component name="mssSuerveyUploadDto" class="jp.co.isid.mos.bird.storemanage.msssurveydataref.dto.MssSuerveyUploadDto" instance="session"/>
+	<component name="mssSuerveyBatchDto" class="jp.co.isid.mos.bird.storemanage.msssurveydataref.dto.MssSuerveyBatchDto" instance="session"/>
+
+<!-- Logic 	-->
+	<component name="mssSurveyCondLogicImpl" class="jp.co.isid.mos.bird.storemanage.msssurveydataref.logic.impl.MssSurveyCondLogicImpl"/>
+	<component name="mssSurveyUploadLogicImpl" class="jp.co.isid.mos.bird.storemanage.msssurveydataref.logic.impl.MssSurveyUploadLogicImpl"/>
+	<component name="mssSurveyBatchLogicImpl" class="jp.co.isid.mos.bird.storemanage.msssurveydataref.logic.impl.MssSurveyBatchLogicImpl"/>
+	<!-- 外部Action -->
+	<component name="mssSurveyUploadAction" class="jp.co.isid.mos.bird.framework.action.impl.FileUploadActionImpl" instance="request">
+		<property name="uploadDto">mssSuerveyUploadDto</property>
+		<property name="uploadLogic">mssSurveyUploadLogicImpl</property>
+	</component> 
+	<component name="mssBatchExecuteAction" class="jp.co.isid.mos.bird.framework.action.impl.BatchExecuteActionImpl" instance="request">
+		<property name="batchExecuteDto">mssSuerveyBatchDto</property>
+		<property name="batchExecuteLogic">mssSurveyBatchLogicImpl</property>
+	</component> 
+<!-- Converter -->
+	<component name="mlresultStatusRefMiseConverter" class="jp.co.isid.mos.bird.framework.text.converter.CodeConverter" instance="request">
+		<property name="formatPattern">"00000"</property>
+	</component>
+
+<!-- 以外 -->
+</components>

@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="Shift_JIS"?>
+<!DOCTYPE components PUBLIC "-//SEASAR//DTD S2Container 2.3//EN" "http://www.seasar.org/dtd/components23.dtd">
+<components namespace="commonCampaign">
+	<include path="dao.dicon"/>
+	<include path="jp/co/isid/mos/bird/common/dicon/birdCommon.dicon"/>
+	<include path="jp/co/isid/mos/bird/framework/dicon/birdInterceptor.dicon"/>
+	<include path="jp/co/isid/mos/bird/bizreport/common/dicon/bizreportCommon.dicon"/>
+	
+	<!-- インターセプターを自動登録 -->
+	<component class="org.seasar.framework.container.autoregister.AspectAutoRegister">
+	    <property name="interceptor">birdInterceptor.actionInterceptorChain</property>
+	    <initMethod name="addClassPattern">
+	        <arg>"jp.co.isid.mos.bird"</arg>
+	        <arg>".*ActionImpl"</arg>
+	    </initMethod>
+	    <initMethod name="registerAll"/>
+	</component> 
+	<component class="org.seasar.framework.container.autoregister.AspectAutoRegister">
+	    <property name="interceptor">birdInterceptor.logicInterceptorChain</property>
+	    <initMethod name="addClassPattern">
+	        <arg>"jp.co.isid.mos.bird"</arg>
+	        <arg>".*LogicImpl"</arg>
+	    </initMethod>
+	    <initMethod name="registerAll"/>  
+	</component>
+
+	<!-- OTHER -->
+	<component class="jp.co.isid.mos.bird.framework.control.BirdUserInfo" instance="session"/>
+	<component class="jp.co.isid.mos.bird.framework.control.BirdDateInfo" instance="session"/>
+
+	<!-- DAO -->
+	<component name="commonCampaignCodCampMenu" class="jp.co.isid.mos.bird.bizreport.common.camp.dao.CodCampMenuDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="commonCampaignMstCampDateDao" class="jp.co.isid.mos.bird.bizreport.common.camp.dao.MstCampDateDao">
+		<aspect>dao.interceptor</aspect>
+	</component>
+	<component name="commonCampaignCodHyojiTaishoDao" class="jp.co.isid.mos.bird.bizreport.common.camp.dao.CodHyojiTaishoDao">
+		<aspect>dao.interceptor</aspect>
+	</component>
+
+	<!-- Entity -->
+
+	<!-- DTO -->
+	<component name="pullDownMenuDto" class="jp.co.isid.mos.bird.framework.dto.PullDownMenuDto" autoBinding="none" instance="session"/>
+
+	<!-- ACTION -->
+	
+	<!-- LOGIC -->
+	<component name="commonCampaignGetCampMenuLogic" class="jp.co.isid.mos.bird.bizreport.common.camp.logic.impl.GetCampMenuLogicImpl"/>
+	<component name="commonCampaignGetCampMenuKakoLogic" class="jp.co.isid.mos.bird.bizreport.common.camp.logic.impl.GetCampMenuKakoLogicImpl"/>
+	<component name="commonCampaignGetHyojiTaishoLogic" class="jp.co.isid.mos.bird.bizreport.common.camp.logic.impl.GetHyojiTaishoLogicImpl"/>
+
+	<!-- CONVERTER -->
+	<component name="commonCampaignNumConverter" class="jp.co.isid.mos.bird.framework.text.converter.NumericConverter" instance="request"/>
+	<component name="commonCampaignDtCnvtYMD" class="jp.co.isid.mos.bird.framework.text.converter.DateConverter" instance="request">
+		<arg>@jp.co.isid.mos.bird.framework.util.formatter.DateFormatter@DATE_TYPE_YMD</arg>
+		<arg>@jp.co.isid.mos.bird.framework.util.formatter.DateFormatter@PATTERN_SLASH</arg>
+	</component>
+</components>

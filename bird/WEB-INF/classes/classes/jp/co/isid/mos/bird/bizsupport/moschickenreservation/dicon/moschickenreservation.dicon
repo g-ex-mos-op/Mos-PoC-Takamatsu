@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE components PUBLIC "-//SEASAR//DTD S2Container 2.3//EN"
+	"http://www.seasar.org/dtd/components23.dtd">
+<components namespace="moschickenreservation">
+	<include path="dao.dicon"/>
+	<include path="jp/co/isid/mos/bird/common/dicon/birdCommon.dicon"/>
+	<include path="jp/co/isid/mos/bird/framework/dicon/birdInterceptor.dicon"/>
+	
+	<!-- インターセプターを自動登録 -->
+	<component class="org.seasar.framework.container.autoregister.AspectAutoRegister">
+	    <property name="interceptor">birdInterceptor.actionInterceptorChain</property>
+	    <initMethod name="addClassPattern">
+	        <arg>"jp.co.isid.mos.bird"</arg>
+	        <arg>".*ActionImpl"</arg>
+	    </initMethod>
+	    <initMethod name="registerAll"/>
+	</component> 
+	<component class="org.seasar.framework.container.autoregister.AspectAutoRegister">
+	    <property name="interceptor">birdInterceptor.logicInterceptorChain</property>
+	    <initMethod name="addClassPattern">
+	        <arg>"jp.co.isid.mos.bird"</arg>
+	        <arg>".*LogicImpl"</arg>
+	    </initMethod>
+	    <initMethod name="registerAll"/>  
+	</component>
+	<!-- DTO -->
+	<component name="mosChickenRevInfoDto" class="jp.co.isid.mos.bird.bizsupport.moschickenreservation.dto.MosChickenRevInfoDto" instance="session" />
+	<component name="ownerSearchDto" class="jp.co.isid.mos.bird.commonform.ownersearch.dto.OwnerSearchDto" instance="session" />
+	<component name="pullDownMenuDto" class="jp.co.isid.mos.bird.framework.dto.PullDownMenuDto" autoBinding="none" instance="session"/>
+	<!-- DAO -->
+	<component name="mosChickenRevCodMiseListDao" class="jp.co.isid.mos.bird.bizsupport.moschickenreservation.dao.CodMiseListDao">
+		<aspect>dao.interceptor</aspect>
+	</component>
+	<component name="mosChickenRevCodSMnueInfoDao" class="jp.co.isid.mos.bird.bizsupport.moschickenreservation.dao.CodSMnueInfoDao">
+		<aspect>dao.interceptor</aspect>
+	</component>
+	<component name="mosChickenRevMstCMnueInfoDao" class="jp.co.isid.mos.bird.bizsupport.moschickenreservation.dao.MstCMnueInfoDao">
+		<aspect>dao.interceptor</aspect>
+	</component>
+	<component name="mstMosChickenFromToDao" class="jp.co.isid.mos.bird.bizsupport.moschickenreservation.dao.MstMosChickenFromToDao">
+		<aspect>dao.interceptor</aspect>
+	</component>
+	<component name="trnMosChickenDetailInfoDao" class="jp.co.isid.mos.bird.bizsupport.moschickenreservation.dao.TrnMosChickenDetailInfoDao">
+		<aspect>dao.interceptor</aspect>
+	</component>
+	<component name="trnMosChickenInfoDao" class="jp.co.isid.mos.bird.bizsupport.moschickenreservation.dao.TrnMosChickenInfoDao">
+		<aspect>dao.interceptor</aspect>
+	</component>
+	<component name="mosChickenRevMstOnerInfoDao" class="jp.co.isid.mos.bird.bizsupport.moschickenreservation.dao.MstOnerInfoDao">
+		<aspect>dao.interceptor</aspect>
+	</component>
+	<!-- LOGIC -->
+	<component name="checkMosChickenLogic" class="jp.co.isid.mos.bird.bizsupport.moschickenreservation.logic.impl.CheckMosChickenLogicImpl"/>
+	<component name="mosChickenRevCondMiseListLogic" class="jp.co.isid.mos.bird.bizsupport.moschickenreservation.logic.impl.CondMiseListLogicImpl"/>
+	<component name="mosChickenRevCondMosChickenTitleLogic" class="jp.co.isid.mos.bird.bizsupport.moschickenreservation.logic.impl.CondMosChickenTitleLogicImpl"/>
+	<component name="mosChickenRevDetailInfoLogic" class="jp.co.isid.mos.bird.bizsupport.moschickenreservation.logic.impl.MosChickenRevDetailInfoLogicImpl"/>
+	<component name="mosChickenRevInfoLogic" class="jp.co.isid.mos.bird.bizsupport.moschickenreservation.logic.impl.MosChickenRevInfoLogicImpl"/>
+	<component name="mosChickenRevNewInfoLogic" class="jp.co.isid.mos.bird.bizsupport.moschickenreservation.logic.impl.MosChickenRevNewInfoLogicImpl"/>
+	<component name="mosChickenRevCancelLogic" class="jp.co.isid.mos.bird.bizsupport.moschickenreservation.logic.impl.MosChickenRevCancelLogicImpl"/>
+	<component name="mosChickenRevStoreMenuAddLogic" class="jp.co.isid.mos.bird.bizsupport.moschickenreservation.logic.impl.StoreMenuAddLogicImpl"/>
+	<component name="updateMosChickenRevLogic" class="jp.co.isid.mos.bird.bizsupport.moschickenreservation.logic.impl.UpdateMosChickenRevLogicImpl">
+		<aspect>j2ee.requiresNewTx</aspect>
+	</component>
+	<!-- ACTION -->
+	<component name="mosChickenRevConditionAction" class="jp.co.isid.mos.bird.bizsupport.moschickenreservation.action.impl.ConditionActionImpl" instance="request" />
+	<component name="mosChickenRevAddMenuAction" class="jp.co.isid.mos.bird.bizsupport.moschickenreservation.action.impl.AddMenuActionImpl" instance="request" />
+	<component name="mosChickenInfoEditAction" class="jp.co.isid.mos.bird.bizsupport.moschickenreservation.action.impl.MosChickenInfoEditActionImpl" instance="request" />
+	<!-- CONVERTER -->
+	<component name="dateConverter" class="jp.co.isid.mos.bird.framework.text.converter.DateConverter" instance="request">
+		<arg>@jp.co.isid.mos.bird.framework.util.formatter.DateFormatter@DATE_TYPE_YMD</arg>
+		<arg>@jp.co.isid.mos.bird.framework.util.formatter.DateFormatter@PATTERN_SLASH</arg>
+	</component>
+	<component name="moschickenreservationCharEncConverter" class="jp.co.isid.mos.bird.framework.text.converter.CharacterEncodingConverter" instance="request"/>
+	<component name="moschickenreservationNumericConverter" class="jp.co.isid.mos.bird.bizsupport.moschickenreservation.text.converter.NumericConverter" instance="request">
+		<property name="formatPattern">"###"</property>
+		<property name="defaultText">"0"</property>
+	</component>
+	<!-- Verifier -->
+    <component name="mosChickenRevCodeVerifier" class="jp.co.isid.mos.bird.framework.util.verifier.CodeVerifier">
+		<arg>5</arg>
+		<arg>true</arg>
+	    <initMethod name="setNullable">
+	        <arg>false</arg>
+	    </initMethod>
+	</component>
+    <component name="mosChickenRevDefaultNumericVerifier" class="jp.co.isid.mos.bird.framework.util.verifier.NumericVerifier"/>
+	    <component name="limitSumVerifier" class="jp.co.isid.mos.bird.framework.util.verifier.NumericVerifier">
+    	<arg>true</arg>
+    	<arg>3</arg>
+    	<arg>0</arg>
+	</component>
+    <component name="mosChickenRevJapaneseVerifier" class="jp.co.isid.mos.bird.framework.util.verifier.DefaultJapaneseVerifier"/>
+	
+</components>

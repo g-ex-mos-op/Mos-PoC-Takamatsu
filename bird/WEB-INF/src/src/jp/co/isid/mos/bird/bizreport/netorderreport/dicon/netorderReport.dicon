@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="Shift_JIS"?>
+<!DOCTYPE components PUBLIC "-//SEASAR//DTD S2Container 2.3//EN"
+    "http://www.seasar.org/dtd/components23.dtd">
+<components namespace="netorderReport">
+    <include path="dao.dicon"/>
+	<include path="jp/co/isid/mos/bird/framework/dicon/birdInterceptor.dicon"/>
+	<include path="jp/co/isid/mos/bird/storeinfo/miseref/dicon/miseRef.dicon"/>
+	<include path="jp/co/isid/mos/bird/common/dicon/birdCommon.dicon"/>
+	<include path="jp/co/isid/mos/bird/bizreport/common/dicon/bizreportCommon.dicon" />
+
+	<component
+	  class="org.seasar.framework.container.autoregister.AspectAutoRegister">
+	    <property name="interceptor">birdInterceptor.actionInterceptorChain</property>
+	    <initMethod name="addClassPattern">
+	        <arg>"jp.co.isid.mos.bird"</arg>
+	        <arg>".*ActionImpl"</arg>
+	    </initMethod>
+	    <initMethod name="registerAll"/>
+	</component>
+
+	<component
+	  class="org.seasar.framework.container.autoregister.AspectAutoRegister">
+	    <property name="interceptor">birdInterceptor.logicInterceptorChain</property>
+	    <initMethod name="addClassPattern">
+	        <arg>"jp.co.isid.mos.bird"</arg>
+	        <arg>".*LogicImpl"</arg>
+	    </initMethod>
+	    <initMethod name="registerAll"/>
+	</component>
+
+	<component class="jp.co.isid.mos.bird.framework.control.BirdUserInfo" instance="session"/>
+	<component class="jp.co.isid.mos.bird.framework.control.BirdDateInfo" instance="session"/>
+
+	<!-- DAO -->
+	<component name="netOrderReportDataDao" class="jp.co.isid.mos.bird.bizreport.netorderreport.dao.NetOrderReportDataDao">
+		<aspect>dao.interceptor</aspect>
+	</component>
+
+	<!-- DTO -->
+	<component name="netorderReportDownloadDto" class="jp.co.isid.mos.bird.bizreport.netorderreport.dto.NetOrderReportDownloadDto" instance="session"/>
+	<component name="searchDto" class="jp.co.isid.mos.bird.bizreport.netorderreport.dto.SearchDto" instance="session"/>
+
+
+	<!-- Logic -->
+	<component name="netorderReportDownloadLogic" class="jp.co.isid.mos.bird.bizreport.netorderreport.logic.impl.NetOrderReportDownloadLogicImpl"/>
+	<component name="conditionLogic" class="jp.co.isid.mos.bird.bizreport.netorderreport.logic.impl.ConditionLogicImpl"/>
+	<component name="excelOutputLogic" class="jp.co.isid.mos.bird.bizreport.netorderreport.logic.impl.NetOrderReportExcelLogicImpl"/>
+	<component name="netOrderReportPdfLogic" class="jp.co.isid.mos.bird.bizreport.netorderreport.logic.impl.NetOrderReportPdfLogicImpl"/>
+
+
+	<!-- Action -->
+	<component name="netorderAction" class="jp.co.isid.mos.bird.bizreport.netorderreport.action.impl.NetOrderReportDownloadActionImpl" instance="request">
+		<property name="searchDto">searchDto</property>
+		<property name="excelOutputLogic">excelOutputLogic</property>
+	</component>
+ 	<component name="fileDownloadAction" class ="jp.co.isid.mos.bird.framework.action.impl.FileDownloadActionImpl" instance="request" >
+		 <property name="downloadDto">searchDto</property>
+		 <property name="downloadLogic">netOrderReportPdfLogic</property>
+	</component>
+
+</components>

@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE components PUBLIC "-//SEASAR//DTD S2Container 2.3//EN"
+	"http://www.seasar.org/dtd/components23.dtd">
+<components namespace="longserviceregist">
+	<include path="dao.dicon"/>
+	<include path="jp/co/isid/mos/bird/common/dicon/birdCommon.dicon"/>
+	<include path="jp/co/isid/mos/bird/framework/dicon/birdInterceptor.dicon"/>
+	
+	<!-- インターセプターを自動登録 -->
+	<component class="org.seasar.framework.container.autoregister.AspectAutoRegister">
+	    <property name="interceptor">birdInterceptor.actionInterceptorChain</property>
+	    <initMethod name="addClassPattern">
+	        <arg>"jp.co.isid.mos.bird"</arg>
+	        <arg>".*ActionImpl"</arg>
+	    </initMethod>
+	    <initMethod name="registerAll"/>
+	</component> 
+	<component class="org.seasar.framework.container.autoregister.AspectAutoRegister">
+	    <property name="interceptor">birdInterceptor.logicInterceptorChain</property>
+	    <initMethod name="addClassPattern">
+	        <arg>"jp.co.isid.mos.bird"</arg>
+	        <arg>".*LogicImpl"</arg>
+	    </initMethod>
+	    <initMethod name="registerAll"/>  
+	</component>
+
+	<!-- DTO -->
+	<component name="pullDownMenuDto" class="jp.co.isid.mos.bird.framework.dto.PullDownMenuDto" autoBinding="none" instance="session"/>
+	<component name="longserviceRegistDto" class="jp.co.isid.mos.bird.entry.longserviceregist.dto.LongserviceRegistDto" instance="session"/>
+
+	<!-- DAO -->
+	<component name="uiEntryMstDao" class="jp.co.isid.mos.bird.entry.longserviceregist.dao.UIEntryMstDao">
+		<aspect>dao.interceptor</aspect>
+	</component>
+	<component name="uiEntryDateDao" class="jp.co.isid.mos.bird.entry.longserviceregist.dao.UIEntryDateDao">
+		<aspect>dao.interceptor</aspect>
+	</component>
+
+	<!-- LOGIC -->
+	<component name="searchEntryLogic" class="jp.co.isid.mos.bird.entry.longserviceregist.logic.impl.SearchEntryLogicImpl"/>
+	<component name="searchEntryListLogic" class="jp.co.isid.mos.bird.entry.longserviceregist.logic.impl.SearchEntryListLogicImpl"/>
+	<component name="checkEntryLogic" class="jp.co.isid.mos.bird.entry.longserviceregist.logic.impl.CheckEntryLogicImpl"/>
+	<component name="updateEntryLogic" class="jp.co.isid.mos.bird.entry.longserviceregist.logic.impl.UpdateEntryLogicImpl">
+		<aspect>j2ee.requiresNewTx</aspect>
+	</component>
+
+	<!-- ACTION -->
+	<component name="longserviceRegistSelectAction" class="jp.co.isid.mos.bird.entry.longserviceregist.action.impl.LongserviceRegistSelectActionImpl" instance="request"/>
+	<component name="longserviceRegistEditAction" class="jp.co.isid.mos.bird.entry.longserviceregist.action.impl.LongserviceRegistEditActionImpl" instance="request"/>
+	<component name="longserviceRegistConfirmAction" class="jp.co.isid.mos.bird.entry.longserviceregist.action.impl.LongserviceRegistConfirmActionImpl" instance="request"/>
+
+	<!-- CONVERTER -->
+	<component name="dateConverter" class="jp.co.isid.mos.bird.framework.text.converter.DateConverter" instance="request">
+		<arg>@jp.co.isid.mos.bird.framework.util.formatter.DateFormatter@DATE_TYPE_YMD</arg>
+		<arg>@jp.co.isid.mos.bird.framework.util.formatter.DateFormatter@PATTERN_SLASH</arg>
+	</component>
+	<component name="dateConverterWeek" class="jp.co.isid.mos.bird.framework.text.converter.DateConverter" instance="request">
+		<arg>@jp.co.isid.mos.bird.framework.util.formatter.DateFormatter@DATE_TYPE_YMD</arg>
+		<arg>@jp.co.isid.mos.bird.framework.util.formatter.DateFormatter@PATTERN_DAY_OF_WEEK</arg>
+	</component>
+</components>

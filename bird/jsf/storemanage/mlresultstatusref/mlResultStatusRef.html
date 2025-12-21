@@ -1,0 +1,292 @@
+<html xmlns:m="http://www.seasar.org/maya" m:extends="/jsf/layout/layoutNoNavi.html" m:action="#{mlResultStatusRefAction.initialize}">
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Windows-31j" />
+
+<title>マスターライセンス受験結果確認</title>
+
+</head>
+
+<body>
+<span m:inject="f:param" m:name="layoutTitle" m:value="マスターライセンス受験結果確認"/>
+<span m:inject="s:insert" m:name="bodyTitleName">■マスターライセンス受験結果確認</span>
+<span m:inject="f:param" m:name="onLoadName" m:value="modeChk();"/>
+<span m:inject="f:param" m:name="viewIdValue" m:value="BSM007V02"/>
+<span m:inject="s:insert" m:name="body">
+<style type="text/css">
+<!--
+/* テーブルヘッダデフォルト設定 パターン２*/
+/* テーブルヘッダのセンタリング用 */
+table.body_table2 tr th{
+  text-align            : center;
+/*   border                : 1px solid #808080;
+ */}
+.scroll_area1 {
+	height:	  345px;
+}
+.scroll_area2 {
+	height:	  325px;
+}
+-->
+</style>
+<SCRIPT LANGUAGE="javascript">
+<!--
+function modeChk(){
+   loadScroll("mlResultStatusRefScroll");
+  usrTypeCode = document.forms['mlResultStatusRef'].elements['mlResultStatusRef:userTypeCd'].value;
+  if (usrTypeCode == '01') {
+    mode = document.forms['mlResultStatusRef'].elements['mlResultStatusRef:selectViewMode'].value;
+	if(mode == 0){
+		document.all.layer.style.display="none";
+		document.all.layer.style.cursor="none";
+	}else if(mode == 1){
+		document.all.layer.style.display="block";
+		document.all.layer.style.cursor="block";
+	}
+  }
+}
+function hide(){
+  usrTypeCode = document.forms['mlResultStatusRef'].elements['mlResultStatusRef:userTypeCd'].value;
+  if (usrTypeCode == '01') {
+    mode = document.forms['mlResultStatusRef'].elements['mlResultStatusRef:selectViewMode'].value;
+	if(mode == 1){
+		document.all.layer.style.display="none";
+		document.all.layer.style.cursor="none";
+		document.forms['mlResultStatusRef'].elements['mlResultStatusRef:selectViewMode'].value = 0;
+	}else if(mode == 0){
+		document.all.layer.style.display="block";
+		document.all.layer.style.cursor="default";
+		document.forms['mlResultStatusRef'].elements['mlResultStatusRef:selectViewMode'].value = 1;
+	}
+  }
+}
+function offButtonJen(){
+	document.forms['mlResultStatusRef'].elements['mlResultStatusRef:onerB'].disabled = true;
+	document.forms['mlResultStatusRef'].elements['mlResultStatusRef:miseB'].disabled = true;
+}
+function offOn(selectFlg){
+	document.forms['mlResultStatusRef'].elements['mlResultStatusRef:selectFlg'][selectFlg].click();
+}
+function offOnBtn(selectFlg) {
+	offButtonJen();
+	if(selectFlg=='0'){
+	}else if(selectFlg=='1'){
+		document.forms['mlResultStatusRef'].elements['mlResultStatusRef:onerB'].disabled = false;
+	}else if(selectFlg=='2'){
+		document.forms['mlResultStatusRef'].elements['mlResultStatusRef:miseB'].disabled = false;
+	}
+}
+function onButtonJen(){
+  usrTypeCode = document.forms['mlResultStatusRef'].elements['mlResultStatusRef:userTypeCd'].value;
+  if (usrTypeCode == '01') {
+	document.forms['mlResultStatusRef'].elements['mlResultStatusRef:onerB'].disabled = false;
+	document.forms['mlResultStatusRef'].elements['mlResultStatusRef:miseB'].disabled = false;
+  }
+}
+
+//-->
+</SCRIPT>
+	<form m:id="mlResultStatusRef" style="float:left;" onKeyDown="return setDefaultSubmitButton('mlResultStatusRef','execute');">
+		<input type="hidden" m:id="initMenuId" m:value="#{menuAction.initMenuId}"/>
+		<input type="hidden" m:id="initSubMenuId" m:value="#{menuAction.initSubMenuId}"/>
+		<input type="hidden" m:id="viewId" m:value="#{viewIdValue}"/>
+		<input type="hidden" m:id="userTypeCd" m:value="#{birdUserInfo.mstUser.userTypeCd}" m:passthrough="true"/>
+		<input type="hidden" m:id="selectViewMode" m:value="#{mlResultStatusRefDto.selectViewMode}"/>
+		<input type="hidden" m:id="entryFlg" m:value="#{mlresultstatusrefRequestDto.entryFlg}"/>
+		<input type="hidden" m:id="entryYear" m:value="#{mlresultstatusrefRequestDto.entryYear}"/>
+		<input type="hidden" m:id="entryKai" m:value="#{mlresultstatusrefRequestDto.entryKai}"/>
+		<input type="button" value="戻る" m:onclick="onButtonJen();" m:action="#{mlResultStatusRefAction.back}"/>
+		<span m:rendered="#{birdUserInfo.mstUser.userTypeCd == '01'}">
+			<input type="button" value="条件再指定" onclick="hide()"/>
+			<!-- hiden area Start -->
+			<span id="layer" style="display:none;" >
+			<table cellspacing="0" cellpadding="0" style="margin-top:5px;">
+			<tr>
+			  <td>
+			<table border=1 class="body_table">
+			    <caption class="body_title"style="padding:2px 0px;">検索条件</caption>
+				<tr>
+					<th>会社</th>
+					<th>支部</th>
+					<th width="120px" nowrap="nowrap">オーナー&nbsp;
+					  <input m:id="onerB" type="button" value="検索" m:onclick="onButtonJen();" m:action="#{mlResultStatusRefAction.onerSearch}" m:disabled="#{mlresultstatusrefRequestDto.selectFlg!=1}"/>
+					</th>
+					<th width="120px">店舗&nbsp;
+					  <input m:id="miseB" type="button" value="検索" m:onclick="onButtonJen();" m:action="#{mlResultStatusRefAction.miseSrearch}" m:disabled="#{mlresultstatusrefRequestDto.selectFlg!=2}"/>
+					</th>
+					<th width="50px">全て</th>
+				</tr>
+				<tr>
+					<span m:inject="s:selectOneRadio2" id="selectFlg" m:value="#{mlresultstatusrefRequestDto.selectFlg}">
+					<td>
+			        <div class="hideArea">
+						<select class="condition_field"
+								m:id="companyCd"
+								m:value="#{mlresultstatusrefRequestDto.companyCd}"
+								m:items="#{mlResultStatusRefDto.listCompany}"
+								m:itemValue="companyCd"
+								m:itemLabel="companyName"
+								>
+							<option value="00">モスフードサービス</option>
+							<option value="01">トモス</option>
+							<option value="02">四季菜</option>
+						</select>
+					  </div>
+					</td>
+					<td>
+						<div class="hideArea">
+						<input type="radio" name="selectFlg" m:value="0" onClick="offOnBtn(0);"/>
+						<select m:id="areaDai"
+								m:value="#{mlresultstatusrefRequestDto.areaDai}"
+								m:items="#{mlResultStatusRefDto.sibuList}"
+								m:itemValue="sibuCd"
+								m:itemLabel="sibuName"
+								onFocus="offOn('0')">
+								<option>東京支部</option>
+						</select>
+						</div>
+					</td>
+					<td>
+						<input type="radio" name="selectFlg" m:value="1" onClick="offOnBtn(1);"/>
+						<input  m:id="onerT" class="imenotuse width_62" type="text" m:maxlength="5" size="10" m:value="#{mlresultstatusrefRequestDto.onerCd}" onclick="offOn('1')"/>
+
+					</td>
+					<td>
+						<input type="radio" name="selectFlg" m:value="2" onClick="offOnBtn(2);"/>
+						<input m:id="miseT" class="imenotuse width_62" type="text" m:maxlength="5" size="10" m:value="#{mlresultstatusrefRequestDto.miseCd}" m:converter="#{mlresultStatusRefMiseConverter}" onclick="offOn('2')"/>
+					</td>
+					<td>
+						<input type="radio" name="selectFlg" m:value="3" onClick="offOnBtn(3);"/>
+					</td>
+					</span>
+				</tr>
+			</table>
+			</td>
+
+			<td valign="bottom">
+			&nbsp;<input type="button" value="実行" id="execute" m:onclick="onButtonJen();" m:action="#{mlResultStatusRefAction.result}"/>
+			</td>
+
+			</tr>
+			</table>
+
+			</span>
+
+		</span>
+	<!-- hiden area End -->
+		<input type="text" m:id="dummyEnter" style="display:none"/>
+	</form>
+	<span m:rendered="#{mlResultStatusRefDto.resultList != null}">
+	<div style="clear:both;"/>
+	<div class="scroll_padding_head">
+	<div class="scroll_hidden margin_bottom_hidden">
+		<table class="body_table2" style="width:98%;margin-top:5px;margin-bottom:5px;" style="float:left;">
+			<tr>
+				<th width="220px" style="text-align:center;">実施時期</th>
+				<th width="180px" style="text-align:center;">年度・回</th>
+				<th width="125px" style="text-align:center;">合格者数</th>
+				<th width="125px" style="text-align:center;">不合格者数</th>
+				<th width="125px" style="text-align:center;">保留者数</th>
+				<th width="125px" style="text-align:center;">無効者数</th>
+			</tr>
+			<span m:inject="s:forEach" m:items="#{mlResultStatusRefDto.kikanList}" m:var="ee" m:varindex="j">
+			<tr class="font_size_13">
+				<td width="220px"><!-- 実施時期 -->
+				<span m:value="#{ee.fromDt}"/> ～ <span m:value="#{ee.toDt}"/>
+				</td>
+				<td width="180px"><!-- 年度・回 -->
+				<span m:value="#{ee.entryYear}"/>年度 <span m:value="#{ee.entryKai}"/>回
+				</td>
+				<td width="125px"><!-- 合格者数 -->
+				<span m:value="#{ee.gokaku}"/>　人
+				</td>
+				<td width="125px"><!-- 不合格者数 -->
+				<span m:value="#{ee.hugokaku}"/>　人
+				</td>
+				<td width="125px"><!-- 保留者数 -->
+				<span m:value="#{ee.horyu}"/>　人
+				</td>
+				<td width="125px"><!-- 無効者数 -->
+				<span m:value="#{ee.mukou}"/>　人
+				</td>
+			</tr>
+			</span>
+		</table>
+		</div>
+	</div>
+		<form m:id="mlResultStatusRefViewArea" style="float:left;">
+			<input type="button" value="ダウンロード" m:action="#{mlResultStatusRefAction.downloadCsv}" style="clear:both;"/>
+		</form>
+		<div class="scroll_padding_head">
+		<div class="scroll_hidden margin_bottom_hidden clear_float">
+		<table class="body_table2" style="width:98%;margin-top:5px;">
+			<tr>
+				<th width="25px">NO</th>
+				<th width="*">オーナー名</th>
+				<th width="195px">店舗名</th>
+				<th width="40px">受験<br>年度</th>
+				<th width="40px">受験<br>回</th>
+				<th class="width_45_s" width="40px">受験<br>番号</th>
+				<th width="110px">受験者氏名</th>
+				<th width="73px">総合結果</th>
+				<th width="65px">能力<br>チェック</th>
+				<th width="60px">筆記<br>テスト</th>
+				<th width="60px">面接</th>
+				<th width="45px">研修<br>修了</th>
+			</tr>
+		</table>
+		</div>
+		</div>
+		<div class="scroll_padding_data">
+		<div class="scroll_standby scroll_area#{mlResultStatusRefDto.kikanListSize}" id="mlResultStatusRefScroll">
+			<table class="body_table2" width="98%" style="border-top-width : 0px;">
+				<span m:inject="s:forEach" m:items="#{mlResultStatusRefDto.resultList}" m:var="e" m:varindex="i">
+				<tr style="#{birdUserInfo.browserType =='safari'?'font-size:13px;':'font-size:11pt;'}" class="non_top_border">
+					<td width="25px"><!-- NO -->
+						<span m:converter="#{characterEncodingConverter}" m:value="#{i+1}"/>
+					</td>
+					<td width="*"><!-- オーナー名 -->
+						<span m:value = "#{e.onerNameKj}"/>
+					</td>
+					<td width="195px"><!-- 店舗名 -->
+						<span m:value = "#{e.miseNameKj}"/>
+					</td>
+					<td width="40px"><!-- 受験年度 -->
+						<span m:value = "#{e.totalLastYear}"/>
+					</td>
+					<td width="40px"><!-- 受験回 -->
+						<span m:value = "#{e.totalLastKai}"/>
+					</td>
+					<td class="width_45_s" width="40px"><!-- 受験番号 -->
+						<span m:value = "#{e.examNo}"/>
+					</td>
+					<td width="110px"><!-- 受験者氏名 -->
+						<span m:value =  "#{e.staffName}"/>
+					</td>
+					<td width="73px"><!-- 総合結果 -->
+						<span m:rendered = "#{e.totalResult == '1'}" style="color:red;">研修未了</span>
+						<span m:converter="#{characterEncodingConverter}" m:rendered = "#{e.totalResult != '1'}"><span m:converter="#{characterEncodingConverter}" m:value="#{e.totalResult}"/></span>
+					</td>
+					<td width="65px"><!-- 能力チェック -->
+						<span m:converter="#{characterEncodingConverter}" m:value="#{e.sub1Result}"/>
+					</td>
+					<td width="60px"><!-- 筆記テスト -->
+						<span m:converter="#{characterEncodingConverter}" m:value="#{e.sub2Result}"/>
+					</td>
+					<td width="60px"><!-- 面接 -->
+						<span m:converter="#{characterEncodingConverter}" m:value="#{e.sub3Result}"/>
+					</td>
+					<td width="45px"><!-- 研修修了 -->
+						<span m:rendered = "#{e.courseStatus == '0'}" style="color:red;">未修了</span>
+						<span m:converter="#{characterEncodingConverter}" m:rendered = "#{e.courseStatus != '0'}"><span m:converter="#{characterEncodingConverter}" m:value="#{e.courseStatus}"/></span>
+					</td>
+				</tr>
+				</span>
+			</table>
+		</div>
+		</div>
+	</span>
+</span>
+</body>
+</html>
+

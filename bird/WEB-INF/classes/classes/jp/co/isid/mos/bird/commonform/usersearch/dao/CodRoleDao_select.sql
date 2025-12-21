@@ -1,0 +1,4 @@
+SELECT ROLE_CD
+  ,    ROLE_CD concat '  ' concat rtrim(ROLE_NAME) as ROLE_NAME
+FROM  BR03ROLE
+ORDER BY ROLE_CD

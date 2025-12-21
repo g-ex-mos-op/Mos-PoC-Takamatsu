@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="Shift_JIS"?>
+<!DOCTYPE components PUBLIC "-//SEASAR//DTD S2Container 2.3//EN"
+    "http://www.seasar.org/dtd/components23.dtd">
+<components namespace="contactReference">
+    <include path="dao.dicon"/>
+    <include path="jp/co/isid/mos/bird/common/dicon/birdCommon.dicon"/>
+	<include path="jp/co/isid/mos/bird/framework/dicon/birdInterceptor.dicon"/>
+
+	<component
+	  class="org.seasar.framework.container.autoregister.AspectAutoRegister">
+	    <property name="interceptor">birdInterceptor.actionInterceptorChain</property>
+	    <initMethod name="addClassPattern">
+	        <arg>"jp.co.isid.mos.bird"</arg>
+	        <arg>".*ActionImpl"</arg>
+	    </initMethod>
+	    <initMethod name="registerAll"/>
+	</component> 
+	<component 
+	  class="org.seasar.framework.container.autoregister.AspectAutoRegister">
+	    <property name="interceptor">birdInterceptor.logicInterceptorChain</property>
+	    <initMethod name="addClassPattern">
+	        <arg>"jp.co.isid.mos.bird"</arg>
+	        <arg>".*LogicImpl"</arg>
+	    </initMethod>
+	    <initMethod name="registerAll"/>
+	</component>
+
+	<component class="jp.co.isid.mos.bird.framework.control.BirdUserInfo" instance="session"/>
+	<component class="jp.co.isid.mos.bird.framework.control.BirdDateInfo" instance="session"/>
+	<component name="pullDownMenuDto" class="jp.co.isid.mos.bird.framework.dto.PullDownMenuDto" autoBinding="none" instance="session"/>
+	
+	<!--Dao-->
+	<component name="mstUserGyotaiDao" class="jp.co.isid.mos.bird.communication.contactreference.dao.MstUserGyotaiDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="uiViewRenrakuDao" class="jp.co.isid.mos.bird.communication.contactreference.dao.UIViewRenrakuDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+
+	<!--ロジック-->
+	<component name="getgyoutaiLogic" class="jp.co.isid.mos.bird.communication.contactreference.logic.impl.GetGyoutaiLogicImpl"/>
+	<component name="uiViewRenrakuLogic" class="jp.co.isid.mos.bird.communication.contactreference.logic.impl.UIViewRenrakuLogicImpl"/>
+	<component name="contactReferenceDownloadLogic" class="jp.co.isid.mos.bird.communication.contactreference.logic.impl.ContactReferenceDownloadLogicImpl"/>
+	<component name="documentDownloadLogic" class="jp.co.isid.mos.bird.communication.documentdownload.logic.impl.DocumentDownloadLogicImpl"/>
+
+	<component name="categoryList" class="java.util.ArrayList" instance="session"/>
+	<component name="contactList" class="java.util.ArrayList" instance="session"/>
+	<component name="contactReferenceDto" class="jp.co.isid.mos.bird.communication.contactreference.dto.ContactReferenceDto" autoBinding="none" instance="session">
+		<property name="categoryList">categoryList</property>
+		<property name="contactList">contactList</property>
+	</component>
+
+	<component name="uiViewRenraku" class="jp.co.isid.mos.bird.communication.contactreference.entity.UIViewRenraku" autoBinding="none" instance="session"/>
+
+	<!--アクション-->
+	<component name="contactReferenceAction" class="jp.co.isid.mos.bird.communication.contactreference.action.impl.ContactReferenceActionImpl" instance="request">
+		<property name="pubDateMonths">36</property>
+		<property name="maxPageCount">30</property>
+	</component>
+	<component name="contactReferenceFileDownloadAction" class="jp.co.isid.mos.bird.framework.action.impl.FileDownloadActionImpl" instance="request">
+		<property name="downloadDto">uiViewRenraku</property>
+		<property name="downloadLogic">contactReferenceDownloadLogic</property>
+	</component>
+
+	<component name="contactReferenceDateConverter" class="jp.co.isid.mos.bird.framework.text.converter.DateConverter">
+		<arg>@jp.co.isid.mos.bird.framework.util.formatter.DateFormatter@DATE_TYPE_YMD</arg>
+		<arg>@jp.co.isid.mos.bird.framework.util.formatter.DateFormatter@PATTERN_SLASH</arg>
+	</component>
+</components>

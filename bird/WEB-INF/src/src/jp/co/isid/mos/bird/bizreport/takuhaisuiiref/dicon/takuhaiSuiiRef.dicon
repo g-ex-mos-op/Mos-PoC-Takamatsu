@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="Shift_JIS"?>
+<!DOCTYPE components PUBLIC "-//SEASAR//DTD S2Container 2.3//EN"
+    "http://www.seasar.org/dtd/components23.dtd">
+<components namespace="takuhaiSuiiRef">
+    <include path="dao.dicon"/>
+	<include path="jp/co/isid/mos/bird/framework/dicon/birdInterceptor.dicon"/>
+	<include path="jp/co/isid/mos/bird/bizreport/common/dicon/bizreportCommon.dicon" />
+	<include path="jp/co/isid/mos/bird/storeinfo/miseref/dicon/miseRef.dicon"/>
+	<include path="jp/co/isid/mos/bird/common/dicon/birdCommon.dicon"/>
+	<!--推移表共通対応-->
+	<include path="jp/co/isid/mos/bird/bizreport/common/suiiref/dicon/suiiRef.dicon" />
+
+	<component
+	  class="org.seasar.framework.container.autoregister.AspectAutoRegister">
+	    <property name="interceptor">birdInterceptor.actionInterceptorChain</property>
+	    <initMethod name="addClassPattern">
+	        <arg>"jp.co.isid.mos.bird"</arg>
+	        <arg>".*ActionImpl"</arg>
+	    </initMethod>
+	    <initMethod name="registerAll"/>
+	</component> 
+
+	<component
+	  class="org.seasar.framework.container.autoregister.AspectAutoRegister">
+	    <property name="interceptor">birdInterceptor.logicInterceptorChain</property>
+	    <initMethod name="addClassPattern">
+	        <arg>"jp.co.isid.mos.bird"</arg>
+	        <arg>".*LogicImpl"</arg>
+	    </initMethod>
+	    <initMethod name="registerAll"/>
+	</component>
+
+	<component class="jp.co.isid.mos.bird.framework.control.BirdUserInfo" instance="session"/>
+	<component class="jp.co.isid.mos.bird.framework.control.BirdDateInfo" instance="session"/>
+
+	<!-- DAO -->
+	<component name="nipoInfoDao" class="jp.co.isid.mos.bird.bizreport.takuhaisuiiref.dao.NipoInfoDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="gepoInfoDao" class="jp.co.isid.mos.bird.bizreport.takuhaisuiiref.dao.GepoInfoDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="totalMiseGepoCntDao" class="jp.co.isid.mos.bird.bizreport.takuhaisuiiref.dao.TotalMiseGepoCntDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+
+	<!-- DTO -->
+	<component name="pullDownMenuDto" class="jp.co.isid.mos.bird.framework.dto.PullDownMenuDto" autoBinding="none" instance="session"/>
+	<component name="miseSearchDto" class="jp.co.isid.mos.bird.commonform.misesearch.dto.MiseSearchDto" instance="session">
+		<property name="RCompanyCdList">null</property>
+	</component>
+	<component name="takuhaiSuiiRefResultDto" class="jp.co.isid.mos.bird.bizreport.takuhaisuiiref.dto.TakuhaiSuiiRefResultDto" instance="request">
+		<property name="listUITabData">new java.util.ArrayList(0)</property>
+		<property name="listFocusTabResult">null</property>
+		<property name="gepoGamenList">null</property>
+		<property name="nipoGamenList">null</property>
+	</component>
+	<component name="takuhaiSuiiRefResultMapDto" class="jp.co.isid.mos.bird.bizreport.common.suiiref.dto.SuiiRefResultMapDto" instance="session"></component>
+
+	<!-- Entity -->
+
+	<!-- Logic -->
+	<component name="takuhaiSuiiNipoInfoLogic" class="jp.co.isid.mos.bird.bizreport.takuhaisuiiref.logic.impl.TakuhaiSuiiNipoInfoLogicImpl"/>
+	<component name="totalMiseCntNipoLogic" class="jp.co.isid.mos.bird.bizreport.takuhaisuiiref.logic.impl.TotalMiseCntNipoLogicImpl"/>
+	<component name="takuhaiSuiiGepoInfoLogic" class="jp.co.isid.mos.bird.bizreport.takuhaisuiiref.logic.impl.TakuhaiSuiiGepoInfoLogicImpl"/>
+	<component name="totalMiseCntGepoLogic" class="jp.co.isid.mos.bird.bizreport.takuhaisuiiref.logic.impl.TotalMiseCntGepoLogicImpl"/>
+	<component name="takuhaiSuiiCSVLogic" class="jp.co.isid.mos.bird.bizreport.takuhaisuiiref.logic.impl.TakuhaiSuiiCSVLogicImpl"/>
+
+	<!-- Action -->
+	<component name="takuhaiSuiiRefAction" class="jp.co.isid.mos.bird.bizreport.takuhaisuiiref.action.impl.TakuhaiSuiiRefActionImpl" instance="request">
+		<property name="suiiRefConditionLogic">suiiRef.suiiRefConditionLogic</property>
+		<property name="suiiRefConditionDto">suiiRef.suiiRefConditionDto</property>
+		<property name="suiiRefSearchParameterDto">suiiRef.suiiRefSearchParameterDto</property>
+		<property name="suiiRefResultParameterDto">suiiRef.suiiRefResultParameterDto</property>
+		<property name="csvOutputDto">suiiRef.suiiRefResultParameterDto</property>
+		<property name="csvOutputLogic">takuhaiSuiiCSVLogic</property>
+	</component>
+	<component name="takuhaiSuiiRefMiseAction" class="jp.co.isid.mos.bird.bizreport.takuhaisuiiref.action.impl.TakuhaiSuiiRefMiseActionImpl" instance="request">
+		<property name="suiiRefConditionLogic">suiiRef.suiiRefConditionLogic</property>
+		<property name="suiiRefConditionDto">suiiRef.suiiRefConditionDto</property>
+		<property name="suiiRefSearchParameterDto">suiiRef.suiiRefSearchParameterDto</property>
+		<property name="suiiRefResultParameterDto">suiiRef.suiiRefResultParameterDto</property>
+		<property name="csvOutputDto">suiiRef.suiiRefResultParameterDto</property>
+		<property name="csvOutputLogic">takuhaiSuiiCSVLogic</property>
+	</component>
+
+	<!-- CONVERTER -->	
+	<component name="bizreportNumericCnvt" class="jp.co.isid.mos.bird.framework.text.converter.NumericConverter" instance="request">
+		<arg>"#,##0"</arg><arg>true</arg>
+	</component>
+	<component name="numericConverter" class="jp.co.isid.mos.bird.framework.text.converter.NumericConverter" instance="request"/>
+	<component name="dateConverterDE" class="jp.co.isid.mos.bird.framework.text.converter.DateConverter" instance="request">
+		<arg>@jp.co.isid.mos.bird.framework.util.formatter.DateFormatter@DATE_TYPE_YMD</arg>
+		<arg>"dd'日('E')'"</arg>
+	</component>
+	<component name="dateConverterYM" class="jp.co.isid.mos.bird.framework.text.converter.DateConverter" instance="request">
+		<arg>@jp.co.isid.mos.bird.framework.util.formatter.DateFormatter@DATE_TYPE_YM</arg>
+		<arg>@jp.co.isid.mos.bird.framework.util.formatter.DateFormatter@PATTERN_MONTH_SLASH</arg>
+	</component>
+
+</components>

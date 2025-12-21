@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="Shift_JIS"?>
+<!DOCTYPE components PUBLIC "-//SEASAR2.1//DTD S2Container//EN"
+	"http://www.seasar.org/dtd/components21.dtd">
+<components namespace="hanyoViewList">
+    <include path="dao.dicon"/>
+    <include path="jp/co/isid/mos/bird/common/dicon/birdCommon.dicon"/>
+	<include path="jp/co/isid/mos/bird/framework/dicon/birdInterceptor.dicon"/>
+	<include path="jp/co/isid/mos/bird/entry/hanyoviewlist/dicon/hanyoViewProperty.dicon"/>
+
+	<component class="org.seasar.framework.container.autoregister.AspectAutoRegister">
+	    <property name="interceptor">birdInterceptor.actionInterceptorChain</property>
+	    <initMethod name="addClassPattern">
+	        <arg>"jp.co.isid.mos.bird"</arg>
+	        <arg>".*ActionImpl"</arg>
+	    </initMethod>
+	    <initMethod name="registerAll"/>
+	</component> 
+	<component class="org.seasar.framework.container.autoregister.AspectAutoRegister">
+	    <property name="interceptor">birdInterceptor.logicInterceptorChain</property>
+	    <initMethod name="addClassPattern">
+	        <arg>"jp.co.isid.mos.bird"</arg>
+	        <arg>".*LogicImpl"</arg>
+	    </initMethod>
+	    <initMethod name="registerAll"/>  
+	</component>
+    
+  	<!-- DAO -->
+  	<component name="uIHanyoListDao" class="jp.co.isid.mos.bird.entry.hanyoviewlist.dao.UIHanyoListDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="uIHanyoEntryListDao" class="jp.co.isid.mos.bird.entry.hanyoviewlist.dao.UIHanyoEntryListDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="uIHanyoEntryCsvListDao" class="jp.co.isid.mos.bird.entry.hanyoviewlist.dao.UIHanyoEntryCsvListDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+
+    <!-- LOGIC -->
+    <component name="getHanyoListLogic" class="jp.co.isid.mos.bird.entry.hanyoviewlist.logic.impl.GetHanyoListLogicImpl"/>
+    <component name="getHanyoEntryListLogic" class="jp.co.isid.mos.bird.entry.hanyoviewlist.logic.impl.GetHanyoEntryListLogicImpl"/>
+	<component name="hanyoViewListCsvLogic" class="jp.co.isid.mos.bird.entry.hanyoviewlist.logic.impl.HanyoViewListCsvLogicImpl"/>
+
+	<!-- DTO -->
+	<component name="pullDownMenuDto" class="jp.co.isid.mos.bird.framework.dto.PullDownMenuDto" autoBinding="none" instance="session"/>
+	<component name="hanyoViewListCommonDto" class="jp.co.isid.mos.bird.entry.hanyoviewlist.dto.HanyoViewListDto" instance="session"/>
+	<component name="hanyoViewListDto" class="jp.co.isid.mos.bird.entry.hanyoviewlist.dto.HanyoViewListDto" instance="request"/>
+
+	<!-- OTHER -->
+	<component class="jp.co.isid.mos.bird.framework.control.BirdUserInfo" instance="session"/>
+	<component class="jp.co.isid.mos.bird.framework.control.BirdDateInfo" instance="session"/>
+
+	<!-- ACTION -->
+	<component name="hanyoViewListSelectAction" class="jp.co.isid.mos.bird.entry.hanyoviewlist.action.impl.HanyoViewListSelectActionImpl" instance="request">
+		<property name="hanyoViewListDto">hanyoViewListDto</property>
+	</component>
+	<component name="hanyoViewListConfirmAction" class="jp.co.isid.mos.bird.entry.hanyoviewlist.action.impl.HanyoViewListConfirmActionImpl" instance="request">
+		<property name="hanyoViewListDto">hanyoViewListDto</property>
+	</component>
+	<component name="hanyoViewListCsvOutputAction" class="jp.co.isid.mos.bird.framework.action.impl.CsvOutputActionImpl" instance="request">
+		<property name="csvOutputDto">hanyoViewListCommonDto</property>
+		<property name="csvOutputLogic">hanyoViewListCsvLogic</property>
+	</component>
+
+	<!-- CONVERTER -->
+	<component name="numericConverterKingakuRound" class="jp.co.isid.mos.bird.entry.hanyoviewlist.text.converter.NumericConverter" instance="request">
+		<arg>0</arg>
+	</component>
+
+	<component name="hanyoDateConverter" class="jp.co.isid.mos.bird.framework.text.converter.DateConverter" instance="request">
+		<arg>@jp.co.isid.mos.bird.framework.util.formatter.DateFormatter@DATE_TYPE_YMD</arg>
+		<arg>@jp.co.isid.mos.bird.framework.util.formatter.DateFormatter@PATTERN_SLASH</arg>
+	</component>
+	<component name="hanyoDateConverter2" class="jp.co.isid.mos.bird.framework.text.converter.DateConverter" instance="request">
+		<arg>@jp.co.isid.mos.bird.framework.util.formatter.DateFormatter@DATE_TYPE_YMD</arg>
+		<arg>"MM'/'dd'（'E'）'"</arg>
+	</component>
+	<component name="maskConverterPostCd" class="jp.co.isid.mos.bird.framework.text.converter.MaskConverter" instance="request">
+		<arg>"###-####"</arg>
+	</component>
+	<component name="NumericConverter" class="jp.co.isid.mos.bird.framework.text.converter.NumericConverter" instance="request">
+	</component>
+	<component name="characterEncodingConverter" class="jp.co.isid.mos.bird.framework.text.converter.CharacterEncodingConverter" instance="request"/>
+
+</components>

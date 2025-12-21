@@ -1,0 +1,332 @@
+<html xmlns:m="http://www.seasar.org/maya" m:action="#{claimtotalAction.initialize}" m:extends="/jsf/layout/layoutNoNavi.html">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Windows-31j"/>
+<meta http-equiv="Content-Style-Type" content="text/css"/>
+<meta http-equiv="Content-Script-Type" content="text/javascript"/>
+<title>お客様の声分類別集計</title>
+</head>
+<body>
+<span m:inject="f:param" m:name="layoutTitle" m:value="お客様の声分類別集計"/>
+<span m:inject="s:insert" m:name="bodyTitleName">■お客様の声分類別集計</span>
+<span m:inject="f:param" m:name="viewIdValue" m:value="BSM017V01"/>
+<span m:inject="f:param" m:name="onLoadName" m:value="onLoadFunction()"/>
+<span m:inject="f:param" m:name="userType" m:value="#{claimtotalSessionDto.userTypeCd}"/>
+<div m:inject="s:insert" m:name="body">
+<style type="text/css">
+<!--
+.scroll_area {
+	width:	  100%;
+	height:   295px;
+	overflow: auto;
+}
+@media print {
+}
+-->
+</style>
+
+<script type="text/javascript">
+<!--
+function onLoadFunction() {
+    if (document.claimtotal.elements['claimtotal:userType'].value == "01") {
+        switchTaishoJoken();
+    }
+    setCondValueFromRequest();
+    document.claimtotal.elements['claimtotal:loadingFlg'].value = "";
+	focusElement('claimtotal');
+}
+
+function switchTaishoJoken() {
+    if (document.claimtotal.elements['claimtotal:condJigyoHonbu'] != null) {
+	    document.getElementById('claimtotal:condJigyoHonbu').style.display = 'none';
+	}
+    document.getElementById('claimtotal:condSlArea').style.display = 'none';
+    document.getElementById('claimtotal:condSibu').style.display = 'none';
+    document.getElementById('claimtotal:condOner').style.display = 'none';
+    document.getElementById('claimtotal:condMise').style.display = 'none';
+    document.getElementById('claimtotal:doSearchOnerBtn').style.display = 'none';
+    document.getElementById('claimtotal:doSearchMiseBtn').style.display = 'none';
+
+    var taishoJokenIndex = document.claimtotal.elements['claimtotal:condTaishoJoken'].selectedIndex;
+    var taishoJokenValue = document.claimtotal.elements['claimtotal:condTaishoJoken'].options[taishoJokenIndex].value;
+
+    if (taishoJokenValue == "JIGYOU") {
+        document.getElementById('claimtotal:condJigyoHonbu').style.display = 'inline';
+    }
+    else if (taishoJokenValue == "SLAREA") {
+        document.getElementById('claimtotal:condSlArea').style.display = 'inline';
+    }
+    else if (taishoJokenValue == "SIBU") {
+        document.getElementById('claimtotal:condSibu').style.display = 'inline';
+    }
+    else if (taishoJokenValue == "ONER") {
+        document.getElementById('claimtotal:condOner').style.display = 'inline';
+        document.getElementById('claimtotal:doSearchOnerBtn').style.display = 'inline';
+    }
+    else if (taishoJokenValue == "MISE") {
+        document.getElementById('claimtotal:condMise').style.display = 'inline';
+        document.getElementById('claimtotal:doSearchMiseBtn').style.display = 'inline';
+    }
+}
+function setCondValue() {
+    var objForm = document.claimtotal;
+    if (objForm.elements['claimtotal:userType'].value != "01") {
+        return;
+    }
+
+    var taishoJokenIndex = objForm.elements['claimtotal:condTaishoJoken'].selectedIndex;
+    var taishoJokenValue = objForm.elements['claimtotal:condTaishoJoken'].options[taishoJokenIndex].value;
+    if (taishoJokenValue == "JIGYOU") {
+        objForm.elements['claimtotal:hyojiTaisho'].value = objForm.elements['claimtotal:condJigyoHonbu'].options[objForm.elements['claimtotal:condJigyoHonbu'].selectedIndex].value;
+    }
+    else if (taishoJokenValue == "SLAREA") {
+        objForm.elements['claimtotal:hyojiTaisho'].value = objForm.elements['claimtotal:condSlArea'].options[objForm.elements['claimtotal:condSlArea'].selectedIndex].value;
+    }
+    else if (taishoJokenValue == "SIBU") {
+        objForm.elements['claimtotal:hyojiTaisho'].value = objForm.elements['claimtotal:condSibu'].options[objForm.elements['claimtotal:condSibu'].selectedIndex].value;
+    }
+    else if (taishoJokenValue == "ONER") {
+        objForm.elements['claimtotal:hyojiTaisho'].value = objForm.elements['claimtotal:condOner'].value;
+    }
+    else if (taishoJokenValue == "MISE") {
+        objForm.elements['claimtotal:hyojiTaisho'].value = objForm.elements['claimtotal:condMise'].value;
+    }
+}
+function setCondValueFromRequest() {
+    var objForm = document.claimtotal;
+    if (objForm.elements['claimtotal:userType'].value != "01") {
+        return;
+    }
+
+    var taishoJokenIndex = objForm.elements['claimtotal:condTaishoJoken'].selectedIndex;
+    var taishoJokenValue = objForm.elements['claimtotal:condTaishoJoken'].options[taishoJokenIndex].value;
+    if (taishoJokenValue == "JIGYOU") {
+        selectPulldown(objForm.elements['claimtotal:condJigyoHonbu'], objForm.elements['claimtotal:hyojiTaisho'].value);
+    }
+    else if (taishoJokenValue == "SLAREA") {
+        selectPulldown(objForm.elements['claimtotal:condSlArea'], objForm.elements['claimtotal:hyojiTaisho'].value );
+    }
+    else if (taishoJokenValue == "SIBU") {
+        selectPulldown(objForm.elements['claimtotal:condSibu'], objForm.elements['claimtotal:hyojiTaisho'].value);
+    }
+    else if (taishoJokenValue == "ONER") {
+        objForm.elements['claimtotal:condOner'].value = objForm.elements['claimtotal:hyojiTaisho'].value;
+    }
+    else if (taishoJokenValue == "MISE") {
+        objForm.elements['claimtotal:condMise'].value = objForm.elements['claimtotal:hyojiTaisho'].value;
+    }
+}
+function selectPulldown(obj, value) {
+    for (i = 0; i < obj.options.length; i++) {
+        if (obj.options[i].value == value) {
+            obj.selectedIndex = i;
+        }
+    }
+}
+function doCallMiseForm() {
+    if (returnLoadingStatus()) {
+	    setCondValue();
+	    document.forms['claimtotal'].elements['claimtotal:isUseCommonDto'].value = "";
+	    document.claimtotal.target = "_self";
+		document.forms['claimtotal'].elements['claimtotal:__link_clicked__'].value='claimtotal:doSearchMise';
+		document.forms['claimtotal'].submit();
+	}
+}
+function doCallOnerForm() {
+    if (returnLoadingStatus()) {
+	    setCondValue();
+	    document.forms['claimtotal'].elements['claimtotal:isUseCommonDto'].value = "";
+	    document.claimtotal.target = "_self";
+		document.forms['claimtotal'].elements['claimtotal:__link_clicked__'].value='claimtotal:doSearchOner';
+		document.forms['claimtotal'].submit();
+	}
+}
+function returnLoadingStatus() {
+	if(isLoadingFlgOFF()) {
+		setLoadingFlg();
+		return true;
+	}
+	return false;
+}
+function isLoadingFlgOFF(){
+	return (document.claimtotal.elements['claimtotal:loadingFlg'].value != "ON");
+}
+function setLoadingFlg() {
+	document.claimtotal.elements['claimtotal:loadingFlg'].value = "ON";
+}
+
+function execFunction() {
+    if (returnLoadingStatus()) {
+	    setCondValue();
+	    document.claimtotal.target = "_self";
+		document.forms['claimtotal'].elements['claimtotal:__link_clicked__'].value='claimtotal:doExecute';
+		dispWaitMsg();
+		document.forms['claimtotal'].elements['claimtotal:isUseCommonDto'].value = "";
+		document.forms['claimtotal'].submit();
+	}
+}
+function linkClaim(taishoNengetu, rowType, bnrM) {
+    if(isLoadingFlgOFF()){
+        document.claimtotal.target = "_blank";
+        document.forms['claimtotal'].elements['claimtotal:linkRowType'].value = rowType;
+        document.forms['claimtotal'].elements['claimtotal:linkTaishoNengetu'].value = taishoNengetu;
+        document.forms['claimtotal'].elements['claimtotal:linkBnrM'].value = bnrM;
+        document.forms['claimtotal'].elements['claimtotal:isUseCommonDto'].value = "1";
+		document.forms['claimtotal'].elements['claimtotal:__link_clicked__'].value='claimtotal:linkClaim';
+		document.forms['claimtotal'].submit();
+		return false;
+    }
+}
+function dispWaitMsg() {
+    document.getElementById("claimtotal:pane_waitmsg").style.display = "inline";
+    document.getElementById("claimtotal:pane_result").style.display = "none";
+    document.getElementById("claimtotal:doExecuteBtn").disabled = true;
+    if (document.claimtotal.elements['claimtotal:userType'].value == "01") {
+	    document.getElementById("claimtotal:doSearchMiseBtn").disabled = true;
+	    document.getElementById("claimtotal:doSearchMiseBtn").disabled = true;
+	}
+}
+-->
+</script>
+
+<form m:id="claimtotal" onkeydown="setDefaultSubmitButton('claimtotal', 'doExecuteBtn');" target="_self">
+	<input type="hidden" m:id="initMenuId" m:value="#{menuAction.initMenuId}"/>
+	<input type="hidden" m:id="initSubMenuId" m:value="#{menuAction.initSubMenuId}"/>
+	<input type="hidden" m:id="viewId" m:value="#{viewIdValue}" />
+	<input type="hidden" m:id="windowId" m:value="#{claimtotalRequestDto.windowId}"/>
+	<input type="hidden" m:id="hyojiTaisho" m:value="#{claimtotalRequestDto.hyojiTaisho}"/>
+	<input type="hidden" m:id="linkRowType" m:value="#{claimtotalRequestDto.linkRowType}"/>
+	<input type="hidden" m:id="linkTaishoNengetu" m:value="#{claimtotalRequestDto.linkTaishoNengetu}"/>
+	<input type="hidden" m:id="linkBnrM" m:value="#{claimtotalRequestDto.linkBnrM}"/>
+	<input type="hidden" id="loadingFlg" value="#{claimtotalRequestViewDto.companyCd}"/>
+	<input type="hidden" m:id="view_windowId" m:value="#{claimtotalRequestViewDto.windowId}"/>
+	<input type="hidden" m:id="view_companyCd" m:value="#{claimtotalRequestViewDto.companyCd}"/>
+	<input type="hidden" m:id="view_taishoNengetu" m:value="#{claimtotalRequestViewDto.taishoNengetu}"/>
+	<input type="hidden" m:id="view_taishoJoken" m:value="#{claimtotalRequestViewDto.taishoJoken}"/>
+	<input type="hidden" m:id="view_hyojiTaisho" m:value="#{claimtotalRequestViewDto.hyojiTaisho}"/>
+	<input type="hidden" m:id="userType" m:value="#{userType}"/>
+	<input type="hidden" m:id="isUseCommonDto" m:value="OFF"/>
+	<a m:id="doExecute" m:action="#{claimtotalAction.doExecute}"/>
+	<a m:id="doSearchMise" m:action="#{claimtotalAction.doSearchMise}"/>
+	<a m:id="doSearchOner" m:action="#{claimtotalAction.doSearchOner}"/>
+	<a m:id="linkClaim" m:action="#{claimtotalAction.linkClaim}"/>
+	<table class="hiddenBody">
+		<tr>
+			<td>
+	<table class="body_table">
+	<tr>
+	    <th>対象年月</th>
+	    <td>
+	        <div class="hideArea">
+	        <select m:items="#{claimtotalSessionDto.listTaishoNengetu}"
+	            m:id="condTaishoNengetu"
+	            m:value="#{claimtotalRequestDto.taishoNengetu}"
+	            m:itemValue="code"
+	            m:itemLabel="value"/>
+	        </div>
+	    </td>
+	    <th m:rendered="#{claimtotalSessionDto.userTypeCd == '01'}">対象条件</th>
+	    <td m:rendered="#{claimtotalSessionDto.userTypeCd == '01'}">
+	        <div class="hideArea">
+	        <select m:items="#{claimtotalSessionDto.listTaishoJoken}"
+	            m:id="condTaishoJoken"
+	            m:value="#{claimtotalRequestDto.taishoJoken}"
+	            m:itemValue="value"
+	            m:itemLabel="label"
+	            m:onchange="switchTaishoJoken();"/>
+	        </div>
+	    </td>
+	    <th m:rendered="#{claimtotalSessionDto.userTypeCd == '01'}">
+	        表示対象
+	        <input type="button"
+	               m:id="doSearchMiseBtn" value="検索"
+	               class="button_in_table"
+	               onclick="doCallMiseForm();" ondblclick="return false;"
+	               m:style="#{claimtotalRequestDto.taishoJoken == 'MISE' ? 'display:inline;' : 'display:none'}"/>
+	        <input type="button"
+	               m:id="doSearchOnerBtn" value="検索"
+	               class="button_in_table"
+	               onclick="doCallOnerForm();" ondblclick="return false;"
+	               m:style="#{claimtotalRequestDto.taishoJoken == 'ONER' ? 'display:inline;' : 'display:none'}"/>
+	    </th>
+	    <td m:rendered="#{claimtotalSessionDto.userTypeCd == '01'}" width="150px">
+	        <div class="hideArea">
+	        <select m:items="#{claimtotalSessionDto.listJigyohonbu}"
+	            m:id="condJigyoHonbu"
+	            m:itemValue="hyojitaishoCd"
+	            m:itemLabel="hyojitaishoName"
+	            m:style="#{claimtotalRequestDto.taishoJoken == 'JIGYOU' ? 'display:inline;' : 'display:none'}"/>
+	        <select m:items="#{claimtotalSessionDto.listSlArea}"
+	            m:id="condSlArea"
+	            m:itemValue="hyojitaishoCd"
+	            m:itemLabel="hyojitaishoName"
+	            m:style="#{claimtotalRequestDto.taishoJoken == 'SLAREA' ? 'display:inline;' : 'display:none'}"/>
+	        <select m:items="#{claimtotalSessionDto.listSibu}"
+	            m:id="condSibu"
+	            m:itemValue="hyojitaishoCd"
+	            m:itemLabel="hyojitaishoName"
+	            m:style="#{claimtotalRequestDto.taishoJoken == 'SIBU' ? 'display:inline;' : 'display:none'}"/>
+	        </div>
+	        <input type="text" m:id="condOner" class="imenotuse height_11" maxlength="5" size=8 m:style="#{claimtotalRequestDto.taishoJoken == 'ONER' ? 'display:inline;' : 'display:none;'}"/>
+	        <input type="text" m:id="condMise" class="imenotuse height_11" maxlength="5" size=8 m:style="#{claimtotalRequestDto.taishoJoken == 'MISE' ? 'display:inline;' : 'display:none;'}" m:converter="#{claimtotalCodeConverter}"/>
+
+	    </td>
+	</tr>
+	</table>
+	</td>
+	<td>
+	<input type="button" style="margin-left:3px"
+       m:id="doExecuteBtn" name="claimtotal:doExecuteBtn"
+       value="#{claimtotalRequestDto.listSearchData==null?'実行':'再検索'}"
+       onclick="execFunction();" ondblclick="return false;"/></td>
+  	</tr>
+</table>
+
+<div m:id="pane_waitmsg" style="clear:both;display:none">
+<p/>
+<span style="font-weight:bold;">
+検索しています。しばらくお待ち下さい・・・</span>
+</div>
+
+<div style="clear:both;line-height:25%;"><br/></div>
+<div m:id="pane_result">
+<span m:rendered="#{claimtotalRequestViewDto.searchedFlg}">
+<table class="body_table2">
+    <tr>
+        <th>対象</th>
+        <td><span m:converter="#{characterEncodingConverter}" m:value="#{claimtotalRequestViewDto.hyojiTaishoNameDisp}"/>&nbsp;</td>
+        <th>対象期間</th>
+        <td><span m:converter="#{characterEncodingConverter}" m:value="#{claimtotalRequestViewDto.taishoKikanFrom}"/> ～ <span m:converter="#{characterEncodingConverter}" m:value="#{claimtotalRequestViewDto.taishoKikanTo}"/></td>
+    </tr>
+</table>
+
+<div style="line-height:25%;"><br/></div>
+
+<table class="body_table2" style="border-bottom:0px">
+    <tr class="header_row">
+<span m:inject="s:forEach" m:items="#{claimtotalRequestViewDto.listTableHeader}" m:var="e" m:varindex="i">
+        <th width="#{i==0?'90px':'80px'}" style="border-bottom:0px"><span m:converter="#{characterEncodingConverter}" m:value="#{e.bnrMName}" escape="false"/></th>
+</span>
+    </tr>
+</table>
+<table class="body_table2">
+<span m:inject="s:forEach" m:items="#{claimtotalRequestViewDto.listSearchData}" m:var="e" m:varindex="i">
+    <tr m:class="#{i == 12 || i == 13 ? 'body_sum5' : ''}">
+<span m:inject="s:forEach" m:items="#{e}" m:var="f" m:varindex="j">
+        <td width="#{j==0?'90px':'80px'}" m:rendered="#{j == 0}"><span m:converter="#{characterEncodingConverter}" m:value="#{f}"/></td>
+        <td class="body_num" width="80px" m:rendered="#{j != 0}">
+            <span m:rendered="#{(f.rowType != 'S' && f.rowType != 'Z') && f.claimCount != 0}" >
+                <a href="javaScript:void(0);" onclick="return linkClaim('#{f.jusinDt}','#{f.rowType}','#{f.bnrM}');"><span m:value="#{f.claimCount}"/></a>
+            </span>
+            <span m:rendered="#{(f.rowType == 'S' || f.rowType == 'Z') || f.claimCount == 0}" m:value="#{f.claimCount}"/>
+        </td>
+</span>
+    </tr>
+</span>
+</table>
+</span>
+</div>
+<input type="text" m:id="dummyEnter" style="display:none"/>
+</form>
+</div>
+</body>
+</html>

@@ -1,0 +1,237 @@
+<html xmlns:m="http://www.seasar.org/maya" m:action="#{hanyoApplicationSelectAction.initialize}" m:extends="/jsf/layout/layoutNoNavi.html">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Windows-31j" />
+<title></title>
+</head>
+<body>
+<span m:inject="f:param" m:name="layoutTitle" m:value="研修参加申込"/>
+<span m:inject="s:insert" m:name="bodyTitleName">■研修参加申込</span>
+<span m:inject="f:param" m:name="onLoadName" m:value="onLoadFunction()"/>
+<span m:inject="f:param" m:name="isHonbu" m:value="#{hanyoApplicationDto.userTypeCd == '01'}"/>
+<span m:inject="f:param" m:name="viewIdValue" m:value="BEN005V01"/>
+<span m:inject="s:insert" m:name="body">
+<style type="text/css">
+<!--
+table.body_table2 tr td.align_center {
+  text-align: center;
+}
+table.body_table2 tr td.align_right {
+  text-align: right;
+}
+table.body_table2 tr.non_edit td {
+	background-color:#CCCCCC;
+}
+-->
+</style>
+<SCRIPT LANGUAGE="javascript">
+<!--
+function onLoadFunction() {
+	loadScroll("hanyoScroll", 379);
+    //browserCheck();
+    dispSecurityInfo();
+	focusElement('hanyoApplicationSelect');
+}
+
+function dispSecurityInfo() {
+  var f = document.forms['hanyoApplicationSelect'];
+  var msg = f.elements['hanyoApplicationSelect:infoMsg'].value;
+  if (f.elements['hanyoApplicationSelect:dispSecurityInfo'].value == '1') {
+    if (msg != "") {
+      alert(msg);
+      f.elements['hanyoApplicationSelect:btnExecute'].click();
+    }
+  }
+  return true;
+}
+
+function doAction() {
+	var f=document.forms['hanyoApplicationSelect'];
+	f.target='';
+	f.elements['hanyoApplicationSelect:__link_clicked__'].value='hanyoApplicationSelect:dummyAction';
+	f.submit();
+	return false;
+}
+function browserCheck(){
+	var an = navigator.appName;
+	var plat = navigator.platform;
+    var f = document.forms['hanyoApplicationSelect'];
+    var msg = f.elements['hanyoApplicationSelect:msgBrowserCheck'].value;
+    if (msg == "") {
+      return true;
+    }
+	if(an!="Microsoft Internet Explorer"){
+		f.elements['hanyoApplicationSelect:btnExecute'].disabled = true;
+		f.elements['hanyoApplicationSelect:entryCd'].disabled = true;
+		alert(msg);
+		return false;
+	}else{
+		if(navigator.userAgent.indexOf("Opera") != -1){
+          f.elements['hanyoApplicationSelect:btnExecute'].disabled = true;
+		  f.elements['hanyoApplicationSelect:entryCd'].disabled = true;
+          alert(msg);
+          return false;
+		}
+	}
+	if(plat.indexOf("Win") == -1){
+      f.elements['hanyoApplicationSelect:btnExecute'].disabled = true;
+      f.elements['hanyoApplicationSelect:entryCd'].disabled = true;
+      alert(msg);
+	}
+	return true;
+}
+//-->
+</SCRIPT>
+<form m:id="hanyoApplicationSelect" m:onkeydown="return setDefaultSubmitButton('hanyoApplicationSelect','btnExecute');">
+<input type="hidden" m:id="viewId" m:value="#{viewIdValue}"/>
+<input type="hidden" m:id="initMenuId" m:value="#{menuAction.initMenuId}"/>
+<input type="hidden" m:id="initSubMenuId" m:value="#{menuAction.initSubMenuId}"/>
+<input type="hidden" m:id="msgBrowserCheck" m:value="#{hanyoApplicationDto.msgBrowserCheck}"/>
+<input type="hidden" m:id="infoMsg" m:value="#{hanyoApplicationDto.msgOnerUserAlert}"/>
+<input type="hidden" m:id="dispSecurityInfo" m:value="#{hanyoApplicationDto.dispSecurityInfo}"/>
+<input type="hidden"  m:value="#{hanyoApplicationDto.userTypeCd"/>
+<a m:id="dummyAction" m:action="#{hanyoApplicationSelectAction.changePullDown}"/>
+<table class="hiddenBody" style="margin-top:4px">
+	<tr><td>
+		<table class="body_table">
+		    <tr>
+		      <th m:rendered="#{isHonbu}">会社&nbsp;</th>
+		      <td m:rendered="#{isHonbu==true}">
+		        <div class="hideArea">
+		        <select class="condition_field"
+		                m:id="condCompanyCd"
+		                m:value="#{hanyoApplicationDto.condCompanyCd}"
+		                m:items="#{hanyoApplicationDto.listCompany}"
+		                m:itemValue="companyCd"
+		                m:itemLabel="companyName">
+		            <option value="">モスフードサービス</option>
+		            <option value="">トモス</option>
+		            <option value="">四季菜</option>
+		        </select>
+		        </div>
+		      </td>
+		      <th width="80">対象研修</th>
+		      <td>
+		        <div class="hideArea">
+		          <select m:id="entryCd" m:value="#{hanyoApplicationDto.entryCd}"
+		                  m:items="#{entryListHanyoApplication}"
+		                  m:itemValue="key"
+		                  m:itemLabel="name"
+		                  m:onchange="doAction();">
+		              <option value="">全て</option>
+		              <option value="05">出張ベーシック研修</option>
+		              <option value="30">マスターライセンス更新研修</option>
+		          </select>
+		        </div>
+		      </td>
+		      <th m:rendered="#{isHonbu}">
+		        対象店舗&nbsp;
+		        <input type="button" value="選択" class="operation_button" m:action="#{hanyoApplicationSelectAction.callMiseForm}"/>&nbsp;
+		      </th>
+		      <td m:rendered="#{isHonbu}">
+		        <input class="imenotuse" type="text"
+		               m:id="condMiseCd" m:value="#{hanyoApplicationDto.condMiseCd}"
+		               m:maxlength="5" m:size="10" m:converter="#{hanyoAppCodeConverter5}"/>
+		      </td>
+		    </tr>
+		</table>
+	</td>
+	<td style="padding-left:3px;">
+		<input type="button" m:id="btnExecute" value="実行"
+		       m:action="#{hanyoApplicationSelectAction.regist}"
+		       m:disabled="#{hanyoApplicationDto.listEntryMst == null || hanyoApplicationDto.selectIndex == -1 ? true : false}"/>
+       </td>
+   </tr>
+   </table>
+<div m:rendered="#{hanyoApplicationDto.listEntryMst == null}">
+  <br/>
+  <div align="center" style="font-weight:bold;">現在受付期間中の研修はありません。</div>
+</div>
+<div m:rendered="#{hanyoApplicationDto.listEntryMst != null}" style="margin-top:5px">
+<font color="red">対象研修の名称が変わりました。出張ベーシック研修(旧:出張特別研修)、マスターライセンス更新研修(旧:店長学校)</font><br/>
+	<div class="scroll_padding_head">
+	<div class="scroll_hidden margin_bottom_hidden">
+	<table class="body_table2" style="width:98%; margin-top:5px">
+	  <tr class="header_row">
+	    <th rowspan="2" width="35px">対<br/>象</th>
+	    <th rowspan="2" width="60px">研修名</th>
+	    <th class="width_200_s" width="175px">開催日</th>
+	    <th width="*">開催名</th>
+        <th width="#{isHonbu?'125px':'90px'}" rowspan="#{isHonbu?'1':'2'}">
+        	<span m:value="#{isHonbu?'本部：':''}"/>申込開始</th>
+        <th width="#{isHonbu?'125px':'90px'}" rowspan="#{isHonbu?'1':'2'}">
+        	<span m:value="#{isHonbu?'本部：':''}"/>申込終了</th>
+	    <th rowspan="2" width="40px">定<br>員</th>
+	    <th rowspan="2" width="60px">総申込<br>人数</th>
+	    <th rowspan="2" width="60px">
+	    	<span m:value="#{isHonbu?'ｵｰﾅｰ<br/>':'申込<br/>人'}" escape="false"/>数</th>
+	  </tr>
+	  <tr class="header_row">
+	    <th colspan="2">開催場所</th>
+	    <th m:rendered="#{isHonbu}">ｵｰﾅｰ：申込開始</th>
+	    <th m:rendered="#{isHonbu}">ｵｰﾅｰ：申込終了</th>
+	  </tr>
+	</table>
+	</div>
+	</div>
+	<div class="scroll_padding_data">
+	<div class="scroll_standby" id="hanyoScroll">
+	<div m:rendered="#{hanyoApplicationDto.radioCnt > 0}"
+	     m:inject="s:selectOneRadio2"
+	     m:value="#{hanyoApplicationDto.selectIndex}" m:required="true" >
+	<table class="body_table2" style="width:98%;border-top:0px;">
+	  <div m:inject="s:forEach" m:items="#{hanyoApplicationDto.listEntryMst}" m:var="e" m:varIndex="i">
+	  <tr class="#{e.editFlg == '1' ? '' : 'non_edit'} #{i==0?'non_top_border':''}">
+	    <td rowspan="2" width="35px" class="align_center">
+	      <input type="radio" m:value="#{i}" m:rendered="#{e.displayFlg == '1' || e.editFlg == '1'}"/>
+	    </td>
+	    <td rowspan="2" width="60px" class="align_center">
+	      <span m:converter="#{characterEncodingConverter}" m:value="#{e.entryNameRyak}"/></td>
+	    <td class="width_200_s" width="175px">
+	      <span m:converter="#{characterEncodingConverter}" m:value="#{e.kaisaiFrom}"
+	            m:converter="#{hanyoApplicationDateConverter3}"/>～<span m:value="#{e.kaisaiTo}" m:converter="#{hanyoApplicationDateConverter3}"/>
+	    </td>
+	    <td m:style="width:*;">
+	      <span m:value="#{e.entryTitle}" m:converter="#{hanyoApplicationCharacterEncodingConverter}"/>
+	    </td>
+	    <td width="#{isHonbu?'125px':'90px'}"
+	        m:rowspan="#{isHonbu ? 1 : 2}">
+	      <span m:value="#{isHonbu?e.honbuUketukeFrom:e.onerUketukeFrom}"
+	            m:converter="#{hanyoApplicationDateConverter4}"/>
+	    </td>
+	    <td width="#{isHonbu?'125px':'90px'}"
+	        m:rowspan="#{isHonbu ? 1 : 2}">
+	      <span m:value="#{isHonbu?e.honbuUketukeTo:e.onerUketukeTo}"
+	            m:converter="#{hanyoApplicationDateConverter4}"/>
+	    </td>
+	    <td rowspan="2" width="40px" class="align_right">
+	      <span m:value="#{e.numberLimit}" m:converter="#{hanyoApplicationNumericConverter}"/>
+	    </td>
+	    <td rowspan="2" width="60px" class="align_right">
+	      <span m:value="#{e.staffSuDisp}" m:converter="#{hanyoApplicationNumericConverter}"/>
+	    </td>
+	    <td rowspan="2" width="60px" class="align_right">
+	      <span m:converter="#{characterEncodingConverter}" m:value="#{isHonbu?e.onerSu:e.onerStaff}"/>
+	    </td>
+	  </tr>
+	  <tr class="#{e.editFlg == '1' ? '' : 'non_edit'}">
+	    <td colspan="2">
+	      <span m:converter="#{characterEncodingConverter}" m:value="#{e.entryPlace}"
+	            m:converter="#{hanyoApplicationCharacterEncodingConverter}"/></td>
+	    <div m:rendered="#{isHonbu}">
+		    <td><span m:value="#{e.onerUketukeFrom}"
+		      	      m:converter="#{hanyoApplicationDateConverter4}"/>&nbsp;</td>
+		    <td><span m:value="#{e.onerUketukeTo}"
+		              m:converter="#{hanyoApplicationDateConverter4}"/>&nbsp;</td>
+	    </div>
+	  </tr>
+	  </div>
+	</table>
+	</div>
+	</div>
+	</div>
+</div>
+<input type="text" m:id="dummyEnter" style="display:none"/>
+</form>
+</span>
+</body>
+</html>

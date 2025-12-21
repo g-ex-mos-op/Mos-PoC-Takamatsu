@@ -1,0 +1,100 @@
+<html xmlns:m="http://www.seasar.org/maya" m:action="#{screenSearchAction.initialize}" m:extends="/jsf/layout/layoutNoNavi.html">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Windows-31j" />
+<title></title>
+</head>
+<body>
+<span m:inject="f:param" m:name="layoutTitle" m:value="画面メニュー検索"/>
+<span m:inject="s:insert" m:name="bodyTitleName">■画面メニュー検索</span>
+<span m:inject="f:param" m:name="onLoadName" m:value="load()"/>
+<span m:inject="f:param" m:name="viewIdValue" m:value="BCO013V01"/>
+<span m:inject="s:insert" m:name="body">
+<STYLE type="text/css">
+<!--
+/* テーブルヘッダデフォルト設定 パターン２*/
+/* テーブルヘッダのセンタリング用 */
+table.body_table2 tr th{
+  text-align            : center;
+}
+.scroll_area {
+	width:	  529px;
+	height:	  430px;
+	overflow: auto;
+}
+.col_cate {
+    width:	170px;
+}
+-->
+</STYLE>
+<SCRIPT LANGUAGE="javascript">
+<!--
+function load() {
+	focusElement('conditionForm');
+}
+function linkUp(linkId) {
+  document.conditionForm.elements['conditionForm:linkId'].value=linkId;
+  document.conditionForm.elements['conditionForm:__link_clicked__'].value='conditionForm:linkUp';
+  document.conditionForm.target="_blank";
+  document.conditionForm.submit();
+  return false;
+}
+//-->
+</SCRIPT>
+<form m:id="conditionForm">
+	<input type="hidden" m:name=":isUseCommonDto" m:value="1" m:passthrough="true"/>
+	<input type="hidden" m:id="viewId" m:value="#{viewIdValue}"/>
+	<input type="hidden" m:id="initMenuId" m:value="#{menuAction.initMenuId}"/>
+	<input type="hidden" m:id="initSubMenuId" m:value="#{menuAction.initSubMenuId}"/>
+	<input type="hidden" m:id="linkId" m:value="#{commonOutLinkDto.linkId}"/>
+	<a id="linkUp" m:action="#{portalTopLinkAction.linkUp}"/>
+	<table cellspacing="0"	>
+		<tr style="vertical-align: middle;">
+		<td>
+			<table class="body_table">
+			  <tr>
+			    <th>検索</th>
+			    <td>
+			      <input type="text" m:id="searchWord" m:value="#{screenSearchReqDto.searchWord}" m:size="40" maxlength="20"/>を
+			    </td>
+			   </tr>
+			</table>
+		</td>
+		<td>
+			<input type="submit" value="検索" m:action="#{screenSearchAction.search}" onClick="document.conditionForm.target = '_self';" onDblClick="return false;"/>&nbsp;&nbsp;
+		</td>
+		</tr>
+	</table>
+	<div m:rendered="#{screenSearchReqDto.searchedDataCnt>0}">
+		<table class="body_table2" style="width:510px; margin-top:4px;">
+			<tr>
+				<th class="col_cate">カテゴリ</th>
+				<th width="*">メニュー</th>
+			</tr>
+		</table>
+		<div class="scroll_area">
+			<table class="body_table2" style="width:510px; border-top-width : 0px;">
+			    <span m:inject="s:forEach" 
+			          m:items="#{screenSearchReqDto.listSearchData}" 
+			          m:var="e" m:varindex="i">
+			      <tr class="non_top_border">
+			        <td class="col_cate"><span m:converter="#{characterEncodingConverter}" m:value="#{e.menuName}"/></td>
+			        <td width="*">
+			        	<span m:rendered="#{e.menuDispKbn=='1'}">
+			        		<a href="#" onClick="window.parent.callScreen('#{e.initViewId}', '#{e.viewId}', '#{e.menuId}', '#{e.subMenuId}', '#{e.menuDispKbn}', '#{e.param}');" onDblClick="return false;">
+							<span m:converter="#{characterEncodingConverter}" m:value="#{e.subMenuName}"/></a>
+							</span>
+				        <span m:rendered="#{e.menuDispKbn=='2'}">
+				        	<a href="#" onClick="linkUp('#{e.param}');" onDblClick="return false;">
+								<span m:converter="#{characterEncodingConverter}" m:value="#{e.subMenuName}"/></a>
+				         </span>
+			         </td>
+			      </tr>
+			    </span>	
+			</table>
+		</div>
+	</div>
+	<input type="text" m:id="dummyEnter" style="display:none"/>
+</form>
+</span>
+</body>
+</html>

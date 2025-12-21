@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE components PUBLIC "-//SEASAR//DTD S2Container 2.3//EN"
+	"http://www.seasar.org/dtd/components23.dtd">
+<components namespace="nationalViewList">
+    <include path="dao.dicon"/>
+    <include path="jp/co/isid/mos/bird/common/dicon/birdCommon.dicon"/>
+	<include path="jp/co/isid/mos/bird/framework/dicon/birdInterceptor.dicon"/>
+	
+	<!-- インターセプターを自動登録 -->
+	<component class="org.seasar.framework.container.autoregister.AspectAutoRegister">
+	    <property name="interceptor">birdInterceptor.actionInterceptorChain</property>
+	    <initMethod name="addClassPattern">
+	        <arg>"jp.co.isid.mos.bird"</arg>
+	        <arg>".*ActionImpl"</arg>
+	    </initMethod>
+	    <initMethod name="registerAll"/>
+	</component> 
+	<component class="org.seasar.framework.container.autoregister.AspectAutoRegister">
+	    <property name="interceptor">birdInterceptor.logicInterceptorChain</property>
+	    <initMethod name="addClassPattern">
+	        <arg>"jp.co.isid.mos.bird"</arg>
+	        <arg>".*LogicImpl"</arg>
+	    </initMethod>
+	    <initMethod name="registerAll"/>  
+	</component>
+	
+	<!-- DAO -->
+	<component name="nationalViewListUIStatusInfoDao" class="jp.co.isid.mos.bird.entry.nationalviewlist.dao.UIStatusInfoDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="nationalViewListCodCompanyDao" class="jp.co.isid.mos.bird.entry.nationalviewlist.dao.CodCompanyDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="nationalViewListCodSibuDao" class="jp.co.isid.mos.bird.entry.nationalviewlist.dao.CodSibuDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="nationalViewListCodSvDao" class="jp.co.isid.mos.bird.entry.nationalviewlist.dao.CodSvDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="nationalViewListUISibuOnerStatusListDao" class="jp.co.isid.mos.bird.entry.nationalviewlist.dao.UISibuOnerStatusListDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	
+	<component name="nationalViewListUIAttendAbsentCntDao" class="jp.co.isid.mos.bird.entry.nationalviewlist.dao.UIAttendAbsentCntDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="nationalViewListUICsvStatusListDao" class="jp.co.isid.mos.bird.entry.nationalviewlist.dao.UICsvStatusListDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="natiViewEntrySelectInfoDao" class="jp.co.isid.mos.bird.entry.nationalviewlist.dao.UINatiViewEntrySelectInfoDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+
+	<!-- LOGIC -->
+	<component name="nationalViewListConditionLogic" class="jp.co.isid.mos.bird.entry.nationalviewlist.logic.impl.ConditionLogicImpl"/>
+	<component name="nationalViewListSearchLogic" class="jp.co.isid.mos.bird.entry.nationalviewlist.logic.impl.SearchLogicImpl"/>
+	<component name="nationalViewListCheckSvExistLogic" class="jp.co.isid.mos.bird.entry.nationalviewlist.logic.impl.CheckSvExistLogicImpl"/>
+	<component name="nationalViewListOutputLogicImpl" class="jp.co.isid.mos.bird.entry.nationalviewlist.logic.impl.CsvOutputLogicImpl"/>
+	
+	<!-- DTO -->
+	<component name="nationalViewListDto" class="jp.co.isid.mos.bird.entry.nationalviewlist.dto.NationalViewListDto" instance="session">
+		<property name="maxSize">5</property>
+	</component>	
+	<component name="nationalViewListReqDto" class="jp.co.isid.mos.bird.entry.nationalviewlist.dto.NationalViewListReqDto" instance="request"/>
+	<component name="eventListDto" class="jp.co.isid.mos.bird.entry.eventlist.dto.EventListDto" autoBinding="none" instance="session"/>
+	<component name="newSvSearchDto" class="jp.co.isid.mos.bird.commonform.svsearchnew.dto.SvSearchDto" autoBinding="none" instance="session">
+			<property name="RCompanyCdList">null</property>
+	</component>
+	
+
+	<!-- ACTION -->
+	<component name="nationalViewListConditionAction" class="jp.co.isid.mos.bird.entry.nationalviewlist.action.impl.ConditionActionImpl" instance="request"/>
+	<component name="nationalViewListConfirmAction" class="jp.co.isid.mos.bird.entry.nationalviewlist.action.impl.ConfirmActionImpl" instance="request"/>
+	<component name="nationalViewListCsvOutputAction" class="jp.co.isid.mos.bird.entry.nationalviewlist.action.impl.CsvDownloadActionImpl" instance="request">
+		<property name="csvOutputDto">nationalViewListReqDto</property>
+		<property name="csvOutputLogic">nationalViewListOutputLogicImpl</property>
+	</component>
+	
+	<!-- CONVERTER -->
+	<component name="nationalViewListCodeCnvtSv" class="jp.co.isid.mos.bird.framework.text.converter.CodeConverter" instance="request">
+	    <arg>8</arg>
+		<arg>"00000000"</arg>
+	</component>
+	<component name="nationalViewListConverter1" class="jp.co.isid.mos.bird.framework.text.converter.DateConverter" instance="request">
+		<arg>@jp.co.isid.mos.bird.framework.util.formatter.DateFormatter@DATE_TYPE_YMD</arg>
+		<arg>"yyyy'/'MM'/'dd'（'E'）'"</arg>
+	</component>
+	<component name="nationalViewListConverter2" class="jp.co.isid.mos.bird.framework.text.converter.DateConverter" instance="request">
+		<arg>@jp.co.isid.mos.bird.framework.util.formatter.DateFormatter@DATE_TYPE_YMD</arg>
+		<arg>"yyyy'/'MM'/'dd"</arg>
+	</component>
+	<component name="nationalViewListNumericConverter" class="jp.co.isid.mos.bird.framework.text.converter.NumericConverter" instance="request"/>
+</components>

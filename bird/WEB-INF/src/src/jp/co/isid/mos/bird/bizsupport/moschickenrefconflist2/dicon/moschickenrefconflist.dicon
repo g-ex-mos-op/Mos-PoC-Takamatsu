@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE components PUBLIC "-//SEASAR//DTD S2Container 2.3//EN"
+	"http://www.seasar.org/dtd/components23.dtd">
+<components namespace="moschickenrefconflist">
+	<include path="dao.dicon"/>
+	<include path="jp/co/isid/mos/bird/common/dicon/birdCommon.dicon"/>
+	<include path="jp/co/isid/mos/bird/framework/dicon/birdInterceptor.dicon"/>
+	
+	<!-- インターセプターを自動登録 -->
+	<component class="org.seasar.framework.container.autoregister.AspectAutoRegister">
+	    <property name="interceptor">birdInterceptor.actionInterceptorChain</property>
+	    <initMethod name="addClassPattern">
+	        <arg>"jp.co.isid.mos.bird"</arg>
+	        <arg>".*ActionImpl"</arg>
+	    </initMethod>
+	    <initMethod name="registerAll"/>
+	</component> 
+	<component class="org.seasar.framework.container.autoregister.AspectAutoRegister">
+	    <property name="interceptor">birdInterceptor.logicInterceptorChain</property>
+	    <initMethod name="addClassPattern">
+	        <arg>"jp.co.isid.mos.bird"</arg>
+	        <arg>".*LogicImpl"</arg>
+	    </initMethod>
+	    <initMethod name="registerAll"/>  
+	</component>
+	<!-- DTO -->
+	<component name="mosChickenRefConfListDto" class="jp.co.isid.mos.bird.bizsupport.moschickenrefconflist.dto.MosChickenRefConfListDto" instance="request" />
+	<component name="mosChickenRefConfListDto2" class="jp.co.isid.mos.bird.bizsupport.moschickenrefconflist2.dto.MosChickenRefConfListDto" instance="request" />
+	<component name="mosChickenRefConfListCondDto" class="jp.co.isid.mos.bird.bizsupport.moschickenrefconflist.dto.MosChickenRefConfListCondDto" instance="session" />
+	<component name="ownerSearchDto" class="jp.co.isid.mos.bird.commonform.ownersearch.dto.OwnerSearchDto" instance="session" />
+	<component name="pullDownMenuDto" class="jp.co.isid.mos.bird.framework.dto.PullDownMenuDto" autoBinding="none" instance="session"/>
+	<!-- DAO -->
+	<component name="mosChickenrefconflistCodMiseListDao" class="jp.co.isid.mos.bird.bizsupport.moschickenrefconflist.dao.CodMiseListDao">
+		<aspect>dao.interceptor</aspect>
+	</component>
+	<component name="mosChickenrefconflistCodSMnueInfoDao" class="jp.co.isid.mos.bird.bizsupport.moschickenrefconflist.dao.CodSMnueInfoDao">
+		<aspect>dao.interceptor</aspect>
+	</component>
+	<component name="mosChickenrefconflistMstCMnueInfoDao" class="jp.co.isid.mos.bird.bizsupport.moschickenrefconflist.dao.MstCMnueInfoDao">
+		<aspect>dao.interceptor</aspect>
+	</component>
+	<component name="mstMosChickenFromToDao" class="jp.co.isid.mos.bird.bizsupport.moschickenrefconflist.dao.MstMosChickenFromToDao">
+		<aspect>dao.interceptor</aspect>
+	</component>
+	<component name="mosChickenrefconflistTrnMosChickenDetailInfoDao" class="jp.co.isid.mos.bird.bizsupport.moschickenrefconflist.dao.TrnMosChickenDetailInfoDao">
+		<aspect>dao.interceptor</aspect>
+	</component>
+	<component name="mosChickenrefconflistTrnMosChickenInfoDao" class="jp.co.isid.mos.bird.bizsupport.moschickenrefconflist.dao.TrnMosChickenInfoDao">
+		<aspect>dao.interceptor</aspect>
+	</component>
+	<component name="mosChickenrefconflistTrnReserveInfoDao" class="jp.co.isid.mos.bird.bizsupport.moschickenrefconflist.dao.TrnReserveInfoDao">
+		<aspect>dao.interceptor</aspect>
+	</component>
+	<component name="mosChickenrefconflistTrnMenuReserveAmtInfoDao" class="jp.co.isid.mos.bird.bizsupport.moschickenrefconflist.dao.TrnMenuReserveAmtInfoDao">
+		<aspect>dao.interceptor</aspect>
+	</component>
+	<component name="mosChickenrefconflistCodMiseListDao2" class="jp.co.isid.mos.bird.bizsupport.moschickenrefconflist2.dao.CodMiseListDao">
+		<aspect>dao.interceptor</aspect>
+	</component>
+	<!-- LOGIC -->
+	<component name="mosChickenRefConfCondMosChickenTitleLogicImpl" class="jp.co.isid.mos.bird.bizsupport.moschickenrefconflist.logic.impl.CondMosChickenTitleLogicImpl"/>
+	<component name="mosChickenRefConfCondMiseListLogicImpl" class="jp.co.isid.mos.bird.bizsupport.moschickenrefconflist.logic.impl.CondMiseListLogicImpl"/>
+	<component name="mosChickenRefConfPdfTypeALogic" class="jp.co.isid.mos.bird.bizsupport.moschickenrefconflist.logic.impl.MosChickenRefListContentConfirmPdfDLTypeALogicImpl"/>
+	<component name="mosChickenRefConfPdfTypeBLogic" class="jp.co.isid.mos.bird.bizsupport.moschickenrefconflist.logic.impl.MosChickenRefListContentConfirmPdfDLTypeBLogicImpl"/>
+	<component name="moschickenrefconflistPdfATypeLogic" class="jp.co.isid.mos.bird.bizsupport.moschickenrefconflist.logic.impl.PdfATypeLogicImpl"/>
+	<component name="moschickenrefconflistPdfBTypeLogic" class="jp.co.isid.mos.bird.bizsupport.moschickenrefconflist.logic.impl.PdfBTypeLogicImpl"/>
+	<!-- ACTION -->
+	<component name="mosChickenrefconflistConditionAction" class="jp.co.isid.mos.bird.bizsupport.moschickenrefconflist.action.impl.ConditionActionImpl" instance="request" />
+	<component name="mosChickenrefconflistConditionAction2" class="jp.co.isid.mos.bird.bizsupport.moschickenrefconflist2.action.impl.ConditionActionImpl" instance="request" />
+	<!-- CONVERTER -->
+	<component name="dateConverter" class="jp.co.isid.mos.bird.framework.text.converter.DateConverter" instance="request">
+		<arg>@jp.co.isid.mos.bird.framework.util.formatter.DateFormatter@DATE_TYPE_YMD</arg>
+		<arg>@jp.co.isid.mos.bird.framework.util.formatter.DateFormatter@PATTERN_SLASH</arg>
+	</component>
+    <component name="mosChickenrefconflistJapaneseVerifier" class="jp.co.isid.mos.bird.framework.util.verifier.DefaultJapaneseVerifier"/>
+	<!-- PDFダウンロード -->
+	<component name="pdfMosChikenRefConfTypeAAction" class="jp.co.isid.mos.bird.framework.action.impl.PdfOutputActionImpl" instance="request">
+		<property name="pdfOutputDto">mosChickenRefConfListDto</property>
+		<property name="pdfOutputLogic">moschickenrefconflistPdfATypeLogic</property>
+	</component>
+	<component name="pdfMosChikenRefConfTypeBAction" class="jp.co.isid.mos.bird.framework.action.impl.PdfOutputActionImpl" instance="request">
+		<property name="pdfOutputDto">mosChickenRefConfListDto</property>
+		<property name="pdfOutputLogic">moschickenrefconflistPdfBTypeLogic</property>
+	</component>
+	<!-- Verifier -->
+    <component name="mosChickenrefconflistCodeVerifier" class="jp.co.isid.mos.bird.framework.util.verifier.CodeVerifier">
+		<arg>5</arg>
+		<arg>true</arg>
+	    <initMethod name="setNullable">
+	        <arg>false</arg>
+	    </initMethod>
+	</component>
+    <component name="mosChickenrefconflistDefaultNumericVerifier" class="jp.co.isid.mos.bird.framework.util.verifier.NumericVerifier"/>
+	    <component name="limitSumVerifier" class="jp.co.isid.mos.bird.framework.util.verifier.NumericVerifier">
+    	<arg>true</arg>
+    	<arg>3</arg>
+    	<arg>0</arg>
+	</component>
+	
+</components>

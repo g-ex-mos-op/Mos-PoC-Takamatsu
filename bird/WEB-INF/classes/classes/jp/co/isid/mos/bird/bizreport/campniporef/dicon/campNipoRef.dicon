@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="Shift_JIS"?>
+<!DOCTYPE components PUBLIC "-//SEASAR//DTD S2Container 2.3//EN" "http://www.seasar.org/dtd/components23.dtd">
+<components namespace="campNipoRef">
+	<include path="dao.dicon"/>
+	<include path="jp/co/isid/mos/bird/common/dicon/birdCommon.dicon"/>
+	<include path="jp/co/isid/mos/bird/framework/dicon/birdInterceptor.dicon"/>
+	<include path="jp/co/isid/mos/bird/bizreport/common/camp/dicon/commonCampaign.dicon"/>
+	
+	<!-- インターセプターを自動登録 -->
+	<component class="org.seasar.framework.container.autoregister.AspectAutoRegister">
+	    <property name="interceptor">birdInterceptor.actionInterceptorChain</property>
+	    <initMethod name="addClassPattern">
+	        <arg>"jp.co.isid.mos.bird"</arg>
+	        <arg>".*ActionImpl"</arg>
+	    </initMethod>
+	    <initMethod name="registerAll"/>
+	</component> 
+	<component class="org.seasar.framework.container.autoregister.AspectAutoRegister">
+	    <property name="interceptor">birdInterceptor.logicInterceptorChain</property>
+	    <initMethod name="addClassPattern">
+	        <arg>"jp.co.isid.mos.bird"</arg>
+	        <arg>".*LogicImpl"</arg>
+	    </initMethod>
+	    <initMethod name="registerAll"/>  
+	</component>
+
+	<!-- DAO -->
+	<component name="campNipoRefUINipoMiseDao" class="jp.co.isid.mos.bird.bizreport.campniporef.dao.UINipoMiseDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="campNipoRefUINipoSibuDao" class="jp.co.isid.mos.bird.bizreport.campniporef.dao.UINipoSibuDao">
+		<aspect>dao.interceptor</aspect>
+	</component>
+
+	<!-- Entity -->
+
+	<!-- DTO -->
+	<component name="campNipoRefSesDto" class="jp.co.isid.mos.bird.bizreport.common.camp.dto.SessionNipoDto" autoBinding="none" instance="session"/>
+	<component name="campNipoRefReqDto" class="jp.co.isid.mos.bird.bizreport.common.camp.dto.RequestNipoDto" autoBinding="none" instance="request"/>
+	<component name="campNipoRefViewDto" class="jp.co.isid.mos.bird.bizreport.common.camp.dto.RequestNipoDto" autoBinding="none" instance="request"/>
+
+	<!-- ACTION -->
+	<component name="campNipoRefSibuListAction" class="jp.co.isid.mos.bird.bizreport.campniporef.action.impl.SibuListActionImpl" instance="request"/>
+	<component name="campNipoRefMiseListAction" class="jp.co.isid.mos.bird.bizreport.campniporef.action.impl.MiseListActionImpl" instance="request"/>
+	<component name="campNipoRefCsvDownloadAction" class="jp.co.isid.mos.bird.bizreport.campniporef.action.impl.CsvActionImpl" instance="request">
+		<property name="csvOutputDto">campNipoRefViewDto</property>
+		<property name="csvOutputLogic">campNipoRefCsvLogic</property>
+	</component>
+	
+	<!-- LOGIC -->
+	<component name="campNipoRefSetCampaignLogic" class="jp.co.isid.mos.bird.bizreport.campniporef.logic.impl.SetCampaignLogicImpl"/>
+	<component name="campNipoRefSetCompanyLogic" class="jp.co.isid.mos.bird.bizreport.campniporef.logic.impl.SetCompanyLogicImpl"/>
+	<component name="campNipoRefConditionLogic" class="jp.co.isid.mos.bird.bizreport.campniporef.logic.impl.ConditionLogicImpl"/>
+	<component name="campNipoRefSearchLogic" class="jp.co.isid.mos.bird.bizreport.campniporef.logic.impl.SearchLogicImpl"/>
+	<component name="campNipoRefCsvLogic" class="jp.co.isid.mos.bird.bizreport.campniporef.logic.impl.CsvLogicImpl">
+		<property name="commonCampaignGetCampMenuLogic">commonCampaignGetCampMenuLogic</property>
+	</component>
+
+	<!-- CONVERTER -->
+	<component name="bizreportNumericCnvt" class="jp.co.isid.mos.bird.framework.text.converter.NumericConverter" instance="request">
+		<arg>"#,##0"</arg><arg>true</arg>
+	</component>
+</components>

@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE components PUBLIC "-//SEASAR2.1//DTD S2Container//EN"
+	"http://www.seasar.org/dtd/components21.dtd">
+
+<components namespace="anshinreport">
+	<include path="dao.dicon"/>
+    <include path="jp/co/isid/mos/bird/common/dicon/birdCommon.dicon"/>	
+	<include path="jp/co/isid/mos/bird/framework/dicon/birdInterceptor.dicon"/>
+	
+	<component class="org.seasar.framework.container.autoregister.AspectAutoRegister">
+	    <property name="interceptor">birdInterceptor.actionInterceptorChain</property>
+	    <initMethod name="addClassPattern">
+	        <arg>"jp.co.isid.mos.bird"</arg>
+	        <arg>".*ActionImpl"</arg>
+	    </initMethod>
+	    <initMethod name="registerAll"/>
+	</component> 
+	<component class="org.seasar.framework.container.autoregister.AspectAutoRegister">
+	    <property name="interceptor">birdInterceptor.logicInterceptorChain</property>
+	    <initMethod name="addClassPattern">
+	        <arg>"jp.co.isid.mos.bird"</arg>
+	        <arg>".*LogicImpl"</arg>
+	    </initMethod>
+	    <initMethod name="registerAll"/>  
+	</component>
+
+
+<!-- Action -->
+	<component name="AnshinReportAction" class="jp.co.isid.mos.bird.storemanage.anshinreport.action.impl.AnshinReportActionImpl" instance="request"/>
+	
+<!-- Dto -->
+	<component name="anshinReportDto" class="jp.co.isid.mos.bird.storemanage.anshinreport.dto.AnshinReportDto" instance="session" />
+	<component name="pullDownMenuDto" class="jp.co.isid.mos.bird.framework.dto.PullDownMenuDto" autoBinding="none" instance="session"/>
+	
+<!-- DAO -->
+<component name="mstOnerHonbuDao" class="jp.co.isid.mos.bird.storemanage.anshinreport.dao.MstOnerHonbuDao">
+    <aspect>dao.interceptor</aspect>
+</component>
+<component name="uiMiseListHonbuDao" class="jp.co.isid.mos.bird.storemanage.anshinreport.dao.UIMiseListHonbuDao">
+    <aspect>dao.interceptor</aspect>
+</component>
+
+<!-- Logic 	-->
+	<component name="conditionLogicImpl" class="jp.co.isid.mos.bird.storemanage.anshinreport.logic.impl.ConditionLogicImpl"/>
+	<component name="validateDataLogicImpl" class="jp.co.isid.mos.bird.storemanage.anshinreport.logic.impl.ValidateDataLogicImpl"/>
+	<component name="downloadLogicImpl" class="jp.co.isid.mos.bird.storemanage.anshinreport.logic.impl.DownloadLogicImpl"/>
+	<component name="anshinReportFileDataLogicImpl" class="jp.co.isid.mos.bird.storemanage.anshinreport.logic.impl.AnshinReportFileDataLogicImpl"/>
+	<component name="changeCompanyLogic" class="jp.co.isid.mos.bird.storemanage.anshinreport.logic.impl.ChangeCompanyLogicImpl"/>
+<!-- 外部Action -->
+	<component name="anshinReportDownloadAction" class="jp.co.isid.mos.bird.framework.action.impl.FileDownloadActionImpl" instance="request">
+		<property name="downloadDto">anshinReportDto</property>
+		<property name="downloadLogic">downloadLogicImpl</property>
+	</component>
+	
+	<!-- Converter -->
+	<component name="mlresultStatusRefMiseConverter" class="jp.co.isid.mos.bird.framework.text.converter.CodeConverter" instance="request">
+		<property name="formatPattern">"00000"</property>
+	</component>
+
+<!-- 以外 -->
+	<component name="miseSearchDto" class="jp.co.isid.mos.bird.commonform.misesearch.dto.MiseSearchDto" instance="session"/>
+	
+	<component name="ownerSearchDto" class="jp.co.isid.mos.bird.commonform.ownersearch.dto.OwnerSearchDto" autoBinding="none" instance="session"/>
+	
+	<component name="dataRefCodeVerifier" class="jp.co.isid.mos.bird.framework.util.verifier.CodeVerifier"/>
+</components>

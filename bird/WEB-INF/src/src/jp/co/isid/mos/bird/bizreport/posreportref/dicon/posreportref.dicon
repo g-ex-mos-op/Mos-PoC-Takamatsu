@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="Shift_JIS"?>
+<!DOCTYPE components PUBLIC "-//SEASAR//DTD S2Container 2.3//EN"
+    "http://www.seasar.org/dtd/components23.dtd">
+<components namespace="posreportref">
+    <include path="dao.dicon"/>
+	<include path="jp/co/isid/mos/bird/framework/dicon/birdInterceptor.dicon"/>
+	<include path="jp/co/isid/mos/bird/bizreport/common/dicon/bizreportCommon.dicon" />
+	<include path="jp/co/isid/mos/bird/storeinfo/miseref/dicon/miseRef.dicon"/>
+	<include path="jp/co/isid/mos/bird/common/dicon/birdCommon.dicon"/>
+
+	<component
+	  class="org.seasar.framework.container.autoregister.AspectAutoRegister">
+	    <property name="interceptor">birdInterceptor.actionInterceptorChain</property>
+	    <initMethod name="addClassPattern">
+	        <arg>"jp.co.isid.mos.bird"</arg>
+	        <arg>".*ActionImpl"</arg>
+	    </initMethod>
+	    <initMethod name="registerAll"/>
+	</component> 
+	
+	<component
+	  class="org.seasar.framework.container.autoregister.AspectAutoRegister">
+	    <property name="interceptor">birdInterceptor.logicInterceptorChain</property>
+	    <initMethod name="addClassPattern">
+	        <arg>"jp.co.isid.mos.bird"</arg>
+	        <arg>".*LogicImpl"</arg>
+	    </initMethod>
+	    <initMethod name="registerAll"/>
+	</component>
+	<!-- DAO -->
+	<component name="mstOnerDao" class="jp.co.isid.mos.bird.common.dao.MstOnerDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="codHyojiTaishoDao" class="jp.co.isid.mos.bird.common.dao.CodHyojiTaishoDao">
+		<aspect>dao.interceptor</aspect>
+	</component>
+	<component name="trnPosReportRefDao" class="jp.co.isid.mos.bird.bizreport.posreportref.dao.TrnPosReportRefDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="trnPosReportRefHourDao" class="jp.co.isid.mos.bird.bizreport.posreportref.dao.TrnPosReportRefHourDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="trnPosReportRefMenuDao" class="jp.co.isid.mos.bird.bizreport.posreportref.dao.TrnPosReportRefMenuDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	
+	<!-- DTO -->
+	<component name="posReportRefDto" class="jp.co.isid.mos.bird.bizreport.posreportref.dto.PosReportRefDto" instance="request">
+		<property name="listHyojiTaisho">null</property>
+		<property name="listTaishoJoken">null</property>
+		<property name="listPosReportSuiiInfo">null</property>
+		<property name="listPosReportMiseInfo">null</property>
+		<property name="listMiseHourInfo">null</property>
+		<property name="listMiseMenuInfo">null</property>
+		<property name="listCampMenu">null</property>
+	</component>
+	<component name="pullDownMenuDto" class="jp.co.isid.mos.bird.framework.dto.PullDownMenuDto" autoBinding="none" instance="session"/>
+	<component name="posReportRefSessionDto" class="jp.co.isid.mos.bird.bizreport.posreportref.dto.SessionDto" instance="session">
+		<property name="listHyojiTaisho">null</property>
+		<property name="listTaishoJoken">null</property>
+	</component>
+	<!-- Action -->
+	<component name="PosReportRefAction" class="jp.co.isid.mos.bird.bizreport.posreportref.action.impl.PosReportRefActionImpl" instance="request"/>
+	<component name="PosReportRefMiseAction" class="jp.co.isid.mos.bird.bizreport.posreportref.action.impl.PosReportRefMiseActionImpl" instance="request">
+		<property name="getMiseLogic">getMiseLogic</property>
+	</component>
+
+	<!-- Logic -->
+	<component name="LatestDateLogicImpl" class="jp.co.isid.mos.bird.bizreport.posreportref.logic.impl.LatestDateLogicImpl"/>
+	<component name="posReportRefConditionLogic" class="jp.co.isid.mos.bird.bizreport.posreportref.logic.impl.ConditionLogicImpl"/>
+	<component name="posReportRefSearchMiseListLogic" class="jp.co.isid.mos.bird.bizreport.posreportref.logic.impl.SearchMiseListLogicImpl"/>
+	<component name="posReportRefHourInfoLogicImpl" class="jp.co.isid.mos.bird.bizreport.posreportref.logic.impl.PosReportRefHourInfoLogicImpl"/>
+	<component name="posReportRefMenuInfoLogicImpl" class="jp.co.isid.mos.bird.bizreport.posreportref.logic.impl.PosReportRefMenuInfoLogicImpl"/>
+	<component name="posReportRefSuiiInfoLogicImpl" class="jp.co.isid.mos.bird.bizreport.posreportref.logic.impl.PosReportRefSuiiInfoLogicImpl"/>
+	<component name="PosReportRefMiseInfoLogicImpl" class="jp.co.isid.mos.bird.bizreport.posreportref.logic.impl.PosReportRefMiseInfoLogicImpl"/>
+		
+</components>

@@ -1,0 +1,10 @@
+SELECT
+    COMPANY_CD,
+    ONER_CD,
+    ONER_NAME_KJ,
+    ONER_NAME_KNA
+FROM 
+    BM11ONER
+WHERE
+    COMPANY_CD = /*companyCd*/'01'
+AND ONER_CD = /*onerCd*/'00000'

@@ -1,0 +1,7 @@
+SELECT DISTINCT NENDO, KAI
+FROM BM31MSPM
+WHERE NENDO = /*nendo*/''
+AND   KAI < /*kai*/''
+AND   COMPANY_CD = /*companyCd*/''
+ORDER BY NENDO DESC
+,        KAI DESC

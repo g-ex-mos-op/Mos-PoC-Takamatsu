@@ -1,0 +1,23 @@
+select
+    BR49.PL_TYPE,
+    rtrim(BR49.COLUMN_NAME) as COLUMN_NAME,
+    rtrim(BR49.ITEM_NO) as ITEM_NO,
+    rtrim(BR49.ITEM_NAME) as ITEM_NAME,
+    BR49.ITEM_TYPE,
+    BR49.LIMIT_TYPE,
+    BR49.LIMIT_MAX,
+    BR49.LIMIT_MIN,
+    BR49.SORT_KEY,
+    BR49.KOSEIHI_FLG,
+    BR49.FIRST_USER,
+    BR49.FIRST_PGM,
+    BR49.FIRST_TMSP,
+    BR49.LAST_USER,
+    BR49.LAST_PGM,
+    BR49.LAST_TMSP
+from
+    BR49PLCH as BR49
+where
+    BR49.PL_TYPE = /*plType*/'0'
+order by
+    BR49.SORT_KEY

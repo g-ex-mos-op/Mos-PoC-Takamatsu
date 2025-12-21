@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="Shift_JIS"?>
+<!DOCTYPE components PUBLIC "-//SEASAR//DTD S2Container//EN"
+	"http://www.seasar.org/dtd/components.dtd">
+<components namespace="bizreport">
+	<include path="jp/co/isid/mos/bird/bizreport/common/dicon/bizreportCommon.dicon" />
+	<include path="jp/co/isid/mos/bird/bizreport/groupeigyoniporef/dicon/groupEigyoNipoRef.dicon"/>
+	<include path="jp/co/isid/mos/bird/bizreport/takuhainiporef/dicon/takuhaiNipoRef.dicon"/>
+	<include path="jp/co/isid/mos/bird/bizreport/gyotaibetuniporef/dicon/gyotaibetuNipoRef.dicon" />
+	<include path="jp/co/isid/mos/bird/bizreport/groupsuiiref/dicon/groupSuiiRef.dicon" />
+	<include path="jp/co/isid/mos/bird/bizreport/takuhaisuiiref/dicon/takuhaiSuiiRef.dicon" />
+	<include path="jp/co/isid/mos/bird/bizreport/posreportref/dicon/posreportref.dicon" />
+	<include path="jp/co/isid/mos/bird/bizreport/posreportregist/dicon/posReportRegist.dicon" />
+	<include path="jp/co/isid/mos/bird/bizreport/zendougeturegist/dicon/zenDougetuRegist.dicon" />
+	<include path="jp/co/isid/mos/bird/bizreport/urimaintenanceview/dicon/uriMainteView.dicon" />
+	<include path="jp/co/isid/mos/bird/bizreport/urimaintenance/dicon/uriMaintenance.dicon" />
+	<include path="jp/co/isid/mos/bird/bizreport/camprank/dicon/camprank.dicon" />
+	<include path="jp/co/isid/mos/bird/bizreport/campniporef/dicon/campNipoRef.dicon" />
+	<include path="jp/co/isid/mos/bird/bizreport/campsuiiref/dicon/campsuiiref.dicon" />
+	<include path="jp/co/isid/mos/bird/bizreport/campkako/dicon/campKako.dicon" />
+	<include path="jp/co/isid/mos/bird/bizreport/moscardniporef/dicon/moscardNipoRef.dicon" />
+	<include path="jp/co/isid/mos/bird/bizreport/moscardsuiiref/dicon/moscardSuiiRef.dicon" />
+	<include path="jp/co/isid/mos/bird/bizreport/netorderniporef/dicon/netorderNipoRef.dicon"/>
+	<include path="jp/co/isid/mos/bird/bizreport/netordersuiiref/dicon/netorderSuiiRef.dicon" />
+</components>

@@ -1,0 +1,1128 @@
+<html xmlns:m="http://www.seasar.org/maya" m:action="#{miseMaintenanceEditAction.initialize}" m:extends="/jsf/layout/layoutNoNavi.html">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Windows-31j" />
+<title>個店情報メンテナンス</title>
+</head>
+<body>
+<span m:inject="f:param" m:name="layoutTitle" m:value="個店情報メンテナンス"/>
+<span m:inject="f:param" m:name="onLoadName" m:value="load();"/>
+<span m:inject="s:insert" m:name="bodyTitleName">■個店情報メンテナンス</span>
+<span m:inject="f:param" m:name="viewIdValue" m:value="BSM001V12"/>
+<span m:inject="s:insert" m:name="body">
+<script type="text/javascript">
+<!--
+function load(){
+	changeTab(document.forms['miseMaintenance'].elements['miseMaintenance:selectedTab'].value);
+}
+function changeTab(tabIndex) {
+	setSelectedTab(tabIndex);
+	var maxScrollHeight = "100%";
+	loadScrolls("misemainteScroll"+tabIndex, maxScrollHeight);
+}
+function calcSeki() {
+	var inSmoke1F = document.miseMaintenance.elements["miseMaintenance:seat1FSmokingIn"].value - 0;
+	var outSmoke1F = document.miseMaintenance.elements["miseMaintenance:seat1FSmokingOut"].value - 0;
+	var sumSmoke1F = inSmoke1F + outSmoke1F;
+	var inNonSmoke1F = document.miseMaintenance.elements["miseMaintenance:seat1FNonSmokingIn"].value - 0;
+	var outNonSmoke1F = document.miseMaintenance.elements["miseMaintenance:seat1FNonSmokingOut"].value - 0;
+	var sumNonSmoke1F = inNonSmoke1F + outNonSmoke1F;
+	var inSmoke2F = document.miseMaintenance.elements["miseMaintenance:seat2FSmokingIn"].value - 0;
+	var outSmoke2F = document.miseMaintenance.elements["miseMaintenance:seat2FSmokingOut"].value - 0;
+	var sumSmoke2F = inSmoke2F + outSmoke2F;
+	var inNonSmoke2F = document.miseMaintenance.elements["miseMaintenance:seat2FNonSmokingIn"].value - 0;
+	var outNonSmoke2F = document.miseMaintenance.elements["miseMaintenance:seat2FNonSmokingOut"].value - 0;
+	var sumNonSmoke2F = inNonSmoke2F + outNonSmoke2F;
+	var inSmoke3F = document.miseMaintenance.elements["miseMaintenance:seat3FSmokingIn"].value - 0;
+	var outSmoke3F = document.miseMaintenance.elements["miseMaintenance:seat3FSmokingOut"].value - 0;
+	var sumSmoke3F = inSmoke3F + outSmoke3F;
+	var inNonSmoke3F = document.miseMaintenance.elements["miseMaintenance:seat3FNonSmokingIn"].value - 0;
+	var outNonSmoke3F = document.miseMaintenance.elements["miseMaintenance:seat3FNonSmokingOut"].value - 0;
+	var sumNonSmoke3F = inNonSmoke3F + outNonSmoke3F;
+	var inSmokeUnder = document.miseMaintenance.elements["miseMaintenance:seatUnderSmokingIn"].value - 0;
+	var outSmokeUnder = document.miseMaintenance.elements["miseMaintenance:seatUnderSmokingOut"].value - 0;
+	var sumSmokeUnder = inSmokeUnder + outSmokeUnder;
+	var inNonSmokeUnder = document.miseMaintenance.elements["miseMaintenance:seatUnderNonSmokingIn"].value - 0;
+	var outNonSmokeUnder = document.miseMaintenance.elements["miseMaintenance:seatUnderNonSmokingOut"].value - 0;
+	var sumNonSmokeUnder = inNonSmokeUnder + outNonSmokeUnder;
+	var inSmokeCom = document.miseMaintenance.elements["miseMaintenance:seatComSmokingIn"].value - 0;
+	var outSmokeCom = document.miseMaintenance.elements["miseMaintenance:seatComSmokingOut"].value - 0;
+	var sumSmokeCom = inSmokeCom + outSmokeCom;
+	var inNonSmokeCom = document.miseMaintenance.elements["miseMaintenance:seatComNonSmokingIn"].value - 0;
+	var outNonSmokeCom = document.miseMaintenance.elements["miseMaintenance:seatComNonSmokingOut"].value - 0;
+	var sumNonSmokeCom = inNonSmokeCom + outNonSmokeCom;
+	var inSmokeOther = document.miseMaintenance.elements["miseMaintenance:seatOtherSmokingIn"].value - 0;
+	var outSmokeOther = document.miseMaintenance.elements["miseMaintenance:seatOtherSmokingOut"].value - 0;
+	var sumSmokeOther = inSmokeOther + outSmokeOther;
+	var inNonSmokeOther = document.miseMaintenance.elements["miseMaintenance:seatOtherNonSmokingIn"].value - 0;
+	var outNonSmokeOther = document.miseMaintenance.elements["miseMaintenance:seatOtherNonSmokingOut"].value - 0;
+	var sumNonSmokeOther = inNonSmokeOther + outNonSmokeOther;
+
+	//喫煙席計
+	document.miseMaintenance.elements["miseMaintenance:seatSmokingKei1"].value = sumSmoke1F;
+	document.miseMaintenance.elements["miseMaintenance:seatSmokingKei2"].value = sumSmoke2F;
+	document.miseMaintenance.elements["miseMaintenance:seatSmokingKei3"].value = sumSmoke3F;
+	document.miseMaintenance.elements["miseMaintenance:seatSmokingKeiU"].value = sumSmokeUnder;
+	document.miseMaintenance.elements["miseMaintenance:seatSmokingKeiC"].value = sumSmokeCom;
+	document.miseMaintenance.elements["miseMaintenance:seatSmokingKeiO"].value = sumSmokeOther;
+	//禁煙席
+	document.miseMaintenance.elements["miseMaintenance:seatNonSmokingKei1"].value = sumNonSmoke1F;
+	document.miseMaintenance.elements["miseMaintenance:seatNonSmokingKei2"].value = sumNonSmoke2F;
+	document.miseMaintenance.elements["miseMaintenance:seatNonSmokingKei3"].value = sumNonSmoke3F;
+	document.miseMaintenance.elements["miseMaintenance:seatNonSmokingKeiU"].value = sumNonSmokeUnder;
+	document.miseMaintenance.elements["miseMaintenance:seatNonSmokingKeiC"].value = sumNonSmokeCom;
+	document.miseMaintenance.elements["miseMaintenance:seatNonSmokingKeiO"].value = sumNonSmokeOther;
+	//フロア計
+	document.miseMaintenance.elements["miseMaintenance:seat1F"].value = sumSmoke1F + sumNonSmoke1F;
+	document.miseMaintenance.elements["miseMaintenance:seat2F"].value = sumSmoke2F + sumNonSmoke2F;
+	document.miseMaintenance.elements["miseMaintenance:seat3F"].value = sumSmoke3F + sumNonSmoke3F;
+	document.miseMaintenance.elements["miseMaintenance:seatUnder"].value = sumSmokeUnder + sumNonSmokeUnder;
+	document.miseMaintenance.elements["miseMaintenance:seatCommon"].value = sumSmokeCom + sumNonSmokeCom;
+	document.miseMaintenance.elements["miseMaintenance:seatOther"].value = sumSmokeOther + sumNonSmokeOther;
+	//総席数
+	document.miseMaintenance.elements["miseMaintenance:totalSmokingIn"].value = inSmoke1F + inSmoke2F + inSmoke3F + inSmokeUnder + inSmokeCom + inSmokeOther;
+	document.miseMaintenance.elements["miseMaintenance:totalSmokingOut"].value = outSmoke1F + outSmoke2F + outSmoke3F + outSmokeUnder + outSmokeCom + outSmokeOther;
+	document.miseMaintenance.elements["miseMaintenance:seatSmokingKei"].value = sumSmoke1F + sumSmoke2F + sumSmoke3F + sumSmokeUnder + sumSmokeCom + sumSmokeOther;
+	document.miseMaintenance.elements["miseMaintenance:totalNonSmokingIn"].value = inNonSmoke1F + inNonSmoke2F + inNonSmoke3F + inNonSmokeUnder + inNonSmokeCom + inNonSmokeOther;
+	document.miseMaintenance.elements["miseMaintenance:totalNonSmokingOut"].value = outNonSmoke1F + outNonSmoke2F + outNonSmoke3F + outNonSmokeUnder + outNonSmokeCom + outNonSmokeOther;
+	document.miseMaintenance.elements["miseMaintenance:seatNonSmokingKei"].value = sumNonSmoke1F + sumNonSmoke2F + sumNonSmoke3F + sumNonSmokeUnder + sumNonSmokeCom + sumNonSmokeOther;
+	document.miseMaintenance.elements["miseMaintenance:tSouSekisuu"].value = sumSmoke1F + sumNonSmoke1F
+																		 + sumSmoke2F + sumNonSmoke2F
+																		 + sumSmoke3F + sumNonSmoke3F
+																		 + sumSmokeUnder + sumNonSmokeUnder
+																		 + sumSmokeCom + sumNonSmokeCom
+																		 + sumSmokeOther + sumNonSmokeOther;
+}
+
+function calcPark() {
+	var parkOnlyIn  = document.miseMaintenance.elements["miseMaintenance:parkOnlyIn"].value - 0;
+	var parkCommIn  = document.miseMaintenance.elements["miseMaintenance:parkCommIn"].value - 0;
+	var parkOnlyOut = document.miseMaintenance.elements["miseMaintenance:parkOnlyOut"].value - 0;
+	var parkCommOut = document.miseMaintenance.elements["miseMaintenance:parkCommOut"].value - 0;
+	var parkKei     = parkOnlyIn + parkCommIn + parkOnlyOut + parkCommOut;
+	document.miseMaintenance.elements["miseMaintenance:parkKei"].value = parkKei;
+}
+
+function setSelectedTab(tabId) {
+	document.forms['miseMaintenance'].elements['miseMaintenance:selectedTab'].value = tabId;
+	changeTabArea(tabId);
+}
+
+
+function addRow(id ,tabId) {
+    setSelectedTab(tabId);
+
+    document.forms['miseMaintenance'].elements['miseMaintenance:__link_clicked__'].value='miseMaintenance:' + id;
+    document.forms['miseMaintenance'].submit();
+
+}
+
+//-->
+</script>
+<STYLE type="text/css">
+<!--
+/* テーブルデフォルト設定 パターン２*/
+/* テーブル幅 */
+table.body_table2 tr th.body_header4{
+  text-align            : left;
+}
+table.body_table2 {
+
+}
+.setspan1{
+  width:100%;
+  height:auto;
+  *height:auto;
+  display:block;
+  word-warp:break-word;
+  word-break:break-all;
+}
+
+-->
+</STYLE>
+
+<form m:id="miseMaintenance" m:onkeydown="return setDefaultSubmitButton('miseMaintenance','btnExecute');">
+	<input type="hidden" m:id="initMenuId" m:value="#{menuAction.initMenuId}"/>
+	<input type="hidden" m:id="initSubMenuId" m:value="#{menuAction.initSubMenuId}"/>
+	<input type="hidden" m:id="viewId" m:value="#{viewIdValue}"/>
+	<input type="hidden" m:id="selectedTab" m:value="#{miseMaintenanceDto.selectedTab}"/>
+
+	<div class="search_condition">
+	<input type="button" value="戻る" style="margin-right:6px;"
+	       m:action="#{miseMaintenanceEditAction.back}"/>
+	<input type="button" value="確認" m:id="btnExecute" m:action="#{miseMaintenanceEditAction.execute}"/>
+	</div>
+	<!-- 表示店舗コードと名称 -->
+	<table class="body_table" style="margin-top: 4px;">
+		<tr>
+			<th>会社</th>
+			<td><span m:converter="#{characterEncodingConverter}" m:value="#{miseMaintenanceDto.searchedCondCompanyName}"/>&nbsp;</td>
+			<th>店コード</th>
+		    <td>
+			<span m:value="#{miseMaintenanceDto.mstMise.miseCd}"/>&nbsp;
+			<span m:converter="#{characterEncodingConverter}" m:value="#{miseMaintenanceDto.mstMise.miseNameKj}"/>&nbsp;</td>
+		</tr>
+	</table>
+
+	<!-- タブ -------------------------->
+	<table class="element_browser" cellspacing="0" cellpadding="0"
+	       style="width:900px; margin-top: 4px;">
+	  <tr>
+	    <td class="tab_change_area_0 body_#{miseMaintenanceDto.selectedTab=='0'?'':'non_'}active_cell" width="240px"
+	        onClick="setSelectedTab('0');"
+	        onMouseOver="this.style.cursor='pointer';">基本情報</td>
+	    <td class="tab_change_area_1 body_#{miseMaintenanceDto.selectedTab=='1'?'':'non_'}active_cell" width="240px"
+	        onClick="setSelectedTab('1');"
+	        onMouseOver="this.style.cursor='pointer';">日付・店舗継承</td>
+	    <td class="tab_change_area_2 body_#{miseMaintenanceDto.selectedTab=='2'?'':'non_'}active_cell" width="240px"
+	        onClick="setSelectedTab('2');"
+	        onMouseOver="this.style.cursor='pointer';">特性・営業時間</td>
+	    <td class="tab_change_area_3 body_#{miseMaintenanceDto.selectedTab=='3'?'':'non_'}active_cell" width="240px"
+	        onClick="setSelectedTab('3');"
+	        onMouseOver="this.style.cursor='pointer';">地図・物件情報</td>
+	    <td></td>
+	    <td></td>
+	  </tr>
+	  <tr>
+	    <td class="tab_change_area_4 body_#{miseMaintenanceDto.selectedTab=='4'?'':'non_'}active_cell" width="200px"
+	        onClick="setSelectedTab('4');"
+	        onMouseOver="this.style.cursor='pointer';">客席情報</td>
+	    <td class="tab_change_area_5 body_#{miseMaintenanceDto.selectedTab=='5'?'':'non_'}active_cell" width="200px"
+	        onClick="setSelectedTab('5');"
+	        onMouseOver="this.style.cursor='pointer';">店舗契約情報</td>
+	    <td class="tab_change_area_6 body_#{miseMaintenanceDto.selectedTab=='6'?'':'non_'}active_cell" width="200px"
+	        onClick="changeTab('6');"
+	        onMouseOver="this.style.cursor='pointer';">改装・T/O・S/B</td>
+	    <td class="tab_change_area_9 body_#{miseMaintenanceDto.selectedTab=='9'?'':'non_'}active_cell" width="200px"
+	        onClick="setSelectedTab('9');"
+	        onMouseOver="this.style.cursor='pointer';">サービス実施状況</td>
+	    <td class="tab_change_area_10 body_#{miseMaintenanceDto.selectedTab=='10'?'':'non_'}active_cell" width="200px"
+	        onClick="setSelectedTab('10');"
+	        onMouseOver="this.style.cursor='pointer';">その他</td>
+	    <td></td>
+	    <td></td>
+	  </tr>
+	</table>
+	<table  style="width:950px;" class="element_browser" cellspacing="0" cellpadding="0">
+	   <tr ><td colspan="7" class="body_caption" style="height:5px;"/></tr>
+	</table>
+
+	<!--基本情報-->
+	<div class="tab_change_area_0 #{miseMaintenanceDto.selectedTab=='0'?'':'in'}visible_tab">
+		<div class="element_print"><p/>【基本情報タブ】</div>
+		<table class="body_table2" style="width:950px; border-top-width : 0px;">
+			<tr>
+				<th class="body_header4" colspan="4">名称</th>
+			</tr>
+			<tr>
+				<th width="130px">店コード</th>
+				<td width="*"><span m:value="#{miseMaintenanceDto.mstMise.miseCd}"/></td>
+				<th width="130px">担当SV</th>
+				<td width="*">
+					<span m:value="#{miseMaintenanceDto.mstMise.svCd}"/>&nbsp;
+					<span m:converter="#{characterEncodingConverter}" m:value="#{miseMaintenanceDto.mstMise.svNameKj}"/>
+				</td>
+			</tr>
+			<tr>
+				<th>店名称</th>
+				<td><span m:converter="#{characterEncodingConverter}" m:value="#{miseMaintenanceDto.mstMise.miseNameKj}"/></td>
+				<th>支部</th>
+				<td>
+					<span m:value="#{miseMaintenanceDto.mstMise.sibuCd}"/>&nbsp;
+					<span m:converter="#{characterEncodingConverter}" m:value="#{miseMaintenanceDto.mstMise.sibuName}"/>
+				</td>
+			</tr>
+			<tr>
+				<th>店名称カナ</th>
+				<td><span m:converter="#{characterEncodingConverter}" m:value="#{miseMaintenanceDto.mstMise.miseNameKna}"/></td>
+				<th>オーナー</th>
+				<td>
+					<span m:value="#{miseMaintenanceDto.mstMise.onerCd}"/>&nbsp;
+					<span m:converter="#{characterEncodingConverter}" m:value="#{miseMaintenanceDto.mstMise.onerNameKj}"/>
+				</td>
+			</tr>
+			<tr>
+				<th>店舗電話</th>
+				<td><span m:value="#{miseMaintenanceDto.mstMise.miseTel}"/></td>
+				<th>店区分</th>
+				<td>
+					<span m:converter="#{characterEncodingConverter}" m:value="#{miseMaintenanceDto.mstMise.miseKbn}"/>&nbsp;
+					<span m:converter="#{characterEncodingConverter}" m:value="#{miseMaintenanceDto.mstMise.aiteName}"/>
+				</td>
+			</tr>
+			<tr>
+				<th>事務所電話</th>
+				<td><span m:value="#{miseMaintenanceDto.mstMise.telOffice}"/></td>
+				<th>業態区分</th>
+				<td>
+					<span m:converter="#{characterEncodingConverter}" m:value="#{miseMaintenanceDto.mstGyotai.gyotaiKbn}"/>&nbsp;
+					<span m:converter="#{characterEncodingConverter}" m:value="#{miseMaintenanceDto.mstGyotai.gyotaiKbnName}"/>
+				</td>
+			</tr>
+			<tr>
+				<th>郵便番号</th>
+				<td><span m:value="#{miseMaintenanceDto.mstMise.misePostNo}" m:converter="#{maskConverterPostCd}"/></td>
+				<th>サブ業態区分</th>
+				<td>
+					<span m:converter="#{characterEncodingConverter}" m:value="#{miseMaintenanceDto.mstGyotai.gyotaiKbnSub}"/>&nbsp;
+					<span m:converter="#{characterEncodingConverter}" m:value="#{miseMaintenanceDto.mstGyotai.gyotaiKbnSubName}"/>
+				</td>
+			</tr>
+			<!--基本情報タブからPOS電話(INS)を削除-->
+			<tr style="display: none;">
+				<th>POS電話(INS)</th>
+				<td colspan=6><span m:value="#{miseMaintenanceDto.mstMise.p4TelNo}"/></td>
+			</tr>
+			<tr>
+				<th>住所</th>
+				<td colspan=6>
+					<span m:converter="#{characterEncodingConverter}" m:value="#{miseMaintenanceDto.mstMise.miseAdrs}"/>
+				</td>
+			</tr>
+			<tr>
+				<th>電話番号備考</th>
+				<td colspan=6><span class="setspan1" m:converter="#{characterEncodingConverter}" m:value="#{miseMaintenanceDto.mstMise.telNote}"/></td>
+			</tr>
+		</table>
+	</div>
+	<!--日付・店舗継承-->
+	<div class="tab_change_area_1 #{miseMaintenanceDto.selectedTab=='1'?'':'in'}visible_tab">
+		<div class="element_print"><p/>【日付・店舗継承タブ】</div>
+		<table class="body_table2" style="width:950px; border-top-width : 0px;">
+			<tr>
+				<th class="body_header4" colspan="4">日付情報</th>
+			</tr>
+			<tr>
+				<th width="130px">オープン日</th>
+				<td width="300px"><span m:value="#{miseMaintenanceDto.mstMise.openDt}" m:converter="#{dateConverter}"/></td>
+				<th width="150px">FC契約日</th>
+				<td width=250><span m:value="#{miseMaintenanceDto.mstMise.keiyakuDt}" m:converter="#{dateConverter}"/></td>
+			</tr>
+			<tr>
+				<th>クローズ日</th>
+				<td><span m:value="#{miseMaintenanceDto.mstMise.closeDt}" m:converter="#{dateConverter}"/></td>
+				<th>FC解約日</th>
+				<td><span m:value="#{miseMaintenanceDto.mstMise.kaiyakuDt}" m:converter="#{dateConverter}"/></td>
+			</tr>
+			<tr>
+				<th>クローズ理由</th>
+				<td colspan="3"><span m:converter="#{characterEncodingConverter}" m:value="#{miseMaintenanceDto.mstMise.closeReasonName}"/></td>
+			</tr>
+			<tr>
+				<th>クローズ備考</th>
+				<td colspan="3"><span m:converter="#{characterEncodingConverter}" m:value="#{miseMaintenanceDto.mstMise.closeReasonNote}"/></td>
+			</tr>
+			<tr><th class="body_header4" colspan="4">店舗継承</th></tr>
+			<tr>
+				<th>引継元店舗</th>
+				<td><span m:converter="#{characterEncodingConverter}" m:value="#{miseMaintenanceDto.mstMise.miseCdMoto}"/></td>
+				<th>引継ぎ(オープン)日</th>
+				<td><span m:value="#{miseMaintenanceDto.mstMise.hikitugiDtOpen}" m:converter="#{dateConverter}"/></td>
+			</tr>
+		</table>
+	</div>
+	<!--特性・営業時間-->
+	<div class="tab_change_area_2 #{miseMaintenanceDto.selectedTab=='2'?'':'in'}visible_tab">
+		<div class="element_print"><p/>【特性・営業時間タブ】</div>
+		<table class="body_table2" style="width:950px; border-top-width:0px; border-bottom-width:0px;">
+			<tr>
+				<th class="body_header4" colspan="4">緊急連絡先</th>
+			</tr>
+			<tr>
+				<th width="180px">緊急連絡先1</th>
+				<td width="280px">
+					<input type="text" class="width_110" m:value="#{miseMaintenanceDto.mstMiseYobi.emergenceTel1}" m:size="20" m:maxlength="15"/>
+				</td>
+				<th width="180px">緊急連絡先名1</th>
+				<td width="280px">
+					<input type="text" class="width_262" m:value="#{miseMaintenanceDto.mstMiseYobi.emergenceName1}" m:size="50" m:maxlength="40"/>
+				</td>
+			</tr>
+			<tr>
+				<th>緊急連絡先2</th>
+				<td>
+					<input type="text" class="width_110" m:value="#{miseMaintenanceDto.mstMiseYobi.emergenceTel2}" m:size="20" m:maxlength="15"/>
+				</td>
+				<th>緊急連絡先名2</th>
+				<td>
+					<input type="text" class="width_262" m:value="#{miseMaintenanceDto.mstMiseYobi.emergenceName2}" m:size="50" m:maxlength="40"/>
+				</td>
+			</tr>
+			<tr>
+				<th>緊急連絡先3</th>
+				<td>
+					<input type="text" class="width_110" m:value="#{miseMaintenanceDto.mstMiseYobi.emergenceTel3}" m:size="20" m:maxlength="15"/>
+				</td>
+				<th>緊急連絡先名3</th>
+				<td>
+					<input type="text" class="width_262" m:value="#{miseMaintenanceDto.mstMiseYobi.emergenceName3}" m:size="50" m:maxlength="40"/>
+				</td>
+			</tr>
+			<tr>
+				<th class="body_header4" colspan="4" style="border-top-width:0px;">営業時間</th>
+			</tr>
+			<tr>
+				<th>平日 開始・終了時間</th>
+				<td align="center">
+					<input type="text" name="平日 開始時間" m:value="#{miseMaintenanceDto.mstMise.openTmWkd}" m:size="6" m:maxlength="5" m:converter="#{timeConverter}"/>
+					&nbsp;～&nbsp;
+					<input type="text" name="平日 終了時間" m:value="#{miseMaintenanceDto.mstMise.closeTmWkd}" m:size="6" m:maxlength="5" m:converter="#{timeConverter}"/>
+				</td>
+				<th>日曜日 開始・終了時間</th>
+				<td align="center">
+					<input type="text" name="日曜日 開始時間" m:value="#{miseMaintenanceDto.mstMise.openTmHol}" m:size="6" m:maxlength="5" m:converter="#{timeConverter}"/>
+					&nbsp;～&nbsp;
+					<input type="text" name="日曜日 終了時間" m:value="#{miseMaintenanceDto.mstMise.closeTmHol}" m:size="6" m:maxlength="5" m:converter="#{timeConverter}"/>
+				</td>
+			</tr>
+			<tr>
+				<th>土曜日 開始・終了時間</th>
+				<td align="center">
+					<input type="text" name="土曜日 開始時間" m:value="#{miseMaintenanceDto.mstMise.openTmSat}" m:size="6" m:maxlength="5" m:converter="#{timeConverter}"/>
+					&nbsp;～&nbsp;
+					<input type="text" name="土曜日 終了時間" m:value="#{miseMaintenanceDto.mstMise.closeTmSat}" m:size="6" m:maxlength="5" m:converter="#{timeConverter}"/>
+				</td>
+				<th>休前日 開始・終了時間</th>
+				<td align="center">
+					<input type="text" name="休前日 開始時間" m:value="#{miseMaintenanceDto.mstMise.openTmHlb}" m:size="6" m:maxlength="5" m:converter="#{timeConverter}"/>
+					&nbsp;～&nbsp;
+					<input type="text" name="休前日 終了時間" m:value="#{miseMaintenanceDto.mstMise.closeTmHlb}" m:size="6" m:maxlength="5" m:converter="#{timeConverter}"/>
+				</td>
+			</tr>
+			<tr>
+				<th>備考</th>
+				<td colspan="3">
+					<input type="text" class="width_662"  name="" m:value="#{miseMaintenanceDto.mstMise.holNotes}" m:size="130" m:maxlength="200"/>
+				</td>
+			</tr>
+		</table>
+		<table class="body_table2" style="width:950px; border-top-width:0px; border-bottom-width:0px;">
+			<colgroup>
+				<col width="180px"/>
+				<col width="380px"/>
+				<col width="80px"/>
+				<col width="280px"/>
+			</colgroup>
+		<tr>
+			<th class="body_header4" colspan="2" style="border-top-width:0px;">店舗情報</th>
+			<th class="body_header4" colspan="2" style="border-top-width:0px;">坪数</th>
+		</tr>
+		<tr>
+			<th>店舗タイプ</th>
+			<td><span m:converter="#{characterEncodingConverter}" m:value="#{miseMaintenanceDto.mstMise.kbn2}"/>&nbsp;
+				<span m:converter="#{characterEncodingConverter}" m:value="#{miseMaintenanceDto.mstMise.mTypeKbnName}"/></td>
+			<th>敷地</th>
+			<td align="right">
+				<span m:converter="#{characterEncodingConverter}" m:value="#{miseMaintenanceDto.mstMise.sikiMenseki}"
+				      m:converter="#{numericConverte}"/>&nbsp;坪</td>
+		</tr>
+		<tr>
+			<th >店舗形態</th>
+			<td>
+				<span m:converter="#{characterEncodingConverter}" m:value="#{miseMaintenanceDto.mstMise.miseKeitai}"/>&nbsp;
+				<span m:converter="#{characterEncodingConverter}" m:value="#{miseMaintenanceDto.mstMise.mKeitaiName}"/></td>
+			<th>店舗</th>
+			<td align="right">
+				<span m:converter="#{characterEncodingConverter}" m:value="#{miseMaintenanceDto.mstMise.miseMenseki}"
+				      m:converter="#{numericConverte}"/>&nbsp;坪</td>
+		</tr>
+		<tr>
+			<th >立地</th>
+			<td>
+				<span m:converter="#{characterEncodingConverter}" m:value="#{miseMaintenanceDto.mstMise.tLocateKbn}"/>&nbsp;
+				<span m:converter="#{characterEncodingConverter}" m:value="#{miseMaintenanceDto.mstMise.locateName}"/></td>
+			<th>客席</th>
+			<td align="right">
+				<span m:converter="#{characterEncodingConverter}" m:value="#{miseMaintenanceDto.mstMise.kyakMenseki}"
+				      m:converter="#{numericConverte}"/>&nbsp;坪</td>
+		</tr>
+		<!-- 特性・営業時間タブからメニュータイプを削除 -->
+		<tr style="display: none;">
+			<th>メニュータイプ</th>
+			<td>
+				<span m:converter="#{characterEncodingConverter}" m:value="#{miseMaintenanceDto.mstMise.menuType}"/>&nbsp;
+				<span m:converter="#{characterEncodingConverter}" m:value="#{miseMaintenanceDto.mstMise.typeName}"/></td>
+			<th></th>
+			<td align="right"></td>
+		</tr>
+		</table>
+	<!-- 店舗ガス種別 -->
+	<table class="body_table2" style="width:950px; border-top-width:0px;">
+		<colgroup>
+			<col width="180px"/>
+			<col width="280px"/>
+			<col width="180px"/>
+			<col width="280px"/>
+		</colgroup>
+		<tr>
+			<th style=" border-top-width:0px;"
+			    class="body_header4" colspan="4" style="border-top-width:0px;">店舗ガス種別</th>
+		</tr>
+		<tr>
+			<th>ガス種別</th>
+			<td>
+				<select class="condition_field"
+						m:value="#{miseMaintenanceDto.mstMiseYobi.yobiKbn1}"
+						m:items="#{miseMaintenanceDto.listShubetuGas}"
+						m:itemValue="gasShu"
+						m:itemLabel="gasShuDisp"
+						m:nullLabel=" ">
+					<option value=""></option>
+					<option value="">都市ガス</option>
+					<option value="">LPガス</option>
+					<option value="">オール電化</option>
+				</select>
+			</td>
+			<th>エアコン種別</th>
+			<td>
+				<select class="condition_field"
+						m:value="#{miseMaintenanceDto.mstMiseYobi.yobiKbn2}"
+						m:items="#{miseMaintenanceDto.listShubetuAircon}"
+						m:itemValue="airConShu"
+						m:itemLabel="airConShuDisp"
+						m:nullLabel=" ">
+					<option value=""></option>
+					<option value="">ガス空調</option>
+					<option value="">電気空調</option>
+				</select>
+			</td>
+		</tr>
+	</table>
+	</div>
+	<!--地図・物件情報-->
+	<div class="tab_change_area_3 #{miseMaintenanceDto.selectedTab=='3'?'':'in'}visible_tab">
+		<div class="element_print"><p/>【地図・物件情報タブ】</div>
+	<table class="body_table2" style="width:950px; border-top-width:0px; border-bottom-width : 0px;">
+		<tr>
+			<th class="body_header4" colspan="2">地図情報</th>
+		</tr>
+		<tr>
+			<th width=170>公式ホームページURL</th>
+			<td width="*">
+				<input type="text" class="width_662" m:value="#{miseMaintenanceDto.trnUrl.url}" m:size="130" m:maxlength="200"/>
+			</td>
+		</tr>
+	</table>
+	<table class="body_table2" style="width:950px; border-top-width:0px; border-bottom-width : 0px;">
+		<tr>
+			<th class="body_header4" colspan="6" style="border-top-width:0px;">駐車場</th>
+		</tr>
+		<tr>
+			<th width="170px">総台数</th>
+			<td width="*" align="right">
+				<input m:id="parkKei" type="text" class="width_42" style="text-align:right;" name="総台数" m:value="#{miseMaintenanceDto.mstMise.parkKei}" m:size="6" m:maxlength="5" m:disabled="true"/>台
+			</td>
+			<th width="150px">専用(敷地内)</th>
+			<td width="140px" align="right">
+				<input class="imenotuse width_42" m:id="parkOnlyIn" type="text" style="text-align:right;" name="専用(敷地内)" m:value="#{miseMaintenanceDto.mstMise.parkOnlyIn}" m:size="6" m:maxlength="5" m:onchange="calcPark();"/>台
+			</td>
+			<th width="150px">共用(敷地内)</th>
+			<td width="140px" align="right">
+				<input class="imenotuse width_42" m:id="parkCommIn" type="text" style="text-align:right;" name="共用(敷地内)" m:value="#{miseMaintenanceDto.mstMise.parkCommIn}" m:size="6" m:maxlength="5" m:onchange="calcPark();"/>台
+			</td>
+		</tr>
+		<tr>
+			<td style="border-left-style:none;" colspan="2"></td>
+			<th>専用(隣接)</th>
+			<td align="right">
+				<input class="imenotuse width_42" m:id="parkOnlyOut" type="text" style="text-align:right;" name="専用(隣接)" m:value="#{miseMaintenanceDto.mstMise.parkOnlyOut}" m:size="6" m:maxlength="5" m:onchange="calcPark();"/>台
+			</td>
+			<th>共用(隣接)</th>
+			<td align="right">
+				<input class="imenotuse width_42" m:id="parkCommOut" type="text" style="text-align:right;" name="共用(隣接)" m:value="#{miseMaintenanceDto.mstMise.parkCommOut}" m:size="6" m:maxlength="5" m:onchange="calcPark();"/>台
+			</td>
+		</tr>
+	</table>
+	<table class="body_table2" style="width:950px; border-top-width:0px;">
+		<tr>
+			<th class="body_header4" colspan="4" style="border-top-width:0px;">交通手段</th>
+		</tr>
+		<tr>
+			<th width="170px">最寄の駅(線)</th>
+			<td width="*" align="right">
+				<input type="text" class="width_242" name="" m:value="#{miseMaintenanceDto.mstMise.accessLine}" m:size="46" m:maxlength="40"/>&nbsp;線
+			</td>
+			<th width="170px">最寄の駅からの距離</th>
+			<td width="200px" align="right">
+				<input class="imenotuse width_62" type="text" style="text-align:right;" name="" m:value="#{miseMaintenanceDto.mstMise.accessDist}" m:size="10" m:maxlength="7"/>&nbsp;Km
+			</td>
+		</tr>
+		<tr>
+			<th>最寄の駅(名)</th>
+			<td align="right">
+				<input type="text" class="width_242" name="" m:value="#{miseMaintenanceDto.mstMise.accessStation}" m:size="46" m:maxlength="40"/>&nbsp;駅
+			</td>
+			<th>最寄の駅からの時間</th>
+			<td align="right">
+				<input class="imenotuse width_62" type="text" style="text-align:right;" name="" m:value="#{miseMaintenanceDto.mstMise.accessTime}" m:size="10" m:maxlength="5"/>&nbsp; 分
+			</td>
+		</tr>
+		<tr>
+			<th>交通手段</th>
+			<td colspan="3">
+				<select style="width:90px;" class="condition_field"
+						m:value="#{miseMaintenanceDto.mstMise.accessWay}"
+						m:items="#{miseMaintenanceDto.listPulldownAccessWay}"
+						m:itemValue="accessWay"
+						m:itemLabel="accessWayName"
+						m:nullLabel=" ">
+					<option>徒歩</option>
+					<option>バス</option>
+				</select>
+			</td>
+		</tr>
+		<tr>
+			<th>交通手段備考</th>
+			<td colspan="3">
+				<input type="text" class="width_662"  name="" m:value="#{miseMaintenanceDto.mstMise.accessWayNote}" m:size="130" m:maxlength="200"/>
+			</td>
+		</tr>
+		<tr>
+			<th class="body_header4" colspan="4">事業計画</th>
+		</tr>
+		<tr>
+			<th>投資金額</th>
+			<td>
+				<input class="imenotuse" type="text" style="text-align:right;" name="投資金額" m:value="#{miseMaintenanceDto.mstMise.prjInvest}" m:size="15" m:maxlength="14" m:converter="#{numericConverterKingaku}" />
+			</td>
+			<th>事業計画売上</th>
+			<td>
+				<input class="imenotuse" type="text" style="text-align:right;" name="事業計画売上" m:value="#{miseMaintenanceDto.mstMise.prjUriage}" m:converter="#{numericConverterKingaku}" m:size="15" m:maxlength="14"/>
+			</td>
+		</tr>
+		<tr>
+			<th class="body_header4" colspan="4">設計・施工</th>
+		</tr>
+		<tr>
+			<th>設計業者</th>
+			<td>
+				<input type="text" class="width_262"  name="" m:value="#{miseMaintenanceDto.mstMise.toriSekkei}" m:size="50" m:maxlength="40"/>
+			</td>
+			<th>施工業者</th>
+			<td>
+				<input type="text" class="width_262" name="" m:value="#{miseMaintenanceDto.mstMise.toriSekou}" m:size="50" m:maxlength="40"/>
+			</td>
+		</tr>
+
+	</table>
+	</div>
+	<!--客席情報-->
+	<div class="tab_change_area_4 #{miseMaintenanceDto.selectedTab=='4'?'':'in'}visible_tab">
+		<div class="element_print"><p/>【客席情報タブ】</div>
+		<table class="body_table2" style="width:950px;">
+			<tr>
+				<th class="body_header4" colspan="2">客席数</th>
+			</tr>
+			<tr>
+				<td width="100px">分煙区分</td>
+				<td width=540>
+					<select class="condition_field"
+							m:value="#{miseMaintenanceDto.mstMise.sepSmokeShu}"
+							m:items="#{miseMaintenanceDto.listPulldownSmoke}"
+							m:itemValue="sepSmokeShu"
+							m:itemLabel="sepShokeShuName"
+							m:nullLabel=" ">
+						<option value="">分煙区分１</option>
+						<option value="">分煙区分２</option>
+						<option value="">分煙区分３</option>
+					</select>
+				</td>
+			</tr>
+		</table>
+
+	<table class="body_table2" style="margin-top: 5px;">
+		<tr class="header_row">
+			<th colspan="2"></th>
+			<th colspan="3">喫煙席数</th>
+			<th colspan="3">禁煙席数</th>
+			<th></th>
+		</tr>
+		<tr class="header_row">
+			<th width=80>フロア</th>
+			<th width=50>席有</th>
+			<th width=80>店内</th>
+			<th width=80>店外</th>
+			<th width=80>喫煙席計</th>
+			<th width=80>店内</th>
+			<th width=80>店外</th>
+			<th width=80>禁煙席計</th>
+			<th width=80>フロア計</th>
+		</tr>
+		<tr>
+			<th>1F</th>
+			<td style="text-align:center;">
+				<input type="checkbox" m:value="#{miseMaintenanceDto.mstMise.seat1fFlgBoolean}"/>
+			</td>
+			<td style="text-align:right;">
+				<input class="imenotuse width_42" m:id="seat1FSmokingIn" type="text" style="text-align:right;"  m:size="6" m:maxlength="5" m:value="#{miseMaintenanceDto.mstMise.seat1FSmokingIn}" m:onchange="calcSeki();"/>
+			</td>
+			<td style="text-align:right;">
+				<input class="imenotuse width_42" m:id="seat1FSmokingOut" type="text" style="text-align:right;"  m:size="6" m:maxlength="5" m:value="#{miseMaintenanceDto.mstMise.seat1FSmokingOut}" m:onchange="calcSeki();"/>
+			</td>
+			<td style="background-color:#b0ff9f;text-align:right;">
+				<input class="imenotuse width_42" m:id="seatSmokingKei1" type="text" style="text-align:right;" m:size="6" m:maxlength="5" m:value="#{miseMaintenanceDto.mstMise.seatSmokingKei1}" m:disabled="true"/>
+			</td>
+			<td  style="text-align:right;">
+				<input class="imenotuse width_42" m:id="seat1FNonSmokingIn" type="text" style="text-align:right;"  m:size="6" m:maxlength="5" m:value="#{miseMaintenanceDto.mstMise.seat1FNonSmokingIn}" m:onchange="calcSeki();"/>
+			</td>
+			<td  style="text-align:right;">
+				<input class="imenotuse width_42" m:id="seat1FNonSmokingOut" type="text" style="text-align:right;"  m:size="6" m:maxlength="5" m:value="#{miseMaintenanceDto.mstMise.seat1FNonSmokingOut}" m:onchange="calcSeki();"/>
+			</td>
+			<td style="background-color:#b0ff9f;text-align:right;">
+				<input class="imenotuse width_42" m:id="seatNonSmokingKei1" type="text" style="text-align:right;"  m:size="6" m:maxlength="5" m:value="#{miseMaintenanceDto.mstMise.seatNonSmokingKei1}" m:disabled="true"/>
+			</td>
+			<td style="background-color:#b0ff9f;text-align:right;">
+				<input class="imenotuse width_42" m:id="seat1F" type="text" style="text-align:right;"  m:size="6" m:maxlength="5" m:value="#{miseMaintenanceDto.mstMise.seat1F}" m:disabled="true"/>
+			</td>
+		</tr>
+		<tr>
+			<th>2F</th>
+			<td style="text-align:center;">
+				<input type="checkbox" m:value="#{miseMaintenanceDto.mstMise.seat2fFlgBoolean}"/>
+			</td>
+			<td style="text-align:right;">
+				<input class="imenotuse width_42" m:id="seat2FSmokingIn" type="text" style="text-align:right;"  m:size="6" m:maxlength="5" m:value="#{miseMaintenanceDto.mstMise.seat2FSmokingIn}" m:onchange="calcSeki();"/></td>
+			<td style="text-align:right;">
+				<input class="imenotuse width_42" m:id="seat2FSmokingOut" type="text" style="text-align:right;"  m:size="6" m:maxlength="5" m:value="#{miseMaintenanceDto.mstMise.seat2FSmokingOut}" m:onchange="calcSeki();"/></td>
+			<td style="background-color:#b0ff9f;text-align:right;">
+				<input class="imenotuse width_42" m:id="seatSmokingKei2" type="text" style="text-align:right;"  m:size="6" m:maxlength="5" m:value="#{miseMaintenanceDto.mstMise.seatSmokingKei2}" m:disabled="true"/></td>
+			<td style="text-align:right;">
+				<input class="imenotuse width_42" m:id="seat2FNonSmokingIn" type="text" style="text-align:right;"  m:size="6" m:maxlength="5" m:value="#{miseMaintenanceDto.mstMise.seat2FNonSmokingIn}" m:onchange="calcSeki();"/></td>
+			<td style="text-align:right;">
+				<input class="imenotuse width_42" m:id="seat2FNonSmokingOut" type="text" style="text-align:right;"  m:size="6" m:maxlength="5" m:value="#{miseMaintenanceDto.mstMise.seat2FNonSmokingOut}" m:onchange="calcSeki();"/></td>
+			<td style="background-color:#b0ff9f;text-align:right;">
+				<input class="imenotuse width_42" m:id="seatNonSmokingKei2" type="text" style="text-align:right;"  m:size="6" m:maxlength="5" m:value="#{miseMaintenanceDto.mstMise.seatNonSmokingKei2}" m:disabled="true"/></td>
+			<td style="background-color:#b0ff9f;text-align:right;">
+				<input class="imenotuse width_42" m:id="seat2F" type="text" style="text-align:right;"  m:size="6" m:maxlength="5" m:value="#{miseMaintenanceDto.mstMise.seat2F}" m:disabled="true"/></td>
+		</tr>
+		<tr>
+			<th>3F</th>
+			<td style="text-align:center;">
+				<input type="checkbox" m:value="#{miseMaintenanceDto.mstMise.seat3fFlgBoolean}"/>
+			</td>
+			<td style="text-align:right;">
+				<input class="imenotuse width_42" m:id="seat3FSmokingIn" type="text" style="text-align:right;"  m:size="6" m:maxlength="5" m:value="#{miseMaintenanceDto.mstMise.seat3FSmokingIn}" m:onchange="calcSeki();"/></td>
+			<td style="text-align:right;">
+				<input class="imenotuse width_42" m:id="seat3FSmokingOut" type="text" style="text-align:right;"  m:size="6" m:maxlength="5" m:value="#{miseMaintenanceDto.mstMise.seat3FSmokingOut}" m:onchange="calcSeki();"/></td>
+			<td style="background-color:#b0ff9f;text-align:right;">
+				<input class="imenotuse width_42" m:id="seatSmokingKei3" type="text" style="text-align:right;"  m:size="6" m:maxlength="5" m:value="#{miseMaintenanceDto.mstMise.seatSmokingKei3}" m:disabled="true"/></td>
+			<td style="text-align:right;">
+				<input class="imenotuse width_42" m:id="seat3FNonSmokingIn" type="text" style="text-align:right;"  m:size="6" m:maxlength="5" m:value="#{miseMaintenanceDto.mstMise.seat3FNonSmokingIn}" m:onchange="calcSeki();"/></td>
+			<td style="text-align:right;">
+				<input class="imenotuse width_42" m:id="seat3FNonSmokingOut" type="text" style="text-align:right;"  m:size="6" m:maxlength="5" m:value="#{miseMaintenanceDto.mstMise.seat3FNonSmokingOut}" m:onchange="calcSeki();"/></td>
+			<td style="background-color:#b0ff9f;text-align:right;">
+				<input class="imenotuse width_42" m:id="seatNonSmokingKei3" type="text" style="text-align:right;"  m:size="6" m:maxlength="5" m:value="#{miseMaintenanceDto.mstMise.seatNonSmokingKei3}" m:disabled="true"/></td>
+			<td style="background-color:#b0ff9f;text-align:right;">
+				<input class="imenotuse width_42" m:id="seat3F" type="text" style="text-align:right;"  m:size="6" m:maxlength="5" m:value="#{miseMaintenanceDto.mstMise.seat3F}" m:disabled="true"/></td>
+		</tr>
+		<tr>
+			<th>地下</th>
+			<td style="text-align:center;">
+				<input type="checkbox" m:value="#{miseMaintenanceDto.mstMise.seatUnderFlgBoolean}"/>
+			</td>
+			<td style="text-align:right;">
+				<input class="imenotuse width_42" m:id="seatUnderSmokingIn" type="text" style="text-align:right;"  m:size="6" m:maxlength="5" m:value="#{miseMaintenanceDto.mstMise.seatUnderSmokingIn}" m:onchange="calcSeki();"/></td>
+			<td style="text-align:right;">
+				<input class="imenotuse width_42" m:id="seatUnderSmokingOut" type="text" style="text-align:right;"  m:size="6" m:maxlength="5" m:value="#{miseMaintenanceDto.mstMise.seatUnderSmokingOut}" m:onchange="calcSeki();"/></td>
+			<td style="background-color:#b0ff9f;text-align:right;">
+				<input class="imenotuse width_42" m:id="seatSmokingKeiU" type="text" style="text-align:right;"  m:size="6" m:maxlength="5" m:value="#{miseMaintenanceDto.mstMise.seatSmokingKeiU}" m:disabled="true"/></td>
+			<td style="text-align:right;">
+				<input class="imenotuse width_42" m:id="seatUnderNonSmokingIn" type="text" style="text-align:right;"  m:size="6" m:maxlength="5" m:value="#{miseMaintenanceDto.mstMise.seatUnderNonSmokingIn}" m:onchange="calcSeki();"/></td>
+			<td style="text-align:right;">
+				<input class="imenotuse width_42" m:id="seatUnderNonSmokingOut" type="text" style="text-align:right;"  m:size="6" m:maxlength="5" m:value="#{miseMaintenanceDto.mstMise.seatUnderNonSmokingOut}" m:onchange="calcSeki();"/></td>
+			<td style="background-color:#b0ff9f;text-align:right;">
+				<input class="imenotuse width_42" m:id="seatNonSmokingKeiU" type="text" style="text-align:right;"  m:size="6" m:maxlength="5" m:value="#{miseMaintenanceDto.mstMise.seatNonSmokingKeiU}" m:disabled="true"/></td>
+			<td style="background-color:#b0ff9f;text-align:right;">
+				<input class="imenotuse width_42" m:id="seatUnder" type="text" style="text-align:right;"  m:size="6" m:maxlength="5" m:value="#{miseMaintenanceDto.mstMise.seatUnder}" m:disabled="true"/></td>
+		</tr>
+		<tr>
+			<th>共有</th>
+			<td style="text-align:center;">
+				<input type="checkbox" m:value="#{miseMaintenanceDto.mstMise.seatCommonFlgBoolean}"/>
+			</td>
+			<td style="text-align:right;">
+				<input class="imenotuse width_42" m:id="seatComSmokingIn" type="text" style="text-align:right;"  m:size="6" m:maxlength="5" m:value="#{miseMaintenanceDto.mstMise.seatCommonSmokingIn}" m:onchange="calcSeki();"/></td>
+			<td style="text-align:right;">
+				<input class="imenotuse width_42" m:id="seatComSmokingOut" type="text" style="text-align:right;"  m:size="6" m:maxlength="5" m:value="#{miseMaintenanceDto.mstMise.seatCommonSmokingOut}" m:onchange="calcSeki();"/></td>
+			<td style="background-color:#b0ff9f;text-align:right;">
+				<input class="imenotuse width_42" m:id="seatSmokingKeiC" type="text" style="text-align:right;"  m:size="6" m:maxlength="5" m:value="#{miseMaintenanceDto.mstMise.seatSmokingKeiC}" m:disabled="true"/></td>
+			<td style="text-align:right;">
+				<input class="imenotuse width_42" m:id="seatComNonSmokingIn" type="text" style="text-align:right;"  m:size="6" m:maxlength="5" m:value="#{miseMaintenanceDto.mstMise.seatCommonNonSmokingIn}" m:onchange="calcSeki();"/></td>
+			<td style="text-align:right;">
+				<input class="imenotuse width_42" m:id="seatComNonSmokingOut" type="text" style="text-align:right;"  m:size="6" m:maxlength="5" m:value="#{miseMaintenanceDto.mstMise.seatCommonNonSmokingOut}" m:onchange="calcSeki();"/></td>
+			<td style="background-color:#b0ff9f;text-align:right;">
+				<input class="imenotuse width_42" m:id="seatNonSmokingKeiC" type="text" style="text-align:right;" m:size="6" m:maxlength="5" m:value="#{miseMaintenanceDto.mstMise.seatNonSmokingKeiC}" m:disabled="true"/></td>
+			<td style="background-color:#b0ff9f;text-align:right;">
+				<input class="imenotuse width_42" m:id="seatCommon" type="text" style="text-align:right;" m:size="6" m:maxlength="5" m:value="#{miseMaintenanceDto.mstMise.seatCommon}" m:disabled="true"/></td>
+		</tr>
+		<tr>
+			<th>その他</th>
+			<td style="text-align:center;">
+				<input type="checkbox" m:value="#{miseMaintenanceDto.mstMise.seatOtherFlgBoolean}"/>
+			</td>
+			<td style="text-align:right;">
+				<input class="imenotuse width_42" m:id="seatOtherSmokingIn" type="text" style="text-align:right;"  m:size="6" m:maxlength="5" m:value="#{miseMaintenanceDto.mstMise.seatOtherSmokingIn}" m:onchange="calcSeki();"/></td>
+			<td style="text-align:right;">
+				<input class="imenotuse width_42" m:id="seatOtherSmokingOut" type="text" style="text-align:right;"  m:size="6" m:maxlength="5" m:value="#{miseMaintenanceDto.mstMise.seatOtherSmokingOut}" m:onchange="calcSeki();"/></td>
+			<td style="background-color:#b0ff9f;text-align:right;">
+				<input class="imenotuse width_42" m:id="seatSmokingKeiO" type="text" style="text-align:right;" m:size="6" m:maxlength="5" m:value="#{miseMaintenanceDto.mstMise.seatSmokingKeiO}" m:disabled="true"/></td>
+			<td style="text-align:right;">
+				<input class="imenotuse width_42" m:id="seatOtherNonSmokingIn" type="text" style="text-align:right;"  m:size="6" m:maxlength="5" m:value="#{miseMaintenanceDto.mstMise.seatOtherNonSmokingIn}" m:onchange="calcSeki();"/></td>
+			<td style="text-align:right;">
+				<input class="imenotuse width_42" m:id="seatOtherNonSmokingOut" type="text" style="text-align:right;"  m:size="6" m:maxlength="5" m:value="#{miseMaintenanceDto.mstMise.seatOtherNonSmokingOut}" m:onchange="calcSeki();"/></td>
+			<td style="background-color:#b0ff9f;text-align:right;">
+				<input class="imenotuse width_42" m:id="seatNonSmokingKeiO" type="text" style="text-align:right;"  m:size="6" m:maxlength="5" m:value="#{miseMaintenanceDto.mstMise.seatNonSmokingKeiO}" m:disabled="true"/></td>
+			<td style="background-color:#b0ff9f;text-align:right;">
+				<input class="imenotuse width_42" m:id="seatOther" type="text" style="text-align:right;"  m:size="6" m:maxlength="5" m:value="#{miseMaintenanceDto.mstMise.seatOther}" m:disabled="true"/></td>
+		</tr>
+		<tr>
+			<th>総席数</th>
+			<td style="background-color:#ffbb91;text-align:right;"></td>
+			<td style="background-color:#ffbb91;text-align:right;">
+				<input class="imenotuse width_42" m:id="totalSmokingIn" type="text" style="text-align:right;" m:size="6" m:maxlength="5" m:value="#{miseMaintenanceDto.mstMise.totalSmokingIn}" m:disabled="true"/>席</td>
+			<td style="background-color:#ffbb91;text-align:right;">
+				<input class="imenotuse width_42" m:id="totalSmokingOut" type="text" style="text-align:right;" m:size="6" m:maxlength="5" m:value="#{miseMaintenanceDto.mstMise.totalSmokingOut}" m:disabled="true"/>席</td>
+			<td style="background-color:#ffbb91;text-align:right;">
+				<input class="imenotuse width_42" m:id="seatSmokingKei" type="text" style="text-align:right;" m:size="6" m:maxlength="5" m:value="#{miseMaintenanceDto.mstMise.seatSmokingKei}" m:disabled="true"/>席</td>
+			<td style="background-color:#ffbb91;text-align:right;">
+				<input class="imenotuse width_42" m:id="totalNonSmokingIn" type="text" style="text-align:right;" m:size="6" m:maxlength="5" m:value="#{miseMaintenanceDto.mstMise.totalNonSmokingIn}" m:disabled="true"/>席</td>
+			<td style="background-color:#ffbb91;text-align:right;">
+				<input class="imenotuse width_42" m:id="totalNonSmokingOut" type="text" style="text-align:right;" m:size="6" m:maxlength="5" m:value="#{miseMaintenanceDto.mstMise.totalNonSmokingOut}" m:disabled="true"/>席</td>
+			<td style="background-color:#ffbb91;text-align:right;">
+				<input class="imenotuse width_42" m:id="seatNonSmokingKei" type="text" style="text-align:right;" m:size="6" m:maxlength="5" m:value="#{miseMaintenanceDto.mstMise.seatNonSmokingKei}" m:disabled="true"/>席</td>
+			<td style="background-color:#ffbb91;text-align:right;">
+				<input class="imenotuse width_42" m:id="tSouSekisuu" type="text" style="text-align:right;" m:size="6" m:maxlength="5" m:value="#{miseMaintenanceDto.mstMise.tSouSekisuu}" m:disabled="true"/>席</td>
+		</tr>
+	</table>
+	</div>
+	<!--店舗契約情報　物件賃貸情報-->
+	<div class="tab_change_area_5 #{miseMaintenanceDto.selectedTab=='5'?'':'in'}visible_tab">
+		<div class="element_print"><p/>【店舗契約情報タブ】</div>
+		<table cellspacing="0" cellpadding="0" width="680px">
+			<tr>
+				<td>
+					<table class="body_table2" width="300" style="border-top-width:0px;">
+						<tr>
+							<th class="body_header4" colspan="2">物件情報</th>
+						</tr>
+						<tr>
+							<th width="100px">契約日</th>
+							<td width="*">
+								<span m:value="#{miseMaintenanceDto.mstMise.keiyakuFirst}" m:converter="#{dateConverter}"/>
+							</td>
+						</tr>
+					</table>
+				</td>
+				<td align="right" valign="bottom">
+					<input type="button" value="行追加" m:onclick="addRow('addRowBukken','5');"/>
+					<input type="button" value="行削除" m:onclick="addRow('delRowBukken','5');"/>
+				    <a m:id="addRowBukken" m:action="#{miseMaintenanceEditAction.addRowBukken}"/>
+				    <a m:id="delRowBukken" m:action="#{miseMaintenanceEditAction.delRowBukken}"/>
+				</td>
+			</tr>
+		</table>
+		<table class="body_table2" style="width:680px; margin-top: 5px;">
+			<tr class="header_row">
+				<th width="20px"></th>
+				<th width="100px">更新日</th>
+				<th width="100px">家賃</th>
+				<th width="120px">家賃税区分</th>
+				<th width="*">家主</th>
+			</tr>
+		</table>
+		<div class="scroll_area" style="width:700px;height:76px;">
+		<table class="body_table2" style="width:680px; border-top-width:0px;">
+			<div m:inject="s:forEach" m:items="#{miseMaintenanceDto.listBukken}" m:var="e" m:varIndex="d">
+			<tr class="#{d==0?'non_top_border':''}">
+				<td width="20px"><input type="checkbox" m:value="#{e.delFlg}"/></td>
+				<td width="100px"><input type="text" style="width:86px" m:size="15" m:maxlength="10" m:value="#{e.keiyakuUpdate}" m:converter="#{dateConverter}" /></td>
+				<td width="100px"><input class="imenotuse" type="text" m:size="15" m:maxlength="14" m:value="#{e.keiyakuYachin}" m:converter="#{numericConverterKingaku}" style="text-align:right;width:86px;"/></td>
+				<td width="120px"><select style="width:100px;" class="condition_field"
+							m:value="#{e.yachinZeiKbn}"
+							m:items="#{miseMaintenanceDto.listPulldownYachin}"
+							m:itemValue="yachinZeiKbn"
+							m:itemLabel="yachinZeiKbnName"
+							m:nullLabel=" ">
+						<option value="">税区分１</option>
+						<option value="">税区分２</option>
+						<option value="">税区分３</option>
+					</select>
+				</td>
+				<td width="*"><input style="width:310px" type="text" m:size="60" m:maxlength="40" m:value="#{e.keiyakuOner}"/></td>
+			</tr>
+			</div>
+		</table>
+		</div>
+
+		<table class="body_table2" style="width:950px; margin-top: 5px;">
+			<tr>
+				<th>家賃備考</th>
+				<td colspan=5><input class="imeon" style="width:760px" type="text" m:size="150" m:maxlength="200" m:value="#{miseMaintenanceDto.mstMise.keiyakuNotes}"/></td>
+			</tr>
+			<tr>
+				<th width="100px">転貸</th>
+				<td width=110>
+				  <select style="width:80px;" m:value="#{miseMaintenanceDto.mstMise.tentai}">
+				    <option value=""> </option>
+				    <option value="1">あり</option>
+				    <option value="0">なし</option>
+				  </select>
+				</td>
+				<th width=110>転貸開始日</th>
+				<td width=110><input class="imenotuse" style="width:86px" type="text" m:size="15" m:maxlength="10" m:value="#{miseMaintenanceDto.mstMise.tentaiStartDt}" m:converter="#{dateConverter}"/></td>
+				<th width=110>転貸終了日</th>
+				<td width=340><input class="imenotuse" style="width:86px" type="text" m:size="15" m:maxlength="10" m:value="#{miseMaintenanceDto.mstMise.tentaiEndDt}" m:converter="#{dateConverter}"/></td>
+			</tr>
+			<tr>
+				<th>転貸情報</th>
+				<td colspan=5><textarea class="imeon" style="width:837px;height:68px;overflow:auto" m:size="150" m:maxlength="400" m:value="#{miseMaintenanceDto.mstMise.tentaiInfo}"></textarea></td>
+			</tr>
+		</table>
+
+		<!--賃貸情報-->
+		<table class="body_table2" style="width:680px;margin-top: 5px;">
+			<tr class="body_caption1">
+				<td colspan="3">賃貸情報</td>
+				<td align="right">
+					<input type="button" value="行追加" m:onclick="addRow('addRowChintai','5');"/>
+					<input type="button" value="行削除" m:onclick="addRow('delRowChintai','5');"/>
+				    <a m:id="addRowChintai" m:action="#{miseMaintenanceEditAction.addRowChintai}"/>
+				    <a m:id="delRowChintai" m:action="#{miseMaintenanceEditAction.delRowChintai}"/></td>
+			</tr>
+			<tr class="header_row">
+				<th width="20px">&nbsp;</th>
+				<th width="*">賃貸店舗</th>
+				<th width="150px">賃貸店舗契約日</th>
+				<th width="150px">契約終了予定日</th>
+			</tr>
+		</table>
+		<div class="scroll_area" style="width:700px;height:76px;">
+			<table class="body_table2" style="width:680px; border-top-width : 0px;">
+				<div m:inject="s:forEach" m:items="#{miseMaintenanceDto.listChintai}" m:var="e" m:varIndex="d">
+				<tr class="#{d==0?'non_top_border':''}">
+					<td width="20px"><input type="checkbox" m:value="#{e.delFlg}"/></td>
+					<td width="*">
+						<select class="condition_field"
+								m:value="#{e.miseLeaseShu}"
+								m:items="#{miseMaintenanceDto.listPulldownChintai}"
+								m:itemValue="miseLeaseShu"
+								m:itemLabel="miseLeaseName"
+								m:nullLabel=" ">
+							<option value="">モスフードサービス</option>
+							<option value="">トモス</option>
+							<option value="">四季菜</option>
+						</select>
+					</td>
+					<td width="150px"><input class="imenotuse" type="text" m:size="15" m:maxlength="10" m:value="#{e.miseLeaseStart}" m:converter="#{dateConverter}"/></td>
+					<td width="150px"><input class="imenotuse" type="text" m:size="15" m:maxlength="10" m:value="#{e.miseLeaseEnd}" m:converter="#{dateConverter}"/></td>
+				</tr>
+				</div>
+			</table>
+		</div>
+
+</div>
+	<!--改装 TO SB---------------->
+	<div class="tab_change_area_6 #{miseMaintenanceDto.selectedTab=='6'?'':'in'}visible_tab" id="misemainteScroll6">
+		<div class="element_print"><p/>【改装・T/O・S/Bタブ】</div>
+		<!--店改装-->
+		<table class="body_table2" style="width:950px; border-top-width : 0px;">
+			<tr class="body_caption1">
+				<td colspan="5">店改装</td>
+				<td align="right">
+				    <a m:id="addRowKaiso" m:action="#{miseMaintenanceEditAction.addRowKaiso}"/>
+				    <a m:id="delRowKaiso" m:action="#{miseMaintenanceEditAction.delRowKaiso}"/>
+					<input type="button" value="行追加" m:onclick="addRow('addRowKaiso','6')" style="display:inline;"/>
+					<input type="button" value="行削除" m:onclick="addRow('delRowKaiso','6')" style="display:inline;"/>
+				</td>
+			</tr>
+			<tr class="header_row">
+				<th width="20px"></th>
+				<th width="170px">改装区分</th>
+				<th width="110px">開始日</th>
+				<th width="110px">終了日</th>
+				<th width="110px">金額</th>
+				<th width="*">内容</th>
+			</tr>
+		</table>
+		<div class="scroll_area" style="width:970px;height:76px;margin-bottom:4px;">
+		<table class="body_table2" style="width:950px; border-top-width : 0px;">
+			<div m:inject="s:forEach" m:items="#{miseMaintenanceDto.listMiseKaiso}" m:var="e" m:varIndex="d">
+			<tr class="#{d==0?'non_top_border':''}">
+				<td width="20px"><input type="checkbox" m:value="#{e.delFlg}"/></td>
+				<td width="170px"><input class="imeon width_136" type="text" m:size="25" m:maxlength="20" m:value="#{e.kaisoHoshu}"/></td>
+				<td width="110px"><input type="text" class="width_86" m:size="15" m:maxlength="10" m:value="#{e.kaisoSta}" m:converter="#{dateConverter}"/></td>
+				<td width="110px"><input type="text" class="width_86" m:size="15" m:maxlength="10" m:value="#{e.kaisoEnd}" m:converter="#{dateConverter}"/></td>
+				<td width="110px"><input class="imenotuse width_92" type="text" m:size="16" m:maxlength="14" m:value="#{e.kaisoHiyo}" m:converter="#{numericConverterKingaku}" style="text-align:right;"/></td>
+				<td width="*"><input class="imeon width_362" type="text" m:size="70" m:maxlength="200" m:value="#{e.kaisoNaiyo}"/></td>
+			</tr>
+			</div>
+		</table>
+		</div>
+
+		<!--テイクオーバー-->
+		<table class="body_table2" style="width:950px;">
+			<tr class="body_caption1">
+				<td colspan="3">テイクオーバー</td>
+				<td align="right">
+					    <input type="button" value="行追加" m:onclick="addRow('addRowTO','6')"/>
+					<input type="button" value="行削除" m:onclick="addRow('delRowTO','6')"/>
+				    <a m:id="addRowTO" m:action="#{miseMaintenanceEditAction.addRowTO}"/>
+				    <a m:id="delRowTO" m:action="#{miseMaintenanceEditAction.delRowTO}"/></td>
+			</tr>
+			<tr class="header_row">
+				<th width="20px"></th>
+				<th width="150px">テイクオーバー日</th>
+				<th width="150px">前オーナーコード</th>
+				<th width="*">前オーナー名称</th>
+			</tr>
+		</table>
+		<div class="scroll_area" style="width:970px;height:76px;margin-bottom:4px;">
+		<table class="body_table2" style="width:950px; border-top-width : 0px;">
+			<div m:inject="s:forEach" m:items="#{miseMaintenanceDto.listTO}" m:var="e" m:varIndex="d">
+			<tr class="#{d==0?'non_top_border':''}">
+				<td width="20px"><input type="checkbox" m:value="#{e.delFlg}"/></td>
+				<td width="150px"><input class="imenotuse width_86" type="text" m:size="15" m:maxlength="10" m:value="#{e.toDate}" m:converter="#{dateConverter}"/></td>
+				<td width="150px"><input class="imenotuse width_62" type="text" m:size="10" m:maxlength="5" m:value="#{e.oldOnerCd}" m:converter="#{codeConverter5}"/></td>
+				<td width="*"><input class="imeon" type="text" m:size="50" m:maxlength="40" m:value="#{e.oldOnerName}" m:converter="#{dateConverter}"/></td>
+			</tr>
+			</div>
+		</table>
+		</div>
+
+		<!--スクラップビルド-->
+		<table class="body_table2" style="width:950px;">
+			<tr class="body_caption1">
+				<td colspan="3">スクラップビルド</td>
+				<td align="right">
+					<input type="button" value="行追加" m:onclick="addRow('addRowSB','6')"/>
+					<input type="button" value="行削除" m:onclick="addRow('delRowSB','6')"/>
+				    <a m:id="addRowSB" m:action="#{miseMaintenanceEditAction.addRowSB}"/>
+				    <a m:id="delRowSB" m:action="#{miseMaintenanceEditAction.delRowSB}"/></td>
+			</tr>
+			<tr class="header_row">
+				<th width="20px"></th>
+				<th width="110px">スクラップ日</th>
+				<th width="110px">旧店舗コード</th>
+				<th width="*">旧店舗名称</th>
+			</tr>
+		</table>
+		<div class="scroll_area" style="width:970px;height:76px;">
+		<table class="body_table2" style="width:950px; border-top-width : 0px;">
+			<div m:inject="s:forEach" m:items="#{miseMaintenanceDto.listSB}" m:var="e" m:varIndex="d">
+			<tr class="#{d==0?'non_top_border':''}">
+				<td width="20px"><input type="checkbox" m:value="#{e.delFlg}"/></td>
+				<td width="110px"><input class="imenotuse width_86" type="text" m:size="15" m:maxlength="10" m:value="#{e.sbDate}" m:converter="#{dateConverter}"/></td>
+				<td width="110px"><input class="imenotuse width_62" type="text" m:size="10" m:maxlength="5" m:value="#{e.oldMiseCd}" m:converter="#{codeConverter5}"/></td>
+				<td width="*"><input class="imeon" type="text" m:size="50" m:maxlength="40" m:value="#{e.oldMiseName}" m:converter="#{dateConverter}"/></td>
+			</tr>
+			</div>
+		</table>
+		</div>
+	</div>
+	<!--サービス実施状況-->
+	<div class="tab_change_area_9 #{miseMaintenanceDto.selectedTab=='9'?'':'in'}visible_tab">
+		<div class="element_print"><p/>【サービス実施状況タブ】</div>
+	<div m:inject="s:forEach" m:items="#{miseMaintenanceDto.listEventBunrui}" m:var="e" m:varIndex="i">
+	<table class="body_table2" style="width:#{e.eventBnrui != '02'? '950':'800'}px; border-top-width : 0px;">
+	    <tr>
+	        <th class="body_header4" colspan="#{e.eventBnrui != '02'?'7':'6'}">
+	            <span m:converter="#{characterEncodingConverter}" m:value="#{e.eventBnruiName}"/></th>
+	    </tr>
+	    <tr>
+			<th class="body_header4" width="115px">項目</th>
+			<th class="body_header4" width="130px" m:rendered="#{e.eventBnrui != '02'}">実施状況</th>
+			<th class="body_header4" width="100px">開始日</th>
+			<th class="body_header4" width="100px">終了日</th>
+		    <th class="body_header4" width="130px">種別</th>
+		    <th class="body_header4" width="100px">適用日</th>
+		    <th class="body_header4" width="*">備考</th>
+	    </tr>
+	    <div m:inject="s:forEach" m:items="#{miseMaintenanceDto.listMstEventStatus}" m:var="f">
+	    <div m:rendered="#{e.eventBnrui == f.eventBnrui}">
+	        <tr>
+	            <th><span m:converter="#{characterEncodingConverter}" m:value="#{f.eventName}"/></th>
+	            <td m:rendered="#{e.eventBnrui != '02'}">
+	                <select style="width:100px;"
+	                        m:value="#{f.eventStatus}"
+	                        m:items="#{miseMaintenanceDto.pulldownEventStatus}"
+	                        m:itemValue="value"
+	                        m:itemLabel="label"
+	                        m:nullLabel=" ">
+	                    <option value="">未実施</option>
+	                    <option value="">実施</option>
+	                    <option value="">一部実施</option>
+	                    <option value="">未設定</option>
+	                </select>
+	            </td>
+	            <td>
+	                <input type="text" class="width_78" m:value="#{f.eventStartDt}" m:size="13" m:maxlength="10" m:converter="#{dateConverter}"/>
+	            </td>
+	            <td>
+	                <input type="text" class="width_78" m:value="#{f.eventEndDt}" m:size="13" m:maxlength="10" m:converter="#{dateConverter}"/>
+	            </td>
+	            <td>
+	                <select style="width:100px;"
+	                    m:value="#{f.eventPatternCd}"
+	                    m:items="#{f.listEventPatternCd}"
+	                    m:itemValue="eventPatternCd"
+	                    m:itemLabel="eventPatternName"
+	                    m:nullLabel=" ">
+	                    <option value="">宅配A</option>
+	                    <option value="">宅配B</option>
+	                </select>
+	            </td>
+				<td>
+	                <input type="text" class="width_78" m:value="#{f.henkoDt}" m:size="13" m:maxlength="10" m:converter="#{dateConverter}"/>
+	            </td>
+	            <td>
+	                <input type="text" class="width_185" m:value="#{f.notes}" m:size="35" m:maxlength="200" />
+	            </td>
+	        </tr>
+	    </div>
+	    </div>
+	</table>
+	</div>
+	</div>
+	<!--メモ-->
+	<div class="tab_change_area_10 #{miseMaintenanceDto.selectedTab=='10'?'':'in'}visible_tab">
+		<div class="element_print"><p/>【　その他タブ　】</div>
+	<table class="body_table2" style="width:950px;border-top-width : 0px;">
+		<tr>
+			<th class="body_header4" colspan="2">メモ</th>
+		</tr>
+		<tr>
+			<th width="170">子ども１１０番情報</th>
+			<td width="*">
+				<input type="text" class="width_662" m:value="#{miseMaintenanceDto.mstMiseYobi.yobiFree1}" m:size="130" m:maxlength="100"/>
+			</td>
+		</tr>
+		<tr>
+			<th>休業情報</th>
+			<td>
+				<input type="text" class="width_662" m:value="#{miseMaintenanceDto.mstMiseYobi.yobiFree2}" m:size="130" m:maxlength="100"/>
+			</td>
+		</tr>
+		<tr>
+			<th>メモ３</th>
+			<td>
+				<input type="text" class="width_662" m:value="#{miseMaintenanceDto.mstMiseYobi.yobiFree3}" m:size="130" m:maxlength="100"/>
+			</td>
+		</tr>
+		<tr>
+			<th>メモ４</th>
+			<td>
+				<input type="text" class="width_662" m:value="#{miseMaintenanceDto.mstMiseYobi.yobiFree4}" m:size="130" m:maxlength="100"/>
+			</td>
+		</tr>
+		<tr>
+			<th>メモ５</th>
+			<td>
+				<input type="text" class="width_662" m:value="#{miseMaintenanceDto.mstMiseYobi.yobiFree5}" m:size="130" m:maxlength="100"/>
+			</td>
+		</tr>
+	</table>
+	</div>
+<input type="text" m:id="dummyEnter" style="display:none"/>
+</form>
+</span>
+</body>
+</html>

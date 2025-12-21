@@ -1,0 +1,416 @@
+<html xmlns:m="http://www.seasar.org/maya" m:action="#{sibuaverageAction.initialize}" m:extends="/jsf/layout/layoutNoNavi.html">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Windows-31j"/>
+<meta http-equiv="Content-Style-Type" content="text/css"/>
+<meta http-equiv="Content-Script-Type" content="text/javascript"/>
+<title>支部平均比較</title>
+</head>
+<body>
+<span m:inject="f:param" m:name="layoutTitle" m:value="支部平均比較"/>
+<span m:inject="s:insert" m:name="bodyTitleName">■支部平均比較</span>
+<span m:inject="f:param" m:name="viewIdValue" m:value="BDT006V01"/>
+<span m:inject="f:param" m:name="onLoadName" m:value="onLoadFunction()"/>
+<span m:inject="f:param" m:name="userType" m:value="#{sibuaverageDto.userTypeCd}"/>
+<span m:converter="#{characterEncodingConverter}" m:inject="f:param" m:name="defaltOnerCd" m:value="#{sibuaverageReqDto.hyojiTaishoOner}"/>
+<span m:converter="#{characterEncodingConverter}" m:inject="f:param" m:name="defaltMiseCd" m:value="#{sibuaverageReqDto.hyojiTaishoMise}"/>
+<span m:converter="#{characterEncodingConverter}" m:inject="f:param" m:name="defaltSibuCd" m:value="#{sibuaverageReqDto.taishoSibu}"/>
+<div m:inject="s:insert" m:name="body">
+<style type="text/css">
+<!--
+.data_table_width {
+    width:98%;
+}
+table.body_table2 tr td {
+	text-align            : right;
+}
+table.body_table2 tr td.eigyoDt {
+	text-align            : center;
+	font-weight:bold;
+}
+table.body_table2 tr td.hirituTd {
+  background-color      : #C0FFC0;
+  color                 : black;
+}
+-->
+</style>
+
+<script type="text/javascript">
+<!--
+var scrollMaxHeight = 337;
+function onLoadFunction() {
+  loadScroll("sivAvgScroll", scrollMaxHeight);
+  var objForm = document.forms['sibuaverage'];
+  //本部ユーザーの場合
+  if("01" == objForm.elements['sibuaverage:userType'].value) {
+	  var taishoJokenIndex = objForm.elements['sibuaverage:taishoJoken'].selectedIndex;
+	  var taishoJoken = objForm.elements['sibuaverage:taishoJoken'].options[taishoJokenIndex].value;
+	  var textArea = document.getElementById('sibuaverage:honbuMiseCd');
+	  if ("MISE" == taishoJoken) {
+	  	textArea.focus();
+	  	return;
+	  }
+	  if ("ONER" == taishoJoken && "false" == objForm.elements['sibuaverage:sibuMode'].value) {
+     	textArea = document.getElementById('sibuaverage:onerCd');
+	  	textArea.focus();
+	  	return;
+	  }
+  }
+}
+/**
+  * 『対象条件』切替処理
+  *
+  */
+function switchTaishoJoken(targetIndex) {
+	var objForm = document.forms['sibuaverage'];
+	var taishoJoken = objForm.elements['sibuaverage:taishoJoken'].options[targetIndex].value;
+	//表示対象のエリア内を一度非表示にします。
+	document.getElementById('sibuaverage:condHTArea_MISE').style.display = 'none';
+	document.getElementById('sibuaverage:condHTArea_SIBU').style.display = 'none';
+    //本部ユーザーの場合
+    if("01" == objForm.elements["sibuaverage:userType"].value) {
+        //支部プルダウン表示モードを”false”にします。
+	    objForm.elements['sibuaverage:sibuMode'].value = "false";
+        document.getElementById('sibuaverage:condHTArea_ONER').style.display = 'none';
+	}
+	//対象条件が「全店」の場合
+	if ("ALL" == taishoJoken) {
+		document.getElementById('sibuaverage:condHTArea_SIBU').style.display = "inline";
+	}
+	else {
+		document.getElementById('sibuaverage:condHTArea_'+taishoJoken).style.display = "inline";
+	}
+}
+/**
+  * 『集計区分』切替処理
+  *
+  */
+function switchShukeiKbn(targetIndex) {
+	var objForm = document.forms['sibuaverage'];
+	//対象支部プルダウンリスト表示処理
+	//[共通]targetElement(formName, keyName, keyIndex)使用
+	var i=0;
+	for(i=0; i<objForm.elements['sibuaverage:shukeiKbn'].length; i++) {
+		var elmentSibuList = targetElement("sibuaverage", "sibuList", i);
+		if(elmentSibuList != null) {
+			elmentSibuList.style.display = "none";
+		}
+	}
+	if(targetElement("sibuaverage", "sibuList", targetIndex) != null) {
+		targetElement("sibuaverage", "sibuList", targetIndex).style.display = "inline";
+	}
+}
+function callForm() {
+  var objForm = document.forms['sibuaverage'];
+  var taishoJokenIndex = objForm.elements['sibuaverage:taishoJoken'].selectedIndex;
+  var taishoJoken = objForm.elements['sibuaverage:taishoJoken'].options[taishoJokenIndex].value;
+	if (taishoJoken == 'MISE') {
+		callMiseForm();
+	}
+	else if (taishoJoken == 'ONER') {
+		callOnerForm()
+	}
+}
+/**
+ * リクエスト時の条件値を設定します。
+ */
+function settingJokenValue() {
+  var objForm = document.forms['sibuaverage'];
+  objForm.elements['sibuaverage:taishoSibu'].value = "";
+  //支部プルダウン選択レイアウト時に実行ボタンを押下された場合、下記の処理を行います。
+  if("inline" == document.getElementById('sibuaverage:condHTArea_SIBU').style.display) {
+	//集計区分から対象支部を選別し支部コードを設定します。
+	var shukeiKbnIndex = objForm.elements['sibuaverage:shukeiKbn'].selectedIndex;
+	var elementSibuList = targetElement("sibuaverage", "sibuList", shukeiKbnIndex);
+	if(elementSibuList != null) {
+		var sibuCd = elementSibuList.options[elementSibuList.selectedIndex].value;
+		objForm.elements["sibuaverage:taishoSibu"].value = sibuCd;
+	}
+  }
+  //本部ユーザーの場合
+  if("01" == objForm.elements["sibuaverage:userType"].value) {
+  	if(objForm.elements["sibuaverage:onerCd"]!=null){
+		objForm.elements['sibuaverage:reqOnerCd'].value = objForm.elements["sibuaverage:onerCd"].value;
+	}
+	if(objForm.elements["sibuaverage:honbuMiseCd"] != null) {
+		objForm.elements['sibuaverage:reqMiseCd'].value = objForm.elements["sibuaverage:honbuMiseCd"].value;
+	}
+  }
+  else {
+  	var misePullDown = objForm.elements["sibuaverage:onerMiseCd"];
+  	var targetIndex = misePullDown.selectedIndex;
+	objForm.elements['sibuaverage:reqMiseCd'].value = misePullDown.options[targetIndex].value;
+  }
+}
+/**
+  * 実行処理
+  */
+function execute() {
+  if (document.getElementById('sibuaverage:newWindowFlgDisp') != null
+        && document.sibuaverage.elements['sibuaverage:newWindowFlgDisp'].checked) {
+    document.sibuaverage.elements['sibuaverage:newWindowFlg'].value
+        = document.sibuaverage.elements['sibuaverage:newWindowFlgDisp'].checked
+    document.sibuaverage.target = "_blank";
+  }
+  else {
+    document.sibuaverage.target = "_self";
+  }
+
+  dispWaitMsg();
+
+  settingJokenValue();
+  document.sibuaverage.elements['sibuaverage:__link_clicked__'].value='sibuaverage:actionExecute';
+  document.sibuaverage.submit();
+}
+function executeCsvDownload() {
+  settingJokenValue();
+  document.sibuaverage.target = "_self";
+  document.sibuaverage.elements['sibuaverage:__link_clicked__'].value='sibuaverage:actionCsvDownload';
+  document.sibuaverage.submit();
+}
+function callMiseForm() {
+  settingJokenValue();
+  document.sibuaverage.target = "_self";
+  document.sibuaverage.elements['sibuaverage:__link_clicked__'].value='sibuaverage:actionMiseSearch';
+  document.sibuaverage.submit();
+}
+function callOnerForm() {
+  settingJokenValue();
+  document.sibuaverage.target = "_self";
+  document.sibuaverage.elements['sibuaverage:__link_clicked__'].value='sibuaverage:actionOnerSearch';
+  document.sibuaverage.submit();
+}
+function dispWaitMsg() {
+	if (document.sibuaverage.target == "_self") {
+	    document.sibuaverage.elements["sibuaverage:doExecuteBtn"].disabled = true;
+	    document.getElementById("sibuaverage:pane_result").style.display = "none";
+	    document.getElementById("sibuaverage:pane_waitmsg").style.display = "inline";
+	}
+}
+-->
+</script>
+
+<form m:id="sibuaverage" onkeydown="setDefaultSubmitButton('sibuaverage', 'doExecuteBtn');" target="_self">
+<input type="hidden" m:id="viewId" m:value="#{viewIdValue}" />
+<input type="hidden" m:id="initMenuId" m:value="#{menuAction.initMenuId}"/>
+<input type="hidden" m:id="initSubMenuId" m:value="#{menuAction.initSubMenuId}"/>
+<input type="hidden" m:id="windowId" m:value="#{sibuaverageReqDto.windowId}"/>
+<input type="hidden" id="loadingFlg" value=""/>
+<input type="hidden" m:id="userType" m:value="#{userType}"/>
+<input type="hidden" m:id="newWindowFlg" m:value="#{sibuaverageReqDto.newWindowFlg}"/>
+<input type="hidden" m:value="#{sibuaverageReqDto.companyCd}"/>
+<input type="hidden" m:value="#{sibuaverageReqDto.targetOnerCd}"/>
+<input type="hidden" m:id="reqOnerCd" m:value="#{sibuaverageReqDto.hyojiTaishoOner}"/>
+<input type="hidden" m:id="reqMiseCd" m:value="#{sibuaverageReqDto.hyojiTaishoMise}"/>
+<input type="hidden" m:id="taishoSibu" m:value="#{sibuaverageReqDto.taishoSibu}"/>
+<input type="hidden" m:id="sibuMode" m:value="#{sibuaverageReqDto.sibuMode}"/>
+<input type="hidden" m:value="#{sibuaverageViewDto.companyCd}"/>
+<input type="hidden" m:value="#{sibuaverageViewDto.targetOnerCd}"/>
+<input type="hidden" m:value="#{sibuaverageViewDto.taishoJoken}"/>
+<input type="hidden" m:value="#{sibuaverageViewDto.hyojiTaishoOner}"/>
+<input type="hidden" m:value="#{sibuaverageViewDto.hyojiTaishoMise}"/>
+<input type="hidden" m:value="#{sibuaverageViewDto.shukeiKbn}"/>
+<input type="hidden" m:value="#{sibuaverageViewDto.taishoSibu}"/>
+<input type="hidden" m:value="#{sibuaverageViewDto.kikanSitei}"/>
+<input type="hidden" m:value="#{sibuaverageViewDto.zenDataShu}"/>
+
+<a m:action="#{sibuaverageAction.execute}" m:id="actionExecute"/>
+<a m:action="#{sibuaverageAction.downloadCsv}" m:id="actionDay"/>
+<a m:action="#{sibuaverageAction.callMiseForm}" m:id="actionMiseSearch"/>
+<a m:action="#{sibuaverageAction.callOnerForm}" m:id="actionOnerSearch"/>
+<a m:action="#{sibuaverageAction.downloadCsv}" m:id="actionCsvDownload"/>
+
+<table class="hiddenBody element_browser" style="margin-bottom:4px;">
+<tr>
+	<td rowspan="2">
+	<table  style="width:auto !important;" class="body_table" >
+	  <tr>
+	    <th style="width:70px;">対象条件</th>
+	    <td>
+	        <div class="hideArea">
+	        <select m:value="#{sibuaverageReqDto.taishoJoken}"
+	                m:items="#{sibuaverageDto.listTaishoJoken}"
+	                m:id="taishoJoken"
+	                m:itemValue="value"
+	                m:itemLabel="label"
+	                m:onchange="switchTaishoJoken(this.selectedIndex);"/>
+	        </div>
+	    </td>
+	    <th style="border-right-width:0px;width:70px;">表示対象</th>
+	    <th><input m:rendered="#{sibuaverageDto.userTypeCd=='01'}"
+	               type="button" value="検索" style="margin:-1px;"
+	               onclick="callForm();" ondblclick="return false;"/></th>
+	    <td colspan="3">
+	        <span id="condHTArea_MISE" m:style="display:#{sibuaverageReqDto.taishoJoken == 'MISE' ? 'inline' : 'none'};">
+	        <input class="width_honbuMiseCd" m:rendered="#{sibuaverageDto.userTypeCd=='01'}"
+	               type="text" m:id="honbuMiseCd" m:value="#{defaltMiseCd}"
+	               maxlength="5" m:converter="#{sibuaverageCodeConv}"
+	               class="imenotuse" />
+	        <div class="hideArea" m:rendered="#{sibuaverageDto.userTypeCd=='02'}">
+	        <select m:value="#{sibuaverageReqDto.hyojiTaishoMise}"
+	                m:items="#{sibuaverageDto.listHyojiTaisho}"
+	                m:id="onerMiseCd"
+	                m:itemValue="hyojitaishoCd"
+	                m:itemLabel="hyojitaishoNameAddClose"/>
+	        </div>
+	        </span>
+	        <span id="condHTArea_ONER" m:style="display:#{sibuaverageReqDto.taishoJoken == 'ONER' && sibuaverageReqDto.sibuMode!=true ? 'inline' : 'none'};">
+	        <input m:rendered="#{sibuaverageDto.userTypeCd=='01'}"
+	               type="text"  m:id="onerCd" m:value="#{defaltOnerCd}"
+	               class="imenotuse" maxlength="5" m:size="10"/></span>
+	        <div id="condHTArea_SIBU" m:style="display:#{sibuaverageReqDto.taishoJoken != 'MISE' && sibuaverageReqDto.sibuMode? 'inline' : 'none'};">
+	            <span m:rendered="#{sibuaverageReqDto.sibuMode}">
+		        <span m:rendered="#{sibuaverageDto.userTypeCd=='01'}"
+		              m:value="#{defaltOnerCd}  #{sibuaverageReqDto.hyojiTaishoDisp}"/>
+		        <span m:inject="s:forEach" m:items="#{sibuaverageReqDto.listShukeiKbn}" m:var="sibuData">
+		        <select class="hideArea"
+		                m:style="display:#{sibuaverageReqDto.shukeiKbn==sibuData.key?'inline':'none'};"
+		                m:items="#{sibuData.listData}"
+		                id="sibuList"
+		                m:value="#{sibuaverageReqDto.shukeiKbn==sibuData.key?defaltSibuCd:''}"
+		                m:itemValue="sibuCd"
+		                m:itemLabel="sibuName"/></span><span style="font-size:small;">と比較</span>
+		        </span>
+	        </div>
+	    </td>
+	    </tr>
+	    <tr>
+	    <th><span m:value="#{'02'==sibuaverageDto.userTypeCd?'支部':'集計区分'}"/></th>
+	    <td>
+	        <div class="hideArea">
+	        <select m:value="#{sibuaverageReqDto.shukeiKbn}"
+	                m:items="#{sibuaverageReqDto.listShukeiKbn}"
+	                m:id="shukeiKbn"
+	                m:itemValue="key"
+	                m:itemLabel="keyName"
+	                m:onchange="switchShukeiKbn(this.selectedIndex);"/>
+	        </div>
+	    </td>
+	    <th colspan="2">期間指定</th>
+	    <td>
+	        <div class="hideArea">
+	        <select m:value="#{sibuaverageReqDto.kikanSitei}"
+	                m:items="#{sibuaverageDto.listKikanSitei}"
+	                m:id="condKikan"
+	                m:itemValue="value"
+	                m:itemLabel="label"/>
+	        </div>
+	    </td>
+	    <th>前年データ種別</th>
+	    <td>
+	        <div class="hideArea">
+	        <select m:value="#{sibuaverageReqDto.zenDataShu}"
+	                m:items="#{sibuaverageReqDto.listZennendataShubetu}"
+	                m:id="condZenDataShu"
+	                m:itemValue="value"
+	                m:itemLabel="label"/>
+	        </div>
+	    </td>
+	  </tr>
+	</table>
+	</td>
+    <td rowspan="2">&nbsp;</td>
+    <td><span style="font-size:11pt;" m:value="#{'02'==sibuaverageDto.userTypeCd?'※MSC＝モスストアカンパニー(旧販社)':''}"/></td>
+  </tr>
+  <tr>
+	<td valign="bottom">
+	<input type="button"
+	     value="#{sibuaverageReqDto.reSearchFlg ? '再検索' : '実行'}"
+	     m:name="sibuaverage:doExecuteBtn" onclick="execute();"/>
+	</td>
+</tr>
+</table>
+
+<div m:rendered="#{sibuaverageReqDto.sibuMode && sibuaverageDto.userTypeCd=='01'}"
+     m:style="clear:both;font-weight:bold;"
+     m:id="sibuSentakuMsg">比較する支部を選択して再度「実行」ボタンをクリックしてください。</div>
+
+<div m:id="pane_result">
+<span m:rendered="#{sibuaverageViewDto.listData != null}">
+<div class="scroll_padding_head">
+<div class="scroll_hidden margin_bottom_hidden">
+<table class="hiddenBody data_table_width" style="margin-bottom:4px;">
+<tr>
+	<td>
+	<table class="body_table2">
+	  <tr>
+	    <th>対象期間</th>
+	    <td><span m:converter="#{characterEncodingConverter}" m:value="#{sibuaverageViewDto.taishoKikanDisp}"/>&nbsp;</td>
+	    <th>表示対象</th>
+	    <td><span m:converter="#{characterEncodingConverter}" m:value="#{sibuaverageViewDto.taishoJoken!='ALL'?sibuaverageViewDto.hyojiTaisho:''}"/>
+	    	<span m:converter="#{characterEncodingConverter}" m:rendered="#{sibuaverageViewDto.taishoJoken!='ALL'}">&nbsp;</span><span m:converter="#{characterEncodingConverter}" m:value="#{sibuaverageViewDto.hyojiTaishoDisp}"/>&nbsp;</td>
+	    <th>比較支部</th>
+	    <td><span m:converter="#{characterEncodingConverter}" m:value="#{sibuaverageViewDto.taishoSibu}"/>&nbsp;<span m:converter="#{characterEncodingConverter}" m:value="#{sibuaverageViewDto.taishoSibuDisp}"/>&nbsp;</td>
+	  </tr>
+	</table>
+	</td>
+	<td align="right">
+		<table m:rendered="#{sibuaverageViewDto.listData != null}"
+		       class="hiddenBody element_browser">
+		   <tr>
+		       <td><input type="button" m:id="btnCsvDownload"
+		                  value="ダウンロード"
+		                  onclick="executeCsvDownload();" ondblclick="return false;"/></td>
+		       <td><input type="checkbox" m:id="newWindowFlgDisp"
+		                  m:value="#{sibuaverageViewDto.newWindowFlg}"/></td>
+		       <td><span style="font-size:smaller" m:value="別ウィンドウに表示"/></td>
+			</tr>
+		</table>
+	</td>
+</tr>
+</table>
+<span m:converter="#{characterEncodingConverter}" style="font-weight:bold;" m:value="#{sibuaverageViewDto.userMsg}"/><br/>
+<table class="body_table2 data_table_width">
+  <tr class="header_row">
+    <th width="10%" rowspan="2">営業日</th>
+    <th colspan="2">
+      <span m:converter="#{characterEncodingConverter}" m:value="#{sibuaverageViewDto.taishoJoken == 'MISE'?sibuaverageViewDto.hyojiTaishoDisp:'全店平均'}"/></th>
+    <th colspan="3">前年比</th>
+    <th colspan="2">支部平均</th>
+    <th colspan="3">前年比</th>
+  </tr>
+  <tr class="header_row">
+    <th style="width:11%">売上</th>
+    <th style="width:11%">前年実績</th>
+    <th style="width:8%">売上</th>
+    <th style="width:8%">客数</th>
+    <th style="width:8%">客単価</th>
+    <th style="width:10%">売上</th>
+    <th style="width:10%">前年実績</th>
+    <th style="width:8%">売上</th>
+    <th style="width:8%">客数</th>
+    <th style="width:8%">客単価</th>
+  </tr>
+</table>
+</div>
+</div>
+<div class="scroll_padding_data">
+<div class="scroll_standby" id="sivAvgScroll">
+<table class="body_table2 data_table_width" style="border-top-width:0px;" >
+  <span m:inject="s:forEach" m:items="#{sibuaverageViewDto.listData}" m:var="e" m:varindex="i">
+  <tr class="#{e.eigyoDt == '月合計' ? 'body_sum5' : ''} non_top_border">
+    <td style="width:10%" class="eigyoDt"><span m:value="#{e.eigyoDt}" m:converter="#{sibuaverageDateConverter}"/></td>
+    <td style="width:11%"><span m:value="#{e.uriage}" m:converter="#{sibuaverageDigit0Con}"/></td>
+    <td style="width:11%"><span m:value="#{e.uriageZen}" m:converter="#{sibuaverageDigit0Con}"/></td>
+    <td style="width:8%" m:class="#{e.uriageZenhiCls}"><span m:value="#{e.uriageZenhi}" m:converter="#{sibuaverageDigit2Con}"/></td>
+    <td style="width:8%" m:class="#{e.kyakusuZenhiCls}"><span m:value="#{e.kyakusuZenhi}" m:converter="#{sibuaverageDigit2Con}"/></td>
+    <td style="width:8%" m:class="#{e.kyakutankaZenhiCls}"><span m:value="#{e.kyakutankaZenHi}" m:converter="#{sibuaverageDigit2Con}"/></td>
+    <td style="width:10%"><span m:value="#{e.sibuUriage}" m:converter="#{sibuaverageDigit0Con}"/></td>
+    <td style="width:10%"><span m:value="#{e.sibuUriageZen}" m:converter="#{sibuaverageDigit0Con}"/></td>
+    <td style="width:8%" m:class="#{e.sibuUriageZenhiCls}"><span m:value="#{e.sibuUriageZenhi}" m:converter="#{sibuaverageDigit2Con}"/></td>
+    <td style="width:8%" m:class="#{e.sibuKyakusuZenhiCls}"><span m:value="#{e.sibuKyakusuZenhi}" m:converter="#{sibuaverageDigit2Con}"/></td>
+    <td style="width:8%" m:class="#{e.sibuKyakutankaZenhiCls}"><span m:value="#{e.sibuKyakutankaZenHi}" m:converter="#{sibuaverageDigit2Con}"/></td>
+  </tr>
+  </span>
+</table>
+</div>
+</div>
+</span>
+</div>
+
+<div m:id="pane_waitmsg" style="font-weight:bold;display:none">
+<p/>検索しています。しばらくお待ち下さい・・・</div>
+<input type="text" m:id="dummyEnter" style="display:none"/>
+</form>
+</div>
+</body>
+</html>

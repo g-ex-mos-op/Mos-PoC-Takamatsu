@@ -1,0 +1,190 @@
+SELECT DISTINCT MENU.MENU_ID
+,      MENU.MENU_NAME
+,      MENU.SUB_MENU_ID
+,      MENU.SUB_MENU_NAME
+,      MENU.VIEW_ID
+,      MENU.INIT_VIEW_ID
+,      MENU.SORT_SEQ
+,      BR24.LINK_ID
+,      RTRIM(BR24.URL) AS URL
+,      RTRIM(BR24.PARAM) AS PARAM
+,      BR24.PARAM_USER_ID
+,      BR24.PARAM_USER_PSWD
+,      BR24.DISABLE_STA_TMSP
+,      BR24.DISABLE_END_TMSP
+,      RTRIM(BR24.IMG_PATH) AS IMG_PATH
+,      RTRIM(BR24.MAINTE_MSG) AS MAINTE_MSG
+,      BR24.LOG_FLG
+,      BR24.GAISYS_FLG
+,      RTRIM(MENU.DOUGA_NAME) as DOUGA_NAME
+,      MENU.DOUGA_CD
+FROM BR24LINK BR24
+,    (
+		(
+			SELECT DISTINCT
+			       BR02.MENU_ID
+			,      BR02.MENU_NAME
+			,      BR02.SUB_MENU_ID
+			,      BR02.SUB_MENU_NAME
+			,      BR02.VIEW_ID
+			,      BR02.INIT_VIEW_ID
+			,      BR02.SORT_SEQ
+			,      BR02.PARAM
+			,      '' as DOUGA_NAME
+			,      '' as DOUGA_CD
+			FROM BR05ACTR BR05
+			,    BR04USRL BR04
+			,    BR02BMNU BR02
+			,    BR54USAC BR54
+			,    BR24LINK BR24
+			WHERE BR05.EXTRA_FLG  = '1'
+			AND   BR05.ENABLE_FLG  = '0'
+			AND   BR02.MENU_DISP_KBN IN /*listDispKbn*/('3')
+			AND   BR02.MENU_ID  != '00'
+			AND   BR54.USER_ID = /*userId*/'99990001'
+			AND   BR54.CUSTOMIZE_FLG = '1'
+			/*IF outLinkId != null*/
+			AND    BR02.PARAM     = /*outLinkId*/'0003'
+			/*END*/
+			AND   BR02.MENU_ID     = BR54.MENU_ID
+			AND   BR02.SUB_MENU_ID = BR54.SUB_MENU_ID
+			AND   BR05.MENU_ID     = BR02.MENU_ID
+			AND   BR05.SUB_MENU_ID = BR02.SUB_MENU_ID
+			AND   BR04.ROLE_CD     = BR05.ROLE_CD
+			AND   BR04.USER_ID     = BR54.USER_ID
+			AND   BR24.LINK_ID = RTRIM(BR02.PARAM)
+			AND   BR24.LINK_ID !='0025'
+		)
+	UNION ALL
+		(
+			SELECT DISTINCT
+			       BR02.MENU_ID
+			,      BR02.MENU_NAME
+			,      BR02.SUB_MENU_ID
+			,      BR02.SUB_MENU_NAME
+			,      BR02.VIEW_ID
+			,      BR02.INIT_VIEW_ID
+			,      BR02.SORT_SEQ
+			,      BR02.PARAM
+			,      '' as DOUGA_NAME
+			,      '' as DOUGA_CD
+			FROM BR05ACTR BR05
+			,    BR04USRL BR04
+			,    BR24LINK BR24
+			,    BR02BMNU BR02
+			LEFT JOIN (
+			          SELECT USER_ID
+			          ,      MENU_ID
+			          ,      SUB_MENU_ID
+			          FROM BR54USAC
+			          WHERE USER_ID = /*userId*/'99990001'
+			          AND   CUSTOMIZE_FLG='9') BR54
+			    ON (BR02.MENU_ID = BR54.MENU_ID AND BR02.SUB_MENU_ID = BR54.SUB_MENU_ID)
+			WHERE BR05.EXTRA_FLG  = '1'
+			AND   BR05.ENABLE_FLG  = '1'
+			AND   BR02.MENU_DISP_KBN IN /*listDispKbn*/('3')
+			AND   BR02.MENU_ID  != '00'
+			AND   BR04.USER_ID = /*userId*/'99990001'
+			/*IF outLinkId != null*/
+			AND    BR02.PARAM     = /*outLinkId*/'0003'
+			/*END*/
+			AND    BR05.MENU_ID     = BR02.MENU_ID
+			AND    BR05.SUB_MENU_ID = BR02.SUB_MENU_ID
+			AND    BR04.ROLE_CD     = BR05.ROLE_CD
+			AND   BR24.LINK_ID = RTRIM(BR02.PARAM)
+			AND BR24.LINK_ID !='0025'
+            AND    BR54.SUB_MENU_ID IS NULL
+		)
+	UNION ALL
+		(
+			SELECT DISTINCT
+			       BC40.DISP_MENU_ID as MENU_ID
+			,      BR02.MENU_NAME
+			,      BC40.DISP_SUB_MENU_ID as SUB_MENU_ID
+			,      BR02.SUB_MENU_NAME
+			,      BR02.VIEW_ID
+			,      BR02.INIT_VIEW_ID
+			,      BR02.SORT_SEQ
+			,      BR02.PARAM
+			,      BM81.DOUGA_NAME
+			,      BM81.DOUGA_CD
+			FROM BR05ACTR BR05
+			,    BR04USRL BR04
+			,    BC40DSRL BC40
+			,    BM81DSNM BM81
+			,    BR02BMNU BR02
+			LEFT JOIN (
+			          SELECT USER_ID
+			          ,      MENU_ID
+			          ,      SUB_MENU_ID
+			          FROM BR54USAC
+			          WHERE USER_ID = /*userId*/'99990001'
+			          AND   CUSTOMIZE_FLG='9') BR54
+			    ON (BR02.MENU_ID = BR54.MENU_ID AND BR02.SUB_MENU_ID = BR54.SUB_MENU_ID)
+			WHERE BR05.EXTRA_FLG  = '1'
+			AND   BR05.ENABLE_FLG  = '1'
+			AND   BR02.MENU_DISP_KBN IN /*listDispKbn*/('3')
+			AND   BR02.MENU_ID  != '00'
+			AND   BR04.USER_ID = /*userId*/'99990001'
+			/*IF outLinkId != null*/
+			AND    BR02.PARAM     = /*outLinkId*/'0003'
+			/*END*/
+			/*IF dougaCd != null*/
+			AND    BM81.DOUGA_CD   = /*dougaCd*/'d001'
+			/*END*/
+			AND    BR05.MENU_ID     = BR02.MENU_ID
+			AND    BR05.SUB_MENU_ID = BR02.SUB_MENU_ID
+			AND    BR04.ROLE_CD     = BR05.ROLE_CD
+			AND    BC40.ROLE_CD   = BR05.ROLE_CD
+			AND    BC40.MENU_ID  =  BR02.MENU_ID
+			AND    BC40.SUB_MENU_ID = BR02.SUB_MENU_ID
+			AND    BC40.DOUGA_CD = BM81.DOUGA_CD
+            AND    BR54.SUB_MENU_ID IS NULL
+		)
+		UNION ALL
+			(
+			SELECT DISTINCT
+			       BC40.DISP_MENU_ID as MENU_ID
+			,      BR02.MENU_NAME
+			,      BC40.DISP_SUB_MENU_ID as SUB_MENU_ID
+			,      BR02.SUB_MENU_NAME
+			,      BR02.VIEW_ID
+			,      BR02.INIT_VIEW_ID
+			,      BR02.SORT_SEQ
+			,      BR02.PARAM
+			,      BM81.DOUGA_NAME
+			,      BM81.DOUGA_CD
+			FROM BR05ACTR BR05
+			,    BR04USRL BR04
+			,    BR02BMNU BR02
+			,    BC40DSRL BC40
+			,    BM81DSNM BM81
+			,    BR54USAC BR54
+			WHERE BR05.EXTRA_FLG  = '1'
+			AND   BR05.ENABLE_FLG  = '0'
+			AND   BR02.MENU_DISP_KBN IN /*listDispKbn*/('3')
+			AND   BR02.MENU_ID  != '00'
+			AND   BR54.USER_ID = /*userId*/'99990001'
+			AND   BR54.CUSTOMIZE_FLG = '1'
+			/*IF outLinkId != null*/
+			AND    BR02.PARAM     = /*outLinkId*/'0003'
+			/*END*/
+			/*IF dougaCd != null*/
+			AND    BM81.DOUGA_CD   = /*dougaCd*/'d001'
+			/*END*/
+			AND   BR02.MENU_ID     = BR54.MENU_ID
+			AND   BR02.SUB_MENU_ID = BR54.SUB_MENU_ID
+			AND   BR05.MENU_ID     = BR02.MENU_ID
+			AND   BR05.SUB_MENU_ID = BR02.SUB_MENU_ID
+			AND   BR04.ROLE_CD     = BR05.ROLE_CD
+			AND   BR04.USER_ID     = BR54.USER_ID
+			AND   BC40.ROLE_CD   = BR05.ROLE_CD
+			AND   BC40.MENU_ID  =  BR02.MENU_ID
+			AND   BC40.SUB_MENU_ID = BR02.SUB_MENU_ID
+			AND   BC40.DOUGA_CD = BM81.DOUGA_CD
+		)
+	) MENU
+WHERE  BR24.LINK_ID = RTRIM(MENU.PARAM)
+ORDER BY MENU_ID
+,        SORT_SEQ
+,        MENU.DOUGA_CD

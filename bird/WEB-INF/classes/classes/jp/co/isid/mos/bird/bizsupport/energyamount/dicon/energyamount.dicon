@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="Shift_JIS"?>
+<!DOCTYPE components PUBLIC "-//SEASAR//DTD S2Container 2.3//EN"
+    "http://www.seasar.org/dtd/components23.dtd">
+<components namespace="energyamount">
+    <include path="dao.dicon"/>
+    <include path="jp/co/isid/mos/bird/common/dicon/birdCommon.dicon"/>
+	<include path="jp/co/isid/mos/bird/framework/dicon/birdInterceptor.dicon"/>
+
+	<component
+	  class="org.seasar.framework.container.autoregister.AspectAutoRegister">
+	    <property name="interceptor">birdInterceptor.actionInterceptorChain</property>
+	    <initMethod name="addClassPattern">
+	        <arg>"jp.co.isid.mos.bird"</arg>
+	        <arg>".*ActionImpl"</arg>
+	    </initMethod>
+	    <initMethod name="registerAll"/>
+	</component> 
+	<component
+	  class="org.seasar.framework.container.autoregister.AspectAutoRegister">
+	    <property name="interceptor">birdInterceptor.logicInterceptorChain</property>
+	    <initMethod name="addClassPattern">
+	        <arg>"jp.co.isid.mos.bird"</arg>
+	        <arg>".*LogicImpl"</arg>
+	    </initMethod>
+	    <initMethod name="registerAll"/>
+	</component>
+
+	<!-- DAO -->
+	<component name="energyamountUIEnergyAmountDao" class="jp.co.isid.mos.bird.bizsupport.energyamount.dao.UIEnergyAmountDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="energyamountUINoInputMeterDao" class="jp.co.isid.mos.bird.bizsupport.energyamount.dao.UINoInputMeterDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<!-- DAO 推移表用 -->
+	<component name="miseSearchDto" class="jp.co.isid.mos.bird.commonform.misesearch.dto.MiseSearchDto" instance="session">
+		<property name="RCompanyCdList">null</property>
+	</component>
+	<component name="energyamountUIMiseInfoDao" class="jp.co.isid.mos.bird.bizsupport.energyamount.dao.UIMiseInfoDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="energyamountMstUserOnerInfoDao" class="jp.co.isid.mos.bird.bizsupport.energyamount.dao.MstUserOnerInfoDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="energyamountUISuiiAvgDao" class="jp.co.isid.mos.bird.bizsupport.energyamount.dao.UISuiiAvgDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="energyamountUISuiiDao" class="jp.co.isid.mos.bird.bizsupport.energyamount.dao.UISuiiDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="energyamountUIOutOfSubjectAmtDao" class="jp.co.isid.mos.bird.bizsupport.energyamount.dao.UIOutOfSubjectAmtDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<!-- LOGIC -->
+	<component name="energyamountConditionInfoLogic" class="jp.co.isid.mos.bird.bizsupport.energyamount.logic.impl.ConditionInfoLogicImpl">
+		<property name="getHyojiTaishoLogic">getHyojiTaishoLogic</property>
+		<property name="sibuHoyuTenpoLogic">sibuHoyuTenpoLogic</property>
+	</component>
+	<component name="energyamountCsvLogic" class="jp.co.isid.mos.bird.bizsupport.energyamount.logic.impl.EnergyAmountCsvLogicImpl">
+		<property name="mstSibuDao">mstSibuDao</property>
+	</component>
+	<component name="energyamountSuiiCsvLogic" class="jp.co.isid.mos.bird.bizsupport.energyamount.logic.impl.SuiiCsvLogicImpl">
+		<property name="mstSibuDao">mstSibuDao</property>
+	</component>
+	<!-- DTO -->
+	<component name="energyamountRequestDto" class="jp.co.isid.mos.bird.bizsupport.energyamount.dto.EnergyAmountRequestDto" autoBinding="none" instance="request">
+		<property name="companyCd">'00'</property>
+	</component>
+	<component name="energyamountSessionDto" class="jp.co.isid.mos.bird.bizsupport.energyamount.dto.EnergyAmountSessionDto" autoBinding="none" instance="session"/>
+	<component name="energyamountSuiiReqDto" class="jp.co.isid.mos.bird.bizsupport.energyamount.dto.SuiiRequestDto" autoBinding="none" instance="request">
+		<property name="companyCd">'00'</property>
+	</component>
+	<component name="energyamountSuiiSesDto" class="jp.co.isid.mos.bird.bizsupport.energyamount.dto.SuiiSessionDto" autoBinding="none" instance="session"/>
+
+	<!-- ACTION -->
+	<component name="energyamountAction" class="jp.co.isid.mos.bird.bizsupport.energyamount.action.impl.EnergyAmountCondActionImpl" instance="request">
+		<property name="energyamountCsvAction">energyamountCsvAction</property>
+	</component>
+	<component name="energyamountCsvAction" class="jp.co.isid.mos.bird.framework.action.impl.CsvOutput2ActionImpl" instance="request">
+		<property name="csvOutputLogic">energyamountCsvLogic</property>
+		<property name="csvOutputDto">energyamountRequestDto</property>
+	</component>
+	<component name="energyamountCsvSuiiAction" class="jp.co.isid.mos.bird.bizsupport.energyamount.action.impl.CsvActionImpl" instance="request">
+		<property name="csvOutputLogic">energyamountSuiiCsvLogic</property>
+		<property name="csvOutputDto">energyamountSuiiReqDto</property>
+	</component>
+	<!-- Formatter -->
+	<!-- Converter -->
+	<!-- etc -->
+	
+</components>

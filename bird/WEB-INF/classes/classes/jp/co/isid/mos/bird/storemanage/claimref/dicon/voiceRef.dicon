@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="Shift_JIS"?>
+<!DOCTYPE components PUBLIC "-//SEASAR//DTD S2Container 2.3//EN" "http://www.seasar.org/dtd/components23.dtd">
+<components namespace="voiceRef">
+	<include path="dao.dicon"/>
+	<include path="jp/co/isid/mos/bird/common/dicon/birdCommon.dicon"/>
+	<include path="jp/co/isid/mos/bird/framework/dicon/birdInterceptor.dicon"/>
+
+	<!-- インターセプターを自動登録 -->
+	<component class="org.seasar.framework.container.autoregister.AspectAutoRegister">
+	    <property name="interceptor">birdInterceptor.actionInterceptorChain</property>
+	    <initMethod name="addClassPattern">
+	        <arg>"jp.co.isid.mos.bird"</arg>
+	        <arg>".*ActionImpl"</arg>
+	    </initMethod>
+	    <initMethod name="registerAll"/>
+	</component>
+	<component class="org.seasar.framework.container.autoregister.AspectAutoRegister">
+	    <property name="interceptor">birdInterceptor.logicInterceptorChain</property>
+	    <initMethod name="addClassPattern">
+	        <arg>"jp.co.isid.mos.bird"</arg>
+	        <arg>".*LogicImpl"</arg>
+	    </initMethod>
+	    <initMethod name="registerAll"/>
+	</component>
+
+	<!-- DAO -->
+	<component name="voiceRefUIVoiceInfoDao" class="jp.co.isid.mos.bird.storemanage.claimref.dao.UIVoiceInfoDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+
+	<!-- Entity -->
+
+	<!-- DTO -->
+	<component name="ownerSearchDto" class="jp.co.isid.mos.bird.commonform.ownersearch.dto.OwnerSearchDto" instance="session">
+		<property name="RCompanyCdList">null</property>
+	</component>
+	<component name="voiceRefSesDto" class="jp.co.isid.mos.bird.storemanage.claimref.dto.SessionDto" autoBinding="none" instance="session"/>
+	<component name="voiceRefRenderedDto" class="jp.co.isid.mos.bird.storemanage.claimref.dto.RequestDto" autoBinding="none" instance="session"/>
+	<component name="voiceRefReqDto" class="jp.co.isid.mos.bird.storemanage.claimref.dto.RequestDto" autoBinding="none" instance="request"/>
+	<component name="voiceRefViewDto" class="jp.co.isid.mos.bird.storemanage.claimref.dto.RequestDto" autoBinding="none" instance="request"/>
+
+	<!-- ACTION -->
+	<component name="voiceRefListAction" class="jp.co.isid.mos.bird.storemanage.claimref.action.impl.ListActionImpl" instance="request"/>
+	<component name="voiceRefInfoAction" class="jp.co.isid.mos.bird.storemanage.claimref.action.impl.InfoActionImpl" instance="request"/>
+
+	<!-- LOGIC -->
+	<component name="voiceRefSetCompanyLogic" class="jp.co.isid.mos.bird.storemanage.claimref.logic.impl.SetCompanyLogicImpl"/>
+	<component name="voiceRefConditionLogic" class="jp.co.isid.mos.bird.storemanage.claimref.logic.impl.ConditionLogicImpl"/>
+	<component name="voiceRefSearchLogic" class="jp.co.isid.mos.bird.storemanage.claimref.logic.impl.SearchLogicImpl"/>
+
+	<!-- CONVERTER -->
+</components>

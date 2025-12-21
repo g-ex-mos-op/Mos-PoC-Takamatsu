@@ -1,0 +1,35 @@
+select
+	rtrim(BM21.COMPANY_CD)       as COMPANY_CD,
+	rtrim(BM21.MISE_CD)          as MISE_CD,
+    rtrim(BM01.MISE_NAME_KJ)     as MISE_NAME_KJ,
+    rtrim(BM01.SIBU_CD)          as SIBU_CD,
+    rtrim(BM10.SIBU_NAME)        as SIBU_NAME,
+    rtrim(BC23.BLOCK_NAME)       as BLOCK_NAME,
+	rtrim(BM21.MISE_LEASE_SHU)   as MISE_LEASE_SHU,
+	rtrim(BC18.MISE_LEASE_NAME)  as MISE_LEASE_NAME,
+	rtrim(BM21.MISE_LEASE_START) as MISE_LEASE_START,
+	rtrim(BM21.MISE_LEASE_END)   as MISE_LEASE_END
+from
+	(SELECT CNT_DATE FROM BR33CDAY WHERE DAY_KBN = '02') BR33,
+	
+	BM21CHIT BM21
+	    left join BC18CHIT BC18 on (BM21.COMPANY_CD = BC18.COMPANY_CD 
+	                            and BM21.MISE_LEASE_SHU  = BC18.MISE_LEASE_SHU) ,
+
+	BM01TENM BM01 
+		left join BM10GSIB BM10 on (BM01.COMPANY_CD = BM10.COMPANY_CD and BM01.SIBU_CD = BM10.SIBU_CD) 
+		left join BC23BLCK BC23 on (BM01.BLOCK_CD = BC23.BLOCK_CD) 
+where
+	BM21.COMPANY_CD = BM01.COMPANY_CD
+and BM21.MISE_CD    = BM01.MISE_CD
+and	BM21.COMPANY_CD = /*companyCd*/'60'
+/*IF sibuCd != null */AND BM01.SIBU_CD = /*sibuCd*/'008'/*END*/
+/*IF closeFlg != null */
+and BM01.CLOSE_DT >= BR33.CNT_DATE
+/*END*/
+order by 
+    BM01.SIBU_CD,
+    BM01.BLOCK_CD,
+    BM21.MISE_CD,
+	BM21.MISE_LEASE_SHU,
+	BM21.MISE_LEASE_START

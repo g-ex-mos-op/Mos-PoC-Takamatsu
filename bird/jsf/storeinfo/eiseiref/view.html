@@ -1,0 +1,284 @@
+<html xmlns:m="http://www.seasar.org/maya" m:action="#{eiseiRefAction.initialize}" m:extends="/jsf/layout/layoutNoNavi.html">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Windows-31j"/>
+<meta http-equiv="Content-Style-Type" content="text/css"/>
+<title>店舗衛生結果</title>
+</head>
+<body>
+  <span m:inject="f:param" m:name="layoutTitle" m:value="店舗衛生結果"/>
+  <span m:inject="f:param" m:name="onLoadName" m:value="load()"/>
+  <span m:inject="s:insert" m:name="bodyTitleName">■店舗衛生結果</span>
+  <span m:inject="f:param" m:name="viewIdValue" m:value="BSI007V01"/>
+  <span m:inject="s:insert" m:name="body">
+  <STYLE type="text/css">
+  <!--
+  .width_percent_98_65{
+	width:100%;
+}
+  //-->
+  </STYLE>
+  <script type="text/javascript" m:rendered="#{birdUserInfo.mstUser.userTypeCd == '01'}">
+  <!--
+    function load() {
+	    var f=document.forms['conditionForm'];
+    	changeEiseiTab(f.elements['conditionForm:tabKey'].value);
+    	focusElement("conditionForm");
+		return;
+    }
+    function callMiseForm() {
+      var f=document.forms['conditionForm'];
+      f.elements['conditionForm:__link_clicked__'].value='conditionForm:callMiseForm';
+      f.target = "_self";
+      f.submit();
+      return false;
+    }
+
+	-->
+  </script>
+  <script type="text/javascript" m:rendered="#{birdUserInfo.mstUser.userTypeCd != '01'}">
+  <!--
+    function load() {
+	    var f=document.forms['conditionForm'];
+    	changeEiseiTab(f.elements['conditionForm:tabKey'].value);
+		return;
+    }
+	-->
+  </script>
+  <script type="text/javascript">
+    <!--
+    function changeEiseiTab(tabcd){
+    	var f=document.forms['conditionForm'];
+    	f.elements['conditionForm:tabKey'].value = tabcd;
+		changeTabArea(tabcd);
+		if("mosp"==tabcd) {
+			loadScroll("result_2:scrollMosplete", 330);
+		}
+    }
+
+    function search() {
+      var f=document.forms['conditionForm'];
+      f.elements['conditionForm:__link_clicked__'].value='conditionForm:search';
+      f.target = "_self";
+      f.submit();
+      return false;
+    }
+    function setLinkInfo(tabKey, pdfFilename) {
+      var f=document.forms['conditionForm'];
+      f.elements['conditionForm:__link_clicked__'].value="conditionForm:downloadBd3"+tabKey+"tb";
+	  f.elements['conditionForm:downloadFileName'].value=pdfFilename;
+      f.submit();
+      return;
+    }
+
+    //-->
+  </script>
+	<form m:id="conditionForm" onKeyDown="return setDefaultSubmitButton('conditionForm','executeBt');">
+		<input type="hidden" m:id="initMenuId" m:value="#{menuAction.initMenuId}"/>
+		<input type="hidden" m:id="initSubMenuId" m:value="#{menuAction.initSubMenuId}"/>
+		<input type="hidden" m:id="viewId" m:value="#{viewIdValue}"/>
+		<input type="hidden" m:id="userTypeCd" m:value="#{birdUserInfo.mstUser.userTypeCd}" m:passthrough="true"/>
+		<!-- 条件に対する複数window対応 -->
+		<input type="hidden" m:value="#{eiseiRefRequestDto.windowId}"/>
+		<a m:id="callMiseForm"  m:action="#{eiseiRefAction.callMiseForm}"/>
+		<a m:id="search"  m:action="#{eiseiRefAction.search}"/>
+		<table class="hiddenBody element_browser" style=" margin-bottom: 4px;">
+		<tr>
+			<td>
+		<table class="body_table">
+		  <tr>
+	        <th m:rendered="#{birdUserInfo.mstUser.userTypeCd != '03'}">対象店舗
+	      	<span m:rendered="#{birdUserInfo.mstUser.userTypeCd == '01'}">
+	      &nbsp;<input type="button" value="検索" onclick="callMiseForm();" onDblClick="return false;"/>
+	      	</span>
+	      </th>
+	      <td m:rendered="#{birdUserInfo.mstUser.userTypeCd == '01'}">
+	        <input type="text" m:id="miseCd" m:value="#{eiseiRefRequestDto.miseCd}"
+	         size="8" maxlength="5" class="imenotuse" m:converter="#{cvtMiseCode}"/></td>
+	      <td m:rendered="#{birdUserInfo.mstUser.userTypeCd == '02'}">
+	        <div class="hideArea">
+	          <select m:id="pldwnMiseCd"
+	          m:value="#{eiseiRefRequestDto.miseCd}"
+	          m:items="#{eiseiRefSessionDto.listMise}"
+	          m:itemValue="hyojitaishoCd"
+	          m:itemlabel="hyojitaishoNameAddClose">
+	          </select>
+	        </div>
+	      </td>
+	      <th>実施年度</th>
+	      <td>
+ 			<div m:rendered="#{birdUserInfo.mstUser.userTypeCd == '03'}"><input type="hidden"m:value="#{eiseiRefRequestDto.miseCd}"/></div>
+	          <div class="hideArea">
+	          <select m:id="taishoYear"
+	          m:value="#{eiseiRefRequestDto.nendo}"
+	          m:items="#{eiseiRefSessionDto.listNendo}"
+	          m:itemValue="value"
+	          m:itemlabel="label">
+	          </select>
+	        </div>
+	      </td>
+	    </tr>
+	    </table>
+	  </td>
+	  <td>
+	  <input type="button" value="#{eiseiRefResultDto.miseCd==null?'実行':'再検索'}"
+	         name="conditionForm:executeBt"
+	         onclick="search();" onDblClick="return false;" style="margin-left:3px;"/></td>
+	  </tr>
+	  </table>
+	  <!-- 検索結果パラメーター -->
+	  <input type="hidden" value="#{eiseiRefResultDto.miseCd}"/>
+	  <input type="hidden" value="#{eiseiRefResultDto.nendo}"/>
+	  <input type="hidden" m:id="tabKey" value="#{eiseiRefResultDto.tabKey}"/>
+	  <input type="hidden" value="#{eiseiRefResultDto.existsData}"/>
+	  <!-- ダウンロード用パラメーター -->
+	  <input type="hidden" value="#{eiseiRefFileDownloadDto.miseCd}"/>
+	  <input type="hidden" value="#{eiseiRefFileDownloadDto.nendo}"/>
+	  <input type="hidden" m:id="downloadFileName" value="#{eiseiRefFileDownloadDto.downloadFileName}"/>
+		<a m:id="downloadBd32setb"  m:action="#{eiseiRefAction.downloadBd32setb}"/>
+		<a m:id="downloadBd33shtb"  m:action="#{eiseiRefAction.downloadBd33shtb}"/>
+		<a m:id="downloadBd34vstb"  m:action="#{eiseiRefAction.downloadBd34vstb}"/>
+	</form>
+	<!--検索結果-->
+	<div m:rendered="#{eiseiRefResultDto.existsData}">
+
+	<!--ヘッダー部-->
+	<table class="body_table2" style="width:98%;">
+		<tr>
+		  <th width="110" class="width_112_s">対象店舗</th>
+		  <td width="*"><span m:value="#{eiseiRefResultDto.headerData.miseCd}"/>&nbsp;&nbsp;
+		  <span m:converter="#{characterEncodingConverter}" m:value="#{eiseiRefResultDto.headerData.miseNameKj}"/>
+		  </td>
+		  <th width="110">実施年度</th>
+		  <td><span m:value="#{eiseiRefResultDto.headerData.bnfcYear}"/>年</td>
+		  <th width="110">支部</th>
+		  <td width="150px"><span m:value="#{eiseiRefResultDto.headerData.sibuCd}"/>&nbsp;&nbsp;
+		  <span m:converter="#{characterEncodingConverter}" m:value="#{eiseiRefResultDto.headerData.sibuName}"/>
+		  </td>
+		</tr>
+		<tr>
+		  <th>シェイクマシン</th>
+		  <td><span m:converter="#{characterEncodingConverter}" m:value="#{eiseiRefResultDto.headerData.machine1Name}"/></td>
+		  <th>グリドル</th>
+		  <td><span m:converter="#{characterEncodingConverter}" m:value="#{eiseiRefResultDto.headerData.gridole1Name}"/></td>
+		  <th>水の種類</th>
+		  <td><span m:converter="#{characterEncodingConverter}" m:value="#{eiseiRefResultDto.headerData.waterKind}"/></td>
+		</tr>
+		<tr>
+		  <th>駆除契約</th>
+		  <td colspan="5"><span m:value="#{eiseiRefResultDto.headerData.typeStartDate}"/>&nbsp;～&nbsp;
+		              <span m:converter="#{characterEncodingConverter}" m:value="#{eiseiRefResultDto.headerData.typeNm}"/></td>
+		</tr>
+	</table>
+	<!--タブ-->
+	<table cellspacing="0" cellpadding="0"
+			style="width:98%;margin-top: 4px;"
+			class="element_browser">
+		<tr style="line-height:19px;">
+			<div m:inject="s:forEach" m:items="#{eiseiRefResultDto.listData}" m:var="tab" m:varindex="i">
+				<td class="tab_change_area_#{tab.key} body_#{tab.key==eiseiRefResultDto.tabKey?'':'non_'}active_cell" width="150px"
+					onClick="changeEiseiTab('#{tab.key}');" onDblClick="return false;"
+					onMouseOver="this.style.cursor='pointer';"><span m:converter="#{characterEncodingConverter}" m:value="#{tab.keyName}"/></td>
+			</div>
+			<td width="*">&nbsp;</td>
+		</tr>
+	</table>
+	<div class="scroll_padding_head">
+	<div class="scroll_hidden width_percent_98_65" style="margin-top: 0px;margin-bottom:0px;height:5px;">
+	<table cellspacing="0" cellpadding="0"
+			style="width:98%;"
+			class="element_browser">
+		<tr class="body_caption" style="line-height:5px;"><td colspan="*">&nbsp;</td></tr>
+	</table>
+	</div>
+	</div>
+	<!--データ部-->
+	<div m:id="result" m:inject="s:forEach" m:items="#{eiseiRefResultDto.listData}" m:var="tab" m:varindex="i">
+		<div class="tab_change_area_#{tab.key} #{tab.key==eiseiRefResultDto.tabKey?'':'in'}visible_tab">
+			<div id="header1" class="element_print" style="font-weight:bold">
+				<p/>【<span m:converter="#{characterEncodingConverter}" m:value="#{tab.keyName}"/>】</div>
+			<div m:rendered="#{tab.listDataCnt == 0}" align="center" style="font-weight:bold">
+			<p/><span m:converter="#{characterEncodingConverter}" m:value="#{tab.keyName}"/>の情報はありません。</div>
+			 <!--店舗衛生監査-->
+			<table m:rendered="#{tab.key=='2se' && tab.listDataCnt > 0}" width="650px" class="body_table2">
+			    <tr class="header_row">
+			    <th width="250px">実施回数</th>
+			    <th width="90px">実施日</th>
+			    <th width="*">実施区分</th>
+			    </tr>
+			    <div m:inject="s:forEach" m:items="#{tab.listData}" m:var="entity" m:varindex="i">
+			      <tr>
+			        <td><!-- リンク追加 -->
+			          <a href="#" m:onclick="setLinkInfo('#{tab.key}','#{entity.pdfFilenm}');">
+			            <span m:converter="#{characterEncodingConverter}" m:value="#{entity.statusNm}"/></a>
+			        </td>
+			        <td><span m:value="#{entity.exDate}" m:converter="#{dateConverter}" /></td>
+			        <td><span m:converter="#{characterEncodingConverter}" m:value="#{entity.exJisshiKbnNm}"/></td>
+			      </tr>
+			    </div>
+			</table>
+			<!--店舗衛生情報-->
+			<table m:rendered="#{tab.key=='3sh' && tab.listDataCnt > 0}" class="body_table2">
+			    <tr class="header_row">
+			    <th width="150px">店舗衛生情報</th>
+			    </tr>
+			    <div m:inject="s:forEach" m:items="#{tab.listData}" m:var="entity" m:varindex="i">
+			      <tr>
+			        <td width="150px"><!-- リンク追加 -->
+			          <a href="#" m:onclick="setLinkInfo('#{tab.key}','#{entity.pdfFilenm}');">
+			            <span m:value="#{entity.bnfcYear}"/>年度</a>
+			        </td>
+			      </tr>
+			    </div>
+			</table>
+			<!--モスプレート-->
+			<div class="scroll_padding_head">
+			<div m:rendered="#{tab.key=='mosp' && tab.listDataCnt > 0}" class="scroll_hidden">
+			<table width="98%" class="body_table2">
+			  <tr class="header_row">
+			    <th width="10%">実施日</th>
+			    <th width="10%">実施時間</th>
+			    <th width="*">商品名</th>
+			    <th width="10%">判定</th>
+			    <th width="10%">一般生菌数</th>
+			    <th width="10%">大腸菌群</th>
+			  </tr>
+			</table>
+			</div>
+			</div>
+			<div class="scroll_padding_data">
+			<div m:rendered="#{tab.key=='mosp'}" id="scrollMosplete" class="scroll_standby">
+			  <table style="border-top-width:0px;" width="98%" class="body_table2">
+			    <div m:inject="s:forEach" m:items="#{tab.listData}" m:var="entity" m:varindex="iT5">
+			      <tr class="non_top_border">
+			        <td width="10%"><span m:value="#{entity.buyDate}" m:converter="#{dateConverter}"/></td>
+			        <td width="10%"><span m:converter="#{characterEncodingConverter}" m:value="#{entity.buyTime}"/></td>
+			        <td width="*"><span m:converter="#{characterEncodingConverter}" m:value="#{entity.artcNm}"/></td>
+			        <td width="10%"><span m:converter="#{characterEncodingConverter}" m:value="#{entity.successNm}"/></td>
+			        <td width="10%" align="center"><span m:converter="#{characterEncodingConverter}" m:value="#{entity.spcRslt}"/>&nbsp;</td>
+			        <td width="10%" align="center"><span m:converter="#{characterEncodingConverter}" m:value="#{entity.clnRslt}"/>&nbsp;</td>
+			      </tr>
+			    </div>
+			  </table>
+			</div>
+			</div>
+			<!--訪店指導-->
+			<table m:rendered="#{tab.key=='4vs' && tab.listDataCnt > 0}" class="body_table2">
+			    <tr class="header_row">
+			    <th>衛生指導員訪店報告</th>
+			    </tr>
+			    <div m:inject="s:forEach" m:items="#{tab.listData}" m:var="entity" m:varindex="i">
+			      <tr>
+			        <td ><!-- リンク追加 -->
+			          <a href="#" m:onclick="setLinkInfo('#{tab.key}','#{entity.pdfFilenm}');">
+			            <span m:converter="#{characterEncodingConverter}" m:value="#{entity.pdfFilenm}"/></a>
+			        </td>
+			      </tr>
+			    </div>
+			</table>
+		</div>
+	</div>
+
+	</div>
+</span>
+</body>
+</html>

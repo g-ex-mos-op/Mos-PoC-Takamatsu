@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="Shift_JIS"?>
+<!DOCTYPE components PUBLIC "-//SEASAR//DTD S2Container 2.3//EN" "http://www.seasar.org/dtd/components23.dtd">
+<components namespace="bizreportCommon">
+	<include path="dao.dicon"/>
+	<include path="jp/co/isid/mos/bird/common/dicon/birdCommon.dicon"/>
+	<include path="jp/co/isid/mos/bird/framework/dicon/birdInterceptor.dicon"/>
+	
+	<!-- インターセプターを自動登録 -->
+	<component class="org.seasar.framework.container.autoregister.AspectAutoRegister">
+	    <property name="interceptor">birdInterceptor.actionInterceptorChain</property>
+	    <initMethod name="addClassPattern">
+	        <arg>"jp.co.isid.mos.bird"</arg>
+	        <arg>".*ActionImpl"</arg>
+	    </initMethod>
+	    <initMethod name="registerAll"/>
+	</component> 
+	<component class="org.seasar.framework.container.autoregister.AspectAutoRegister">
+	    <property name="interceptor">birdInterceptor.logicInterceptorChain</property>
+	    <initMethod name="addClassPattern">
+	        <arg>"jp.co.isid.mos.bird"</arg>
+	        <arg>".*LogicImpl"</arg>
+	    </initMethod>
+	    <initMethod name="registerAll"/>  
+	</component>
+
+	<!-- DAO -->
+	<component name="codBlockDao" class="jp.co.isid.mos.bird.bizreport.common.dao.CodBlockDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="codCompanyDao" class="jp.co.isid.mos.bird.bizreport.common.dao.CodCompanyDao">
+		<aspect>dao.interceptor</aspect>
+	</component>
+	<component name="codHyojiTaishoDao" class="jp.co.isid.mos.bird.bizreport.common.dao.CodHyojiTaishoDao">
+		<aspect>dao.interceptor</aspect>
+	</component>
+	<component name="mstSibuInfoDao" class="jp.co.isid.mos.bird.bizreport.common.dao.MstSibuInfoDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="codSegmentInfoDao" class="jp.co.isid.mos.bird.bizreport.common.dao.CodSegmentInfoDao">
+		<aspect>dao.interceptor</aspect>
+	</component>
+	<component name="tenpoInfoDao" class="jp.co.isid.mos.bird.bizreport.common.dao.TenpoInfoDao">
+		<aspect>dao.interceptor</aspect>
+	</component>
+	<component name="mstAccountKbnInfoDao" class="jp.co.isid.mos.bird.common.kaikei.dao.CtlSyukeiKbnDao">
+		<aspect>dao.interceptor</aspect>
+	</component>
+	<component name="mstDiscountKbnInfoDao" class="jp.co.isid.mos.bird.bizreport.common.dao.MstDiscountKbnInfoDao">
+		<aspect>dao.interceptor</aspect>
+	</component>
+	<component name="mstTicketInfoDao" class="jp.co.isid.mos.bird.bizreport.common.dao.MstTicketInfoDao">
+		<aspect>dao.interceptor</aspect>
+	</component>
+
+	<!-- Entity -->
+	<component name="mstSibuInfo" class="jp.co.isid.mos.bird.bizreport.common.entity.MstSibuInfo" instance="session"/>
+	<component name="tenpoInfo" class="jp.co.isid.mos.bird.bizreport.common.entity.TenpoInfo" instance="session"/>
+
+	<!-- DTO -->
+	<component name="yagoRefCommonCondDto" class="jp.co.isid.mos.bird.bizreport.common.dto.YagoRefCommonCondDto" instance="session"/>
+	<!--日報系-->
+	<component name="nipoRefConditionDto" class="jp.co.isid.mos.bird.bizreport.common.dto.NipoRefConditionDto" instance="session"/>
+	<component name="nipoRefSearchParameterDto" class="jp.co.isid.mos.bird.bizreport.common.dto.NipoRefConditionParameterDto" instance="request">
+		<property name="taishoSibuList">new java.util.ArrayList(0)</property>
+	</component>
+	<component name="nipoRefResultParameterDto" class="jp.co.isid.mos.bird.bizreport.common.dto.NipoRefConditionParameterDto" instance="request">
+		<property name="taishoSibuList">new java.util.ArrayList(0)</property>
+	</component>
+	<!-- ACTION -->
+	
+	<!-- LOGIC -->
+	<component name="companyListLogic" class="jp.co.isid.mos.bird.bizreport.common.logic.impl.CompanyListLogicImpl"/>
+	<component name="hyojiTaishoListLogic" class="jp.co.isid.mos.bird.bizreport.common.logic.impl.HyojiTaishoListLogicImpl"/>
+	<component name="taishoJokenListLogic" class="jp.co.isid.mos.bird.bizreport.common.logic.impl.TaishoJokenListLogicImpl"/>
+	<component name="kikanSiteiListLogic" class="jp.co.isid.mos.bird.bizreport.common.logic.impl.KikanSiteiListLogicImpl"/>
+	<component name="mstSibuInfoLogic" class="jp.co.isid.mos.bird.bizreport.common.logic.impl.MstSibuInfoLogicImpl"/>
+	<component name="conditionLogic" class="jp.co.isid.mos.bird.bizreport.common.logic.impl.ConditionLogicImpl"/>
+
+	<!-- CONVERTER -->
+	<component name="dateConverterYM" class="jp.co.isid.mos.bird.framework.text.converter.DateConverter" instance="request">
+		<arg>@jp.co.isid.mos.bird.framework.util.formatter.DateFormatter@DATE_TYPE_YM</arg>
+		<arg>@jp.co.isid.mos.bird.framework.util.formatter.DateFormatter@PATTERN_MONTH_SLASH</arg>
+	</component>
+	<component name="numConverterYM" class="jp.co.isid.mos.bird.framework.text.converter.NumericConverter" instance="request" />
+	<component name="bizreportNumericCnvt" class="jp.co.isid.mos.bird.framework.text.converter.NumericConverter" instance="request">
+		<arg>"#,##0"</arg><arg>true</arg>
+	</component>
+	<component name="bizreportNumHirituConverter" class="jp.co.isid.mos.bird.framework.text.converter.NumericConverter" instance="request">
+		<arg>"0.00"</arg><arg>true</arg>
+	</component>
+</components>

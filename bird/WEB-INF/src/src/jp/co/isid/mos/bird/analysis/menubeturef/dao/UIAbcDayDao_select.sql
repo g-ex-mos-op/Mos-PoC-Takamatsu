@@ -1,0 +1,352 @@
+SELECT (CASE WHEN BD10.MENU_BUNRUI IS NULL THEN 1 ELSE 2 END) AS ROW_RANK
+,      (CASE WHEN BD10.MENU_BUNRUI IS NULL THEN 'TOTAL' 
+             WHEN BD10.MENU_BUNRUI IS NOT NULL AND BD10.SUM_MENU_CD IS NULL THEN 'MBUNRUI' 
+             WHEN BD10.SUM_MENU_CD IS NOT NULL AND BD10.MENU_CD IS NULL THEN 
+                  CASE WHEN BD10.SUM_MENU_EXIST>0 THEN 'SMENU' ELSE 'NOTSMENU' END
+             WHEN BD10.MENU_CD IS NOT NULL AND BD10.SUM_MENU_EXIST=0 THEN 'MENUONLY'
+        ELSE 'MENU' END) AS ROW_TYPE
+,      BD10.COMPANY_CD
+,      BD10.TARGET_NAME_KJ
+,      BD10.MENU_BUNRUI
+,      BD10.MBUNRUI_NAME_KJ
+,      (CASE WHEN BD10.MENU_CD IS NULL THEN 1 ELSE 2 END) AS SMENU_ROW_NO
+,      BD10.SUM_MENU_CD
+/*IF isCsv && isSmenu == false */
+,      (CASE WHEN BD10.MENU_BUNRUI IS NOT NULL 
+                  AND BD10.SUM_MENU_CD IS NOT NULL 
+                      THEN BD10.TANKA 
+             ELSE null END) AS TANKA 
+/*END*/
+,      RTRIM(SPC10.MENU_NAME_KJ) AS SUM_MENU_NAME_KJ
+,      BD10.MENU_CD
+,      (CASE WHEN BD10.MENU_BUNRUI IS NULL  THEN '合計' 
+			 WHEN BD10.MENU_BUNRUI IS NOT NULL AND BD10.SUM_MENU_CD IS NULL THEN CONCAT(RTRIM(BD10.MBUNRUI_NAME_KJ) ,'計')
+             WHEN BD10.SUM_MENU_CD IS NOT NULL AND BD10.MENU_CD IS NULL THEN RTRIM(SPC10.MENU_NAME_KJ)
+        ELSE RTRIM(BD10.MENU_NAME_KJ) END) AS MENU_NAME_KJ
+,      BD10.TENPO_CNT
+,      BD10.HANBAI_TENPO_CNT
+,      (CASE WHEN BD10.SUM_MENU_CD IS NOT NULL 
+                    AND BD10.MENU_CD IS NULL 
+                        AND BD10.SUM_MENU_EXIST>0 THEN BD10.SUM_MENU_KOSU ELSE BD10.KOSU END) KOSU
+,      BD10.KINGAKU
+,      DECIMAL(CASE WHEN BD10.KINGAKU IS NULL OR SUM(CASE WHEN BD10.MENU_CD IS NOT NULL THEN BD10.KINGAKU ELSE 0 END) OVER(partition by BD10.COMPANY_CD)=0 THEN 0.00
+                    ELSE (DOUBLE(BD10.KINGAKU)/DOUBLE(SUM(CASE WHEN BD10.MENU_CD IS NOT NULL THEN BD10.KINGAKU ELSE 0 END) OVER(partition by BD10.COMPANY_CD)))*100+0.005
+                    END,11,2)  AS KINGAKU_KOUSEI_HI
+,      (CASE WHEN BD10.SUM_MENU_CD IS NOT NULL 
+                    AND BD10.MENU_CD IS NULL 
+                        AND BD10.SUM_MENU_EXIST>0 THEN BD10.SUM_MENU_KOSU_ZEN_NEN ELSE BD10.KOSU_ZEN_NEN END) KOSU_ZEN_NEN
+,      BD10.KINGAKU_ZEN_NEN
+,      DECIMAL(CASE WHEN BD10.KINGAKU_ZEN_NEN IS NULL OR SUM(CASE WHEN BD10.MENU_CD IS NOT NULL THEN BD10.KINGAKU_ZEN_NEN ELSE 0 END) OVER(partition by BD10.COMPANY_CD) =0 THEN 0.00
+                    ELSE (DOUBLE(BD10.KINGAKU_ZEN_NEN)/DOUBLE(SUM(CASE WHEN BD10.MENU_CD IS NOT NULL THEN BD10.KINGAKU_ZEN_NEN ELSE 0 END) OVER(partition by BD10.COMPANY_CD)))*100+0.005
+                    END,11,2)  AS KINGAKU_KOUSEI_HI_ZEN_NEN
+FROM (
+	SELECT BD10.COMPANY_CD
+	,      BD10.TARGET_NAME_KJ
+    ,      BD10.MENU_BUNRUI
+    ,      BD10.MBUNRUI_NAME_KJ
+    ,      SUM(SUM_MENU_EXIST) AS SUM_MENU_EXIST
+    ,      BD10.SUM_MENU_CD
+    ,      BD10.MENU_CD
+    ,      BD10.MENU_NAME_KJ
+/*IF isCsv && isSmenu == false */
+    ,      CASE WHEN (SUM(BD10.KOSU))=0 THEN null
+            WHEN COUNT(DISTINCT TANKA) = 1 THEN MAX(BD10.TANKA) 
+            WHEN SUM(BD10.KINGAKU) >= 0 THEN DECIMAL(DOUBLE(SUM(BD10.KINGAKU)) / DOUBLE(SUM(BD10.KOSU))+0.5, 11, 0) 
+            ELSE DECIMAL(DOUBLE(SUM(BD10.KINGAKU)) / DOUBLE(SUM(BD10.KOSU))-0.5, 11, 0) 
+            END AS TANKA
+/*END*/
+	,      MAX(BD10.HANBAI_TENPO_CNT) AS TENPO_CNT
+	,      MAX(BD10.HANBAI_TENPO_CNT) AS HANBAI_TENPO_CNT
+	,      SUM(BD10.KINGAKU ) AS KINGAKU
+	,      SUM(BD10.KOSU) AS KOSU
+	,      SUM(BD10.SUM_MENU_KOSU) AS SUM_MENU_KOSU
+	,      SUM(BD10.KINGAKU_ZEN_NEN) AS KINGAKU_ZEN_NEN
+	,      SUM(BD10.KOSU_ZEN_NEN) AS KOSU_ZEN_NEN
+	,      SUM(BD10.SUM_MENU_KOSU_ZEN_NEN) AS SUM_MENU_KOSU_ZEN_NEN
+	FROM (
+		SELECT BD10.COMPANY_CD
+/*IF taishoJoken.equals("ALL") */
+	/*IF userTypeCd == "01" */
+		,     '全社' AS TARGET_NAME_KJ
+    --ELSE
+		,     '全店' AS TARGET_NAME_KJ
+    /*END*/
+/*END*/
+/*IF taishoJoken.equals("SIBU") */  
+		,      BM01.SIBU_NAME AS TARGET_NAME_KJ
+/*END*/
+/*IF taishoJoken.equals("MISE") */  
+		,      BM01.MISE_NAME_KJ AS TARGET_NAME_KJ
+/*END*/
+		,      PC10.MENU_BUNRUI
+		,      PC11.MBUNRUI_NAME_KJ
+        ,      COUNT(SUM_MENU_CD) SUM_MENU_EXIST
+		,      CASE WHEN BM62.SUM_MENU_CD IS NULL THEN BD10.MENU_CD ELSE BM62.SUM_MENU_CD END AS SUM_MENU_CD
+		,      BD10.MENU_CD
+/*IF isCsv && isSmenu == false */
+        ,      BD10.TANKA 
+/*END*/
+		,      PC10.MENU_NAME_KJ
+		,      0 AS TENPO_CNT
+		,      COUNT(DISTINCT BD10.MISE_CD) AS HANBAI_TENPO_CNT 
+		,      SUM(BD10.URIAGE) AS KINGAKU
+		,      SUM(BD10.KAZU_KEI) AS KOSU
+		,      SUM(CASE WHEN BM62.SUM_MENU_CD IS NOT NULL THEN BD10.KAZU_KEI*BM62.CONV_VALUE ELSE BD10.KAZU_KEI END) AS SUM_MENU_KOSU
+		,      0 AS KINGAKU_ZEN_NEN
+		,      0 AS KOSU_ZEN_NEN
+		,      0 AS SUM_MENU_KOSU_ZEN_NEN
+		FROM BD10NMSL/*$tonenTable*/ BD10
+		LEFT JOIN BM62SYMM BM62 ON (BD10.MENU_CD = BM62.MENU_CD)
+		,    PC10SMNU PC10
+		,    (
+			SELECT BM01.SIBU_CD
+			,      BM10.SIBU_NAME
+			,      BM01.MISE_CD
+			,      BM01.MISE_NAME_KJ
+			FROM BM01TENM BM01
+			,    BM10GSIB BM10
+		/*IF userTypeCd == "02" */
+			,    BM06UONR BM06
+		/*END*/
+		/*IF userTypeCd == "03" */
+			,    BM07UTEN BM07
+		/*END*/
+			,   (
+				SELECT MISE_CD
+				FROM BN01DTEN
+				WHERE COMPANY_CD = /*companyCd*/'00'
+				AND   EIGYO_DT = /*kikanSitei*/'20080509' 
+		/*IF tenpoShubetu == "1" || tenpoShubetu == "3"*/
+				AND   KBN1 = /*tenpoShubetu*/''
+		/*END*/
+		/*IF tenpoShubetu == "2" */
+				AND   KBN1 IN ('1', '2')
+		/*END*/
+				GROUP BY MISE_CD
+			) BN01
+			WHERE BM01.COMPANY_CD = /*companyCd*/'00'
+/*IF taishoJoken.equals("SIBU") */  
+			AND   BM10.SIBU_CD = /*hyojiTaisho*/'011'
+/*END*/
+/*IF taishoJoken.equals("MISE") */  
+			AND   BM01.MISE_CD = /*hyojiTaisho*/'02001'
+/*END*/
+			AND   BM10.COMPANY_CD  = BM01.COMPANY_CD
+			AND   BM10.SIBU_CD     = BM01.SIBU_CD
+/*IF userTypeCd == "01" && limitFlg == true */
+			AND    BM10.SIBU_CD IN (
+		    	SELECT   BM51.SIBU_CD
+		    	FROM     BM51SVSB BM51
+		    	WHERE  BM51.COMPANY_CD = /*companyCd*/'00'
+		    	AND    BM51.SV_CD      = /*userId*/'99990001'
+		    	GROUP BY BM51.SIBU_CD
+		    )
+/*END*/
+/*IF userTypeCd == "02" */
+	        AND   BM06.USER_ID    = /*userId*/'99990002'
+	        AND   BM06.COMPANY_CD = BM01.COMPANY_CD
+	        AND   BM06.ONER_CD    = BM01.ONER_CD
+/*END*/
+/*IF userTypeCd == "03" */
+	        AND   BM07.USER_ID    = /*userId*/'99990003'
+	        AND   BM07.COMPANY_CD = BM01.COMPANY_CD
+	        AND   BM07.MISE_CD    = BM01.MISE_CD
+/*END*/
+	        AND   BN01.MISE_CD    = BM01.MISE_CD
+			GROUP BY BM01.SIBU_CD
+			,        BM10.SIBU_NAME
+			,        BM01.MISE_CD
+			,        BM01.MISE_NAME_KJ
+	    ) BM01
+		,    PC11MBUN PC11
+		WHERE BD10.COMPANY_CD = /*companyCd*/'00'
+		AND   BD10.MENU_DT = /*kikanSitei*/'20080509'
+		AND   BD10.KAZU_KEI > 0
+		AND   BD10.MENU_CD = PC10.MENU_CD
+		AND   BD10.MISE_CD = BM01.MISE_CD
+		AND   PC10.MENU_BUNRUI = PC11.MENU_BUNRUI 
+/*IF taishoJoken.equals("MISE") */  
+		AND   BD10.MISE_CD = /*hyojiTaisho*/'02001'
+/*END*/
+		AND   BD10.MISE_CD = BM01.MISE_CD
+ 	   	GROUP BY ROLLUP( (BD10.COMPANY_CD
+ /*IF taishoJoken.equals("ALL") */
+	/*IF userTypeCd == "01" */
+		,     '全社'
+    --ELSE
+		,     '全店'
+    /*END*/
+/*END*/
+/*IF taishoJoken.equals("SIBU") */  
+		,      BM01.SIBU_NAME
+/*END*/
+/*IF taishoJoken.equals("MISE") */  
+		,      BM01.MISE_NAME_KJ
+/*END*/
+ 	   	 , 0,0,0)
+         ,      (PC10.MENU_BUNRUI, PC11.MBUNRUI_NAME_KJ)
+         ,      (CASE WHEN BM62.SUM_MENU_CD IS NULL THEN BD10.MENU_CD ELSE BM62.SUM_MENU_CD END)
+         ,      (BD10.MENU_CD, PC10.MENU_NAME_KJ/*IF isCsv && isSmenu == false */, BD10.TANKA/*END*/)
+         )
+		HAVING BD10.COMPANY_CD IS NOT NULL
+	UNION ALL
+	   	 SELECT BD10.COMPANY_CD
+/*IF taishoJoken.equals("ALL") */
+	/*IF userTypeCd == "01" */
+		,     '全社' AS TARGET_NAME_KJ
+    --ELSE
+		,     '全店' AS TARGET_NAME_KJ
+    /*END*/
+/*END*/
+/*IF taishoJoken.equals("SIBU") */  
+		,      BM01.SIBU_NAME AS TARGET_NAME_KJ
+/*END*/
+/*IF taishoJoken.equals("MISE") */  
+		,      BM01.MISE_NAME_KJ AS TARGET_NAME_KJ
+/*END*/
+		,      PC10.MENU_BUNRUI
+		,      PC11.MBUNRUI_NAME_KJ
+        ,      COUNT(SUM_MENU_CD) SUM_MENU_EXIST
+		,      CASE WHEN BM62.SUM_MENU_CD IS NULL THEN BD10.MENU_CD ELSE BM62.SUM_MENU_CD END AS SUM_MENU_CD
+		,      BD10.MENU_CD
+/*IF isCsv && isSmenu == false */
+        ,      BD10.TANKA 
+/*END*/
+		,      PC10.MENU_NAME_KJ
+		,      0 AS TENPO_CNT
+		,      0 AS HANBAI_TENPO_CNT 
+		,      0 AS KINGAKU
+		,      0 AS KOSU
+		,      0 AS SUM_MENU_KOSU
+		,      SUM(BD10.URIAGE) AS KINGAKU_ZEN_NEN
+		,      SUM(BD10.KAZU_KEI) AS KOSU_ZEN_NEN
+		,      SUM(CASE WHEN BM62.SUM_MENU_CD IS NOT NULL THEN BD10.KAZU_KEI*BM62.CONV_VALUE ELSE BD10.KAZU_KEI END) AS SUM_MENU_KOSU_ZEN_NEN
+       	FROM PC10SMNU PC10
+		,    (
+			SELECT BM01.SIBU_CD
+			,      BM10.SIBU_NAME
+			,      BM01.MISE_CD
+			,      BM01.MISE_NAME_KJ
+			FROM BM01TENM BM01
+			,    BM10GSIB BM10
+		/*IF userTypeCd == "02" */
+			,    BM06UONR BM06
+		/*END*/
+		/*IF userTypeCd == "03" */
+			,    BM07UTEN BM07
+		/*END*/
+			,   (
+				SELECT MISE_CD
+				FROM BN01DTEN
+				WHERE COMPANY_CD = /*companyCd*/'00'
+				AND   EIGYO_DT = /*kikanSitei*/'20080509' 
+		/*IF tenpoShubetu == "1" || tenpoShubetu == "3"*/
+				AND   KBN1 = /*tenpoShubetu*/''
+		/*END*/
+		/*IF tenpoShubetu == "2" */
+				AND   KBN1 IN ('1', '2')
+		/*END*/
+				GROUP BY MISE_CD
+			) BN01
+			WHERE BM01.COMPANY_CD = /*companyCd*/'00'
+/*IF taishoJoken.equals("SIBU") */  
+			AND   BM10.SIBU_CD = /*hyojiTaisho*/'011'
+/*END*/
+/*IF taishoJoken.equals("MISE") */  
+			AND   BM01.MISE_CD = /*hyojiTaisho*/'02001'
+/*END*/
+			AND   BM10.COMPANY_CD  = BM01.COMPANY_CD
+			AND   BM10.SIBU_CD     = BM01.SIBU_CD
+/*IF userTypeCd == "01" && limitFlg == true */
+			AND    BM10.SIBU_CD IN (
+		    	SELECT   BM51.SIBU_CD
+		    	FROM     BM51SVSB BM51
+		    	WHERE  BM51.COMPANY_CD = /*companyCd*/'00'
+		    	AND    BM51.SV_CD      = /*userId*/'99990001'
+		    	GROUP BY BM51.SIBU_CD
+		    )
+/*END*/
+/*IF userTypeCd == "02" */
+	        AND   BM06.USER_ID    = /*userId*/'99990002'
+	        AND   BM06.COMPANY_CD = BM01.COMPANY_CD
+	        AND   BM06.ONER_CD    = BM01.ONER_CD
+/*END*/
+/*IF userTypeCd == "03" */
+	        AND   BM07.USER_ID    = /*userId*/'99990003'
+	        AND   BM07.COMPANY_CD = BM01.COMPANY_CD
+	        AND   BM07.MISE_CD    = BM01.MISE_CD
+/*END*/
+	        AND   BN01.MISE_CD    = BM01.MISE_CD
+			GROUP BY BM01.SIBU_CD
+			,        BM10.SIBU_NAME
+			,        BM01.MISE_CD
+			,        BM01.MISE_NAME_KJ
+	        ) BM01
+		,    BD10NMSL/*$zennenTable*/ BD10
+		LEFT JOIN BM62SYMM BM62 ON (BD10.MENU_CD = BM62.MENU_CD)
+		,    PC11MBUN PC11
+		WHERE BD10.COMPANY_CD = /*companyCd*/'00'
+		AND   BD10.MENU_DT = /*kikanSiteiZennen*/'20070511'
+		AND   BD10.KAZU_KEI > 0
+		AND   BD10.MENU_CD = PC10.MENU_CD
+		AND   BD10.MISE_CD = BM01.MISE_CD
+		AND   PC10.MENU_BUNRUI = PC11.MENU_BUNRUI 
+/*IF taishoJoken.equals("MISE") */  
+		AND   BD10.MISE_CD = /*hyojiTaisho*/'02001'
+/*END*/
+		AND   BD10.MISE_CD = BM01.MISE_CD
+ 	   	 GROUP BY ROLLUP( (BD10.COMPANY_CD
+ /*IF taishoJoken.equals("ALL") */
+	/*IF userTypeCd == "01" */
+			,     '全社'
+    --ELSE
+			,     '全店'
+    /*END*/
+/*END*/
+/*IF taishoJoken.equals("SIBU") */  
+			,      BM01.SIBU_NAME
+/*END*/
+/*IF taishoJoken.equals("MISE") */  
+			,      BM01.MISE_NAME_KJ
+/*END*/
+ 	   	 ,0,0,0,0,0)
+         ,      (PC10.MENU_BUNRUI, PC11.MBUNRUI_NAME_KJ)
+         ,      (CASE WHEN BM62.SUM_MENU_CD IS NULL THEN BD10.MENU_CD ELSE BM62.SUM_MENU_CD END)
+         ,      (BD10.MENU_CD, PC10.MENU_NAME_KJ/*IF isCsv && isSmenu == false */, BD10.TANKA/*END*/)
+         )
+		HAVING BD10.COMPANY_CD IS NOT NULL
+	) BD10
+    GROUP BY BD10.COMPANY_CD
+	,      BD10.TARGET_NAME_KJ
+    ,      BD10.MENU_BUNRUI
+    ,      BD10.MBUNRUI_NAME_KJ
+    ,      BD10.SUM_MENU_CD
+    ,      BD10.MENU_CD
+    ,      BD10.MENU_NAME_KJ
+) BD10
+LEFT JOIN PC10SMNU SPC10 ON (SPC10.MENU_CD = BD10.SUM_MENU_CD)
+WHERE (CASE WHEN BD10.MENU_BUNRUI IS NULL THEN 'TOTAL' 
+             WHEN BD10.MENU_BUNRUI IS NOT NULL AND BD10.SUM_MENU_CD IS NULL THEN 'MBUNRUI' 
+             WHEN BD10.SUM_MENU_CD IS NOT NULL AND BD10.MENU_CD IS NULL THEN 
+                  CASE WHEN BD10.SUM_MENU_EXIST>0 THEN 'SMENU' ELSE 'NOTSMENU' END
+             WHEN BD10.MENU_CD IS NOT NULL AND BD10.SUM_MENU_EXIST=0 THEN 'MENUONLY'
+        ELSE 'MENU' END) != 'NOTSMENU'
+
+ORDER BY COMPANY_CD
+,        ROW_RANK
+,        MENU_BUNRUI
+/*IF !isCsv */
+,        SUM_MENU_CD
+,        SMENU_ROW_NO
+,        MENU_CD
+,        HANBAI_TENPO_CNT DESC
+--ELSE
+	/*IF isSmenu */
+,        SUM_MENU_CD
+,        SMENU_ROW_NO
+	--ELSE
+,        MENU_CD
+,        TANKA
+	/*END*/
+/*END*/
+

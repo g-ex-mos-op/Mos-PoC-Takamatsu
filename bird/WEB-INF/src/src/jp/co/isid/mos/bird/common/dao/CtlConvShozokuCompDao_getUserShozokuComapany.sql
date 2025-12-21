@@ -1,0 +1,10 @@
+select 
+  BUMON_CD_STF_F,
+  BUMON_CD_STF_T,
+  R_COMPANY_CD,
+  ZOKUSEI_KBN 
+FROM 
+  BR29BMCP BR29 
+WHERE 
+  BUMON_CD_STF_F <= /*bumonCd*/'10001' AND
+  BUMON_CD_STF_T >= /*bumonCd*/'10001' 

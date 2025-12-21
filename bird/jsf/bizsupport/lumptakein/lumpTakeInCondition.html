@@ -1,0 +1,175 @@
+<html xmlns:m="http://www.seasar.org/maya" m:action="#{lumpTakeInConditionAction.initialize}" m:extends="/jsf/layout/layoutNoNavi.html">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Windows-31j"/>
+<meta http-equiv="Content-Style-Type" content="text/css"/>
+<meta http-equiv="Content-Script-Type" content="text/javascript"/>
+<title>P/LCSV一括取込</title>
+</head>
+<body>
+<span m:inject="f:param" m:name="layoutTitle" m:value="P/LCSV一括取込"/>
+<span m:inject="s:insert" m:name="bodyTitleName">■P/LCSV一括取込</span>
+<span m:inject="f:param" m:name="onLoadName" m:value=""/>
+<span m:inject="f:param" m:name="viewIdValue" m:value="BBS002V01"/>
+<div m:inject="s:insert" m:name="body">
+<style type="text/css">
+<!--
+.lump_take_in_condition_body {
+}
+.pane {
+	margin-top	: 20px;
+}
+.col_header {
+	width		: 180px;
+}
+.author_col_header1 {
+	width		: 30px;
+}
+.author_col_header2 {
+	width		: 146px;
+}
+.col_field {
+	width		: 366px;
+}
+.field_name {
+	width		: 360px;
+}
+.ownercode_field {
+	width		: 280px;
+}
+-->
+</style>
+
+<script type="text/javascript">
+<!--
+function confirmTakeCsv(msg1, msg2){
+    year = document.forms['lumpTakeInCondition'].elements['lumpTakeInCondition:plYm'].value.substring(0,4);
+    month = document.forms['lumpTakeInCondition'].elements['lumpTakeInCondition:plYm'].value.substring(4,6);
+    if (confirm(year + msg1 + month + msg2)) {
+        document.forms['lumpTakeInCondition'].elements['lumpTakeInCondition:__link_clicked__'].value='lumpTakeInCondition:takeCsv';
+        document.forms['lumpTakeInCondition'].submit();
+    }
+}
+-->
+</script>
+
+<div class="lump_take_in_condition_body">
+<form m:id="lumpTakeInCondition" enctype="multipart/form-data">
+<input type="hidden" m:id="viewId" m:value="#{viewIdValue}" />
+<input type="hidden" m:id="initMenuId" m:value="#{menuAction.initMenuId}"/>
+<input type="hidden" m:id="initSubMenuId" m:value="#{menuAction.initSubMenuId}"/>
+
+<div m:rendered="#{lumpTakeInDto.selectViewMode == 0}"
+     onkeydown="return setDefaultSubmitButton('lumpTakeInCondition', 'btnExecute');">
+	<input type="submit" value="戻る" m:action="#{lumpTakeInConditionAction.back}" m:rendered="#{birdUserInfo.mstUser.userTypeCd == '01'}"/>
+	<input type="button" value="一括取込" m:name="lumpTakeInCondition:btnExecute" m:onclick="confirmTakeCsv('年','月分を取り込みます。');"/>
+	<input type="submit" value="テンプレートダウンロード" m:action="#{lumpTakeInCsvOutputAction.downloadCsv}"/>
+	<input type="submit" value="登録状況確認" m:action="#{lumpTakeInConditionAction.referError}"/>
+	<a m:id="takeCsv" m:action="#{lumpTakeInConditionAction.takeCsvFile}"/>
+	<div class="pane">
+	<span>※数値の桁区切りのカンマは除いて下さい。</span>
+	<table class="body_table">
+		<col class="col_header"/>
+		<col class="col_field"/>
+	    <tr>
+	        <th>ファイル登録</th>
+	        <td>
+				<span m:converter="#{characterEncodingConverter}" m:inject="x:inputFileUpload" id="uploadedFile" class="field_name" m:value="#{lumpTakeInDto.uploadedFile}"/>
+	        </td>
+	    </tr>
+	</table>
+	</div>
+	
+	<div class="pane">
+	<table class="body_table">
+		<col class="col_header"/>
+		<col class="col_field"/>
+	    <tr>
+	        <th>オーナーコード</th>
+	        <td>
+	        	<span m:value="#{lumpTakeInDto.ownerCd}" m:converter="#{lumpTakeInOnerCdConverter}"/>&nbsp;<span m:value="#{lumpTakeInDto.ownerName}"/>
+	        </td>
+	    </tr>
+	    <tr>
+	        <th>対象年月</th>
+	        <td>
+	        	<div class="hideArea" style="display:inline;">
+	            <select id="plYm"
+	                    m:value="#{lumpTakeInDto.plYm}"
+	                    m:items="#{lumpTakeInDto.plYmList}">
+	                <option value="">2006/01</option>
+	                <option value="">2005/12</option>
+	            </select>
+	            </div>
+	        </td>
+	    </tr>
+	</table>
+	</div>
+
+	<div class="pane">
+	<span>作成者欄は入力必須です。</span>
+	<table class="body_table">
+		<col class="author_col_header1"/>
+		<col class="author_col_header2"/>
+		<col class="col_field"/>
+		<tr>
+			<th rowspan="5" style="text-align:center">作<br/>成<br/>者<br/></th>
+			<th>年月日</th>
+			<td><input type="text" id="authDt" m:value="#{lumpTakeInDto.authDt}" m:converter="#{lumpTakeInAuthDtConverter}" maxlength="10"/></td>
+		</tr>
+		<tr>
+			<th>電話番号</th>
+			<td><input type="text" id="authPhoneNum" m:value="#{lumpTakeInDto.authPhoneNum}" maxlength="15"/></td>
+		</tr>
+		<tr>
+			<th>会計事務所等</th>
+			<td><input type="text" id="authOther" class="field_name" m:value="#{lumpTakeInDto.authOther}" maxlength="40"/></td>
+		</tr>
+		<tr>
+			<th>氏名</th>
+			<td><input type="text" id="authorName" class="field_name" m:value="#{lumpTakeInDto.authorName}" maxlength="40"/></td>
+		</tr>
+		<tr>
+			<th>決算月</th>
+			<td>
+	        	<div class="hideArea" style="display:inline;">
+				<select id="kessanDt" m:value="#{lumpTakeInDto.kessanDt}">
+					<option value="01">1月</option><option value="02">2月</option>
+					<option value="03">3月</option><option value="04">4月</option>
+					<option value="05">5月</option><option value="06">6月</option>
+					<option value="07">7月</option><option value="08">8月</option>
+					<option value="09">9月</option><option value="10">10月</option>
+					<option value="11">11月</option><option value="12">12月</option>
+				</select>
+				</div>
+			</td>
+		</tr>
+	</table>
+	</div>
+</div>
+
+<div m:rendered="#{lumpTakeInDto.selectViewMode == 1}">
+<input type="submit" value="実行" m:action="#{lumpTakeInConditionAction.selectOwnerCode}"/>
+<table class="body_table" style="margin-top:4px;">
+    <tr>
+        <th>オーナーコード</th>
+        <td style="border-right-width:0px;">
+     		<input type="text" id="ownerCd" m:value="#{lumpTakeInDto.ownerCd}"
+     		       m:converter="#{lumpTakeInOnerCdConverter}" maxlength="5"/>
+        </td>
+        <td style="border-left-width:0px;"><input type="submit" value="選択" 
+            m:action="#{lumpTakeInConditionAction.callOwnerSearch}"/></td>
+    </tr>
+</table>
+</div>
+
+<script type="text/javascript">
+<!--
+	focusElement("lumpTakeInCondition");
+-->
+</script>
+<input type="text" m:id="dummyEnter" style="display:none;"/>
+</form>
+</div>
+</div>
+</body>
+</html>

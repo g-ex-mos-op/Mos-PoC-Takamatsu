@@ -1,0 +1,50 @@
+SELECT
+    BT63.COMPANY_CD 
+   ,BT63.EIGYO_DT 
+   ,sum(BT63.URIAGE) as URIAGE
+   ,sum(BT63.SIIRE_SHOKU) as SIIRE_SHOKU
+   ,sum(BT63.SIIRE_YASAI) as SIIRE_YASAI
+   ,sum(BT63.SIIRE_HOUZAI) as SIIRE_HOUZAI
+   ,sum(BT63.SIIRE_OTHER) as SIIRE_OTHER
+   ,sum(BT63.SIIRE_SHOUMOU) as SIIRE_SHOUMOU
+   ,sum(BT63.JITU_SHOKU) as JITU_SHOKU
+   ,sum(BT63.JITU_YASAI) as JITU_YASAI
+   ,sum(BT63.JITU_HOUZAI) as JITU_HOUZAI
+   ,sum(BT63.JITU_OTHER) as JITU_OTHER
+   ,sum(BT63.STD_SHOKU) as STD_SHOKU
+   ,sum(BT63.STD_YASAI) as STD_YASAI
+   ,sum(BT63.STD_HOUZAI) as STD_HOUZAI
+   ,sum(BT63.STD_OTHER) as STD_OTHER
+   ,sum(BT63.PA_SAL) as PA_SAL
+   ,sum(BT63.PA_WH) as PA_WH
+   ,sum(BT63.SHAIN_SAL) as SHAIN_SAL
+   ,sum(BT63.SHAIN_WH) as SHAIN_WH
+FROM
+    BT63SNIP BT63 
+    INNER JOIN BM01TENM BM01 ON 
+        (BT63.COMPANY_CD = BM01.COMPANY_CD and BT63.MISE_CD = BM01.MISE_CD)
+WHERE
+      BT63.COMPANY_CD = /*companyCd*/'00'
+  AND BT63.EIGYO_DT >=  /*startYmd*/'20061201'
+  AND BT63.EIGYO_DT <=  /*endYmd*/'20061231'
+  AND BM01.ONER_CD    = /*onerCd*/'38001'
+
+  /*IF limitFlg==true */
+    AND BT63.MISE_CD IN ( 
+        SELECT 
+            BM50.MISE_CD
+        FROM
+            BM50TANM BM50 
+        WHERE
+            BM50.COMPANY_CD = /*companyCd*/'00' AND
+            BM50.SV_CD = /*userId*/'00000121'
+        GROUP BY
+            BM50.MISE_CD 
+        )
+  /*END*/
+
+GROUP BY
+    BT63.COMPANY_CD 
+   ,BT63.EIGYO_DT
+ORDER BY 
+    BT63.EIGYO_DT

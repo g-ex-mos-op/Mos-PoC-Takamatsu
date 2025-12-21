@@ -1,0 +1,79 @@
+<html xmlns:m="http://www.seasar.org/maya" m:action="#{getTogoUserAction.initialize}" m:extends="/jsf/layout/layoutNoNaviTogo.html">
+	<head>
+	    <meta http-equiv="Content-Type" content="text/html; charset=Windows-31j" />
+	    <title>本部ユーザー登録条件画面</title>
+	</head>
+	<body>
+	<span m:inject="f:param" m:name="layoutTitle" m:value="本部ユーザー登録条件画面"/>
+	<span m:inject="s:insert" m:name="bodyTitleName">■本部ユーザー登録</span>
+    <span m:inject="f:param" m:name="onLoadName" m:value="load()"/>
+	<span m:inject="f:param" m:name="viewIdValue" m:value="BUR001V01"/>
+	<span m:inject="s:insert" m:name="naviarea" m:src="/jsf/togouser/common/menuLink.html"/>
+	<span m:inject="s:insert" m:name="body">
+		<script type="text/javascript">
+			<!--
+			function load() {
+			   document.userHenkou.elements['userHenkou:userIdIn'].focus();
+			}
+			// -->
+		</script>
+			<form m:id="userHenkou" enctype="multipart/form-data" onKeyDown="return setDefaultSubmitButton('userHenkou','btnSearch');">
+				<input type="hidden" m:id="viewId" m:value="#{viewIdValue}"/>
+				<p/>
+				<input type="button" m:id="btnNew" value="新規登録" m:action="#{getTogoUserAction.edit}"/>
+				<input type="button" m:id="btnSearch" class="operation_button"value="検索" m:action="#{getTogoUserAction.search}"/>
+				<p/>
+				<table class="body_table">
+					<tr>
+						<th>ユーザーID</th>
+						<td>
+						<input m:id="userIdIn"
+						       class="imenotuse"
+						       type="text"
+						       m:size = "15" m:maxlength = "8"
+						       m:value="#{uiTogoUserDto.inputUserId}"/>
+						</td>
+					</tr>
+				</table>
+				<p/>
+				<div  m:rendered="#{togoUserListDto.userList!=null}">
+				<input type="submit" value="編集" style="margin-bottom:4px;"
+				       m:action="#{getTogoUserAction.henshu}" />
+				<table class="body_table2" width="810px">
+				  <tr>
+				    <th width="30px"></th>
+				    <th width="90px">ユーザーID</th>
+				    <th width="*">ユーザー名</th>
+				    <th width="390px">部門</th>
+				    <th width="40px">無効</th>
+				    <th width="85px">退職日</th>
+				  </tr>
+				</table>
+				<div class="scroll_area" style="width:828px;height:375px;">
+			    <table class="body_table2" style="border-top-width : 0px;" width="810px">
+		            <span m:converter="#{characterEncodingConverter}" m:inject="s:selectOneRadio2" m:value="#{togoUserListDto.selectedUser}">
+					    <div m:inject="s:forEach" m:items="#{togoUserListDto.userList}" m:var="ex" m:varindex="i">
+					        <tr class="non_top_border font_size_14">
+					            <td width="30px" align="center"><input type="radio" m:render="ex.selectedUser" m:value="#{i}"/></td>
+				  	            <td width="90px"><span m:value="#{ex.userId}"/></td>
+					            <td width="*"><span m:converter="#{characterEncodingConverter}" m:value="#{ex.userNameKj}"/></td>
+					            <td width="390px"><span m:converter="#{characterEncodingConverter}" m:value="#{ex.bumonCd}　：　#{ex.bumonName}"/></td>
+					            <td width="40px" >
+					                <center>
+						                <span m:rendered="#{ex.stopFlg == '1' || ex.bumonName == null}" > ○ </span>
+					                </center>
+					            </td>
+					            <td width="85px">
+					                <span m:value="#{ex.taishokuDt}" m:converter="#{taishokuDateConverter}" />
+					            </td>
+					        </tr>
+					    </div>
+			        </span>
+                </table>
+                </div>
+				</div>
+				<input type="text" m:id="dummyEnter" style="display:none"/>
+			</form>
+	</span>
+</body>
+</html>

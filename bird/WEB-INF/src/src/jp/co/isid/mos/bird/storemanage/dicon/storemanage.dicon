@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="Shift_JIS"?>
+<!DOCTYPE components PUBLIC "-//SEASAR//DTD S2Container//EN"
+	"http://www.seasar.org/dtd/components.dtd">
+<components>
+	<include path="jp/co/isid/mos/bird/storemanage/misemaintenance/dicon/miseMaintenance.dicon"/>
+	<include path="jp/co/isid/mos/bird/storemanage/mlresultstatusref/dicon/mlresultstatusref.dicon"/>
+	<include path="jp/co/isid/mos/bird/storemanage/staffregist/dicon/staffRegist.dicon"/>
+	<include path="jp/co/isid/mos/bird/storemanage/mlholderlist/dicon/mlholderlist.dicon"/>
+	<include path="jp/co/isid/mos/bird/storemanage/mlcompletionregist/dicon/mlCompletionregist.dicon"/>
+	<include path="jp/co/isid/mos/bird/storemanage/mlresultregist/dicon/mlResultRegist.dicon"/>
+	<include path="jp/co/isid/mos/bird/storemanage/proceedsmanagegepo/dicon/proceedsManageGepo.dicon"/>
+	<include path="jp/co/isid/mos/bird/storemanage/posniporef/dicon/posNipoRef.dicon"/>
+	<include path="jp/co/isid/mos/bird/storemanage/poserrorref/dicon/posErrorRef.dicon"/>
+	<include path="jp/co/isid/mos/bird/storemanage/claimref/dicon/voiceRef.dicon"/>
+	<include path="jp/co/isid/mos/bird/storemanage/claimtotal/dicon/claimtotal.dicon"/>
+	<include path="jp/co/isid/mos/bird/storemanage/anshinreport/dicon/anshinReport.dicon"/>
+	<include path="jp/co/isid/mos/bird/storemanage/misehistoryextract/dicon/miseHistoryExtract.dicon"/>
+</components>

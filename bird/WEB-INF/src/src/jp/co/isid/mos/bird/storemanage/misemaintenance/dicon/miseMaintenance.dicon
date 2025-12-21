@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="Shift_JIS"?>
+<!DOCTYPE components PUBLIC
+    "-//SEASAR//DTD S2Container 2.3//EN"
+    "http://www.seasar.org/dtd/components23.dtd">
+<components namespace="miseMaintenance">
+	<include path="dao.dicon"/>
+	<include path="jp/co/isid/mos/bird/common/dicon/birdCommon.dicon"/>
+	<include path="jp/co/isid/mos/bird/framework/dicon/birdInterceptor.dicon"/>
+	
+	<!-- インターセプターを自動登録 -->
+	<component class="org.seasar.framework.container.autoregister.AspectAutoRegister">
+	    <property name="interceptor">birdInterceptor.actionInterceptorChain</property>
+	    <initMethod name="addClassPattern">
+	        <arg>"jp.co.isid.mos.bird"</arg>
+	        <arg>".*ActionImpl"</arg>
+	    </initMethod>
+	    <initMethod name="registerAll"/>
+	</component> 
+	<component class="org.seasar.framework.container.autoregister.AspectAutoRegister">
+	    <property name="interceptor">birdInterceptor.logicInterceptorChain</property>
+	    <initMethod name="addClassPattern">
+	        <arg>"jp.co.isid.mos.bird"</arg>
+	        <arg>".*LogicImpl"</arg>
+	    </initMethod>
+	    <initMethod name="registerAll"/>  
+	</component>
+
+	<!-- DAO -->
+	<component name="codCompanyJohoDao" class="jp.co.isid.mos.bird.storemanage.misemaintenance.dao.CodCompanyJohoDao">
+		<aspect>dao.interceptor</aspect>
+	</component>
+	<component name="mstMiseDao" class="jp.co.isid.mos.bird.storemanage.misemaintenance.dao.MstMiseDao">
+		<aspect>dao.interceptor</aspect>
+	</component>
+	<component name="mstMiseKaiso" class="jp.co.isid.mos.bird.storemanage.misemaintenance.dao.MstMiseKaisoDao">
+		<aspect>dao.interceptor</aspect>
+	</component>
+	<component name="mstTO" class="jp.co.isid.mos.bird.storemanage.misemaintenance.dao.MstTODao">
+		<aspect>dao.interceptor</aspect>
+	</component>
+	<component name="mstSB" class="jp.co.isid.mos.bird.storemanage.misemaintenance.dao.MstSBDao">
+		<aspect>dao.interceptor</aspect>
+	</component>
+	<component name="mstChintai" class="jp.co.isid.mos.bird.storemanage.misemaintenance.dao.MstChintaiDao">
+		<aspect>dao.interceptor</aspect>
+	</component>
+	<component name="mstEventStatus" class="jp.co.isid.mos.bird.storemanage.misemaintenance.dao.MstEventStatusDao">
+		<aspect>dao.interceptor</aspect>
+	</component>
+	<component name="mstMiseYobi" class="jp.co.isid.mos.bird.storemanage.misemaintenance.dao.MstMiseYobiDao">
+		<aspect>dao.interceptor</aspect>
+	</component>
+	<component name="mstBukken" class="jp.co.isid.mos.bird.storemanage.misemaintenance.dao.MstBukkenDao">
+		<aspect>dao.interceptor</aspect>
+	</component>
+	<component name="mstGyotai" class="jp.co.isid.mos.bird.storemanage.misemaintenance.dao.MstGyotaiDao">
+		<aspect>dao.interceptor</aspect>
+	</component>
+	<component name="mstInsentive" class="jp.co.isid.mos.bird.storemanage.misemaintenance.dao.MstInsentiveDao">
+		<aspect>dao.interceptor</aspect>
+	</component>
+	<component name="mstHDC" class="jp.co.isid.mos.bird.storemanage.misemaintenance.dao.MstHDCDao">
+		<aspect>dao.interceptor</aspect>
+	</component>
+	<component name="codInsentiveCd" class="jp.co.isid.mos.bird.storemanage.misemaintenance.dao.CodInsentiveCdDao">
+		<aspect>dao.interceptor</aspect>
+	</component>
+	<component name="trnURL" class="jp.co.isid.mos.bird.storemanage.misemaintenance.dao.TrnURLDao">
+		<aspect>dao.interceptor</aspect>
+	</component>
+	<component name="codChintai" class="jp.co.isid.mos.bird.storemanage.misemaintenance.dao.CodChintaiDao">
+		<aspect>dao.interceptor</aspect>
+	</component>
+	<component name="codSmoke" class="jp.co.isid.mos.bird.storemanage.misemaintenance.dao.CodSmokeDao">
+		<aspect>dao.interceptor</aspect>
+	</component>
+	<component name="codYachinZei" class="jp.co.isid.mos.bird.storemanage.misemaintenance.dao.CodYachinZeiDao">
+		<aspect>dao.interceptor</aspect>
+	</component>
+	<component name="codAccessWay" class="jp.co.isid.mos.bird.storemanage.misemaintenance.dao.CodAccessWayDao">
+		<aspect>dao.interceptor</aspect>
+	</component>
+	<component name="codEventPatternCd" class="jp.co.isid.mos.bird.storemanage.misemaintenance.dao.CodEventPatternCdDao">
+		<aspect>dao.interceptor</aspect>
+	</component>
+	<component name="miseMaintenanceCodGasDao" class="jp.co.isid.mos.bird.storemanage.misemaintenance.dao.CodGasDao">
+		<aspect>dao.interceptor</aspect>
+	</component>
+	<component name="miseMaintenanceCodAirConDao" class="jp.co.isid.mos.bird.storemanage.misemaintenance.dao.CodAirConditionerDao">
+		<aspect>dao.interceptor</aspect>
+	</component>
+
+	<!-- DTO -->
+	<component name="miseMaintenanceDto" class="jp.co.isid.mos.bird.storemanage.misemaintenance.dto.MiseMaintenanceDto" instance="session">
+		<property name="listCompany">null</property>
+		<property name="listShubetuGas">null</property>
+		<property name="listShubetuAircon">null</property>
+	</component>
+	<component name="miseSearchDto" class="jp.co.isid.mos.bird.commonform.misesearch.dto.MiseSearchDto" instance="session"/>
+	<component name="pullDownMenuDto" class="jp.co.isid.mos.bird.framework.dto.PullDownMenuDto" instance="session"/>
+	
+	<!-- LOGIC -->
+	<component name="companyJohoLogicImpl" class="jp.co.isid.mos.bird.storemanage.misemaintenance.logic.impl.CompanyJohoLogicImpl"/>
+	<component name="kotenJohoLogicImpl" class="jp.co.isid.mos.bird.storemanage.misemaintenance.logic.impl.KotenJohoLogicImpl"/>
+	<component name="checkContentsLogicImpl" class="jp.co.isid.mos.bird.storemanage.misemaintenance.logic.impl.CheckContentsLogicImpl"/>
+	<component name="updateKotenLogicImpl" class="jp.co.isid.mos.bird.storemanage.misemaintenance.logic.impl.UpdateKotenLogicImpl">
+		<aspect>j2ee.requiresNewTx</aspect>
+	</component>
+	<component name="getEditPulldownInfoLogicImpl" class="jp.co.isid.mos.bird.storemanage.misemaintenance.logic.impl.GetEditPulldownInfoLogicImpl"/>
+	<!-- アクション -->
+	<component name="miseMaintenanceCondAction" class="jp.co.isid.mos.bird.storemanage.misemaintenance.action.impl.MiseMaintenanceCondActionImpl" instance="request">
+		<property name="miseMaintenanceDto">miseMaintenanceDto</property>
+	</component>
+	<component name="miseMaintenanceEditAction" class="jp.co.isid.mos.bird.storemanage.misemaintenance.action.impl.MiseMaintenanceEditActionImpl" instance="request">
+		<property name="miseMaintenanceDto">miseMaintenanceDto</property>
+	</component>
+	<component name="miseMaintenanceConfirmAction" class="jp.co.isid.mos.bird.storemanage.misemaintenance.action.impl.MiseMaintenanceConfirmActionImpl" instance="request">
+		<property name="miseMaintenanceDto">miseMaintenanceDto</property>
+	</component>
+
+	<!-- CONVERTER -->
+	<component name="dateConverter" class="jp.co.isid.mos.bird.framework.text.converter.DateConverter" instance="request">
+		<arg>@jp.co.isid.mos.bird.framework.util.formatter.DateFormatter@DATE_TYPE_YMD</arg>
+		<arg>@jp.co.isid.mos.bird.framework.util.formatter.DateFormatter@PATTERN_SLASH</arg>
+	</component>
+	<component name="dateConverterYM" class="jp.co.isid.mos.bird.framework.text.converter.DateConverter" instance="request">
+		<arg>@jp.co.isid.mos.bird.framework.util.formatter.DateFormatter@DATE_TYPE_YM</arg>
+		<arg>@jp.co.isid.mos.bird.framework.util.formatter.DateFormatter@PATTERN_MONTH_SLASH</arg>
+	</component>
+	<component name="numericConverter" class="jp.co.isid.mos.bird.framework.text.converter.NumericConverter" instance="request">
+		<arg>2</arg>
+	</component>
+	<component name="numericConverterKingaku" class="jp.co.isid.mos.bird.framework.text.converter.NumericConverter" instance="request"/>
+	<component name="codeConverter5" class="jp.co.isid.mos.bird.framework.text.converter.CodeConverter" instance="request">
+		<property name="formatPattern">"00000"</property>
+	</component>
+	<component name="characterEncodingConverter" class="jp.co.isid.mos.bird.framework.text.converter.CharacterEncodingConverter" instance="request"/>
+	<component name="timeConverter" class="jp.co.isid.mos.bird.framework.text.converter.TimeConverter" instance="request">
+		<arg>@jp.co.isid.mos.bird.framework.util.formatter.TimeFormatter@TIME_TYPE_HM</arg>
+	</component>
+	<component name="maskConverterPostCd" class="jp.co.isid.mos.bird.framework.text.converter.MaskConverter" instance="request">
+		<arg>"###-####"</arg>
+	</component>
+</components>

@@ -1,0 +1,86 @@
+<html xmlns:m="http://www.seasar.org/maya" m:action="#{zenDougetuRegistEditAction.initialize}" m:extends="/jsf/layout/layoutNoNavi.html">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Windows-31j"/>
+<title>前年同月設定登録（編集画面）</title>
+</head>
+<body>
+<span m:inject="f:param" m:name="layoutTitle" m:value="前年同月設定登録（編集画面）"/>
+<span m:inject="s:insert" m:name="bodyTitleName">■前年同月設定登録（編集画面）</span>
+<span m:inject="f:param" m:name="onLoadName" m:value="bodyLoad();"/>
+<span m:inject="f:param" m:name="viewIdValue" m:value="BBR010V03"/>
+<span m:inject="f:param" m:name="userTypeCd" m:value=""/>
+<div  m:inject="s:insert" m:name="body">
+<style type="text/css"></style>
+<STYLE type="text/css">
+    <!--
+    .scroll_area {
+		height				: 401px;
+		width				: 720px;
+	}
+	.table_width {
+		width:700px;
+	}
+	.col_beforDt {
+		width:345px;
+	}
+	.col_afterDt {
+		width:*;
+	}
+	 //-->
+</STYLE>
+<script type="text/javascript">
+<!--
+	function bodyLoad(){
+	  focusElement("editForm");
+	}
+
+-->
+</script>
+
+<form m:id="editForm" onkeydown="return setDefaultSubmitButton('editForm', 'execute');"
+ style="display:inline;">
+ <input type="hidden" m:id="viewId" m:value="#{viewIdValue}"/>	
+ <input type="hidden" m:id="initMenuId" m:value="#{menuAction.initMenuId}"/>
+ <input type="hidden" m:id="initSubMenuId" m:value="#{menuAction.initSubMenuId}"/>
+ <input type="hidden" m:id="windowId" m:value="#{zenDougetuRegistDto.windowId}"/>
+  <table class="hiddenBody" style="margin-bottom:4px;">
+    <tr>
+	  <td style="font-weight:bold;" nowrap="true">
+	  本画面で設定できる前年営業日は、予算達成率を計算する際にのみ使用されます。<br/>
+	  前年実績の対象日設定、確認については、管理者にお問い合わせください。
+	  </td>
+	</tr>
+  </table>
+  
+  <input m:name="editForm:back" m:id="back" type="submit" value="戻る" m:action="#{zenDougetuRegistEditAction.back}"/>&nbsp;&nbsp;
+<input m:name="editForm:execute" m:id="execute" type="submit" value="確認" m:action="#{zenDougetuRegistEditAction.execute}"/>
+
+   	 <table class="body_table2 table_width" style="margin-top:4px;">
+	  <tr class="header_row">
+	   <th class="col_beforDt">当年営業日</th>
+       <th class="col_afterDt">前年営業日</th>
+      </tr>
+   	 </table>
+     <div class="scroll_area">
+      <table class="body_table2 table_width" style="border-top-width:0px;">
+       <span m:inject="s:forEach" m:items="#{zenDougetuRegistDto.listZenDougetu}" m:var="e" m:varindex="i">
+        <tr class="non_top_border">
+         <td class="col_beforDt">
+          <span m:converter="#{characterEncodingConverter}" m:value="#{e.eigyoDtYoubi}"/>&nbsp;&nbsp;&nbsp;&nbsp;<span m:converter="#{characterEncodingConverter}" m:value="#{e.shukuNm}"/>
+         </td>
+         <td class="col_afterDt">
+	  	  <input type="text" class="imenotuse" m:id="zennenDt" value="#{e.zennenDt}" m:converter="#{dateConverter}" maxlength="10"/>
+         </td>
+        </tr>
+       </span>
+   	  </table>
+   	 </div>
+<script type="text/javascript">
+<!--
+ focusElement("editForm");
+-->
+</script>
+</form>
+</div>
+</body>
+</html>

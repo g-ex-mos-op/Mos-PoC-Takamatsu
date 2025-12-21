@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE components PUBLIC "-//SEASAR2.1//DTD S2Container//EN"
+	"http://www.seasar.org/dtd/components21.dtd">
+
+<components namespace="msschousadataref">
+	<include path="dao.dicon"/>
+    <include path="jp/co/isid/mos/bird/common/dicon/birdCommon.dicon"/>	
+	<include path="jp/co/isid/mos/bird/framework/dicon/birdInterceptor.dicon"/>
+	
+	<component class="org.seasar.framework.container.autoregister.AspectAutoRegister">
+	    <property name="interceptor">birdInterceptor.actionInterceptorChain</property>
+	    <initMethod name="addClassPattern">
+	        <arg>"jp.co.isid.mos.bird"</arg>
+	        <arg>".*ActionImpl"</arg>
+	    </initMethod>
+	    <initMethod name="registerAll"/>
+	</component> 
+	<component class="org.seasar.framework.container.autoregister.AspectAutoRegister">
+	    <property name="interceptor">birdInterceptor.logicInterceptorChain</property>
+	    <initMethod name="addClassPattern">
+	        <arg>"jp.co.isid.mos.bird"</arg>
+	        <arg>".*LogicImpl"</arg>
+	    </initMethod>
+	    <initMethod name="registerAll"/>  
+	</component>
+
+
+<!-- Action -->
+	<component name="MssChousaDataRefAction" class="jp.co.isid.mos.bird.storemanage.msschousadataref.action.impl.MssChousaDataRefActionImpl" instance="request"/>
+	
+<!-- Dao -->
+	<component name="mssChousaCodCompanyNameDao" class="jp.co.isid.mos.bird.storemanage.msschousadataref.dao.CodCompanyDao" >
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="mssMstUserOnerDao" class="jp.co.isid.mos.bird.storemanage.msschousadataref.dao.MssMstUserOnerDao" >
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="mssMstUserMiseDao" class="jp.co.isid.mos.bird.storemanage.msschousadataref.dao.MssMstUserMiseDao" >
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="mssCodBunsekiKbnDao" class="jp.co.isid.mos.bird.storemanage.msschousadataref.dao.MssCodBunsekiKbnDao" >
+        <aspect>dao.interceptor</aspect>
+	</component>
+	
+<!-- Dto -->
+	<component name="mssChousaDataRefDto" class="jp.co.isid.mos.bird.storemanage.msschousadataref.dto.MssChousaDataRefDto" instance="session" />
+	<component name="pullDownMenuDto" class="jp.co.isid.mos.bird.framework.dto.PullDownMenuDto" autoBinding="none" instance="session"/>
+	
+<!-- Logic 	-->
+	<component name="mssChousaConditionLogicImpl" class="jp.co.isid.mos.bird.storemanage.msschousadataref.logic.impl.ConditionLogicImpl"/>
+	<component name="getChousaDataLogicImpl" class="jp.co.isid.mos.bird.storemanage.msschousadataref.logic.impl.GetChousaDataLogicImpl"/>
+	<component name="msschousadatarefMssChousaDataDownloadLogicImpl" class="jp.co.isid.mos.bird.storemanage.msschousadataref.logic.impl.MssChousaDataDownloadLogicImpl"/>
+	<component name="mssFileChousaDataLogicImpl" class="jp.co.isid.mos.bird.storemanage.msschousadataref.logic.impl.MssFileChousaDataLogicImpl"/>
+	<component name="mssChousaChangeCompanyLogic" class="jp.co.isid.mos.bird.storemanage.msschousadataref.logic.impl.ChangeCompanyLogicImpl"/>
+<!-- 外部Action -->
+	<component name="mssChousaDownloadAction" class="jp.co.isid.mos.bird.framework.action.impl.FileDownloadActionImpl" instance="request">
+		<property name="downloadDto">mssChousaDataRefDto</property>
+		<property name="downloadLogic">msschousadatarefMssChousaDataDownloadLogicImpl</property>
+	</component>
+	
+	<!-- Converter -->
+	<component name="mlresultStatusRefMiseConverter" class="jp.co.isid.mos.bird.framework.text.converter.CodeConverter" instance="request">
+		<property name="formatPattern">"00000"</property>
+	</component>
+
+<!-- 以外 -->
+	<component name="miseSearchDto" class="jp.co.isid.mos.bird.commonform.misesearch.dto.MiseSearchDto" instance="session"/>
+	
+	<component name="ownerSearchDto" class="jp.co.isid.mos.bird.commonform.ownersearch.dto.OwnerSearchDto" autoBinding="none" instance="session"/>
+	
+	<component name="mssChousaDataRefCodeVerifier" class="jp.co.isid.mos.bird.framework.util.verifier.CodeVerifier"/>
+</components>

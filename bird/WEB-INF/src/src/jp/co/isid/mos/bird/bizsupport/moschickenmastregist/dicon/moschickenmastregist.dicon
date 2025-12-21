@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE components PUBLIC "-//SEASAR//DTD S2Container 2.3//EN"
+	"http://www.seasar.org/dtd/components23.dtd">
+<components namespace="moschickenmastregist">
+	<include path="dao.dicon"/>
+	<include path="jp/co/isid/mos/bird/common/dicon/birdCommon.dicon"/>
+	<include path="jp/co/isid/mos/bird/framework/dicon/birdInterceptor.dicon"/>
+	
+	<!-- インターセプターを自動登録 -->
+	<component class="org.seasar.framework.container.autoregister.AspectAutoRegister">
+	    <property name="interceptor">birdInterceptor.actionInterceptorChain</property>
+	    <initMethod name="addClassPattern">
+	        <arg>"jp.co.isid.mos.bird"</arg>
+	        <arg>".*ActionImpl"</arg>
+	    </initMethod>
+	    <initMethod name="registerAll"/>
+	</component> 
+	<component class="org.seasar.framework.container.autoregister.AspectAutoRegister">
+	    <property name="interceptor">birdInterceptor.logicInterceptorChain</property>
+	    <initMethod name="addClassPattern">
+	        <arg>"jp.co.isid.mos.bird"</arg>
+	        <arg>".*LogicImpl"</arg>
+	    </initMethod>
+	    <initMethod name="registerAll"/>  
+	</component>
+	<!-- DTO -->
+	<component name="pullDownMenuDto" class="jp.co.isid.mos.bird.framework.dto.PullDownMenuDto" autoBinding="none" instance="session"/>
+	<component name="mosChickenMstRegistDto" class="jp.co.isid.mos.bird.bizsupport.moschickenmastregist.dto.MosChickenMstRegistDto" instance="session" />
+	<component name="mosChickenShanaiMenuDto" class="jp.co.isid.mos.bird.bizsupport.moschickenmastregist.dto.MosChickenShanaiMenuDto" instance="session" />
+	<component name="mosChickenShokuhouzaiDto" class="jp.co.isid.mos.bird.bizsupport.moschickenmastregist.dto.MosChickenShokuhouzaiDto" instance="session" />
+
+	<!-- DAO -->
+	<component name="mosChickenMstRegMstKanriKikanDao" class="jp.co.isid.mos.bird.bizsupport.moschickenmastregist.dao.MstKanriKikanDao">
+		<aspect>dao.interceptor</aspect>
+	</component>
+	<component name="mosChickenMstRegMstKanriMenuGoupDao" class="jp.co.isid.mos.bird.bizsupport.moschickenmastregist.dao.MstKanriMenuGroupDao">
+		<aspect>dao.interceptor</aspect>
+	</component>
+	<component name="mosChickenMstRegUIKanriMenuDao" class="jp.co.isid.mos.bird.bizsupport.moschickenmastregist.dao.UIKanriMenuDao">
+		<aspect>dao.interceptor</aspect>
+	</component>
+	<component name="mosChickenMstRegMstShanaiMenuDao" class="jp.co.isid.mos.bird.bizsupport.moschickenmastregist.dao.MstShanaiMenuDao">
+		<aspect>dao.interceptor</aspect>
+	</component>
+	<component name="mosChickenMstRegMstShokuhouzaiDao" class="jp.co.isid.mos.bird.bizsupport.moschickenmastregist.dao.MstShokuhouzaiDao">
+		<aspect>dao.interceptor</aspect>
+	</component>
+	<component name="mosChickenMstRegMstHacchuBnrDao" class="jp.co.isid.mos.bird.bizsupport.moschickenmastregist.dao.MstHacchuBnrDao">
+		<aspect>dao.interceptor</aspect>
+	</component>
+	<!-- LOGIC -->
+	<component name="mosChickenMstConditionLogic" class="jp.co.isid.mos.bird.bizsupport.moschickenmastregist.logic.impl.ConditionLogicImpl"/>
+	<component name="mosChickenMstSearchLogic" class="jp.co.isid.mos.bird.bizsupport.moschickenmastregist.logic.impl.SearchLogicImpl"/>
+	<component name="mosChickenMstSearchShanaiMenuLogic" class="jp.co.isid.mos.bird.bizsupport.moschickenmastregist.logic.impl.SearchShanaiMenuLogicImpl"/>
+	<component name="mosChickenMstSearchShokuhouzaiLogic" class="jp.co.isid.mos.bird.bizsupport.moschickenmastregist.logic.impl.SearchShokuhouzaiLogicImpl"/>
+	<component name="mosChickenMstGetHacchuBnrListLogic" class="jp.co.isid.mos.bird.bizsupport.moschickenmastregist.logic.impl.GetHacchuBnrListLogicImpl"/>
+	<component name="mosChickenMstRegistLogic" class="jp.co.isid.mos.bird.bizsupport.moschickenmastregist.logic.impl.RegistLogicImpl">
+		<aspect>j2ee.requiresNewTx</aspect>
+	</component>
+
+	<!-- ACTION -->
+	<component name="mosChickenMstConditionAction" class="jp.co.isid.mos.bird.bizsupport.moschickenmastregist.action.impl.ConditionActionImpl" instance="request">
+			<property name="mosChickenMstConditionLogic">mosChickenMstConditionLogic</property>
+			<property name="mosChickenMstSearchLogic">mosChickenMstSearchLogic</property>
+	</component>
+	
+	<component name="mosChickenMstEditAction" class="jp.co.isid.mos.bird.bizsupport.moschickenmastregist.action.impl.EditActionImpl" instance="request" />
+	<component name="mosChickenMstMenuAddAction" class="jp.co.isid.mos.bird.bizsupport.moschickenmastregist.action.impl.MenuAddActionImpl" instance="request"/>
+	<component name="mosChickenMstChoiseShokuhouzaiAction" class="jp.co.isid.mos.bird.bizsupport.moschickenmastregist.action.impl.ChoiseShokuhouzaiActionImpl" instance="request"/>
+	<component name="mosChickenMstConfirmAction" class="jp.co.isid.mos.bird.bizsupport.moschickenmastregist.action.impl.ConfirmActionImpl" instance="request"/>
+	<!-- CONVERTER -->
+	<component name="dateConverter" class="jp.co.isid.mos.bird.framework.text.converter.DateConverter" instance="request">
+		<arg>@jp.co.isid.mos.bird.framework.util.formatter.DateFormatter@DATE_TYPE_YMD</arg>
+		<arg>@jp.co.isid.mos.bird.framework.util.formatter.DateFormatter@PATTERN_SLASH</arg>
+	</component>
+	
+</components>

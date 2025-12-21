@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="Shift_JIS"?>
+<!DOCTYPE components PUBLIC "-//SEASAR//DTD S2Container 2.3//EN"
+    "http://www.seasar.org/dtd/components23.dtd">
+<components namespace="entrystaffsearch">
+    <include path="dao.dicon"/>
+	<include path="jp/co/isid/mos/bird/framework/dicon/birdInterceptor.dicon"/>
+
+	<component
+	  class="org.seasar.framework.container.autoregister.AspectAutoRegister">
+	    <property name="interceptor">birdInterceptor.actionInterceptorChain</property>
+	    <initMethod name="addClassPattern">
+	        <arg>"jp.co.isid.mos.bird"</arg>
+	        <arg>".*ActionImpl"</arg>
+	    </initMethod>
+	    <initMethod name="registerAll"/>
+	</component> 
+	<component
+	  class="org.seasar.framework.container.autoregister.AspectAutoRegister">
+	    <property name="interceptor">birdInterceptor.logicInterceptorChain</property>
+	    <initMethod name="addClassPattern">
+	        <arg>"jp.co.isid.mos.bird"</arg>
+	        <arg>".*LogicImpl"</arg>
+	    </initMethod>
+	    <initMethod name="registerAll"/>
+	</component>
+
+	<!-- DAO -->
+	<component name="entryStaffSearchMstStaffDao" class="jp.co.isid.mos.bird.entry.commonform.entrystaffsearch.dao.MstStaffDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+
+	<!-- Logic -->
+	<component name="searchOnerStaffLogic" class="jp.co.isid.mos.bird.entry.commonform.entrystaffsearch.logic.impl.SearchOnerStaffLogicImpl"/>
+	<component name="searchStaffInfoLogic" class="jp.co.isid.mos.bird.entry.commonform.entrystaffsearch.logic.impl.SearchStaffInfoLogicImpl"/>
+	<component name="searchOnerStaffByMlEntryLogic" class="jp.co.isid.mos.bird.entry.commonform.entrystaffsearch.logic.impl.SearchOnerStaffByMlEntryLogicImpl"/>
+
+	<!-- DTO -->
+	<component name="entryStaffSearchDto" class="jp.co.isid.mos.bird.entry.commonform.entrystaffsearch.dto.EntryStaffSearchDto" instance="session"/>
+	<component name="entryStaffSearchConditionDto" class="jp.co.isid.mos.bird.entry.commonform.entrystaffsearch.dto.EntryStaffSearchConditionDto" autoBinding="none" instance="session"/>
+	<component name="entryStaffSearchResultDto" class="jp.co.isid.mos.bird.entry.commonform.entrystaffsearch.dto.EntryStaffSearchResultDto" instance="request">
+		<property name="listStaff">null</property>
+	</component>
+
+	<!-- Action -->
+	<component name="entryStaffSearchAction" class="jp.co.isid.mos.bird.entry.commonform.entrystaffsearch.action.impl.EntryStaffSearchActionImpl" instance="request"/>
+
+	<!-- Converter -->
+	<component name="codeConverterOwner" class="jp.co.isid.mos.bird.framework.text.converter.CodeConverter">
+		<property name="formatPattern">"00000"</property>
+	</component>
+	<component name="codeConverterMise" class="jp.co.isid.mos.bird.framework.text.converter.CodeConverter">
+		<property name="formatPattern">"00000"</property>
+	</component>
+	<component name="documentsearchDateConverter" class="jp.co.isid.mos.bird.framework.text.converter.DateConverter" instance="request">
+		<arg>@jp.co.isid.mos.bird.framework.util.formatter.DateFormatter@DATE_TYPE_YMD</arg>
+		<arg>@jp.co.isid.mos.bird.framework.util.formatter.DateFormatter@PATTERN_SLASH</arg>
+	</component>
+</components>
+

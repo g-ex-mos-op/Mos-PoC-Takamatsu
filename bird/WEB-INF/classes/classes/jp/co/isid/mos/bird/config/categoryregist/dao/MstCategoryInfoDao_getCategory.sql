@@ -1,0 +1,19 @@
+select
+    BM02.INFO_SHU,
+    BM02.CATE_ID,
+    rtrim(BM02.CATE_NAME) as CATE_NAME,
+    rtrim(BM02.CATE_NAME) as OLD_CATE_NAME,
+    BM02.SORT_KEY,
+    BM02.SORT_KEY as OLD_SORT_KEY,
+    BM02.FIRST_USER,
+    BM02.FIRST_PGM,
+    BM02.FIRST_TMSP,
+    BM02.LAST_USER,
+    BM02.LAST_PGM,
+    BM02.LAST_TMSP
+from
+    BM02IFCT as BM02
+where
+    BM02.INFO_SHU = /*infoShu*/'03'
+order by
+    BM02.SORT_KEY

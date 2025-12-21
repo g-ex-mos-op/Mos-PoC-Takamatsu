@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="Shift_JIS"?>
+<!DOCTYPE components PUBLIC "-//SEASAR//DTD S2Container 2.3//EN" "http://www.seasar.org/dtd/components23.dtd">
+<components namespace="zenurikakuteiRegist">
+	<include path="dao.dicon"/>
+	<include path="jp/co/isid/mos/bird/common/dicon/birdCommon.dicon"/>
+	<include path="jp/co/isid/mos/bird/framework/dicon/birdInterceptor.dicon"/>
+	
+	<!-- インターセプターを自動登録 -->
+	<component class="org.seasar.framework.container.autoregister.AspectAutoRegister">
+	    <property name="interceptor">birdInterceptor.actionInterceptorChain</property>
+	    <initMethod name="addClassPattern">
+	        <arg>"jp.co.isid.mos.bird"</arg>
+	        <arg>".*ActionImpl"</arg>
+	    </initMethod>
+	    <initMethod name="registerAll"/>
+	</component> 
+	<component class="org.seasar.framework.container.autoregister.AspectAutoRegister">
+	    <property name="interceptor">birdInterceptor.logicInterceptorChain</property>
+	    <initMethod name="addClassPattern">
+	        <arg>"jp.co.isid.mos.bird"</arg>
+	        <arg>".*LogicImpl"</arg>
+	    </initMethod>
+	    <initMethod name="registerAll"/>  
+	</component>
+	<!-- OTHER -->
+	<component class="jp.co.isid.mos.bird.framework.control.BirdUserInfo" instance="session"/>
+	<component class="jp.co.isid.mos.bird.framework.control.BirdDateInfo" instance="session"/>
+
+	<!-- DAO -->
+	<component name="zenurikakuteiRegistTrnUsrStatusDao" class="jp.co.isid.mos.bird.config.zenurikakuteiregist.dao.TrnUsrStatusDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+
+	<!-- Util -->
+	<component name="zenurikakuteiRegistUtil" class="jp.co.isid.mos.bird.config.zenurikakuteiregist.util.ZenurikakuteiRegistUtil" autoBinding="none" instance="session"/>
+
+	<!-- DTO -->
+	<component name="zenurikakuteiRegistSesDto" class="jp.co.isid.mos.bird.config.zenurikakuteiregist.dto.SessionDto" autoBinding="none" instance="session"/>
+	<component name="zenurikakuteiRegistReqDto" class="jp.co.isid.mos.bird.config.zenurikakuteiregist.dto.RequestDto" autoBinding="none" instance="request"/>
+
+	<!-- ACTION -->
+	<component name="zenurikakuteiRegistEditAction" class="jp.co.isid.mos.bird.config.zenurikakuteiregist.action.impl.EditActionImpl" instance="request"/>
+	<component name="zenurikakuteiRegistConfirmAction" class="jp.co.isid.mos.bird.config.zenurikakuteiregist.action.impl.ConfirmActionImpl" instance="request"/>
+	
+	<!-- LOGIC -->
+	<component name="zenurikakuteiRegistGetRegistDataLogic" class="jp.co.isid.mos.bird.config.zenurikakuteiregist.logic.impl.GetRegistDataLogicImpl"/>
+	<component name="zenurikakuteiRegistRegistLogic" class="jp.co.isid.mos.bird.config.zenurikakuteiregist.logic.impl.RegistLogicImpl">
+		<aspect>j2ee.requiresNewTx</aspect>
+	</component>
+
+	<!-- CONVERTER -->
+	<component name="dateCnvtKjYM" class="jp.co.isid.mos.bird.framework.text.converter.DateConverter" instance="request">
+		<arg>@jp.co.isid.mos.bird.framework.util.formatter.DateFormatter@DATE_TYPE_YM</arg>
+		<arg>@jp.co.isid.mos.bird.framework.util.formatter.DateFormatter@PATTERN_MONTH_KANJI_YM</arg>
+	</component>
+</components>

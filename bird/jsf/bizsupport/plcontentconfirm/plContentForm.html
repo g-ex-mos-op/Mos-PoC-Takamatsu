@@ -1,0 +1,250 @@
+<html xmlns:m="http://www.seasar.org/maya" m:action="#{plContentFormAction.initialize}" m:extends="/jsf/layout/layoutNoNavi.html">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Windows-31j" />
+<title></title>
+</head>
+<body>
+<span m:inject="f:param" m:name="layoutTitle" m:value="P/L内容確認"/>
+<span m:inject="s:insert" m:name="bodyTitleName">■P/L内容確認</span>
+<span m:inject="f:param" m:name="onLoadName" m:value="load();"/>
+<span m:inject="f:param" m:name="viewIdValue" m:value="BBS003V01"/>
+<span m:inject="s:insert" m:name="body">
+<SCRIPT LANGUAGE="javascript">
+<!--
+function load(){
+	changeMode(false);
+	document.plContentForm.elements['plContentForm:loadingFlg'].value = "";
+}
+/**
+ * 条件画面表示切替処理
+ */
+function changeMode(bl){
+  if(document.forms['plContentForm'].elements['plContentForm:selectViewMode'].value == 0){
+    targetYMSelectBox = document.forms['plContentForm'].elements['plContentForm:targetYMSelectBox'].value;
+
+    if (targetYMSelectBox=="999999"){
+      document.forms['plContentForm'].elements['plContentForm:targetYM'].style.display="inline";
+      if (bl==true){
+        document.forms['plContentForm'].elements['plContentForm:targetYM'].value = '';
+      }
+    } else {
+      document.forms['plContentForm'].elements['plContentForm:targetYM'].style.display="none";
+    }
+  }
+}
+/**
+ * 対象年月プルダウン変更処理
+ * ※ロード中チェックフラグをONにする
+ * ※ロード中チェックによる制御は行わない
+ */
+function changeSelectTargetYM(){
+	setLoadingFlg();
+	targetYM = document.forms['plContentForm'].elements['plContentForm:targetYMSelectBox'].value;
+	document.forms['plContentForm'].elements['plContentForm:targetYM'].value = targetYM;
+	document.forms['plContentForm'].target ="_self";
+	document.forms['plContentForm'].elements['plContentForm:__link_clicked__'].value='plContentForm:selectTargetYM';
+	document.forms['plContentForm'].submit();
+}
+/**
+ * 実行ボタン押下時処理
+ * ※ロード中チェックフラグをONにする
+ * ※ロード中チェックによる制御を行う
+ */
+function execute(){
+	if(returnLoadingStatus()){
+		document.plContentForm.elements['plContentForm:__link_clicked__'].value='plContentForm:execute';
+		document.plContentForm.elements['plContentForm:loadingFlg'].value = "";
+		document.plContentForm.target ="_self";
+		document.plContentForm.submit();
+	}
+}
+/**
+ * 登録状況確認ボタン押下時処理
+ * ※ロード中チェックフラグをONにする
+ * ※ロード中チェックによる制御を行う
+ */
+function executeStateConfirm(){
+	if(returnLoadingStatus()){
+		document.plContentForm.elements['plContentForm:__link_clicked__'].value='plContentForm:executeStateConfirm';
+		document.plContentForm.elements['plContentForm:loadingFlg'].value = "";
+		document.plContentForm.target ="_self";
+		document.plContentForm.submit();
+	}
+}
+/**
+ * ウィンドウロードステータス取得処理
+ */
+function returnLoadingStatus(){
+	if(isLoadingFlgOFF()) {
+		setLoadingFlg();
+		return true;
+	}
+	return false;
+}
+/**
+ * ウィンドウロードステータス取得処理
+ */
+function isLoadingFlgOFF(){
+	return (document.plContentForm.elements['plContentForm:loadingFlg'].value != "ON");
+}
+/**
+ * ウィンドウロードフラグ設定処理
+ */
+function setLoadingFlg() {
+	document.plContentForm.elements['plContentForm:loadingFlg'].value = "ON";
+}
+//-->
+</SCRIPT>
+<form m:id="plContentForm">
+<input type="hidden" id="loadingFlg" value=""/>
+<input type="hidden" m:id="viewId" m:value="#{viewIdValue}"/>
+<input type="hidden" m:id="initMenuId" m:value="#{menuAction.initMenuId}"/>
+<input type="hidden" m:id="initSubMenuId" m:value="#{menuAction.initSubMenuId}"/>
+<input type="hidden" m:id="selectViewMode" m:value="#{plRegistSecDto.selectViewMode}"/>
+<span m:rendered="#{plRegistSecDto.selectViewMode == 1}">
+  <input type="submit" value="実行" m:action="#{plContentFormAction.changeSelectViewMode}"/>&nbsp;&nbsp;
+  <table class="body_table" style="margin-top:4px;">
+    <tr>
+      <th>オーナーコード</th>
+      <td style="border-right-width:0px;">
+	    <input type="text" m:id="onerCd"
+               m:value="#{plRegistSecDto.onerCd}"
+               m:maxlength="5" style="ime-mode:disabled"/>
+      </td>
+      <td style="border-left-width:0px;">
+        <input type="submit" value="検索" 
+               m:action="#{plContentFormAction.search}"/></td>
+    </tr>
+  </table>
+<input type="text" m:id="dummyEnter" style="display:none"/>
+</span>
+
+<span m:rendered="#{plRegistSecDto.selectViewMode == 0}">
+<span m:inject="s:selectOneRadio2" m:value="#{plRegistSecDto.plFlg}">
+<span m:rendered="#{plRegistSecDto.userTypeCd != '02'}">
+  <input type="submit" value="戻る" m:action="#{plContentFormAction.changeSelectViewMode}"/>&nbsp;&nbsp;
+</span>
+<input type="button" value="実行" onclick="execute();"/>&nbsp;&nbsp;
+<input type="button" value="登録状況確認" onclick="executeStateConfirm();"/>&nbsp;&nbsp;
+<a id="execute" m:action="#{plContentFormAction.execute}"/>
+<a id="executeStateConfirm" m:action="#{plContentFormAction.executeStateConfirm}"/>  
+<br><br>
+<table class="body_table" width="450px">
+  <tr>
+    <th width="30px">
+    </th>
+    <th width="120px">
+      オーナー
+    </th>
+    <td width="300px">
+      <span m:value="#{plRegistSecDto.headOfficePlOnerCd}"/>&nbsp;&nbsp;
+      <span m:converter="#{characterEncodingConverter}" m:value="#{plRegistSecDto.headOfficePlOnerName}"/>
+    </td>
+  </tr>
+  <tr>
+    <th width="30px">
+    </th>
+    <th width="120px">
+      対象年月
+    </th>
+    <td width="300px">
+      <div class="hideArea">
+        <select m:id="targetYMSelectBox"
+        		m:value="#{plRegistSecDto.targetYMSelectBox}"
+                m:items="#{plRegistSecDto.targetYMList}"
+                m:itemValue="value"
+                m:itemLabel="label"
+                m:onChange="changeMode(true);changeSelectTargetYM();">
+            <option value="">MOS</option>
+        </select>
+        <input type="text" m:id="targetYM" m:value="#{plRegistSecDto.targetYM}" m:converter="#{dateConverterPlRegist}" m:maxlength="7" style="display:none;ime-mode:disabled"/>
+        <a id="selectTargetYM" m:action="#{plContentFormAction.changeSelectTargetYM}"/>
+        <input type="checkbox" m:id="closeMiseFlg" m:value="#{plRegistSecDto.closeMiseFlg}" onclick="changeSelectTargetYM();"/>クローズ店を含む
+      </div>
+    </td>
+
+  </tr>
+  <tr>
+    <th width="30px">
+        <input type="radio" name="plFlg" value="0" />
+    </th>
+    <th width="120px">
+      店舗P/L
+    </th>
+    <td width="300px">
+      <div class="hideArea">
+        <select m:value="#{plRegistSecDto.storePlMiseCd}"
+                m:items="#{plRegistSecDto.storePlList}"
+                m:itemValue="miseCd"
+                m:itemLabel="label">
+            <option value="">MOS</option>
+        </select>
+      </div>
+    </td>
+  </tr>
+  <tr>
+    <th width="30px">
+        <input type="radio" name="plFlg" value="1"/>
+    </th>
+    <th width="120px">
+      本社P/L
+    </th>
+    <td width="300px">
+    </td>
+  </tr>
+</table>
+</span>
+</span>
+<br/>
+<!--
+<table class="body_table2" width="450px">
+  <tr>
+    <th width="30px" rowspan="4">
+      作<br>成<br>者
+    </th>
+    <th width="120px">
+      年月日
+    </th>
+    <td width="300px">
+	  <input type="text" m:id="authDt" m:value="#{plRegistDto.trnPLAuthorInfo.authDt}" m:converter="#{dateConverter}" m:maxlength="10"/>
+    </td>
+  </tr>
+  <tr>
+    <th width="120px">
+      電話番号
+    </th>
+    <td width="300px">
+	  <input type="text" m:id="authPhoneNum" m:value="#{plRegistDto.trnPLAuthorInfo.authPhoneNum}" m:maxlength="15" style="ime-mode:disabled"/>
+    </td>
+  </tr>
+  <tr>
+    <th width="120px">
+      会計事務所等
+    </th>
+    <td width="300px">
+	  <input type="text" m:id="authOther" m:value="#{plRegistDto.trnPLAuthorInfo.authOther}" m:maxlength="40"/>
+    </td>
+  </tr>
+  <tr>
+    <th width="120px">
+      氏名
+    </th>
+    <td width="300px">
+	  <input type="text" m:id="author" m:value="#{plRegistDto.trnPLAuthorInfo.author}" m:maxlength="40"/>
+    </td>
+  </tr>
+</table>
+</span>
+-->
+<!--
+<input type="text" m:id="dummyEnter" style="display:none">
+-->
+</form>
+<script type="text/javascript">
+<!--
+	focusElement("plContentForm");
+-->
+</script>
+</span>
+</body>
+</html>

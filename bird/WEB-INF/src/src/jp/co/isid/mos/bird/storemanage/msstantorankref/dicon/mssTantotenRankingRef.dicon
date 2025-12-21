@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="Shift_JIS"?>
+<!DOCTYPE components PUBLIC "-//SEASAR//DTD S2Container 2.3//EN" "http://www.seasar.org/dtd/components23.dtd">
+<components namespace="mssTantotenRankingRef">
+	<include path="dao.dicon"/>
+	<include path="jp/co/isid/mos/bird/common/dicon/birdCommon.dicon"/>
+	<include path="jp/co/isid/mos/bird/framework/dicon/birdInterceptor.dicon"/>
+	
+	<!-- インターセプターを自動登録 -->
+	<component class="org.seasar.framework.container.autoregister.AspectAutoRegister">
+	    <property name="interceptor">birdInterceptor.actionInterceptorChain</property>
+	    <initMethod name="addClassPattern">
+	        <arg>"jp.co.isid.mos.bird"</arg>
+	        <arg>".*ActionImpl"</arg>
+	    </initMethod>
+	    <initMethod name="registerAll"/>
+	</component> 
+	<component class="org.seasar.framework.container.autoregister.AspectAutoRegister">
+	    <property name="interceptor">birdInterceptor.logicInterceptorChain</property>
+	    <initMethod name="addClassPattern">
+	        <arg>"jp.co.isid.mos.bird"</arg>
+	        <arg>".*LogicImpl"</arg>
+	    </initMethod>
+	    <initMethod name="registerAll"/>  
+	</component>
+
+	<!-- DTO -->
+	<component name="mssTantotenRankingRefDto" class="jp.co.isid.mos.bird.storemanage.msstantorankref.dto.MssTantotenRankingRefDto" instance="session" />
+	<component name="miseSearchDto" class="jp.co.isid.mos.bird.commonform.misesearch.dto.MiseSearchDto" instance="session"/>
+	<component name="ownerSearchDto" class="jp.co.isid.mos.bird.commonform.ownersearch.dto.OwnerSearchDto" instance="session"/>
+	<component name="newSvSearchDto" class="jp.co.isid.mos.bird.commonform.svsearchnew.dto.SvSearchDto" instance="session"/>
+
+	<!-- DAO -->
+	<component name="mssTantotenRankingCodCompanyDao" class="jp.co.isid.mos.bird.storemanage.msstantorankref.dao.CodCompanyDao">
+		<aspect>dao.interceptor</aspect>
+	</component>
+	<component name="mssTantotenRankingCodNendoDao" class="jp.co.isid.mos.bird.storemanage.msstantorankref.dao.CodNendoDao">
+		<aspect>dao.interceptor</aspect>
+	</component>
+	<component name="mssTantotenRankingCodKaiDao" class="jp.co.isid.mos.bird.storemanage.msstantorankref.dao.CodKaiDao">
+		<aspect>dao.interceptor</aspect>
+	</component>
+	<component name="mssTantotenRankingUiLastNendoKaiDao" class="jp.co.isid.mos.bird.storemanage.msstantorankref.dao.UILastNendoKaiDao">
+		<aspect>dao.interceptor</aspect>
+	</component>
+	<component name="mssTantotenRankingUiRankingDataDao" class="jp.co.isid.mos.bird.storemanage.msstantorankref.dao.UIRankingDataDao">
+		<aspect>dao.interceptor</aspect>
+	</component>
+	<component name="mssTantotenRankingUiKouseiHiDataDao" class="jp.co.isid.mos.bird.storemanage.msstantorankref.dao.UIKouseiHiDataDao">
+		<aspect>dao.interceptor</aspect>
+	</component>
+
+
+	<!-- LOGIC -->
+	<component name="mssTantotenRankingConditionLogic" class="jp.co.isid.mos.bird.storemanage.msstantorankref.logic.impl.ConditionLogicImpl"/>
+	<component name="mssTantotenRankingChangeCompayLogic" class="jp.co.isid.mos.bird.storemanage.msstantorankref.logic.impl.ChangeCompanyLogicImpl"/>
+	<component name="mssTantotenRankingSearchLogic" class="jp.co.isid.mos.bird.storemanage.msstantorankref.logic.impl.SearchLogicImpl"/>
+	<component name="mssTantotenRankingConstructionRankingDataLogic" class="jp.co.isid.mos.bird.storemanage.msstantorankref.logic.impl.ConstructionRankingDataLogicImpl"/>
+
+	<!-- ACTION -->
+	<component name="mssTantotenRankingAction" class="jp.co.isid.mos.bird.storemanage.msstantorankref.action.impl.MssTantotenRankingRefActionImpl" instance="request">
+		<property name="mssTantotenRankingRefDto">mssTantotenRankingRefDto</property>
+	</component>
+
+	<!-- CONVERTER -->
+	<component name="mssTantotenRankingNumConverter" class="jp.co.isid.mos.bird.framework.text.converter.NumericConverter" instance="request">
+	</component>
+	<component name="mssTantotenRankingRefCodeConverterSv" class="jp.co.isid.mos.bird.framework.text.converter.CodeConverter" instance="request">
+		<arg>8</arg>
+		<arg>"00000000"</arg>
+	</component>
+
+</components>

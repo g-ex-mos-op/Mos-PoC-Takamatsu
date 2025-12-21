@@ -1,0 +1,269 @@
+<html xmlns:m="http://www.seasar.org/maya" m:action="#{vansmastRegistEditAction.initialize}" m:extends="/jsf/layout/layoutNoNavi.html">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Windows-31j" />
+<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE8"/>
+<title>バンズ倉庫別登録（編集画面）</title>
+</head>
+<body>
+<span m:inject="f:param" m:name="layoutTitle" m:value="バンズ倉庫別登録（編集画面）"/>
+<span m:inject="s:insert" m:name="bodyTitleName">■バンズ倉庫別登録（編集画面）</span>
+<span m:inject="f:param" m:name="onLoadName" m:value="bodyLoad()"/>
+<span m:inject="f:param" m:name="viewIdValue" m:value="BBS029V02"/>
+<div m:inject="s:insert" m:name="body">
+
+<STYLE type="text/css">
+<!--
+/** スクロール */
+.scroll_area {
+	height		:420px;
+	width		:968px;
+}
+table.body_table2 tr th.soko_cnt{
+  width				: 400px;
+}
+table.body_table2 tr th.del_cnt{
+  width				: *;
+}
+table.body_table2 tr th.shohin_cnt{
+  width				: 105px;
+}
+table.body_table2 tr th.name_cnt{
+  width				: 250px;
+}
+table.body_table2 tr th.nisugata_cnt{
+  width				: 100px;
+}
+
+table.tomei_table tr th, table.tomei_table tr td{
+
+  border-width               : 0px;
+
+
+}
+//-->
+</STYLE>
+<script type="text/javascript">
+<!--
+function bodyLoad() {
+
+	if(document.vansmastRegistEditForm.elements['vansmastRegistEditForm:addFlg'].value == 'true') {
+		var focusName = document.vansmastRegistEditForm.elements['vansmastRegistEditForm:addFocusName'].value;
+		var targetName = vansTargetElementName("vansmastRegistEditForm",focusName);
+		if(targetName != "") {
+	   		document.vansmastRegistEditForm.elements[targetName].focus();
+	   	}
+	}else{
+		if(document.vansmastRegistEditForm.elements['vansmastRegistEditForm:errFlg'].value == 'true') {
+			vansFocusElement("vansmastRegistEditForm");
+		}
+	}
+}
+
+/*
+ * エラーフォーカス処理
+ */
+function vansFocusElement(formName) {
+	if(document.forms[formName] != null) {
+		var targetForm = document.forms[formName];
+		var elementName = document.focusElementForm.elements["FOCUS_ELEMENT"].value;
+		if(elementName != "") {
+	   		var targetName = vansTargetElementName(formName, elementName);
+	   		if(targetName != "") {
+	   			targetForm.elements[targetName].focus();
+	   		}
+		}
+		else {
+			setFocusToFirstTextElement(formName);
+		}
+	}
+}
+function vansTargetElementName(formName, keyName) {
+
+	if(keyName.charAt(0) == "s"){
+		var inputElements = document.getElementsByTagName("input");
+		for (var i = 0; i < inputElements.length; i++) {
+			if (inputElements[i].type == "text" && inputElements[i].id.indexOf("shohin") >= 0) {
+				if(keyName == inputElements[i+1].value){
+						return inputElements[i].name;
+				}
+			}
+		}
+	}
+	if(keyName.charAt(0) == "n"){
+		var selectElements = document.getElementsByTagName("select");
+		for (var i = 0; i < selectElements.length; i++) {
+			if (selectElements[i].id.indexOf("nisugata") >= 0) {
+				if(keyName == selectElements[i+1].value){
+					return selectElements[i].name;
+				}
+			}
+		}
+	}
+}
+
+function back(){
+	document.forms['vansmastRegistEditForm'].elements['vansmastRegistEditForm:__link_clicked__'].value='vansmastRegistEditForm:back';
+	document.forms['vansmastRegistEditForm'].submit();
+	return false;
+}
+
+function insert(soko,kanri){
+	document.vansmastRegistEditForm.elements['vansmastRegistEditForm:addSelectSoko'].value = soko;
+	document.vansmastRegistEditForm.elements['vansmastRegistEditForm:addSelectKanri'].value = kanri;
+	document.forms['vansmastRegistEditForm'].elements['vansmastRegistEditForm:__link_clicked__'].value='vansmastRegistEditForm:insert';
+	document.forms['vansmastRegistEditForm'].submit();
+	return false;
+}
+
+function enforcement(){
+	document.forms['vansmastRegistEditForm'].elements['vansmastRegistEditForm:__link_clicked__'].value='vansmastRegistEditForm:enforcement';
+	document.forms['vansmastRegistEditForm'].submit();
+	return false;
+}
+//-->
+</script>
+<form m:id="vansmastRegistEditForm" onKeyDown="return setDefaultSubmitButton('vansmastRegistEditForm','executeBt');">
+	<input type="hidden" m:id="viewId" m:value="#{viewIdValue}"/>
+	<input type="hidden" m:id="initMenuId" m:value="#{menuAction.initMenuId}"/>
+	<input type="hidden" m:id="initSubMenuId" m:value="#{menuAction.initSubMenuId}"/>
+	<input type="hidden" m:id="windowId" m:value="#{vansmastRegistDto.windowId}"/>
+	<input type="hidden" m:id="addSelectSoko" m:value="#{vansmastRegistEditAction.addSelectSoko}"/>
+	<input type="hidden" m:id="addSelectKanri" m:value="#{vansmastRegistEditAction.addSelectKanri}"/>
+	<input type="hidden" m:id="errFlg" m:value="#{vansmastRegistDto.errFlg}"/>
+	<input type="hidden" m:id="addFlg" m:value="#{vansmastRegistDto.addFlg}"/>
+	<input type="hidden" m:id="addFocusName" m:value="#{vansmastRegistDto.addFocusName}"/>
+	<a m:id="back" m:action="#{vansmastRegistEditAction.back}"/>
+	<a m:id="insert" m:action="#{vansmastRegistEditAction.insert}"/>
+	<a m:id="enforcement" m:action="#{vansmastRegistEditAction.enforcement}"/>
+
+	<!-- タブ　後の仕様でシートが増える場合がある-->
+	<table cellspacing="0" cellpadding="0">
+		<tr>
+			<td width="150px" class="body_active_cell">
+				バンズ倉庫別登録</td>
+		</tr>
+	</table>
+	<table width="98%" cellspacing="0" cellpadding="0" style="margin-bottom:4px;">
+		<tr class="body_caption" style="height:5px;">
+			<td colspan="2"/>
+		</tr>
+	</table>
+  	<input type="button" value="戻る" m:onclick="return back()" onDblClick="return false"/>
+  	<input type="button" value="確認" name="vansmastRegistEditForm:executeBt"
+  	       m:onclick="return enforcement()" onDblClick="return false" />
+			<!--縦スクロールを設定-->
+			<div class="scroll_area" style="margin-top:4px;">
+
+				<!-- 対象倉庫 -->
+				<table width="405" class="body_table2">
+				    <tr class="header_row">
+						<th width="100">対象倉庫</th>
+						<td width="*">
+							<span m:converter="#{characterEncodingConverter}" m:value="#{vansmastRegistDto.kanriMotoKj}"/>
+						</td>
+					</tr>
+				</table>
+
+				<table width="98%" cellspacing="0" cellpadding="0">
+					<tr>
+						<td height="5px"></td>
+					</tr>
+				</table>
+
+			<!-- 取引先別情報の表示 -->
+			<div m:inject="s:forEach" m:items="#{vansmastRegistDto.uIVansShohinList}" m:var="l" m:varindex="y">
+
+				<!-- 取引先別:取引先名称 -->
+				<table width="98%" cellspacing="0" cellpadding="0">
+					<tr><td height="5px"></td></tr>
+				</table>
+				<table style="border-bottom-width:0px" width="405" class="torihiki_table">
+					<tr class="header_row">
+						<th width="100">
+							取引先名称
+						</th>
+						<td width="*">
+							<span m:converter="#{characterEncodingConverter}" m:value="#{l.kanriMotoName}"/>
+						</td>
+				    </tr>
+				</table>
+				<!-- 取引先別:見出し -->
+				<table class="body_table2" width="950px">
+					<tr class="header_row">
+						<th class="soko_cnt">倉庫名称</th>
+						<th class="del_cnt">削除</th>
+						<th class="shohin_cnt">商品コード</th>
+						<th class="name_cnt">商品名称</th>
+						<th class="nisugata_cnt">荷姿</th>
+				    </tr>
+
+				    <!-- 倉庫別情報の表示 -->
+					<div m:inject="s:forEach" m:items="#{l.shohinList}" m:var="e" m:varindex="i">
+				    <tr>
+				    	<!-- 倉庫別情報:倉庫情報 -->
+						<div m:rendered="#{e.firstSokoFlg == 'true'}">
+					    	<td rowspan="#{e.shohinCount}" valign="top">
+					    		<table class="tomei_table" border="0" width="400" cellspacing="0" cellpadding="0">
+									<tr>
+										<td width="50"><span m:value="#{e.sokoCd}"/></td>
+										<td width="250"><span m:converter="#{characterEncodingConverter}" m:value="#{e.sokoNameKj}"/></td>
+										<td width="100">
+											<div m:rendered="#{e.addLinkFlg == 'true'}">
+												[商品追加]
+											</div>
+											<div m:rendered="#{e.addLinkFlg != 'true'}">
+												[<a href="#" m:onclick="return insert(#{e.sokoCd},#{e.kanriMoto})" target="_blank" onDblClick="return false">
+													商品追加
+												</a>]
+											</div>
+										</td>
+									</tr>
+								</table>
+							</td>
+						</div>
+						<!-- 倉庫別情報:商品情報 -->
+						<td align="center">
+							<div m:rendered="#{e.dataMode == '0' || e.dataMode == '1' || e.dataMode == null}">
+								<input type="checkbox" m:id="dataMode" m:value="#{e.deleteFlg}"/>
+							</div>
+							<div m:rendered="#{e.dataMode == '2'}">
+								新規
+							</div>
+						</td>
+						<td>
+							<div m:rendered="#{e.dataMode == '0' || e.dataMode == '1' || e.dataMode == null}">
+								&nbsp&nbsp&nbsp<span m:converter="#{characterEncodingConverter}" m:value="#{e.shoCdDai}"/>
+							</div>
+							<div m:rendered="#{e.dataMode == '2'}">
+								<span>
+									&nbsp&nbsp&nbsp<input m:id="shohin" m:class="text" type="text" m:maxlength="5" size="7" m:value="#{e.shoCdDai}" style="ime-mode:disabled"/>
+									<input type="hidden" m:value="#{e.dispIdShoCdDai}" />
+								</span>
+							</div>
+						</td>
+						<td><span m:converter="#{characterEncodingConverter}" m:value="#{e.shoNameKj}"/></td>
+						<td align="center">
+							<div class="hideArea">
+								<span>
+									<select m:id="nisugata" class="condition_field"
+									m:value="#{e.shoNisugata}"
+									m:items="#{vansmastRegistDto.uINisugataList}"
+									m:itemValue="shoNisugata"
+									m:itemLabel="nisuName"/>
+									<select type="hidden" style="display:none" m:value="#{e.dispIdNisugata}" />
+								</span>
+							</div>
+						</td>
+					</tr>
+					</div>
+
+				</table>
+    		</div>
+
+			</div>
+			<!-- スクロールバー -->
+
+</form>
+</div>
+</body>
+</html>

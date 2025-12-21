@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="Shift_JIS"?>
+<!DOCTYPE components PUBLIC "-//SEASAR//DTD S2Container 2.3//EN" "http://www.seasar.org/dtd/components23.dtd">
+<components namespace="campKako">
+	<include path="dao.dicon"/>
+	<include path="jp/co/isid/mos/bird/common/dicon/birdCommon.dicon"/>
+	<include path="jp/co/isid/mos/bird/framework/dicon/birdInterceptor.dicon"/>
+	<include path="jp/co/isid/mos/bird/bizreport/common/camp/dicon/commonCampaign.dicon"/>
+	
+	<!-- インターセプターを自動登録 -->
+	<component class="org.seasar.framework.container.autoregister.AspectAutoRegister">
+	    <property name="interceptor">birdInterceptor.actionInterceptorChain</property>
+	    <initMethod name="addClassPattern">
+	        <arg>"jp.co.isid.mos.bird"</arg>
+	        <arg>".*ActionImpl"</arg>
+	    </initMethod>
+	    <initMethod name="registerAll"/>
+	</component> 
+	<component class="org.seasar.framework.container.autoregister.AspectAutoRegister">
+	    <property name="interceptor">birdInterceptor.logicInterceptorChain</property>
+	    <initMethod name="addClassPattern">
+	        <arg>"jp.co.isid.mos.bird"</arg>
+	        <arg>".*LogicImpl"</arg>
+	    </initMethod>
+	    <initMethod name="registerAll"/>  
+	</component>
+
+	<!-- DAO -->
+	<component name="campKakoUINipoMiseDao" class="jp.co.isid.mos.bird.bizreport.campkako.dao.UINipoMiseDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="campKakoUINipoSibuDao" class="jp.co.isid.mos.bird.bizreport.campkako.dao.UINipoSibuDao">
+		<aspect>dao.interceptor</aspect>
+	</component>
+	<component name="campKakoUISuiiDao" class="jp.co.isid.mos.bird.bizreport.campkako.dao.UISuiiDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+
+	<!-- Entity -->
+
+	<!-- DTO -->
+	<component name="campKakoSessionDto" class="jp.co.isid.mos.bird.bizreport.common.camp.dto.SessionNipoDto" autoBinding="none" instance="session"/>
+	<component name="campKakoRequestDto" class="jp.co.isid.mos.bird.bizreport.common.camp.dto.RequestNipoDto" autoBinding="none" instance="request"/>
+	<component name="campKakoViewRequestDto" class="jp.co.isid.mos.bird.bizreport.common.camp.dto.RequestNipoDto" autoBinding="none" instance="request"/>
+	<component name="campKakoSuiiSessionDto" class="jp.co.isid.mos.bird.bizreport.common.camp.dto.SessionSuiiDto" autoBinding="none" instance="session"/>
+	<component name="campKakoSuiiRequestDto" class="jp.co.isid.mos.bird.bizreport.common.camp.dto.RequestSuiiDto" autoBinding="none" instance="request">
+		<property name="companyCd">'00'</property>
+	</component>
+	<component name="campKakoViewSuiiRequestDto" class="jp.co.isid.mos.bird.bizreport.common.camp.dto.RequestSuiiDto" autoBinding="none" instance="request"/>
+	<component name="miseSearchDto" class="jp.co.isid.mos.bird.commonform.misesearch.dto.MiseSearchDto" instance="session">
+		<property name="RCompanyCdList">null</property>
+	</component>
+
+	<!-- ACTION -->
+	<component name="campKakoSibuListAction" class="jp.co.isid.mos.bird.bizreport.campkako.action.impl.SibuListActionImpl" instance="request"/>
+	<component name="campKakoMiseListAction" class="jp.co.isid.mos.bird.bizreport.campkako.action.impl.MiseListActionImpl" instance="request"/>
+	<component name="campKakoCsvDownloadAction" class="jp.co.isid.mos.bird.bizreport.campkako.action.impl.CsvActionImpl" instance="request">
+		<property name="csvOutputDto">campKakoViewRequestDto</property>
+		<property name="csvOutputLogic">campKakoCsvNipoLogic</property>
+	</component>
+	<component name="campKakoSuiiCsvDownloadAction" class="jp.co.isid.mos.bird.bizreport.campkako.action.impl.CsvSuiiActionImpl" instance="request">
+		<property name="csvOutputDto">campKakoViewSuiiRequestDto</property>
+		<property name="csvOutputLogic">campKakoSuiiCsvLogic</property>
+	</component>
+	<component name="campKakoSuiiListAction" class="jp.co.isid.mos.bird.bizreport.campkako.action.impl.SuiiListActionImpl" instance="request"/>
+	
+	<!-- LOGIC -->
+	<component name="campKakoSetCampaignLogic" class="jp.co.isid.mos.bird.bizreport.campkako.logic.impl.SetCampaignLogicImpl"/>
+	<component name="campKakoCompanyLogic" class="jp.co.isid.mos.bird.bizreport.campkako.logic.impl.SetCompanyLogicImpl"/>
+	<component name="campKakoConditionLogic" class="jp.co.isid.mos.bird.bizreport.campkako.logic.impl.ConditionLogicImpl"/>
+	<component name="campKakoSuiiConditionLogic" class="jp.co.isid.mos.bird.bizreport.campkako.logic.impl.SuiiConditionLogicImpl"/>
+	<component name="campKakoSearchLogic" class="jp.co.isid.mos.bird.bizreport.campkako.logic.impl.SearchLogicImpl">
+		<property name="commonCampaignGetCampMenuKakoLogic">commonCampaignGetCampMenuKakoLogic</property>
+	</component>
+	<component name="campKakoCsvNipoLogic" class="jp.co.isid.mos.bird.bizreport.campkako.logic.impl.CsvNipoLogicImpl"/>
+	<component name="campKakoSuiiSearchLogic" class="jp.co.isid.mos.bird.bizreport.campkako.logic.impl.SuiiSearchLogicImpl"/>
+	<component name="campKakoSuiiChangeCampLogic" class="jp.co.isid.mos.bird.bizreport.campkako.logic.impl.SuiiChangeCampLogicImpl"/>
+	<component name="campKakoSuiiGetCampMenuInfoLogic" class="jp.co.isid.mos.bird.bizreport.campkako.logic.impl.SuiiGetCampMenuInfoLogicImpl">
+		<property name="commonCampaignGetCampMenuKakoLogic">commonCampaignGetCampMenuKakoLogic</property>
+	</component>
+	<component name="campKakoSuiiCsvLogic" class="jp.co.isid.mos.bird.bizreport.campkako.logic.impl.SuiiCsvLogicImpl"/>
+	
+	<!-- CONVERTER -->
+	<component name="bizreportNumericCnvt" class="jp.co.isid.mos.bird.framework.text.converter.NumericConverter" instance="request">
+		<property name="formatPattern">"#,##0"</property>
+	</component>
+	<component name="campKakoDateConverterMD" class="jp.co.isid.mos.bird.framework.text.converter.DateConverter" instance="request">
+		<arg>@jp.co.isid.mos.bird.framework.util.formatter.DateFormatter@DATE_TYPE_YMD</arg>
+		<arg>@jp.co.isid.mos.bird.framework.util.formatter.DateFormatter@PATTERN_DAY_KANJI</arg>
+	</component>
+</components>

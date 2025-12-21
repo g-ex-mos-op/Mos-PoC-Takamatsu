@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="Shift_JIS"?>
+<!DOCTYPE components PUBLIC "-//SEASAR//DTD S2Container 2.3//EN" "http://www.seasar.org/dtd/components23.dtd">
+<components namespace="jikanBetuRef">
+	<include path="dao.dicon"/>
+	<include path="jp/co/isid/mos/bird/framework/dicon/birdInterceptor.dicon"/>
+	<include path="jp/co/isid/mos/bird/analysis/common/menubetu/dicon/analysisMenuBetu.dicon"/>
+	
+	<!-- インターセプターを自動登録 -->
+	<component class="org.seasar.framework.container.autoregister.AspectAutoRegister">
+	    <property name="interceptor">birdInterceptor.actionInterceptorChain</property>
+	    <initMethod name="addClassPattern">
+	        <arg>"jp.co.isid.mos.bird"</arg>
+	        <arg>".*ActionImpl"</arg>
+	    </initMethod>
+	    <initMethod name="registerAll"/>
+	</component> 
+	<component class="org.seasar.framework.container.autoregister.AspectAutoRegister">
+	    <property name="interceptor">birdInterceptor.logicInterceptorChain</property>
+	    <initMethod name="addClassPattern">
+	        <arg>"jp.co.isid.mos.bird"</arg>
+	        <arg>".*LogicImpl"</arg>
+	    </initMethod>
+	    <initMethod name="registerAll"/>  
+	</component>
+
+	<!-- DAO -->
+	<component name="codCompanyDao" class="jp.co.isid.mos.bird.common.dao.CodCompanyDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="codBlockDao" class="jp.co.isid.mos.bird.common.dao.CodBlockDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="codHyojiTaishoDao" class="jp.co.isid.mos.bird.common.dao.CodHyojiTaishoDao">
+		<aspect>dao.interceptor</aspect>
+	</component>
+	<component name="jikanBetuRefUIWeekDao" class="jp.co.isid.mos.bird.analysis.jikanbeturef.dao.UIWeekDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="jikanBetuRefUISuiiNipoDao" class="jp.co.isid.mos.bird.analysis.jikanbeturef.dao.UISuiiNipoDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="jikanBetuRefUIWeekShubetuDao" class="jp.co.isid.mos.bird.analysis.jikanbeturef.dao.UIWeekShubetuDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="jikanBetuRefUIKikanShubetuDao" class="jp.co.isid.mos.bird.analysis.jikanbeturef.dao.UIWeekShubetuKikanDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	
+	<!-- Entity -->
+
+	<!-- DTO -->
+	<component name="commonCodeDto" class="jp.co.isid.mos.bird.framework.dto.CommonCodeDto" instance="session"/>
+	<component name="pullDownMenuDto" class="jp.co.isid.mos.bird.framework.dto.PullDownMenuDto" autoBinding="none" instance="session"/>
+	<component name="miseSearchDto" class="jp.co.isid.mos.bird.commonform.misesearch.dto.MiseSearchDto" instance="session">
+		<property name="RCompanyCdList">null</property>
+	</component>
+	<component name="jikanBetuRefSesDto" class="jp.co.isid.mos.bird.analysis.jikanbeturef.dto.SessionDto" autoBinding="none" instance="session"/>
+	<component name="jikanBetuRefReqDto" class="jp.co.isid.mos.bird.analysis.jikanbeturef.dto.RequestDto" autoBinding="none" instance="request">
+		<property name="menuBetuSesDto">jikanBetuRefSesDto</property>
+	</component>
+	<component name="jikanBetuRefViewDto" class="jp.co.isid.mos.bird.analysis.jikanbeturef.dto.RequestDto" autoBinding="none" instance="request">
+		<property name="menuBetuSesDto">jikanBetuRefSesDto</property>
+	</component>
+
+	<!-- LOGIC -->
+	<component name="getHyojiTaishoLogic" class="jp.co.isid.mos.bird.common.logic.impl.GetHyojiTaishoLogicImpl"/>
+	<component name="jikanBetuRefSetCompanyLogic" class="jp.co.isid.mos.bird.analysis.jikanbeturef.logic.impl.SetCompanyLogicImpl"/>
+	<component name="jikanBetuRefConditionLogic" class="jp.co.isid.mos.bird.analysis.jikanbeturef.logic.impl.ConditionLogicImpl"/>
+	<component name="jikanBetuRefSearchWeekLogic" class="jp.co.isid.mos.bird.analysis.jikanbeturef.logic.impl.SearchWeekLogicImpl"/>
+	<component name="jikanBetuRefSearchSuiiNipoLogic" class="jp.co.isid.mos.bird.analysis.jikanbeturef.logic.impl.SearchSuiiNipoLogicImpl"/>
+	<component name="jikanBetuRefSearchWeekShubetuLogic" class="jp.co.isid.mos.bird.analysis.jikanbeturef.logic.impl.SearchWeekShubetuLogicImpl"/>
+	<component name="jikanBetuRefCsvWeekLogic" class="jp.co.isid.mos.bird.analysis.jikanbeturef.logic.impl.CsvWeekLogicImpl"/>
+	<component name="jikanBetuRefCsvSuiiNipoLogic" class="jp.co.isid.mos.bird.analysis.jikanbeturef.logic.impl.CsvSuiiNipoLogicImpl"/>
+	<component name="jikanBetuRefCsvWeekShubetuLogic" class="jp.co.isid.mos.bird.analysis.jikanbeturef.logic.impl.CsvWeekShubetuLogicImpl"/>
+	<component name="jikanBetuRefCsvKikanShubetuLogic" class="jp.co.isid.mos.bird.analysis.jikanbeturef.logic.impl.CsvKikanShubetuLogicImpl"/>
+	<!-- ACTION -->
+	<component name="jikanBetuRefViewAction" class="jp.co.isid.mos.bird.analysis.jikanbeturef.action.impl.ViewActionImpl" instance="request">
+		<property name="csvOutputDto">jikanBetuRefReqDto</property>
+		<property name="csvOutputLogic">null</property>
+	</component>
+	
+	<!-- CONVERTER -->
+</components>

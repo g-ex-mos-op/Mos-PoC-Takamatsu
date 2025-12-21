@@ -1,0 +1,1 @@
+select max(TOUROKU_NO) as TOUROKU_NO from BM76SEID

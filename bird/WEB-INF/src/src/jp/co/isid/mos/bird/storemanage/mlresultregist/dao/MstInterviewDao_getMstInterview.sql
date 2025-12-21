@@ -1,0 +1,7 @@
+select 
+	INTERVIEW_CD,
+	INTERVIEW_NAME
+from
+	BM30ITVM
+order by
+	SORT_SEQ

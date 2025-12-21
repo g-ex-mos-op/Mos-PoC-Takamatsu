@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="Shift_JIS"?>
+<!DOCTYPE components PUBLIC "-//SEASAR2.1//DTD S2Container//EN"
+	"http://www.seasar.org/dtd/components21.dtd">
+<components namespace="functionSearch">
+	<include path="dao.dicon"/>
+	<include path="jp/co/isid/mos/bird/framework/dicon/birdInterceptor.dicon"/>
+	<!-- ハンドリング -->
+	<component 
+	  class="org.seasar.framework.container.autoregister.AspectAutoRegister">
+	    <property name="interceptor">birdInterceptor.actionInterceptorChain</property>
+	    <initMethod name="addClassPattern">
+	        <arg>"jp.co.isid.mos.bird"</arg>
+	        <arg>".*ActionImpl"</arg>
+	    </initMethod>
+	    <initMethod name="registerAll"/>
+	</component> 
+	<component 
+	  class="org.seasar.framework.container.autoregister.AspectAutoRegister">
+	    <property name="interceptor">birdInterceptor.logicInterceptorChain</property>
+	    <initMethod name="addClassPattern">
+	        <arg>"jp.co.isid.mos.bird"</arg>
+	        <arg>".*LogicImpl"</arg>
+	    </initMethod>
+	    <initMethod name="registerAll"/>  
+	</component>
+	
+	<!-- DAO -->		
+	<component name="UIRoleDao" class="jp.co.isid.mos.bird.sysadmin.roleacterregist.dao.UIRoleDao">
+		<aspect>dao.interceptor</aspect>
+	</component>
+	<component name="UIBirdMenuDao" class="jp.co.isid.mos.bird.sysadmin.roleacterregist.dao.UIBirdMenuDao">
+		<aspect>dao.interceptor</aspect>
+	</component>
+	<component name="UIRoleBunruiDao" class="jp.co.isid.mos.bird.sysadmin.roleacterregist.dao.UIRoleBunruiDao">
+		<aspect>dao.interceptor</aspect>
+	</component>
+	<component name="CtlRoleActerDao" class="jp.co.isid.mos.bird.sysadmin.roleacterregist.dao.CtlRoleActerDao">
+		<aspect>dao.interceptor</aspect>
+	</component>
+
+	<!-- DTO -->
+	<component name="pullDownMenuDto" class="jp.co.isid.mos.bird.framework.dto.PullDownMenuDto" autoBinding="none" instance="session"/>
+	<component name="BirdUserInfo" class="jp.co.isid.mos.bird.framework.control.BirdUserInfo" instance="session"/>
+	<component name="roleActConditionDto" class="jp.co.isid.mos.bird.sysadmin.roleacterregist.dto.RoleActConditionDto" instance="session"/>
+	<component name="roleActRegistDto" class="jp.co.isid.mos.bird.sysadmin.roleacterregist.dto.RoleActRegistDto" instance="session"/>
+	<component name="functionSearchDto" class="jp.co.isid.mos.bird.commonform.functionsearch.dto.FunctionSearchDto" instance="session"/>
+	<component name="roleSearchDto" class="jp.co.isid.mos.bird.commonform.rolesearch.dto.RoleSearchDto" instance="session"/>
+
+	<!-- Logic -->
+	<component name="SearchDataLogic" class="jp.co.isid.mos.bird.sysadmin.roleacterregist.logic.impl.SearchDataLogicImpl">
+		<aspect>birdInterceptor.logicInterceptorChain</aspect>
+	</component>
+	<component name="SearchRoleActerLogic" class="jp.co.isid.mos.bird.sysadmin.roleacterregist.logic.impl.SearchRoleActerLogicImpl">
+		<aspect>birdInterceptor.logicInterceptorChain</aspect>
+	</component>
+	<component name="UpdateRoleActerLogic" class="jp.co.isid.mos.bird.sysadmin.roleacterregist.logic.impl.UpdateRoleActerLogicImpl">
+		<aspect>birdInterceptor.logicInterceptorChain</aspect>
+	</component>
+	
+	<!-- OTHER -->
+	<component class="jp.co.isid.mos.bird.framework.control.BirdUserInfo" instance="session"/>
+	<component class="jp.co.isid.mos.bird.framework.control.BirdDateInfo" instance="session"/>
+ 	
+	<!-- Action -->
+	<component name="roleActConditionAction" class="jp.co.isid.mos.bird.sysadmin.roleacterregist.action.impl.RoleActConditionActionImpl" instance="request">
+		<property name="roleActRegistDto">roleActRegistDto</property>
+		<property name="roleActConditionDto">roleActConditionDto</property>
+	</component>
+	<component name="roleActRegistAction" class="jp.co.isid.mos.bird.sysadmin.roleacterregist.action.impl.RoleActRegistActionImpl" instance="request">
+		<property name="roleActRegistDto">roleActRegistDto</property>
+		<property name="roleActConditionDto">roleActConditionDto</property>
+	</component>
+	
+	<component name="logInterceptor" class="jp.co.isid.mos.bird.framework.interceptor.log.LogInterceptor" instance="request"/>
+
+</components>

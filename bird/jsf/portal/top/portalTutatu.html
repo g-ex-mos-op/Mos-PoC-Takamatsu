@@ -1,0 +1,20 @@
+<html xmlns:m="http://www.seasar.org/maya" m:action="#{portalTopTutatuAction.initialize}">
+	<head>
+	<title>
+	</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=Windows-31j" />
+	<meta http-equiv="Content-Style-Type" content="text/css">
+	<link rel="stylesheet" type="text/css" href="#{request.contextPath}/css/#{birdUserInfo.browserType}/main.css?#{headerDto.loginTime}"/>
+	<link rel="stylesheet" type="text/css" href="#{request.contextPath}/css/#{birdUserInfo.browserType}/body.css?#{headerDto.loginTime}"/>
+	<link rel="stylesheet" type="text/css" href="#{request.contextPath}/css/#{birdUserInfo.browserType}/body_#{birdUserInfo.emosslesAppId}.css?#{headerDto.loginTime}"/>
+	<link rel="stylesheet" type="text/css" href="#{request.contextPath}/css/#{birdUserInfo.browserType}/print.css?#{headerDto.loginTime}" media="print"/>
+	<script type="text/javascript" src="#{request.contextPath}/js/bird.js?#{headerDto.loginTime}"></script>
+	</head>
+<body hight="20px">
+	<table width="100%" cellspacing="0" cellpadding="0">
+		<tr>
+			<th class="body_caption">お知らせ更新日<span m:value="#{portalTopDto.tutatuLastUpdateDt}"  m:converter="#{dateConverterYMD}"/></th>
+		</tr>
+	</table>
+</body>
+</html>

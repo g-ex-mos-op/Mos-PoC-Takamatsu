@@ -1,0 +1,11 @@
+SELECT KEI_CATEGORY
+,      KEI_SHU
+,      KEI_SHU_NAME
+,      SAVE_DIR
+,      DISP_MONTHS
+,      SOAT_KEY
+
+FROM BC28KEIS BC28
+
+WHERE KEI_CATEGORY = /*category*/'03'
+AND   BC28.KEI_SHU = /*shu*/'01'

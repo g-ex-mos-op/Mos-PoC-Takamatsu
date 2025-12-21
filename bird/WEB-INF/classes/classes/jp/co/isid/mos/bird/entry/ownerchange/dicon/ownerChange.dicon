@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE components PUBLIC "-//SEASAR//DTD S2Container 2.3//EN"
+	"http://www.seasar.org/dtd/components23.dtd">
+<components namespace="ownerChange">
+    <include path="dao.dicon"/>
+	<include path="jp/co/isid/mos/bird/framework/dicon/birdInterceptor.dicon"/>
+	<include path="jp/co/isid/mos/bird/common/dicon/birdCommon.dicon"/>
+	
+	<component
+	  class="org.seasar.framework.container.autoregister.AspectAutoRegister">
+	    <property name="interceptor">birdInterceptor.actionInterceptorChain</property>
+	    <initMethod name="addClassPattern">
+	        <arg>"jp.co.isid.mos.bird"</arg>
+	        <arg>".*ActionImpl"</arg>
+	    </initMethod>
+	    <initMethod name="registerAll"/>
+	</component> 
+	<component
+	  class="org.seasar.framework.container.autoregister.AspectAutoRegister">
+	    <property name="interceptor">birdInterceptor.logicInterceptorChain</property>
+	    <initMethod name="addClassPattern">
+	        <arg>"jp.co.isid.mos.bird"</arg>
+	        <arg>".*LogicImpl"</arg>
+	    </initMethod>
+	    <initMethod name="registerAll"/>
+	</component>
+
+	<component class="jp.co.isid.mos.bird.framework.control.BirdUserInfo" instance="session"/>
+	<component class="jp.co.isid.mos.bird.framework.control.BirdDateInfo" instance="session"/>
+
+	<!-- Converter -->
+	<component name="ownerChangeCdConverter" class="jp.co.isid.mos.bird.framework.text.converter.CodeConverter">
+		<property name="formatPattern">"00000"</property>
+	</component>
+	<component name="ownerChangeDateConverter" class="jp.co.isid.mos.bird.framework.text.converter.DateConverter">
+		<arg>@jp.co.isid.mos.bird.framework.util.formatter.DateFormatter@DATE_TYPE_YMD</arg>
+		<arg>@jp.co.isid.mos.bird.framework.util.formatter.DateFormatter@PATTERN_SLASH</arg>
+	</component>
+
+	<!-- DAO -->
+	<component name="mstMiseInfoDao" class="jp.co.isid.mos.bird.entry.ownerchange.dao.MstMiseInfoDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="mstOwnerInfoDao" class="jp.co.isid.mos.bird.entry.ownerchange.dao.MstOwnerInfoDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="mstStaffInfoDao" class="jp.co.isid.mos.bird.entry.ownerchange.dao.MstStaffInfoDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="trnEntryDataDao" class="jp.co.isid.mos.bird.entry.ownerchange.dao.TrnEntryDataDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+
+	<!-- Logic -->
+	<component name="checkChangeOwnerLogic" class="jp.co.isid.mos.bird.entry.ownerchange.logic.impl.CheckChangeOwnerLogicImpl"/>
+    <component name="checkEntryLogic" class="jp.co.isid.mos.bird.entry.ownerchange.logic.impl.CheckEntryLogicImpl"/>
+    <component name="checkInputLogic" class="jp.co.isid.mos.bird.entry.ownerchange.logic.impl.CheckInputLogicImpl"/>
+    <component name="checkRegistOwnerLogic" class="jp.co.isid.mos.bird.entry.ownerchange.logic.impl.CheckRegistOwnerLogicImpl"/>
+    <component name="getMiseInfoLogic" class="jp.co.isid.mos.bird.entry.ownerchange.logic.impl.GetMiseInfoLogicImpl"/>
+    <component name="getOwnerInfoLogic" class="jp.co.isid.mos.bird.entry.ownerchange.logic.impl.GetOwnerInfoLogicImpl">
+    	<property name="getOnerLogic">birdCommon.getOnerLogic</property>
+    </component>
+    <component name="getStaffInfoLogic" class="jp.co.isid.mos.bird.entry.ownerchange.logic.impl.GetStaffInfoLogicImpl"/>
+	<component name="renewStaffInfoLogic" class="jp.co.isid.mos.bird.entry.ownerchange.logic.impl.RenewStaffInfoLogicImpl">
+		<aspect>j2ee.requiresNewTx</aspect>
+	</component>
+
+	<!-- DTO -->
+	<component name="ownerChangeDto" class="jp.co.isid.mos.bird.entry.ownerchange.dto.OwnerChangeDto" autoBinding="none" instance="session"/>
+	<component name="pullDownMenuDto" class="jp.co.isid.mos.bird.framework.dto.PullDownMenuDto" autoBinding="none" instance="session"/>
+	<component name="miseSearchDto" class="jp.co.isid.mos.bird.commonform.misesearch.dto.MiseSearchDto" autoBinding="none" instance="session"/>
+	<component name="ownerSearchDto" class="jp.co.isid.mos.bird.commonform.ownersearch.dto.OwnerSearchDto" autoBinding="none" instance="session"/>
+	
+	<!-- Action -->
+	<component name="ownerChangeConditionAction" class="jp.co.isid.mos.bird.entry.ownerchange.action.impl.OwnerChangeConditionActionImpl" instance="request">
+		<property name="getUserCompanyLogic">birdCommon.getUserCompanyLogic</property>
+	</component>
+	<component name="ownerChangeConfirmAction" class="jp.co.isid.mos.bird.entry.ownerchange.action.impl.OwnerChangeConfirmActionImpl" instance="request"/>
+	<component name="ownerChangeEditAction" class="jp.co.isid.mos.bird.entry.ownerchange.action.impl.OwnerChangeEditActionImpl" instance="request"/>
+	<component name="ownerChangeSetUpAction" class="jp.co.isid.mos.bird.entry.ownerchange.action.impl.OwnerChangeSetUpActionImpl" instance="request"/>
+</components>

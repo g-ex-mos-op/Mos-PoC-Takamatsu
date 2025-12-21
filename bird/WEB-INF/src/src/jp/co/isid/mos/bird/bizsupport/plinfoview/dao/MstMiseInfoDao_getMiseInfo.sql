@@ -1,0 +1,16 @@
+select 
+	BM01.COMPANY_CD,
+	rtrim(BM01.MISE_CD) as MISE_CD,
+	rtrim(BM01.MISE_KBN) as MISE_KBN,
+	rtrim(BM01.MISE_NAME_KJ) as MISE_NAME_KJ,
+	rtrim(BM01.OPEN_DT) as OPEN_DT, 
+	rtrim(BM01.ONER_CD) as ONER_CD,
+	rtrim(BM11.ONER_NAME_KJ) as ONER_NAME_KJ
+from 
+	BM01TENM BM01,
+	BM11ONER BM11 
+where
+	BM01.COMPANY_CD = /*companyCd*/'00' 
+and BM01.MISE_CD = /*miseCd*/'01776'
+and BM01.COMPANY_CD = BM11.COMPANY_CD 
+and BM01.ONER_CD = BM11.ONER_CD 
