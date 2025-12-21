@@ -1,0 +1,230 @@
+<html xmlns:m="http://www.seasar.org/maya" m:action="#{contactReferenceAction.initialize}" m:extends="/jsf/layout/layoutNoNavi.html">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Windows-31j"/>
+<meta http-equiv="Content-Style-Type" content="text/css"/>
+<meta http-equiv="Content-Script-Type" content="text/javascript"/>
+<title>連絡照会</title>
+</head>
+<body>
+<span m:inject="f:param" m:name="layoutTitle" m:value="連絡照会"/>
+<span m:inject="s:insert" m:name="bodyTitleName">■連絡照会</span>
+<span m:inject="f:param" m:name="onLoadName" m:value="load()"/>
+<span m:inject="f:param" m:name="viewIdValue" m:value="BCM001V01"/>
+<span m:inject="s:insert" m:name="body">
+<STYLE type="text/css">
+<!--
+/** タイトル幅 */
+.col_title {
+	width				: *;
+}
+/** 関連ファイル有無幅 */
+.col_attachfile {
+	width				: 50px;
+	text-align			: center;
+}
+/** 発信元幅 */
+.col_puborgname {
+	width				: 220px;
+}
+/** 公開開始日 */
+.col_pubdate {
+	width				: 85px;
+}
+table.header_table{
+  width				: 98%;
+}
+table.body_table2{
+  width				: 98%;
+}
+-->
+</style>
+<script type="text/javascript">
+<!--
+function load(){
+   loadScroll("contactReferenceScroll0",205);
+   loadScroll("contactReferenceScroll1",170);
+}
+function setFileIndex(index) {
+	document.contactReference.elements['contactReference:fileIndex'].value = index;
+}
+
+function tabChange(cateId) {
+    if (document.getElementById("contactReference:searchBtn").disabled) {
+        return false;
+    }
+    document.contactReference.elements["selectCateId"].value = cateId;
+    document.contactReference.elements['contactReference:__link_clicked__'].value='contactReference:changeTabLink';
+    document.contactReference.submit();
+    return true;
+}
+-->
+</script>
+
+<form m:id="contactReference">
+<input type="hidden" m:id="viewId" m:value="#{viewIdValue}" />
+<input type="hidden" m:id="initMenuId" m:value="#{menuAction.initMenuId}"/>
+<input type="hidden" m:id="initSubMenuId" m:value="#{menuAction.initSubMenuId}"/>
+<input type="hidden" m:id="fileIndex" m:value="#{uiViewRenraku.fileIndex}"/>
+<a m:action="#{contactReferenceAction.changeTab}" m:id="changeTabLink">
+	<span m:inject="f:param" m:id="cateName" m:name="cateName"/>
+	<span m:inject="f:param" m:id="selectCateId" m:name="selectCateId"/>
+</a>
+    <table cellpadding="0" cellspacing="0" width="98%">
+    <tr>
+	    <td>
+		<table class="body_table" style="float:left;">
+		    <tr>
+		        <th>公開開始月</th>
+		        <td>
+		        	<div class="hideArea">
+		            <select m:value="#{contactReferenceDto.inputPubDate}"
+		                    m:items="#{contactReferenceDto.pubDateList}">
+		                <option value="">2006/01</option>
+		                <option value="">2005/12</option>
+		            </select>
+		            </div>
+		        </td>
+		        <th>業態</th>
+		        <td>
+		        	<div class="hideArea">
+		            <select m:value="#{contactReferenceDto.inputGyotaiKbn}"
+		                    m:items="#{contactReferenceDto.gyotaiList}"
+		                    m:itemValue="gyotaiKbn"
+		                    m:itemLabel="gyotaiKbnName"
+		                    m:nullLabel=" ">
+		                <option value="">全社</option>
+		                <option value="">モスフードサービス</option>
+		            </select>
+		            </div>
+		        </td>
+		        <th>タイトル</th>
+		    	<td>
+		    		<input type="text" m:value="#{contactReferenceDto.inputTitle}" size="30" maxlength="80"/>
+		    	</td>
+		    </tr>
+		</table>
+			<input type="submit" value="検索"
+			             m:action="#{contactReferenceAction.search}"
+			             class="operation_button" m:id="searchBtn" style="margin-left:5px;margin-top:4px"/>
+		</td>
+		<td align="right">
+			<table cellpadding="0" cellspacing="0" style="margin-top:4px;" m:rendered="#{!contactReferenceDto.emptyCategoryList}">
+				<tr>
+					<td>
+						<input type="submit" value="最初へ" m:action="#{contactReferenceAction.changePage}" m:disabled="#{contactReferenceDto.firstPage}">
+							<span m:inject="f:param" m:name="selectPageNumber" m:value="#{contactReferenceDto.firstPageNumber}"/>
+						</input>
+						<input type="submit" value="前へ" m:action="#{contactReferenceAction.changePage}" m:disabled="#{!contactReferenceDto.existPreviousPage}">
+							<span m:inject="f:param" m:name="selectPageNumber" m:value="#{contactReferenceDto.previousPageNumber}"/>
+						</input>
+						<input type="submit" value="次へ" m:action="#{contactReferenceAction.changePage}" m:disabled="#{!contactReferenceDto.existNextPage}">
+							<span m:inject="f:param" m:name="selectPageNumber" m:value="#{contactReferenceDto.nextPageNumber}"/>
+						</input>
+						<input type="submit" value="最後へ" m:action="#{contactReferenceAction.changePage}" m:disabled="#{contactReferenceDto.lastPage}">
+							<span m:inject="f:param" m:name="selectPageNumber" m:value="#{contactReferenceDto.lastPageNumber}"/>
+						</input>
+						<span m:value="#{contactReferenceDto.currentPageNumber}"/>／<span m:value="#{contactReferenceDto.lastPageNumber}"/>ページ
+					</td>
+				</tr>
+			</table>
+		</td>
+	</tr>
+	</table>
+	<div style="clear:both;"/>
+	<div m:rendered="#{!contactReferenceDto.emptyCategoryList}">
+		<table style="margin-top:5px;width:98%" cellpadding="0" cellspacing="0">
+		    <div m:inject="s:forEach" m:items="#{contactReferenceDto.listTabCate}" m:var="listCate" m:varindex="i">
+			<tr>
+		    <div m:inject="s:forEach" m:items="#{listCate}" m:var="e" m:varindex="i" width="20%">
+				<th m:rendered="#{e!=null}"
+				    class="body_#{e.cateId == contactReferenceDto.cateId?'':'non_'}active_cell"
+				    onClick="#{e.cateId != contactReferenceDto.cateId?'return tabChange(\'':''}#{e.cateId != contactReferenceDto.cateId?e.cateId:''}#{e.cateId != contactReferenceDto.cateId?'\');':''}"
+				    onMouseOver="this.style.cursor='pointer';" width="20%">
+				  <span m:converter="#{characterEncodingConverter}" m:value="#{e.cateName}"/>
+				</th>
+				<th m:rendered="#{e==null}" width="20%"/>
+			</div>
+			</tr>
+		    </div>
+		</table>
+
+		<!--タブ帯-->
+	    <div class="scroll_hidden">
+		<div style="width:98%;height:5px;margin-bottom:-2px;" class="body_caption"/>
+		<table class="body_table2">
+			<tr class="header_row">
+			<th class="col_pubdate">公開開始日</th>
+			<th class="col_title">タイトル</th>
+			<th class="col_attachfile">関連</th>
+			<th class="col_puborgname">発信元</th>
+			</tr>
+		</table>
+		</div>
+
+    <div id="contactReferenceScroll0" class="scroll_standby">
+	<table class="body_table2" style="border-top-width:0px">
+	    <div m:inject="s:forEach" m:items="#{contactReferenceDto.contactList}" m:var="e" m:varindex="i">
+ 	    <tr class="non_top_border">
+			<td class="col_pubdate"><span m:value="#{e.pubDate}" m:converter="#{contactReferenceDateConverter}"/></td>
+			<td class="col_title">
+				<a m:action="#{contactReferenceAction.showDetail}">
+					<span m:converter="#{characterEncodingConverter}" m:value="#{e.title}"/>
+					<span m:converter="#{characterEncodingConverter}" m:inject="f:param" m:name="selectContactIndex" m:value="#{i}"/>
+				</a>
+			</td>
+			<td class="col_attachfile"><span m:value="#{(e.existAttachFile)==true ? '有' : '無'}"/></td>
+			<td class="col_puborgname"><span m:converter="#{characterEncodingConverter}" m:value="#{e.pubOrgName}"/></td>
+		</tr>
+		</div>
+	</table>
+	</div>
+	</div>
+
+
+	<span m:rendered="#{uiViewRenraku.enabled}">
+		<div class="scroll_hidden">
+		<table class="header_table" cellspacing="0" style="margin-top:5px;">
+			<tr class="body_title">
+			  <td>連絡内容</td>
+			</tr>
+		</table>
+
+		</div>
+
+	    <div id="contactReferenceScroll1" class="scroll_standby">
+			<table class="body_table2">
+			    <tr>
+			        <th nowrap=" nowrap">タイトル</th>
+			        <td ><span m:converter="#{characterEncodingConverter}" m:value="#{uiViewRenraku.title}"/></td>
+			    </tr>
+			    <tr>
+			        <th nowrap=" nowrap">発信元</th>
+			        <td><span m:converter="#{characterEncodingConverter}" m:value="#{uiViewRenraku.pubOrgName}"/></td>
+			    </tr>
+			    <tr>
+			        <th nowrap=" nowrap">公開開始日</th>
+			        <td><span m:value="#{uiViewRenraku.pubDate}" m:converter="#{contactReferenceDateConverter}"/></td>
+			    </tr>
+			    <tr>
+			        <th nowrap=" nowrap">カテゴリー</th>
+			        <td><span m:converter="#{characterEncodingConverter}" m:value="#{uiViewRenraku.cateName}"/></td>
+			    </tr>
+			    <tr>
+			        <th nowrap=" nowrap" valign="top">メッセージ</th>
+			        <td><span m:value="#{uiViewRenraku.message}" m:converter="#{changeLineRefConverter}" m:escape="false" /></td>
+			    </tr>
+			    <tr style="line-height:22px;">
+			        <th width="100px" nowrap=" nowrap">関連ファイル</th>
+			        <td>
+
+			        </td>
+			    </tr>
+			</table>
+		</div>
+	</span>
+
+<input type="text" m:id="dummyEnter" style="display:none"/>
+</form>
+</span>
+</body>
+</html>
