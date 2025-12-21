@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="Shift_JIS"?>
+<!DOCTYPE components PUBLIC
+    "-//SEASAR//DTD S2Container 2.3//EN"
+    "http://www.seasar.org/dtd/components23.dtd">
+<components namespace="accessCtlCheckProperty">
+	<!-- アクセス権限チェック対象外の画面リスト -->
+	<component name="chkOffScreenList" class="java.util.ArrayList">
+		<!-- 申請管理共通 スタッフ選択画面 -->
+		<initMethod name="add">
+			<arg>"BEN093"</arg>
+		</initMethod>			
+	</component>
+    
+    <!-- アクセス権限チェック対象外の特殊画面 -->
+    <component name="errorDataMap" class="java.util.HashMap">
+        <!-- 操作エラー画面 -->
+        <initMethod name="put">
+		    <arg>"operation.Err"</arg>
+			<arg>"operation.Err"</arg>
+    	</initMethod>
+    	<!-- システムエラー画面 -->			
+   	    <initMethod name="put">
+			<arg>"system.fatal"</arg>
+			<arg>"system.fatal"</arg>
+		</initMethod>			
+	</component>
+    	
+</components>
+

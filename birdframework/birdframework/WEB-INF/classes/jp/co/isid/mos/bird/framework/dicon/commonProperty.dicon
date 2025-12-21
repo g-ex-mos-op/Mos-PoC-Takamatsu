@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="Shift_JIS"?>
+<!DOCTYPE components PUBLIC "-//SEASAR2.1//DTD S2Container//EN"
+"http://www.seasar.org/dtd/components21.dtd">
+<components>
+	<component name="proMap" class="java.util.HashMap">
+        <initMethod name="put">
+            <arg>"scriptName"</arg>
+            <arg>"C:\\eclipse4.5\\workspace\\birdexample\\batch\\testBatch.bat"</arg>
+        </initMethod>
+    </component>
+
+    <component autoBinding="auto" name="commonProperty"
+               class="jp.co.isid.mos.bird.framework.control.PropertyInjection">
+        <arg>proMap</arg>
+    </component>
+</components>

@@ -1,0 +1,10 @@
+package jp.co.isid.mos.bird.framework.dto;
+
+
+/**
+ * PDFèoóÕópDTO
+ * @author xnkusama
+ */
+public interface PdfOutputDto {
+    public String getFileName();
+}

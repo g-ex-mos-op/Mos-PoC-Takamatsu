@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="Shift_JIS"?>
+<!DOCTYPE components PUBLIC "-//SEASAR2.1//DTD S2Container//EN"
+"http://www.seasar.org/dtd/components21.dtd">
+<components>
+  <!--マトリクスが出ない・支部制限がない-->
+    <component name="allowIPMap" class="java.util.HashMap">
+      <!--MOS本社・グループ会社-->
+        <initMethod name="put">
+          <arg>"1"</arg>
+          <arg>"172.20."</arg>
+        </initMethod>
+      <!--MHS-->
+        <initMethod name="put">
+          <arg>"2"</arg>
+          <arg>"172.30."</arg>
+        </initMethod>
+      <!--モスクレ-->
+        <initMethod name="put">
+          <arg>"3"</arg>
+          <arg>"192.168.1."</arg>
+        </initMethod>
+      <!--トモス-->
+        <initMethod name="put">
+          <arg>"4"</arg>
+          <arg>"192.168.3."</arg>
+        </initMethod>
+    </component>
+  <!--不明(個別に拒否IP体系が設定できる？)-->
+    <component name="denyIPMap" class="java.util.HashMap">
+      <initMethod name="put">
+        <arg>"1"</arg>
+        <arg>"133.158.000.888"</arg>
+      </initMethod>
+      <initMethod name="put">
+        <arg>"2"</arg>
+        <arg>"133.158.000.999"</arg>
+      </initMethod>
+    </component>
+  <!--本部ユーザがログインできる-->
+    <component name="allowHonbuMenuIPMap" class="java.util.HashMap">
+      <!--MOS本社・グループ会社-->
+        <initMethod name="put">
+          <arg>"1"</arg>
+          <arg>"172.20."</arg>
+        </initMethod>
+      <!--MHS-->
+        <initMethod name="put">
+          <arg>"2"</arg>
+          <arg>"172.30."</arg>
+        </initMethod>
+      <!--モスクレ-->
+        <initMethod name="put">
+          <arg>"3"</arg>
+          <arg>"192.168.1."</arg>
+        </initMethod>
+      <!--トモス-->
+        <initMethod name="put">
+          <arg>"4"</arg>
+          <arg>"192.168.3."</arg>
+        </initMethod>
+      <!--VPN-->
+        <initMethod name="put">
+          <arg>"6"</arg>
+          <arg>"172.19.24."</arg>
+        </initMethod>
+        <initMethod name="put">
+          <arg>"7"</arg>
+          <arg>"172.19.25."</arg>
+        </initMethod>
+        <initMethod name="put">
+          <arg>"8"</arg>
+          <arg>"172.19.26."</arg>
+        </initMethod>
+        <initMethod name="put">
+          <arg>"9"</arg>
+          <arg>"172.19.27."</arg>
+        </initMethod>
+        <initMethod name="put">
+          <arg>"10"</arg>
+          <arg>"172.19.28."</arg>
+        </initMethod>
+        <initMethod name="put">
+          <arg>"11"</arg>
+          <arg>"172.19.29."</arg>
+        </initMethod>
+        <initMethod name="put">
+          <arg>"12"</arg>
+          <arg>"172.19.30."</arg>
+        </initMethod>
+        <initMethod name="put">
+          <arg>"13"</arg>
+          <arg>"172.19.31."</arg>
+        </initMethod>
+      <!--品川-->
+        <initMethod name="put">
+          <arg>"14"</arg>
+          <arg>"133.158.136."</arg>
+        </initMethod>
+      <!--UiPathサーバー-->
+        <initMethod name="put">
+          <arg>"15"</arg>
+          <arg>"172.19.100."</arg>
+        </initMethod>
+      <!--ローカルホスト-->
+      <!--
+        <initMethod name="put">
+        	<arg>"99"</arg>
+            <arg>"127.0.0.1"</arg>
+        </initMethod>
+       -->
+    </component>
+  <!--不明(個別に拒否IP体系が設定できる？)-->
+    <component name="denyHonbuMenuIPMap" class="java.util.HashMap">
+      <initMethod name="put">
+        <arg>"1"</arg>
+        <arg>"000.000.000.000"</arg>
+      </initMethod>
+    </component>
+    <component autoBinding="auto" name="allowIP"
+               class="jp.co.isid.mos.bird.framework.control.PropertyInjection">
+      <arg>allowIPMap</arg>
+    </component>
+    <component autoBinding="auto" name="denyIP"
+               class="jp.co.isid.mos.bird.framework.control.PropertyInjection">
+      <arg>denyIPMap</arg>
+    </component>
+    <component autoBinding="auto" name="allowHonbuMenuIP"
+               class="jp.co.isid.mos.bird.framework.control.PropertyInjection">
+      <arg>allowHonbuMenuIPMap</arg>
+    </component>
+    <component autoBinding="auto" name="denyHonbuMenuIP"
+               class="jp.co.isid.mos.bird.framework.control.PropertyInjection">
+      <arg>denyHonbuMenuIPMap</arg>
+    </component>
+</components>

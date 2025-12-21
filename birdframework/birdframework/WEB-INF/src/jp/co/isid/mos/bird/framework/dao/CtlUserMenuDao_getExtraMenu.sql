@@ -1,0 +1,33 @@
+SELECT distinct 
+    BR02.MENU_ID
+   ,BR02.SUB_MENU_ID
+   ,BR04.ROLE_CD 
+   ,BR02.PARAM
+   ,BR05.ENABLE_FLG
+   ,BR05.EXTRA_FLG
+   ,kobetu.CUSTOMIZE_FLG
+FROM
+    BR05ACTR BR05
+   ,BR04USRL BR04
+   ,BR02BMNU BR02
+LEFT JOIN (
+        SELECT 
+            USER_ID 
+           ,MENU_ID 
+           ,SUB_MENU_ID 
+           ,CUSTOMIZE_FLG 
+        FROM 
+            BR54USAC BR54
+        WHERE 
+            BR54.USER_ID = /*userId*/'TEST0001' 
+    ) as kobetu ON (kobetu.MENU_ID = BR02.MENU_ID AND kobetu.SUB_MENU_ID = BR02.SUB_MENU_ID)
+WHERE
+      BR02.MENU_ID     = BR05.MENU_ID 
+  AND BR02.SUB_MENU_ID = BR05.SUB_MENU_ID 
+  AND BR05.ROLE_CD     = BR04.ROLE_CD 
+  AND BR05.EXTRA_FLG   = '1' 
+  AND BR04.USER_ID     = /*userId*/'TEST0001' 
+  AND BR02.VIEW_ID     = /*pgmId*/'' 
+ORDER BY 
+    BR02.MENU_ID
+   ,BR02.SUB_MENU_ID

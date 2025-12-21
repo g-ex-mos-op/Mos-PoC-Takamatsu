@@ -1,0 +1,1383 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<BugCollection version="0.9.6" sequence="0" timestamp="-1" analysisTimestamp="1362632744253" release="">
+  <Project filename="&lt;&lt;unnamed project&gt;&gt;">
+    <Jar>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\classes\jp\co\isid\mos\bird\framework\action\BatchExecuteAction.class</Jar>
+    <Jar>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\classes\jp\co\isid\mos\bird\framework\action\CommonAction.class</Jar>
+    <Jar>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\classes\jp\co\isid\mos\bird\framework\action\CsvDownloadAction.class</Jar>
+    <Jar>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\classes\jp\co\isid\mos\bird\framework\action\CsvOutputAction.class</Jar>
+    <Jar>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\classes\jp\co\isid\mos\bird\framework\action\ExcelOutputAction.class</Jar>
+    <Jar>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\classes\jp\co\isid\mos\bird\framework\action\FileDeleteAction.class</Jar>
+    <Jar>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\classes\jp\co\isid\mos\bird\framework\action\FileDownloadAction.class</Jar>
+    <Jar>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\classes\jp\co\isid\mos\bird\framework\action\FileUploadAction.class</Jar>
+    <Jar>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\classes\jp\co\isid\mos\bird\framework\action\GraphOutputAction.class</Jar>
+    <Jar>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\classes\jp\co\isid\mos\bird\framework\action\HtmlInitAction.class</Jar>
+    <Jar>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\classes\jp\co\isid\mos\bird\framework\action\PdfOutputAction.class</Jar>
+    <Jar>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\classes\jp\co\isid\mos\bird\framework\action\impl\BatchExecuteActionImpl.class</Jar>
+    <Jar>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\classes\jp\co\isid\mos\bird\framework\action\impl\CsvDownloadActionImpl.class</Jar>
+    <Jar>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\classes\jp\co\isid\mos\bird\framework\action\impl\CsvOutput2ActionImpl.class</Jar>
+    <Jar>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\classes\jp\co\isid\mos\bird\framework\action\impl\CsvOutputActionImpl.class</Jar>
+    <Jar>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\classes\jp\co\isid\mos\bird\framework\action\impl\ExcelOutputActionImpl.class</Jar>
+    <Jar>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\classes\jp\co\isid\mos\bird\framework\action\impl\FileDeleteActionImpl.class</Jar>
+    <Jar>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\classes\jp\co\isid\mos\bird\framework\action\impl\FileDownloadActionImpl.class</Jar>
+    <Jar>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\classes\jp\co\isid\mos\bird\framework\action\impl\FileUploadActionImpl.class</Jar>
+    <Jar>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\classes\jp\co\isid\mos\bird\framework\action\impl\GraphOutputActionImpl.class</Jar>
+    <Jar>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\classes\jp\co\isid\mos\bird\framework\action\impl\MenuActionImpl.class</Jar>
+    <Jar>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\classes\jp\co\isid\mos\bird\framework\action\impl\PdfOutputActionImpl.class</Jar>
+    <Jar>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\classes\jp\co\isid\mos\bird\framework\control\BirdContext.class</Jar>
+    <Jar>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\classes\jp\co\isid\mos\bird\framework\control\BirdDateInfo.class</Jar>
+    <Jar>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\classes\jp\co\isid\mos\bird\framework\control\BirdUserInfo.class</Jar>
+    <Jar>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\classes\jp\co\isid\mos\bird\framework\control\Property.class</Jar>
+    <Jar>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\classes\jp\co\isid\mos\bird\framework\control\PropertyInjection.class</Jar>
+    <Jar>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\classes\jp\co\isid\mos\bird\framework\control\SessionListenerBean$CleanFileFilter.class</Jar>
+    <Jar>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\classes\jp\co\isid\mos\bird\framework\control\SessionListenerBean.class</Jar>
+    <Jar>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\classes\jp\co\isid\mos\bird\framework\dao\CtlBirdMenuDao.class</Jar>
+    <Jar>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\classes\jp\co\isid\mos\bird\framework\dao\CtlDateDao.class</Jar>
+    <Jar>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\classes\jp\co\isid\mos\bird\framework\dao\CtlDisableMenuDao.class</Jar>
+    <Jar>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\classes\jp\co\isid\mos\bird\framework\dao\CtlGamenRoleDao.class</Jar>
+    <Jar>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\classes\jp\co\isid\mos\bird\framework\dao\CtlLeaveOutMenuDao.class</Jar>
+    <Jar>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\classes\jp\co\isid\mos\bird\framework\dao\CtlLoginFailKaisuDao.class</Jar>
+    <Jar>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\classes\jp\co\isid\mos\bird\framework\dao\CtlOnlineUsedTblDao.class</Jar>
+    <Jar>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\classes\jp\co\isid\mos\bird\framework\dao\CtlUserCompanyDao.class</Jar>
+    <Jar>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\classes\jp\co\isid\mos\bird\framework\dao\CtlUserLogDao.class</Jar>
+    <Jar>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\classes\jp\co\isid\mos\bird\framework\dao\CtlUserLoginDao.class</Jar>
+    <Jar>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\classes\jp\co\isid\mos\bird\framework\dao\CtlUserMenuDao.class</Jar>
+    <Jar>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\classes\jp\co\isid\mos\bird\framework\dao\CtlUserRoleDao.class</Jar>
+    <Jar>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\classes\jp\co\isid\mos\bird\framework\dao\EmosBirdUserCooperationDao.class</Jar>
+    <Jar>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\classes\jp\co\isid\mos\bird\framework\dao\LoginDao.class</Jar>
+    <Jar>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\classes\jp\co\isid\mos\bird\framework\dao\MstOnerDao.class</Jar>
+    <Jar>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\classes\jp\co\isid\mos\bird\framework\dao\MstUserDao.class</Jar>
+    <Jar>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\classes\jp\co\isid\mos\bird\framework\dao\MyMenuDao.class</Jar>
+    <Jar>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\classes\jp\co\isid\mos\bird\framework\dao\SelectViewIdDao.class</Jar>
+    <Jar>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\classes\jp\co\isid\mos\bird\framework\dao\SessionBridgeDao.class</Jar>
+    <Jar>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\classes\jp\co\isid\mos\bird\framework\dao\SessionListenerDao.class</Jar>
+    <Jar>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\classes\jp\co\isid\mos\bird\framework\dao\TrnMyMenuDao.class</Jar>
+    <Jar>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\classes\jp\co\isid\mos\bird\framework\dao\TrnOutSystemLogDao.class</Jar>
+    <Jar>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\classes\jp\co\isid\mos\bird\framework\dao\UIBirdUserDao.class</Jar>
+    <Jar>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\classes\jp\co\isid\mos\bird\framework\dao\UIUserEmosslesAppIdDao.class</Jar>
+    <Jar>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\classes\jp\co\isid\mos\bird\framework\dao\UIUserMiseDao.class</Jar>
+    <Jar>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\classes\jp\co\isid\mos\bird\framework\dao\UIUserOnerDao.class</Jar>
+    <Jar>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\classes\jp\co\isid\mos\bird\framework\dto\BatchExecuteDto.class</Jar>
+    <Jar>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\classes\jp\co\isid\mos\bird\framework\dto\BirdUserListDto.class</Jar>
+    <Jar>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\classes\jp\co\isid\mos\bird\framework\dto\CommonCodeDto.class</Jar>
+    <Jar>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\classes\jp\co\isid\mos\bird\framework\dto\CommonDateDto.class</Jar>
+    <Jar>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\classes\jp\co\isid\mos\bird\framework\dto\CommonDto.class</Jar>
+    <Jar>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\classes\jp\co\isid\mos\bird\framework\dto\CsvInputDto.class</Jar>
+    <Jar>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\classes\jp\co\isid\mos\bird\framework\dto\CsvOutputDto.class</Jar>
+    <Jar>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\classes\jp\co\isid\mos\bird\framework\dto\DownloadDto.class</Jar>
+    <Jar>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\classes\jp\co\isid\mos\bird\framework\dto\ErrHtmlElementDto.class</Jar>
+    <Jar>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\classes\jp\co\isid\mos\bird\framework\dto\ExcelOutputDto.class</Jar>
+    <Jar>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\classes\jp\co\isid\mos\bird\framework\dto\ExclusiveWindowDto.class</Jar>
+    <Jar>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\classes\jp\co\isid\mos\bird\framework\dto\GamenRoleDto.class</Jar>
+    <Jar>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\classes\jp\co\isid\mos\bird\framework\dto\GraphOutputDto.class</Jar>
+    <Jar>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\classes\jp\co\isid\mos\bird\framework\dto\HeaderDto.class</Jar>
+    <Jar>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\classes\jp\co\isid\mos\bird\framework\dto\LoginDto.class</Jar>
+    <Jar>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\classes\jp\co\isid\mos\bird\framework\dto\PdfOutputDto.class</Jar>
+    <Jar>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\classes\jp\co\isid\mos\bird\framework\dto\PdfSecurityDto.class</Jar>
+    <Jar>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\classes\jp\co\isid\mos\bird\framework\dto\PullDownMenuDto.class</Jar>
+    <Jar>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\classes\jp\co\isid\mos\bird\framework\dto\UltraseekDto.class</Jar>
+    <Jar>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\classes\jp\co\isid\mos\bird\framework\dto\UploadDto.class</Jar>
+    <Jar>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\classes\jp\co\isid\mos\bird\framework\dto\UserListDto.class</Jar>
+    <Jar>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\classes\jp\co\isid\mos\bird\framework\entity\CsvOutputEntity.class</Jar>
+    <Jar>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\classes\jp\co\isid\mos\bird\framework\entity\CtlBirdMenu.class</Jar>
+    <Jar>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\classes\jp\co\isid\mos\bird\framework\entity\CtlDate.class</Jar>
+    <Jar>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\classes\jp\co\isid\mos\bird\framework\entity\CtlDisableMenu.class</Jar>
+    <Jar>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\classes\jp\co\isid\mos\bird\framework\entity\CtlEmosBirdUserCooperation.class</Jar>
+    <Jar>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\classes\jp\co\isid\mos\bird\framework\entity\CtlGamenRole.class</Jar>
+    <Jar>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\classes\jp\co\isid\mos\bird\framework\entity\CtlLeaveOutMenu.class</Jar>
+    <Jar>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\classes\jp\co\isid\mos\bird\framework\entity\CtlLoginFailKaisu.class</Jar>
+    <Jar>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\classes\jp\co\isid\mos\bird\framework\entity\CtlOnlineUsedTbl.class</Jar>
+    <Jar>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\classes\jp\co\isid\mos\bird\framework\entity\CtlSessionBridge.class</Jar>
+    <Jar>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\classes\jp\co\isid\mos\bird\framework\entity\CtlUserCompany.class</Jar>
+    <Jar>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\classes\jp\co\isid\mos\bird\framework\entity\CtlUserLog.class</Jar>
+    <Jar>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\classes\jp\co\isid\mos\bird\framework\entity\CtlUserLogin.class</Jar>
+    <Jar>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\classes\jp\co\isid\mos\bird\framework\entity\CtlUserMenu.class</Jar>
+    <Jar>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\classes\jp\co\isid\mos\bird\framework\entity\CtlUserRole.class</Jar>
+    <Jar>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\classes\jp\co\isid\mos\bird\framework\entity\FileAccessInfoEntity.class</Jar>
+    <Jar>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\classes\jp\co\isid\mos\bird\framework\entity\MstOner.class</Jar>
+    <Jar>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\classes\jp\co\isid\mos\bird\framework\entity\MstUser.class</Jar>
+    <Jar>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\classes\jp\co\isid\mos\bird\framework\entity\MyMenu.class</Jar>
+    <Jar>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\classes\jp\co\isid\mos\bird\framework\entity\SelectViewID.class</Jar>
+    <Jar>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\classes\jp\co\isid\mos\bird\framework\entity\TrnMyMenu.class</Jar>
+    <Jar>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\classes\jp\co\isid\mos\bird\framework\entity\TrnOutSystemLog.class</Jar>
+    <Jar>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\classes\jp\co\isid\mos\bird\framework\entity\UIBirdUser.class</Jar>
+    <Jar>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\classes\jp\co\isid\mos\bird\framework\entity\UILoginBirdUser.class</Jar>
+    <Jar>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\classes\jp\co\isid\mos\bird\framework\entity\UIUserEmosslesAppId.class</Jar>
+    <Jar>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\classes\jp\co\isid\mos\bird\framework\entity\UIUserMise.class</Jar>
+    <Jar>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\classes\jp\co\isid\mos\bird\framework\entity\UIUserOner.class</Jar>
+    <Jar>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\classes\jp\co\isid\mos\bird\framework\exception\AlreadyExistException.class</Jar>
+    <Jar>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\classes\jp\co\isid\mos\bird\framework\exception\ApplicationException.class</Jar>
+    <Jar>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\classes\jp\co\isid\mos\bird\framework\exception\BatchProcessingException.class</Jar>
+    <Jar>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\classes\jp\co\isid\mos\bird\framework\exception\BusinessRuleException.class</Jar>
+    <Jar>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\classes\jp\co\isid\mos\bird\framework\exception\CannotAccessException.class</Jar>
+    <Jar>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\classes\jp\co\isid\mos\bird\framework\exception\CannotChangeException.class</Jar>
+    <Jar>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\classes\jp\co\isid\mos\bird\framework\exception\CannotEditException.class</Jar>
+    <Jar>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\classes\jp\co\isid\mos\bird\framework\exception\CannotExecuteException.class</Jar>
+    <Jar>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\classes\jp\co\isid\mos\bird\framework\exception\CannotExecuteWithReasonException.class</Jar>
+    <Jar>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\classes\jp\co\isid\mos\bird\framework\exception\CannotInputException.class</Jar>
+    <Jar>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\classes\jp\co\isid\mos\bird\framework\exception\CannotRelatedException.class</Jar>
+    <Jar>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\classes\jp\co\isid\mos\bird\framework\exception\ConstraintsViolationException.class</Jar>
+    <Jar>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\classes\jp\co\isid\mos\bird\framework\exception\DuplicateDataException.class</Jar>
+    <Jar>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\classes\jp\co\isid\mos\bird\framework\exception\DuplicateLoginException.class</Jar>
+    <Jar>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\classes\jp\co\isid\mos\bird\framework\exception\FileNotFoundException.class</Jar>
+    <Jar>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\classes\jp\co\isid\mos\bird\framework\exception\FtlSystemException.class</Jar>
+    <Jar>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\classes\jp\co\isid\mos\bird\framework\exception\GenericCommentException.class</Jar>
+    <Jar>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\classes\jp\co\isid\mos\bird\framework\exception\GenericErrorException.class</Jar>
+    <Jar>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\classes\jp\co\isid\mos\bird\framework\exception\GenericMessageException.class</Jar>
+    <Jar>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\classes\jp\co\isid\mos\bird\framework\exception\IllegalOperationException.class</Jar>
+    <Jar>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\classes\jp\co\isid\mos\bird\framework\exception\InputConstraintException.class</Jar>
+    <Jar>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\classes\jp\co\isid\mos\bird\framework\exception\InvalidConfigException.class</Jar>
+    <Jar>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\classes\jp\co\isid\mos\bird\framework\exception\InvalidDataException.class</Jar>
+    <Jar>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\classes\jp\co\isid\mos\bird\framework\exception\InvalidInputException.class</Jar>
+    <Jar>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\classes\jp\co\isid\mos\bird\framework\exception\InvalidRelationException.class</Jar>
+    <Jar>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\classes\jp\co\isid\mos\bird\framework\exception\MismatchException.class</Jar>
+    <Jar>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\classes\jp\co\isid\mos\bird\framework\exception\MissingConfigException.class</Jar>
+    <Jar>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\classes\jp\co\isid\mos\bird\framework\exception\MissingDataException.class</Jar>
+    <Jar>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\classes\jp\co\isid\mos\bird\framework\exception\NoEntityException.class</Jar>
+    <Jar>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\classes\jp\co\isid\mos\bird\framework\exception\NoInputException.class</Jar>
+    <Jar>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\classes\jp\co\isid\mos\bird\framework\exception\NoResultException.class</Jar>
+    <Jar>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\classes\jp\co\isid\mos\bird\framework\exception\NoSessionException.class</Jar>
+    <Jar>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\classes\jp\co\isid\mos\bird\framework\exception\NoTargetException.class</Jar>
+    <Jar>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\classes\jp\co\isid\mos\bird\framework\exception\NotCompletedException.class</Jar>
+    <Jar>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\classes\jp\co\isid\mos\bird\framework\exception\NotCreatedException.class</Jar>
+    <Jar>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\classes\jp\co\isid\mos\bird\framework\exception\NotExistException.class</Jar>
+    <Jar>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\classes\jp\co\isid\mos\bird\framework\exception\NotNullException.class</Jar>
+    <Jar>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\classes\jp\co\isid\mos\bird\framework\exception\NotRelevantException.class</Jar>
+    <Jar>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\classes\jp\co\isid\mos\bird\framework\exception\NotSelectedException.class</Jar>
+    <Jar>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\classes\jp\co\isid\mos\bird\framework\exception\SomeoneExecutingException.class</Jar>
+    <Jar>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\classes\jp\co\isid\mos\bird\framework\exception\SomeoneUsingException.class</Jar>
+    <Jar>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\classes\jp\co\isid\mos\bird\framework\exception\SystemAlreadyStartedException.class</Jar>
+    <Jar>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\classes\jp\co\isid\mos\bird\framework\exception\TooManyResultException.class</Jar>
+    <Jar>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\classes\jp\co\isid\mos\bird\framework\interceptor\AccessCtlCheckInterceptor.class</Jar>
+    <Jar>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\classes\jp\co\isid\mos\bird\framework\interceptor\ActionThrowsInterceptor.class</Jar>
+    <Jar>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\classes\jp\co\isid\mos\bird\framework\interceptor\BatchCheckInterceptor.class</Jar>
+    <Jar>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\classes\jp\co\isid\mos\bird\framework\interceptor\CommonInitActionIntercepter.class</Jar>
+    <Jar>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\classes\jp\co\isid\mos\bird\framework\interceptor\CommonInitTogoActionIntercepter.class</Jar>
+    <Jar>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\classes\jp\co\isid\mos\bird\framework\interceptor\ExclusiveWindowInterceptor.class</Jar>
+    <Jar>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\classes\jp\co\isid\mos\bird\framework\interceptor\InsideActionIntercepter.class</Jar>
+    <Jar>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\classes\jp\co\isid\mos\bird\framework\interceptor\LeaveOutMenuInterceptor.class</Jar>
+    <Jar>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\classes\jp\co\isid\mos\bird\framework\interceptor\MenuActionIntercepter.class</Jar>
+    <Jar>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\classes\jp\co\isid\mos\bird\framework\interceptor\SessionCheckInterceptor.class</Jar>
+    <Jar>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\classes\jp\co\isid\mos\bird\framework\interceptor\log\ErrorLogInterceptor.class</Jar>
+    <Jar>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\classes\jp\co\isid\mos\bird\framework\interceptor\log\LogInterceptor.class</Jar>
+    <Jar>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\classes\jp\co\isid\mos\bird\framework\logic\AccessCtlCheckLogic.class</Jar>
+    <Jar>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\classes\jp\co\isid\mos\bird\framework\logic\BatchExecuteLogic.class</Jar>
+    <Jar>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\classes\jp\co\isid\mos\bird\framework\logic\CalendarInfoLogic.class</Jar>
+    <Jar>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\classes\jp\co\isid\mos\bird\framework\logic\CheckBatchExecuteLogic.class</Jar>
+    <Jar>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\classes\jp\co\isid\mos\bird\framework\logic\CsvOutputLogic.class</Jar>
+    <Jar>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\classes\jp\co\isid\mos\bird\framework\logic\DateInfoSetupLogic.class</Jar>
+    <Jar>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\classes\jp\co\isid\mos\bird\framework\logic\DeleteUploadLogic.class</Jar>
+    <Jar>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\classes\jp\co\isid\mos\bird\framework\logic\DownloadFinalLogic.class</Jar>
+    <Jar>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\classes\jp\co\isid\mos\bird\framework\logic\DownloadInitLogic.class</Jar>
+    <Jar>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\classes\jp\co\isid\mos\bird\framework\logic\DownloadLogic.class</Jar>
+    <Jar>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\classes\jp\co\isid\mos\bird\framework\logic\ExcelOutputLogic.class</Jar>
+    <Jar>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\classes\jp\co\isid\mos\bird\framework\logic\GetBirdUserLogic.class</Jar>
+    <Jar>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\classes\jp\co\isid\mos\bird\framework\logic\GetGamenRoleLogic.class</Jar>
+    <Jar>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\classes\jp\co\isid\mos\bird\framework\logic\GetLeaveOutMenuLogic.class</Jar>
+    <Jar>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\classes\jp\co\isid\mos\bird\framework\logic\GraphOutputLogic.class</Jar>
+    <Jar>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\classes\jp\co\isid\mos\bird\framework\logic\LoginLogic.class</Jar>
+    <Jar>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\classes\jp\co\isid\mos\bird\framework\logic\PasswordLockLogic.class</Jar>
+    <Jar>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\classes\jp\co\isid\mos\bird\framework\logic\PdfOutputLogic.class</Jar>
+    <Jar>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\classes\jp\co\isid\mos\bird\framework\logic\RegOutputLogLogic.class</Jar>
+    <Jar>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\classes\jp\co\isid\mos\bird\framework\logic\SelectViewIdLogic.class</Jar>
+    <Jar>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\classes\jp\co\isid\mos\bird\framework\logic\UltraseekLogic.class</Jar>
+    <Jar>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\classes\jp\co\isid\mos\bird\framework\logic\UpdateLoginTimestamp.class</Jar>
+    <Jar>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\classes\jp\co\isid\mos\bird\framework\logic\UploadLogic.class</Jar>
+    <Jar>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\classes\jp\co\isid\mos\bird\framework\logic\UserInfoSetupLogic.class</Jar>
+    <Jar>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\classes\jp\co\isid\mos\bird\framework\logic\impl\AccessCtlCheckLogicImpl.class</Jar>
+    <Jar>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\classes\jp\co\isid\mos\bird\framework\logic\impl\CalendarInfoLogicImpl.class</Jar>
+    <Jar>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\classes\jp\co\isid\mos\bird\framework\logic\impl\CheckBatchExecuteLogicImpl.class</Jar>
+    <Jar>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\classes\jp\co\isid\mos\bird\framework\logic\impl\DateInfoSetupLogicImpl.class</Jar>
+    <Jar>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\classes\jp\co\isid\mos\bird\framework\logic\impl\GetAccessMenuLogic.class</Jar>
+    <Jar>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\classes\jp\co\isid\mos\bird\framework\logic\impl\GetBirdUserLogicImpl.class</Jar>
+    <Jar>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\classes\jp\co\isid\mos\bird\framework\logic\impl\GetGamenRoleLogicImpl.class</Jar>
+    <Jar>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\classes\jp\co\isid\mos\bird\framework\logic\impl\GetLeaveOutMenuLogicImpl.class</Jar>
+    <Jar>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\classes\jp\co\isid\mos\bird\framework\logic\impl\LoginLogicImpl.class</Jar>
+    <Jar>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\classes\jp\co\isid\mos\bird\framework\logic\impl\PasswordLockLogicImpl.class</Jar>
+    <Jar>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\classes\jp\co\isid\mos\bird\framework\logic\impl\RegOutputLogLogicImpl.class</Jar>
+    <Jar>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\classes\jp\co\isid\mos\bird\framework\logic\impl\SelectViewIdLogicImpl.class</Jar>
+    <Jar>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\classes\jp\co\isid\mos\bird\framework\logic\impl\SessionBridgeLogic.class</Jar>
+    <Jar>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\classes\jp\co\isid\mos\bird\framework\logic\impl\UltraseekLogicImpl.class</Jar>
+    <Jar>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\classes\jp\co\isid\mos\bird\framework\logic\impl\UpdateLoginTimestampImpl.class</Jar>
+    <Jar>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\classes\jp\co\isid\mos\bird\framework\logic\impl\UserInfoSetupLogicImpl.class</Jar>
+    <Jar>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\classes\jp\co\isid\mos\bird\framework\text\converter\ChangeLineEditConverter.class</Jar>
+    <Jar>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\classes\jp\co\isid\mos\bird\framework\text\converter\ChangeLineRefConverter.class</Jar>
+    <Jar>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\classes\jp\co\isid\mos\bird\framework\text\converter\CharacterEncodingConverter.class</Jar>
+    <Jar>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\classes\jp\co\isid\mos\bird\framework\text\converter\CodeConverter.class</Jar>
+    <Jar>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\classes\jp\co\isid\mos\bird\framework\text\converter\DateConverter.class</Jar>
+    <Jar>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\classes\jp\co\isid\mos\bird\framework\text\converter\MaskConverter.class</Jar>
+    <Jar>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\classes\jp\co\isid\mos\bird\framework\text\converter\NormalConverter.class</Jar>
+    <Jar>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\classes\jp\co\isid\mos\bird\framework\text\converter\NumericConverter.class</Jar>
+    <Jar>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\classes\jp\co\isid\mos\bird\framework\text\converter\TimeConverter.class</Jar>
+    <Jar>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\classes\jp\co\isid\mos\bird\framework\text\converter\TimestampConverter.class</Jar>
+    <Jar>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\classes\jp\co\isid\mos\bird\framework\text\validator\CodeValidator.class</Jar>
+    <Jar>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\classes\jp\co\isid\mos\bird\framework\text\validator\DateValidator.class</Jar>
+    <Jar>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\classes\jp\co\isid\mos\bird\framework\text\validator\HankakuEisujiValidator.class</Jar>
+    <Jar>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\classes\jp\co\isid\mos\bird\framework\text\validator\HankakuKatakanaValidator.class</Jar>
+    <Jar>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\classes\jp\co\isid\mos\bird\framework\text\validator\HankakuValidator.class</Jar>
+    <Jar>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\classes\jp\co\isid\mos\bird\framework\text\validator\MaskValidator.class</Jar>
+    <Jar>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\classes\jp\co\isid\mos\bird\framework\text\validator\NormalValidator.class</Jar>
+    <Jar>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\classes\jp\co\isid\mos\bird\framework\text\validator\NumericValidator.class</Jar>
+    <Jar>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\classes\jp\co\isid\mos\bird\framework\text\validator\PhoneValidator.class</Jar>
+    <Jar>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\classes\jp\co\isid\mos\bird\framework\text\validator\ZenkakuKatakanaValidator.class</Jar>
+    <Jar>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\classes\jp\co\isid\mos\bird\framework\text\validator\ZenkakuValidator.class</Jar>
+    <Jar>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\classes\jp\co\isid\mos\bird\framework\util\BirdMessageFormatter.class</Jar>
+    <Jar>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\classes\jp\co\isid\mos\bird\framework\util\Calculator.class</Jar>
+    <Jar>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\classes\jp\co\isid\mos\bird\framework\util\Converter.class</Jar>
+    <Jar>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\classes\jp\co\isid\mos\bird\framework\util\CsvInputUtil.class</Jar>
+    <Jar>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\classes\jp\co\isid\mos\bird\framework\util\DateManager.class</Jar>
+    <Jar>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\classes\jp\co\isid\mos\bird\framework\util\DateUtils.class</Jar>
+    <Jar>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\classes\jp\co\isid\mos\bird\framework\util\FileUtil.class</Jar>
+    <Jar>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\classes\jp\co\isid\mos\bird\framework\util\MakeSessionKey.class</Jar>
+    <Jar>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\classes\jp\co\isid\mos\bird\framework\util\MojiConverter.class</Jar>
+    <Jar>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\classes\jp\co\isid\mos\bird\framework\util\formatter\ChangeLineFormatter.class</Jar>
+    <Jar>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\classes\jp\co\isid\mos\bird\framework\util\formatter\CodeFormatter.class</Jar>
+    <Jar>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\classes\jp\co\isid\mos\bird\framework\util\formatter\DateFormatter.class</Jar>
+    <Jar>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\classes\jp\co\isid\mos\bird\framework\util\formatter\DefaultFormatter.class</Jar>
+    <Jar>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\classes\jp\co\isid\mos\bird\framework\util\formatter\Formatter.class</Jar>
+    <Jar>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\classes\jp\co\isid\mos\bird\framework\util\formatter\MaskConstants.class</Jar>
+    <Jar>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\classes\jp\co\isid\mos\bird\framework\util\formatter\MaskFormatter.class</Jar>
+    <Jar>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\classes\jp\co\isid\mos\bird\framework\util\formatter\NumericFormatter.class</Jar>
+    <Jar>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\classes\jp\co\isid\mos\bird\framework\util\formatter\TimeFormatter.class</Jar>
+    <Jar>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\classes\jp\co\isid\mos\bird\framework\util\formatter\TimestampFormatter.class</Jar>
+    <Jar>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\classes\jp\co\isid\mos\bird\framework\util\verifier\CodeVerifier.class</Jar>
+    <Jar>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\classes\jp\co\isid\mos\bird\framework\util\verifier\DateVerifier.class</Jar>
+    <Jar>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\classes\jp\co\isid\mos\bird\framework\util\verifier\DefaultJapaneseVerifier.class</Jar>
+    <Jar>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\classes\jp\co\isid\mos\bird\framework\util\verifier\DefaultVerifier.class</Jar>
+    <Jar>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\classes\jp\co\isid\mos\bird\framework\util\verifier\HankakuEisujiVerifier.class</Jar>
+    <Jar>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\classes\jp\co\isid\mos\bird\framework\util\verifier\HankakuKatakanaBugFixedVerifier.class</Jar>
+    <Jar>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\classes\jp\co\isid\mos\bird\framework\util\verifier\HankakuKatakanaVerifier.class</Jar>
+    <Jar>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\classes\jp\co\isid\mos\bird\framework\util\verifier\HankakuVerifier.class</Jar>
+    <Jar>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\classes\jp\co\isid\mos\bird\framework\util\verifier\JinmeiVerifier.class</Jar>
+    <Jar>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\classes\jp\co\isid\mos\bird\framework\util\verifier\LengthVerifier.class</Jar>
+    <Jar>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\classes\jp\co\isid\mos\bird\framework\util\verifier\MaskVerifier.class</Jar>
+    <Jar>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\classes\jp\co\isid\mos\bird\framework\util\verifier\MetaCharVerifier.class</Jar>
+    <Jar>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\classes\jp\co\isid\mos\bird\framework\util\verifier\NumericVerifier.class</Jar>
+    <Jar>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\classes\jp\co\isid\mos\bird\framework\util\verifier\PhoneVerifier.class</Jar>
+    <Jar>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\classes\jp\co\isid\mos\bird\framework\util\verifier\Verifier.class</Jar>
+    <Jar>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\classes\jp\co\isid\mos\bird\framework\util\verifier\ZenkakuKatakanaVerifier.class</Jar>
+    <Jar>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\classes\jp\co\isid\mos\bird\framework\util\verifier\ZenkakuVerifier.class</Jar>
+    <Jar>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\classes\test\jp\co\isid\mos\bird\framework\control\BirdContextTest.class</Jar>
+    <Jar>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\classes\test\jp\co\isid\mos\bird\framework\exception\ApplicationExceptionTest.class</Jar>
+    <Jar>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\classes\test\jp\co\isid\mos\bird\framework\interceptor\BatchCheckIntercepterTest.class</Jar>
+    <Jar>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\classes\test\jp\co\isid\mos\bird\framework\interceptor\TestAction1.class</Jar>
+    <Jar>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\classes\test\jp\co\isid\mos\bird\framework\interceptor\TestLogic1.class</Jar>
+    <Jar>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\classes\test\jp\co\isid\mos\bird\framework\interceptor\TestLogic2.class</Jar>
+    <Jar>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\classes\test\jp\co\isid\mos\bird\framework\interceptor\TestLogic3.class</Jar>
+    <Jar>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\classes\test\jp\co\isid\mos\bird\framework\logic\impl\GetAccessMenuLogicTest.class</Jar>
+    <Jar>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\classes\test\jp\co\isid\mos\bird\framework\util\CalculatorTest.class</Jar>
+    <Jar>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\classes\test\jp\co\isid\mos\bird\framework\util\ConverterTest.class</Jar>
+    <Jar>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\classes\test\jp\co\isid\mos\bird\framework\util\CsvInputUtilTest.class</Jar>
+    <Jar>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\classes\test\jp\co\isid\mos\bird\framework\util\formatter\ChangeLineFormatterTest.class</Jar>
+    <Jar>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\classes\test\jp\co\isid\mos\bird\framework\util\formatter\DateFormatterTest.class</Jar>
+    <Jar>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\classes\test\jp\co\isid\mos\bird\framework\util\formatter\TimeFormatterTest.class</Jar>
+    <Jar>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\classes\test\jp\co\isid\mos\bird\framework\util\verifier\NumericVerifierTest.class</Jar>
+    <AuxClasspathEntry>C:\Program Files\Apache Software Foundation\Tomcat 5.0\common\lib\servlet-api.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>C:\Program Files\Apache Software Foundation\Tomcat 5.0\common\lib\jasper-runtime.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>C:\Program Files\Apache Software Foundation\Tomcat 5.0\common\lib\jsp-api.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\classes</AuxClasspathEntry>
+    <AuxClasspathEntry>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\lib\aopalliance-1.0.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\lib\commons-beanutils-1.6.1.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\lib\commons-codec-1.2.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\lib\commons-collections-3.0.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\lib\commons-digester-1.5.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\lib\commons-el.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\lib\commons-fileupload-1.0.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\lib\commons-logging-1.0.4.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\lib\commons-validator.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\lib\jakarta-oro.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\lib\javassist-3.0.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\lib\jsp-2.0.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\lib\jta.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\lib\log4j-1.2.8.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\lib\myfaces-1.0.9.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\lib\nekohtml-0.9.3-nirvana.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\lib\ognl-2.6.5.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\lib\poi-2.5.1-final-20040804.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\lib\xercesImpl-2.5.0.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\lib\xmlParserAPIs.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>C:\eclipse3.1\plugins\org.junit_3.8.1\junit.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\lib\db2java.zip</AuxClasspathEntry>
+    <AuxClasspathEntry>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\lib\itext-1.3.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\lib\iTextAsian.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\lib\jcommon-1.0.0-rc1.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\lib\jfreechart-1.0.0-rc1.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\lib\servlet.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\lib\s2-extension-2.3.4.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\lib\s2-framework-2.3.4.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\lib\s2-dao-1.0.29.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\lib\s2-jsf-1.0.13.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\lib\ultraseek.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\lib\ant.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\lib\geronimo-spec-j2ee-1.4-rc4.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>C:\eclipse3.1\workspace.bird\birdframework\WEB-INF\lib\hsqldb.jar</AuxClasspathEntry>
+  </Project>
+  <BugInstance type="OS_OPEN_STREAM_EXCEPTION_PATH" priority="3" abbrev="OS" category="CORRECTNESS">
+    <Class classname="jp.co.isid.mos.bird.framework.action.FileDownloadActionImpl">
+      <SourceLine classname="jp.co.isid.mos.bird.framework.action.FileDownloadActionImpl" start="-1" end="-1" startBytecode="-1" endBytecode="-1"/>
+    </Class>
+    <Method classname="jp.co.isid.mos.bird.framework.action.FileDownloadActionImpl" name="download" signature="()V" isStatic="false">
+      <SourceLine classname="jp.co.isid.mos.bird.framework.action.FileDownloadActionImpl" start="82" end="121" startBytecode="0" endBytecode="97" sourcefile="FileDownloadActionImpl.java" sourcepath="jp/co/isid/mos/bird/framework/action/FileDownloadActionImpl.java"/>
+    </Method>
+    <SourceLine classname="jp.co.isid.mos.bird.framework.action.FileDownloadActionImpl" start="94" end="94" startBytecode="91" endBytecode="91" sourcefile="FileDownloadActionImpl.java" sourcepath="jp/co/isid/mos/bird/framework/action/FileDownloadActionImpl.java"/>
+  </BugInstance>
+  <BugInstance type="OS_OPEN_STREAM_EXCEPTION_PATH" priority="3" abbrev="OS" category="CORRECTNESS">
+    <Class classname="jp.co.isid.mos.bird.framework.action.FileUploadActionImpl">
+      <SourceLine classname="jp.co.isid.mos.bird.framework.action.FileUploadActionImpl" start="-1" end="-1" startBytecode="-1" endBytecode="-1"/>
+    </Class>
+    <Method classname="jp.co.isid.mos.bird.framework.action.FileUploadActionImpl" name="createTempFile" signature="()V" isStatic="false">
+      <SourceLine classname="jp.co.isid.mos.bird.framework.action.FileUploadActionImpl" start="64" end="91" startBytecode="0" endBytecode="67" sourcefile="FileUploadActionImpl.java" sourcepath="jp/co/isid/mos/bird/framework/action/FileUploadActionImpl.java"/>
+    </Method>
+    <SourceLine classname="jp.co.isid.mos.bird.framework.action.FileUploadActionImpl" start="73" end="73" startBytecode="44" endBytecode="44" sourcefile="FileUploadActionImpl.java" sourcepath="jp/co/isid/mos/bird/framework/action/FileUploadActionImpl.java"/>
+  </BugInstance>
+  <BugInstance type="OS_OPEN_STREAM_EXCEPTION_PATH" priority="3" abbrev="OS" category="CORRECTNESS">
+    <Class classname="jp.co.isid.mos.bird.framework.action.PdfOutputActionImpl">
+      <SourceLine classname="jp.co.isid.mos.bird.framework.action.PdfOutputActionImpl" start="-1" end="-1" startBytecode="-1" endBytecode="-1"/>
+    </Class>
+    <Method classname="jp.co.isid.mos.bird.framework.action.PdfOutputActionImpl" name="download" signature="(Ljava/io/ByteArrayOutputStream;)V" isStatic="false">
+      <SourceLine classname="jp.co.isid.mos.bird.framework.action.PdfOutputActionImpl" start="178" end="198" startBytecode="0" endBytecode="56" sourcefile="PdfOutputActionImpl.java" sourcepath="jp/co/isid/mos/bird/framework/action/PdfOutputActionImpl.java"/>
+    </Method>
+    <SourceLine classname="jp.co.isid.mos.bird.framework.action.PdfOutputActionImpl" start="187" end="187" startBytecode="70" endBytecode="70" sourcefile="PdfOutputActionImpl.java" sourcepath="jp/co/isid/mos/bird/framework/action/PdfOutputActionImpl.java"/>
+  </BugInstance>
+  <BugInstance type="UPM_UNCALLED_PRIVATE_METHOD" priority="3" abbrev="UPM" category="PERFORMANCE">
+    <Class classname="jp.co.isid.mos.bird.framework.action.UltraseekActionImpl">
+      <SourceLine classname="jp.co.isid.mos.bird.framework.action.UltraseekActionImpl" start="-1" end="-1" startBytecode="-1" endBytecode="-1"/>
+    </Class>
+    <Method classname="jp.co.isid.mos.bird.framework.action.UltraseekActionImpl" name="getUltraseekLogic" signature="()Ljp/co/isid/mos/bird/framework/logic/UltraseekLogic;" isStatic="false">
+      <SourceLine classname="jp.co.isid.mos.bird.framework.action.UltraseekActionImpl" start="69" end="69" startBytecode="0" endBytecode="4" sourcefile="UltraseekActionImpl.java" sourcepath="jp/co/isid/mos/bird/framework/action/UltraseekActionImpl.java"/>
+    </Method>
+  </BugInstance>
+  <BugInstance type="REC_CATCH_EXCEPTION" priority="3" abbrev="REC" category="STYLE">
+    <Class classname="jp.co.isid.mos.bird.framework.action.impl.BatchExecuteActionImpl">
+      <SourceLine classname="jp.co.isid.mos.bird.framework.action.impl.BatchExecuteActionImpl" start="-1" end="-1" startBytecode="-1" endBytecode="-1" sourcefile="BatchExecuteActionImpl.java" sourcepath="jp/co/isid/mos/bird/framework/action/impl/BatchExecuteActionImpl.java"/>
+    </Class>
+    <Method classname="jp.co.isid.mos.bird.framework.action.impl.BatchExecuteActionImpl" name="startBatch" signature="([Ljava/lang/String;)V" isStatic="false">
+      <SourceLine classname="jp.co.isid.mos.bird.framework.action.impl.BatchExecuteActionImpl" start="157" end="174" startBytecode="0" endBytecode="66" sourcefile="BatchExecuteActionImpl.java" sourcepath="jp/co/isid/mos/bird/framework/action/impl/BatchExecuteActionImpl.java"/>
+    </Method>
+    <SourceLine classname="jp.co.isid.mos.bird.framework.action.impl.BatchExecuteActionImpl" start="171" end="171" startBytecode="47" endBytecode="47" sourcefile="BatchExecuteActionImpl.java" sourcepath="jp/co/isid/mos/bird/framework/action/impl/BatchExecuteActionImpl.java"/>
+  </BugInstance>
+  <BugInstance type="UWF_FIELD_NOT_INITIALIZED_IN_CONSTRUCTOR" priority="3" abbrev="UwF" category="STYLE">
+    <Class classname="jp.co.isid.mos.bird.framework.action.impl.BatchExecuteActionImpl">
+      <SourceLine classname="jp.co.isid.mos.bird.framework.action.impl.BatchExecuteActionImpl" start="-1" end="-1" startBytecode="-1" endBytecode="-1" sourcefile="BatchExecuteActionImpl.java" sourcepath="jp/co/isid/mos/bird/framework/action/impl/BatchExecuteActionImpl.java"/>
+    </Class>
+    <Field classname="jp.co.isid.mos.bird.framework.action.impl.BatchExecuteActionImpl" name="batchExecuteDto" signature="Ljp/co/isid/mos/bird/framework/dto/BatchExecuteDto;" isStatic="false">
+      <SourceLine classname="jp.co.isid.mos.bird.framework.action.impl.BatchExecuteActionImpl" start="-1" end="-1" startBytecode="-1" endBytecode="-1" sourcefile="BatchExecuteActionImpl.java" sourcepath="jp/co/isid/mos/bird/framework/action/impl/BatchExecuteActionImpl.java"/>
+    </Field>
+  </BugInstance>
+  <BugInstance type="UWF_FIELD_NOT_INITIALIZED_IN_CONSTRUCTOR" priority="3" abbrev="UwF" category="STYLE">
+    <Class classname="jp.co.isid.mos.bird.framework.action.impl.BatchExecuteActionImpl">
+      <SourceLine classname="jp.co.isid.mos.bird.framework.action.impl.BatchExecuteActionImpl" start="-1" end="-1" startBytecode="-1" endBytecode="-1" sourcefile="BatchExecuteActionImpl.java" sourcepath="jp/co/isid/mos/bird/framework/action/impl/BatchExecuteActionImpl.java"/>
+    </Class>
+    <Field classname="jp.co.isid.mos.bird.framework.action.impl.BatchExecuteActionImpl" name="batchExecuteLogic" signature="Ljp/co/isid/mos/bird/framework/logic/BatchExecuteLogic;" isStatic="false">
+      <SourceLine classname="jp.co.isid.mos.bird.framework.action.impl.BatchExecuteActionImpl" start="-1" end="-1" startBytecode="-1" endBytecode="-1" sourcefile="BatchExecuteActionImpl.java" sourcepath="jp/co/isid/mos/bird/framework/action/impl/BatchExecuteActionImpl.java"/>
+    </Field>
+  </BugInstance>
+  <BugInstance type="REC_CATCH_EXCEPTION" priority="3" abbrev="REC" category="STYLE">
+    <Class classname="jp.co.isid.mos.bird.framework.action.impl.CsvDownloadActionImpl">
+      <SourceLine classname="jp.co.isid.mos.bird.framework.action.impl.CsvDownloadActionImpl" start="-1" end="-1" startBytecode="-1" endBytecode="-1" sourcefile="CsvDownloadActionImpl.java" sourcepath="jp/co/isid/mos/bird/framework/action/impl/CsvDownloadActionImpl.java"/>
+    </Class>
+    <Method classname="jp.co.isid.mos.bird.framework.action.impl.CsvDownloadActionImpl" name="download" signature="()V" isStatic="false">
+      <SourceLine classname="jp.co.isid.mos.bird.framework.action.impl.CsvDownloadActionImpl" start="194" end="265" startBytecode="0" endBytecode="407" sourcefile="CsvDownloadActionImpl.java" sourcepath="jp/co/isid/mos/bird/framework/action/impl/CsvDownloadActionImpl.java"/>
+    </Method>
+    <SourceLine classname="jp.co.isid.mos.bird.framework.action.impl.CsvDownloadActionImpl" start="251" end="251" startBytecode="332" endBytecode="332" sourcefile="CsvDownloadActionImpl.java" sourcepath="jp/co/isid/mos/bird/framework/action/impl/CsvDownloadActionImpl.java"/>
+  </BugInstance>
+  <BugInstance type="UWF_FIELD_NOT_INITIALIZED_IN_CONSTRUCTOR" priority="3" abbrev="UwF" category="STYLE">
+    <Class classname="jp.co.isid.mos.bird.framework.action.impl.ExcelOutputActionImpl">
+      <SourceLine classname="jp.co.isid.mos.bird.framework.action.impl.ExcelOutputActionImpl" start="-1" end="-1" startBytecode="-1" endBytecode="-1" sourcefile="ExcelOutputActionImpl.java" sourcepath="jp/co/isid/mos/bird/framework/action/impl/ExcelOutputActionImpl.java"/>
+    </Class>
+    <Field classname="jp.co.isid.mos.bird.framework.action.impl.ExcelOutputActionImpl" name="_httpServletResponse" signature="Ljavax/servlet/http/HttpServletResponse;" isStatic="false">
+      <SourceLine classname="jp.co.isid.mos.bird.framework.action.impl.ExcelOutputActionImpl" start="-1" end="-1" startBytecode="-1" endBytecode="-1" sourcefile="ExcelOutputActionImpl.java" sourcepath="jp/co/isid/mos/bird/framework/action/impl/ExcelOutputActionImpl.java"/>
+    </Field>
+  </BugInstance>
+  <BugInstance type="UWF_FIELD_NOT_INITIALIZED_IN_CONSTRUCTOR" priority="3" abbrev="UwF" category="STYLE">
+    <Class classname="jp.co.isid.mos.bird.framework.action.impl.ExcelOutputActionImpl">
+      <SourceLine classname="jp.co.isid.mos.bird.framework.action.impl.ExcelOutputActionImpl" start="-1" end="-1" startBytecode="-1" endBytecode="-1" sourcefile="ExcelOutputActionImpl.java" sourcepath="jp/co/isid/mos/bird/framework/action/impl/ExcelOutputActionImpl.java"/>
+    </Class>
+    <Field classname="jp.co.isid.mos.bird.framework.action.impl.ExcelOutputActionImpl" name="excelOutputLogic" signature="Ljp/co/isid/mos/bird/framework/logic/ExcelOutputLogic;" isStatic="false">
+      <SourceLine classname="jp.co.isid.mos.bird.framework.action.impl.ExcelOutputActionImpl" start="-1" end="-1" startBytecode="-1" endBytecode="-1" sourcefile="ExcelOutputActionImpl.java" sourcepath="jp/co/isid/mos/bird/framework/action/impl/ExcelOutputActionImpl.java"/>
+    </Field>
+  </BugInstance>
+  <BugInstance type="OS_OPEN_STREAM_EXCEPTION_PATH" priority="3" abbrev="OS" category="CORRECTNESS">
+    <Class classname="jp.co.isid.mos.bird.framework.action.impl.FileDownloadActionImpl">
+      <SourceLine classname="jp.co.isid.mos.bird.framework.action.impl.FileDownloadActionImpl" start="-1" end="-1" startBytecode="-1" endBytecode="-1" sourcefile="FileDownloadActionImpl.java" sourcepath="jp/co/isid/mos/bird/framework/action/impl/FileDownloadActionImpl.java"/>
+    </Class>
+    <Method classname="jp.co.isid.mos.bird.framework.action.impl.FileDownloadActionImpl" name="download" signature="()V" isStatic="false">
+      <SourceLine classname="jp.co.isid.mos.bird.framework.action.impl.FileDownloadActionImpl" start="86" end="134" startBytecode="0" endBytecode="118" sourcefile="FileDownloadActionImpl.java" sourcepath="jp/co/isid/mos/bird/framework/action/impl/FileDownloadActionImpl.java"/>
+    </Method>
+    <SourceLine classname="jp.co.isid.mos.bird.framework.action.impl.FileDownloadActionImpl" start="105" end="105" startBytecode="124" endBytecode="124" sourcefile="FileDownloadActionImpl.java" sourcepath="jp/co/isid/mos/bird/framework/action/impl/FileDownloadActionImpl.java"/>
+  </BugInstance>
+  <BugInstance type="OS_OPEN_STREAM_EXCEPTION_PATH" priority="3" abbrev="OS" category="CORRECTNESS">
+    <Class classname="jp.co.isid.mos.bird.framework.action.impl.FileUploadActionImpl">
+      <SourceLine classname="jp.co.isid.mos.bird.framework.action.impl.FileUploadActionImpl" start="-1" end="-1" startBytecode="-1" endBytecode="-1" sourcefile="FileUploadActionImpl.java" sourcepath="jp/co/isid/mos/bird/framework/action/impl/FileUploadActionImpl.java"/>
+    </Class>
+    <Method classname="jp.co.isid.mos.bird.framework.action.impl.FileUploadActionImpl" name="createTempFile" signature="()V" isStatic="false">
+      <SourceLine classname="jp.co.isid.mos.bird.framework.action.impl.FileUploadActionImpl" start="71" end="98" startBytecode="0" endBytecode="67" sourcefile="FileUploadActionImpl.java" sourcepath="jp/co/isid/mos/bird/framework/action/impl/FileUploadActionImpl.java"/>
+    </Method>
+    <SourceLine classname="jp.co.isid.mos.bird.framework.action.impl.FileUploadActionImpl" start="80" end="80" startBytecode="44" endBytecode="44" sourcefile="FileUploadActionImpl.java" sourcepath="jp/co/isid/mos/bird/framework/action/impl/FileUploadActionImpl.java"/>
+  </BugInstance>
+  <BugInstance type="DLS_DEAD_LOCAL_STORE" priority="3" abbrev="DLS" category="STYLE">
+    <Class classname="jp.co.isid.mos.bird.framework.action.impl.MenuActionImpl">
+      <SourceLine classname="jp.co.isid.mos.bird.framework.action.impl.MenuActionImpl" start="-1" end="-1" startBytecode="-1" endBytecode="-1" sourcefile="MenuActionImpl.java" sourcepath="jp/co/isid/mos/bird/framework/action/impl/MenuActionImpl.java"/>
+    </Class>
+    <Method classname="jp.co.isid.mos.bird.framework.action.impl.MenuActionImpl" name="doSelectMainMenu" signature="(Ljava/lang/String;)V" isStatic="false">
+      <SourceLine classname="jp.co.isid.mos.bird.framework.action.impl.MenuActionImpl" start="456" end="470" startBytecode="0" endBytecode="47" sourcefile="MenuActionImpl.java" sourcepath="jp/co/isid/mos/bird/framework/action/impl/MenuActionImpl.java"/>
+    </Method>
+    <LocalVariable name="isSelect" register="3" pc="87" role="LOCAL_VARIABLE_NAMED"/>
+    <SourceLine classname="jp.co.isid.mos.bird.framework.action.impl.MenuActionImpl" start="468" end="468" startBytecode="86" endBytecode="86" sourcefile="MenuActionImpl.java" sourcepath="jp/co/isid/mos/bird/framework/action/impl/MenuActionImpl.java"/>
+  </BugInstance>
+  <BugInstance type="RCN_REDUNDANT_NULLCHECK_OF_NONNULL_VALUE" priority="3" abbrev="RCN" category="CORRECTNESS">
+    <Class classname="jp.co.isid.mos.bird.framework.action.impl.MenuActionImpl">
+      <SourceLine classname="jp.co.isid.mos.bird.framework.action.impl.MenuActionImpl" start="-1" end="-1" startBytecode="-1" endBytecode="-1" sourcefile="MenuActionImpl.java" sourcepath="jp/co/isid/mos/bird/framework/action/impl/MenuActionImpl.java"/>
+    </Class>
+    <Method classname="jp.co.isid.mos.bird.framework.action.impl.MenuActionImpl" name="setSelectMemnuFlg" signature="(Ljava/util/List;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Z" isStatic="false">
+      <SourceLine classname="jp.co.isid.mos.bird.framework.action.impl.MenuActionImpl" start="557" end="608" startBytecode="0" endBytecode="111" sourcefile="MenuActionImpl.java" sourcepath="jp/co/isid/mos/bird/framework/action/impl/MenuActionImpl.java"/>
+    </Method>
+    <SourceLine classname="jp.co.isid.mos.bird.framework.action.impl.MenuActionImpl" start="594" end="594" startBytecode="139" endBytecode="139" sourcefile="MenuActionImpl.java" sourcepath="jp/co/isid/mos/bird/framework/action/impl/MenuActionImpl.java" role="SOURCE_REDUNDANT_NULL_CHECK"/>
+  </BugInstance>
+  <BugInstance type="RCN_REDUNDANT_NULLCHECK_OF_NONNULL_VALUE" priority="3" abbrev="RCN" category="CORRECTNESS">
+    <Class classname="jp.co.isid.mos.bird.framework.action.impl.MenuActionImpl">
+      <SourceLine classname="jp.co.isid.mos.bird.framework.action.impl.MenuActionImpl" start="-1" end="-1" startBytecode="-1" endBytecode="-1" sourcefile="MenuActionImpl.java" sourcepath="jp/co/isid/mos/bird/framework/action/impl/MenuActionImpl.java"/>
+    </Class>
+    <Method classname="jp.co.isid.mos.bird.framework.action.impl.MenuActionImpl" name="setSelectMemnuFlg" signature="(Ljava/util/List;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Z" isStatic="false">
+      <SourceLine classname="jp.co.isid.mos.bird.framework.action.impl.MenuActionImpl" start="557" end="608" startBytecode="0" endBytecode="111" sourcefile="MenuActionImpl.java" sourcepath="jp/co/isid/mos/bird/framework/action/impl/MenuActionImpl.java"/>
+    </Method>
+    <SourceLine classname="jp.co.isid.mos.bird.framework.action.impl.MenuActionImpl" start="595" end="595" startBytecode="165" endBytecode="165" sourcefile="MenuActionImpl.java" sourcepath="jp/co/isid/mos/bird/framework/action/impl/MenuActionImpl.java" role="SOURCE_REDUNDANT_NULL_CHECK"/>
+  </BugInstance>
+  <BugInstance type="UWF_FIELD_NOT_INITIALIZED_IN_CONSTRUCTOR" priority="3" abbrev="UwF" category="STYLE">
+    <Class classname="jp.co.isid.mos.bird.framework.action.impl.MenuActionImpl">
+      <SourceLine classname="jp.co.isid.mos.bird.framework.action.impl.MenuActionImpl" start="-1" end="-1" startBytecode="-1" endBytecode="-1" sourcefile="MenuActionImpl.java" sourcepath="jp/co/isid/mos/bird/framework/action/impl/MenuActionImpl.java"/>
+    </Class>
+    <Field classname="jp.co.isid.mos.bird.framework.action.impl.MenuActionImpl" name="pullDownMenuDto" signature="Ljp/co/isid/mos/bird/framework/dto/PullDownMenuDto;" isStatic="false">
+      <SourceLine classname="jp.co.isid.mos.bird.framework.action.impl.MenuActionImpl" start="-1" end="-1" startBytecode="-1" endBytecode="-1" sourcefile="MenuActionImpl.java" sourcepath="jp/co/isid/mos/bird/framework/action/impl/MenuActionImpl.java"/>
+    </Field>
+  </BugInstance>
+  <BugInstance type="URF_UNREAD_FIELD" priority="2" abbrev="UrF" category="PERFORMANCE">
+    <Class classname="jp.co.isid.mos.bird.framework.action.impl.MenuCreateActionImpl">
+      <SourceLine classname="jp.co.isid.mos.bird.framework.action.impl.MenuCreateActionImpl" start="-1" end="-1" startBytecode="-1" endBytecode="-1"/>
+    </Class>
+    <Field classname="jp.co.isid.mos.bird.framework.action.impl.MenuCreateActionImpl" name="request" signature="Ljavax/servlet/http/HttpServletRequest;" isStatic="false">
+      <SourceLine classname="jp.co.isid.mos.bird.framework.action.impl.MenuCreateActionImpl" start="-1" end="-1" startBytecode="-1" endBytecode="-1"/>
+    </Field>
+  </BugInstance>
+  <BugInstance type="UWF_FIELD_NOT_INITIALIZED_IN_CONSTRUCTOR" priority="3" abbrev="UwF" category="STYLE">
+    <Class classname="jp.co.isid.mos.bird.framework.action.impl.MenuCreateActionImpl">
+      <SourceLine classname="jp.co.isid.mos.bird.framework.action.impl.MenuCreateActionImpl" start="-1" end="-1" startBytecode="-1" endBytecode="-1"/>
+    </Class>
+    <Field classname="jp.co.isid.mos.bird.framework.action.impl.MenuCreateActionImpl" name="pullDownMenuDto" signature="Ljp/co/isid/mos/bird/framework/dto/PullDownMenuDto;" isStatic="false">
+      <SourceLine classname="jp.co.isid.mos.bird.framework.action.impl.MenuCreateActionImpl" start="-1" end="-1" startBytecode="-1" endBytecode="-1"/>
+    </Field>
+  </BugInstance>
+  <BugInstance type="OS_OPEN_STREAM_EXCEPTION_PATH" priority="3" abbrev="OS" category="CORRECTNESS">
+    <Class classname="jp.co.isid.mos.bird.framework.action.impl.PdfOutputActionImpl">
+      <SourceLine classname="jp.co.isid.mos.bird.framework.action.impl.PdfOutputActionImpl" start="-1" end="-1" startBytecode="-1" endBytecode="-1" sourcefile="PdfOutputActionImpl.java" sourcepath="jp/co/isid/mos/bird/framework/action/impl/PdfOutputActionImpl.java"/>
+    </Class>
+    <Method classname="jp.co.isid.mos.bird.framework.action.impl.PdfOutputActionImpl" name="download" signature="(Ljava/io/ByteArrayOutputStream;)V" isStatic="false">
+      <SourceLine classname="jp.co.isid.mos.bird.framework.action.impl.PdfOutputActionImpl" start="196" end="220" startBytecode="0" endBytecode="60" sourcefile="PdfOutputActionImpl.java" sourcepath="jp/co/isid/mos/bird/framework/action/impl/PdfOutputActionImpl.java"/>
+    </Method>
+    <SourceLine classname="jp.co.isid.mos.bird.framework.action.impl.PdfOutputActionImpl" start="205" end="205" startBytecode="70" endBytecode="70" sourcefile="PdfOutputActionImpl.java" sourcepath="jp/co/isid/mos/bird/framework/action/impl/PdfOutputActionImpl.java"/>
+  </BugInstance>
+  <BugInstance type="UPM_UNCALLED_PRIVATE_METHOD" priority="3" abbrev="UPM" category="PERFORMANCE">
+    <Class classname="jp.co.isid.mos.bird.framework.action.impl.UltraseekActionImpl">
+      <SourceLine classname="jp.co.isid.mos.bird.framework.action.impl.UltraseekActionImpl" start="-1" end="-1" startBytecode="-1" endBytecode="-1"/>
+    </Class>
+    <Method classname="jp.co.isid.mos.bird.framework.action.impl.UltraseekActionImpl" name="getUltraseekLogic" signature="()Ljp/co/isid/mos/bird/framework/logic/UltraseekLogic;" isStatic="false">
+      <SourceLine classname="jp.co.isid.mos.bird.framework.action.impl.UltraseekActionImpl" start="70" end="70" startBytecode="0" endBytecode="4" sourcefile="UltraseekActionImpl.java" sourcepath="jp/co/isid/mos/bird/framework/action/impl/UltraseekActionImpl.java"/>
+    </Method>
+  </BugInstance>
+  <BugInstance type="UPM_UNCALLED_PRIVATE_METHOD" priority="3" abbrev="UPM" category="PERFORMANCE">
+    <Class classname="jp.co.isid.mos.bird.framework.action.impl.UltraseekActionImpl">
+      <SourceLine classname="jp.co.isid.mos.bird.framework.action.impl.UltraseekActionImpl" start="-1" end="-1" startBytecode="-1" endBytecode="-1"/>
+    </Class>
+    <Method classname="jp.co.isid.mos.bird.framework.action.impl.UltraseekActionImpl" name="makeKikanDate" signature="(Z)Ljava/util/Date;" isStatic="false">
+      <SourceLine classname="jp.co.isid.mos.bird.framework.action.impl.UltraseekActionImpl" start="158" end="187" startBytecode="0" endBytecode="212" sourcefile="UltraseekActionImpl.java" sourcepath="jp/co/isid/mos/bird/framework/action/impl/UltraseekActionImpl.java"/>
+    </Method>
+  </BugInstance>
+  <BugInstance type="UPM_UNCALLED_PRIVATE_METHOD" priority="3" abbrev="UPM" category="PERFORMANCE">
+    <Class classname="jp.co.isid.mos.bird.framework.action.impl.UltraseekActionImpl">
+      <SourceLine classname="jp.co.isid.mos.bird.framework.action.impl.UltraseekActionImpl" start="-1" end="-1" startBytecode="-1" endBytecode="-1"/>
+    </Class>
+    <Method classname="jp.co.isid.mos.bird.framework.action.impl.UltraseekActionImpl" name="makeQueryText" signature="()Ljava/lang/String;" isStatic="false">
+      <SourceLine classname="jp.co.isid.mos.bird.framework.action.impl.UltraseekActionImpl" start="121" end="149" startBytecode="0" endBytecode="177" sourcefile="UltraseekActionImpl.java" sourcepath="jp/co/isid/mos/bird/framework/action/impl/UltraseekActionImpl.java"/>
+    </Method>
+  </BugInstance>
+  <BugInstance type="UWF_FIELD_NOT_INITIALIZED_IN_CONSTRUCTOR" priority="3" abbrev="UwF" category="STYLE">
+    <Class classname="jp.co.isid.mos.bird.framework.control.BirdDateInfo">
+      <SourceLine classname="jp.co.isid.mos.bird.framework.control.BirdDateInfo" start="-1" end="-1" startBytecode="-1" endBytecode="-1" sourcefile="BirdDateInfo.java" sourcepath="jp/co/isid/mos/bird/framework/control/BirdDateInfo.java"/>
+    </Class>
+    <Field classname="jp.co.isid.mos.bird.framework.control.BirdDateInfo" name="_map" signature="Ljava/util/HashMap;" isStatic="false">
+      <SourceLine classname="jp.co.isid.mos.bird.framework.control.BirdDateInfo" start="-1" end="-1" startBytecode="-1" endBytecode="-1" sourcefile="BirdDateInfo.java" sourcepath="jp/co/isid/mos/bird/framework/control/BirdDateInfo.java"/>
+    </Field>
+  </BugInstance>
+  <BugInstance type="UWF_FIELD_NOT_INITIALIZED_IN_CONSTRUCTOR" priority="3" abbrev="UwF" category="STYLE">
+    <Class classname="jp.co.isid.mos.bird.framework.control.BirdUserInfo">
+      <SourceLine classname="jp.co.isid.mos.bird.framework.control.BirdUserInfo" start="-1" end="-1" startBytecode="-1" endBytecode="-1" sourcefile="BirdUserInfo.java" sourcepath="jp/co/isid/mos/bird/framework/control/BirdUserInfo.java"/>
+    </Class>
+    <Field classname="jp.co.isid.mos.bird.framework.control.BirdUserInfo" name="_map" signature="Ljava/util/HashMap;" isStatic="false">
+      <SourceLine classname="jp.co.isid.mos.bird.framework.control.BirdUserInfo" start="-1" end="-1" startBytecode="-1" endBytecode="-1" sourcefile="BirdUserInfo.java" sourcepath="jp/co/isid/mos/bird/framework/control/BirdUserInfo.java"/>
+    </Field>
+  </BugInstance>
+  <BugInstance type="UUF_UNUSED_FIELD" priority="2" abbrev="UuF" category="PERFORMANCE">
+    <Class classname="jp.co.isid.mos.bird.framework.dto.CommonMiseDtoImpl">
+      <SourceLine classname="jp.co.isid.mos.bird.framework.dto.CommonMiseDtoImpl" start="-1" end="-1" startBytecode="-1" endBytecode="-1"/>
+    </Class>
+    <Field classname="jp.co.isid.mos.bird.framework.dto.CommonMiseDtoImpl" name="_kikanFrom" signature="Ljava/lang/String;" isStatic="false">
+      <SourceLine classname="jp.co.isid.mos.bird.framework.dto.CommonMiseDtoImpl" start="-1" end="-1" startBytecode="-1" endBytecode="-1"/>
+    </Field>
+  </BugInstance>
+  <BugInstance type="UUF_UNUSED_FIELD" priority="2" abbrev="UuF" category="PERFORMANCE">
+    <Class classname="jp.co.isid.mos.bird.framework.dto.CommonMiseDtoImpl">
+      <SourceLine classname="jp.co.isid.mos.bird.framework.dto.CommonMiseDtoImpl" start="-1" end="-1" startBytecode="-1" endBytecode="-1"/>
+    </Class>
+    <Field classname="jp.co.isid.mos.bird.framework.dto.CommonMiseDtoImpl" name="_kikanTo" signature="Ljava/lang/String;" isStatic="false">
+      <SourceLine classname="jp.co.isid.mos.bird.framework.dto.CommonMiseDtoImpl" start="-1" end="-1" startBytecode="-1" endBytecode="-1"/>
+    </Field>
+  </BugInstance>
+  <BugInstance type="UUF_UNUSED_FIELD" priority="2" abbrev="UuF" category="PERFORMANCE">
+    <Class classname="jp.co.isid.mos.bird.framework.dto.CommonMiseDtoImpl">
+      <SourceLine classname="jp.co.isid.mos.bird.framework.dto.CommonMiseDtoImpl" start="-1" end="-1" startBytecode="-1" endBytecode="-1"/>
+    </Class>
+    <Field classname="jp.co.isid.mos.bird.framework.dto.CommonMiseDtoImpl" name="_miseCd" signature="Ljava/lang/String;" isStatic="false">
+      <SourceLine classname="jp.co.isid.mos.bird.framework.dto.CommonMiseDtoImpl" start="-1" end="-1" startBytecode="-1" endBytecode="-1"/>
+    </Field>
+  </BugInstance>
+  <BugInstance type="UUF_UNUSED_FIELD" priority="2" abbrev="UuF" category="PERFORMANCE">
+    <Class classname="jp.co.isid.mos.bird.framework.dto.CommonMiseDtoImpl">
+      <SourceLine classname="jp.co.isid.mos.bird.framework.dto.CommonMiseDtoImpl" start="-1" end="-1" startBytecode="-1" endBytecode="-1"/>
+    </Class>
+    <Field classname="jp.co.isid.mos.bird.framework.dto.CommonMiseDtoImpl" name="has inconsistent hierarchy" signature="V" isStatic="false">
+      <SourceLine classname="jp.co.isid.mos.bird.framework.dto.CommonMiseDtoImpl" start="-1" end="-1" startBytecode="-1" endBytecode="-1"/>
+    </Field>
+  </BugInstance>
+  <BugInstance type="UPM_UNCALLED_PRIVATE_METHOD" priority="3" abbrev="UPM" category="PERFORMANCE">
+    <Class classname="jp.co.isid.mos.bird.framework.dto.CopyOfCommonDto">
+      <SourceLine classname="jp.co.isid.mos.bird.framework.dto.CopyOfCommonDto" start="-1" end="-1" startBytecode="-1" endBytecode="-1"/>
+    </Class>
+    <Method classname="jp.co.isid.mos.bird.framework.dto.CopyOfCommonDto" name="getKikanFrom" signature="()Ljava/lang/String;" isStatic="false">
+      <SourceLine classname="jp.co.isid.mos.bird.framework.dto.CopyOfCommonDto" start="60" end="60" startBytecode="0" endBytecode="4" sourcefile="CopyOfCommonDto.java" sourcepath="jp/co/isid/mos/bird/framework/dto/CopyOfCommonDto.java"/>
+    </Method>
+  </BugInstance>
+  <BugInstance type="UPM_UNCALLED_PRIVATE_METHOD" priority="3" abbrev="UPM" category="PERFORMANCE">
+    <Class classname="jp.co.isid.mos.bird.framework.dto.CopyOfCommonDto">
+      <SourceLine classname="jp.co.isid.mos.bird.framework.dto.CopyOfCommonDto" start="-1" end="-1" startBytecode="-1" endBytecode="-1"/>
+    </Class>
+    <Method classname="jp.co.isid.mos.bird.framework.dto.CopyOfCommonDto" name="getKikanTo" signature="()Ljava/lang/String;" isStatic="false">
+      <SourceLine classname="jp.co.isid.mos.bird.framework.dto.CopyOfCommonDto" start="75" end="75" startBytecode="0" endBytecode="4" sourcefile="CopyOfCommonDto.java" sourcepath="jp/co/isid/mos/bird/framework/dto/CopyOfCommonDto.java"/>
+    </Method>
+  </BugInstance>
+  <BugInstance type="UPM_UNCALLED_PRIVATE_METHOD" priority="3" abbrev="UPM" category="PERFORMANCE">
+    <Class classname="jp.co.isid.mos.bird.framework.dto.CopyOfCommonDto">
+      <SourceLine classname="jp.co.isid.mos.bird.framework.dto.CopyOfCommonDto" start="-1" end="-1" startBytecode="-1" endBytecode="-1"/>
+    </Class>
+    <Method classname="jp.co.isid.mos.bird.framework.dto.CopyOfCommonDto" name="getOnerCode" signature="()Ljava/lang/String;" isStatic="false">
+      <SourceLine classname="jp.co.isid.mos.bird.framework.dto.CopyOfCommonDto" start="45" end="45" startBytecode="0" endBytecode="4" sourcefile="CopyOfCommonDto.java" sourcepath="jp/co/isid/mos/bird/framework/dto/CopyOfCommonDto.java"/>
+    </Method>
+  </BugInstance>
+  <BugInstance type="NM_CONFUSING" priority="3" abbrev="Nm" category="CORRECTNESS">
+    <Class classname="jp.co.isid.mos.bird.framework.entity.CtlUserLogin">
+      <SourceLine classname="jp.co.isid.mos.bird.framework.entity.CtlUserLogin" start="-1" end="-1" startBytecode="-1" endBytecode="-1" sourcefile="CtlUserLogin.java" sourcepath="jp/co/isid/mos/bird/framework/entity/CtlUserLogin.java"/>
+    </Class>
+    <Method classname="jp.co.isid.mos.bird.framework.entity.CtlUserLogin" name="getUserId" signature="()Ljava/lang/String;" isStatic="false">
+      <SourceLine classname="jp.co.isid.mos.bird.framework.entity.CtlUserLogin" start="35" end="35" startBytecode="0" endBytecode="46" sourcefile="CtlUserLogin.java" sourcepath="jp/co/isid/mos/bird/framework/entity/CtlUserLogin.java"/>
+    </Method>
+    <Class classname="jp.co.isid.mos.bird.framework.control.BirdUserInfo">
+      <SourceLine classname="jp.co.isid.mos.bird.framework.control.BirdUserInfo" start="-1" end="-1" startBytecode="-1" endBytecode="-1" sourcefile="BirdUserInfo.java" sourcepath="jp/co/isid/mos/bird/framework/control/BirdUserInfo.java"/>
+    </Class>
+    <Method classname="jp.co.isid.mos.bird.framework.control.BirdUserInfo" name="getUserID" signature="()Ljava/lang/String;" isStatic="false">
+      <SourceLine classname="jp.co.isid.mos.bird.framework.control.BirdUserInfo" start="84" end="84" startBytecode="0" endBytecode="46" sourcefile="BirdUserInfo.java" sourcepath="jp/co/isid/mos/bird/framework/control/BirdUserInfo.java"/>
+    </Method>
+  </BugInstance>
+  <BugInstance type="NM_CONFUSING" priority="3" abbrev="Nm" category="CORRECTNESS">
+    <Class classname="jp.co.isid.mos.bird.framework.entity.MstUser">
+      <SourceLine classname="jp.co.isid.mos.bird.framework.entity.MstUser" start="-1" end="-1" startBytecode="-1" endBytecode="-1" sourcefile="MstUser.java" sourcepath="jp/co/isid/mos/bird/framework/entity/MstUser.java"/>
+    </Class>
+    <Method classname="jp.co.isid.mos.bird.framework.entity.MstUser" name="getUserTypeCd" signature="()Ljava/lang/String;" isStatic="false">
+      <SourceLine classname="jp.co.isid.mos.bird.framework.entity.MstUser" start="211" end="211" startBytecode="0" endBytecode="46" sourcefile="MstUser.java" sourcepath="jp/co/isid/mos/bird/framework/entity/MstUser.java"/>
+    </Method>
+    <Class classname="jp.co.isid.mos.bird.framework.entity.UIBirdUser">
+      <SourceLine classname="jp.co.isid.mos.bird.framework.entity.UIBirdUser" start="-1" end="-1" startBytecode="-1" endBytecode="-1" sourcefile="UIBirdUser.java" sourcepath="jp/co/isid/mos/bird/framework/entity/UIBirdUser.java"/>
+    </Class>
+    <Method classname="jp.co.isid.mos.bird.framework.entity.UIBirdUser" name="getUsertypeCd" signature="()Ljava/lang/String;" isStatic="false">
+      <SourceLine classname="jp.co.isid.mos.bird.framework.entity.UIBirdUser" start="82" end="82" startBytecode="0" endBytecode="46" sourcefile="UIBirdUser.java" sourcepath="jp/co/isid/mos/bird/framework/entity/UIBirdUser.java"/>
+    </Method>
+  </BugInstance>
+  <BugInstance type="NM_CONFUSING" priority="3" abbrev="Nm" category="CORRECTNESS">
+    <Class classname="jp.co.isid.mos.bird.framework.entity.UIBirdUser">
+      <SourceLine classname="jp.co.isid.mos.bird.framework.entity.UIBirdUser" start="-1" end="-1" startBytecode="-1" endBytecode="-1" sourcefile="UIBirdUser.java" sourcepath="jp/co/isid/mos/bird/framework/entity/UIBirdUser.java"/>
+    </Class>
+    <Method classname="jp.co.isid.mos.bird.framework.entity.UIBirdUser" name="setUsertypeCd" signature="(Ljava/lang/String;)V" isStatic="false">
+      <SourceLine classname="jp.co.isid.mos.bird.framework.entity.UIBirdUser" start="88" end="89" startBytecode="0" endBytecode="61" sourcefile="UIBirdUser.java" sourcepath="jp/co/isid/mos/bird/framework/entity/UIBirdUser.java"/>
+    </Method>
+    <Class classname="jp.co.isid.mos.bird.framework.entity.MstUser">
+      <SourceLine classname="jp.co.isid.mos.bird.framework.entity.MstUser" start="-1" end="-1" startBytecode="-1" endBytecode="-1" sourcefile="MstUser.java" sourcepath="jp/co/isid/mos/bird/framework/entity/MstUser.java"/>
+    </Class>
+    <Method classname="jp.co.isid.mos.bird.framework.entity.MstUser" name="setUserTypeCd" signature="(Ljava/lang/String;)V" isStatic="false">
+      <SourceLine classname="jp.co.isid.mos.bird.framework.entity.MstUser" start="204" end="205" startBytecode="0" endBytecode="61" sourcefile="MstUser.java" sourcepath="jp/co/isid/mos/bird/framework/entity/MstUser.java"/>
+    </Method>
+  </BugInstance>
+  <BugInstance type="EI_EXPOSE_REP" priority="2" abbrev="EI" category="MALICIOUS_CODE">
+    <Class classname="jp.co.isid.mos.bird.framework.entity.UILoginBirdUser">
+      <SourceLine classname="jp.co.isid.mos.bird.framework.entity.UILoginBirdUser" start="-1" end="-1" startBytecode="-1" endBytecode="-1" sourcefile="UILoginBirdUser.java" sourcepath="jp/co/isid/mos/bird/framework/entity/UILoginBirdUser.java"/>
+    </Class>
+    <Method classname="jp.co.isid.mos.bird.framework.entity.UILoginBirdUser" name="getLastPswd" signature="()[B" isStatic="false">
+      <SourceLine classname="jp.co.isid.mos.bird.framework.entity.UILoginBirdUser" start="136" end="136" startBytecode="0" endBytecode="4" sourcefile="UILoginBirdUser.java" sourcepath="jp/co/isid/mos/bird/framework/entity/UILoginBirdUser.java"/>
+    </Method>
+    <Field classname="jp.co.isid.mos.bird.framework.entity.UILoginBirdUser" name="lastPswd" signature="[B" isStatic="false">
+      <SourceLine classname="jp.co.isid.mos.bird.framework.entity.UILoginBirdUser" start="-1" end="-1" startBytecode="-1" endBytecode="-1" sourcefile="UILoginBirdUser.java" sourcepath="jp/co/isid/mos/bird/framework/entity/UILoginBirdUser.java"/>
+    </Field>
+    <SourceLine classname="jp.co.isid.mos.bird.framework.entity.UILoginBirdUser" start="136" end="136" startBytecode="4" endBytecode="4" sourcefile="UILoginBirdUser.java" sourcepath="jp/co/isid/mos/bird/framework/entity/UILoginBirdUser.java"/>
+  </BugInstance>
+  <BugInstance type="EI_EXPOSE_REP" priority="2" abbrev="EI" category="MALICIOUS_CODE">
+    <Class classname="jp.co.isid.mos.bird.framework.entity.UILoginBirdUser">
+      <SourceLine classname="jp.co.isid.mos.bird.framework.entity.UILoginBirdUser" start="-1" end="-1" startBytecode="-1" endBytecode="-1" sourcefile="UILoginBirdUser.java" sourcepath="jp/co/isid/mos/bird/framework/entity/UILoginBirdUser.java"/>
+    </Class>
+    <Method classname="jp.co.isid.mos.bird.framework.entity.UILoginBirdUser" name="getUserPswd" signature="()[B" isStatic="false">
+      <SourceLine classname="jp.co.isid.mos.bird.framework.entity.UILoginBirdUser" start="106" end="106" startBytecode="0" endBytecode="4" sourcefile="UILoginBirdUser.java" sourcepath="jp/co/isid/mos/bird/framework/entity/UILoginBirdUser.java"/>
+    </Method>
+    <Field classname="jp.co.isid.mos.bird.framework.entity.UILoginBirdUser" name="userPswd" signature="[B" isStatic="false">
+      <SourceLine classname="jp.co.isid.mos.bird.framework.entity.UILoginBirdUser" start="-1" end="-1" startBytecode="-1" endBytecode="-1" sourcefile="UILoginBirdUser.java" sourcepath="jp/co/isid/mos/bird/framework/entity/UILoginBirdUser.java"/>
+    </Field>
+    <SourceLine classname="jp.co.isid.mos.bird.framework.entity.UILoginBirdUser" start="106" end="106" startBytecode="4" endBytecode="4" sourcefile="UILoginBirdUser.java" sourcepath="jp/co/isid/mos/bird/framework/entity/UILoginBirdUser.java"/>
+  </BugInstance>
+  <BugInstance type="EI_EXPOSE_REP2" priority="2" abbrev="EI2" category="MALICIOUS_CODE">
+    <Class classname="jp.co.isid.mos.bird.framework.entity.UILoginBirdUser">
+      <SourceLine classname="jp.co.isid.mos.bird.framework.entity.UILoginBirdUser" start="-1" end="-1" startBytecode="-1" endBytecode="-1" sourcefile="UILoginBirdUser.java" sourcepath="jp/co/isid/mos/bird/framework/entity/UILoginBirdUser.java"/>
+    </Class>
+    <Method classname="jp.co.isid.mos.bird.framework.entity.UILoginBirdUser" name="setLastPswd" signature="([B)V" isStatic="false">
+      <SourceLine classname="jp.co.isid.mos.bird.framework.entity.UILoginBirdUser" start="143" end="144" startBytecode="0" endBytecode="5" sourcefile="UILoginBirdUser.java" sourcepath="jp/co/isid/mos/bird/framework/entity/UILoginBirdUser.java"/>
+    </Method>
+    <Field classname="jp.co.isid.mos.bird.framework.entity.UILoginBirdUser" name="lastPswd" signature="[B" isStatic="true">
+      <SourceLine classname="jp.co.isid.mos.bird.framework.entity.UILoginBirdUser" start="-1" end="-1" startBytecode="-1" endBytecode="-1" sourcefile="UILoginBirdUser.java" sourcepath="jp/co/isid/mos/bird/framework/entity/UILoginBirdUser.java"/>
+    </Field>
+    <SourceLine classname="jp.co.isid.mos.bird.framework.entity.UILoginBirdUser" start="143" end="143" startBytecode="2" endBytecode="2" sourcefile="UILoginBirdUser.java" sourcepath="jp/co/isid/mos/bird/framework/entity/UILoginBirdUser.java"/>
+  </BugInstance>
+  <BugInstance type="EI_EXPOSE_REP2" priority="2" abbrev="EI2" category="MALICIOUS_CODE">
+    <Class classname="jp.co.isid.mos.bird.framework.entity.UILoginBirdUser">
+      <SourceLine classname="jp.co.isid.mos.bird.framework.entity.UILoginBirdUser" start="-1" end="-1" startBytecode="-1" endBytecode="-1" sourcefile="UILoginBirdUser.java" sourcepath="jp/co/isid/mos/bird/framework/entity/UILoginBirdUser.java"/>
+    </Class>
+    <Method classname="jp.co.isid.mos.bird.framework.entity.UILoginBirdUser" name="setUserPswd" signature="([B)V" isStatic="false">
+      <SourceLine classname="jp.co.isid.mos.bird.framework.entity.UILoginBirdUser" start="113" end="114" startBytecode="0" endBytecode="5" sourcefile="UILoginBirdUser.java" sourcepath="jp/co/isid/mos/bird/framework/entity/UILoginBirdUser.java"/>
+    </Method>
+    <Field classname="jp.co.isid.mos.bird.framework.entity.UILoginBirdUser" name="userPswd" signature="[B" isStatic="true">
+      <SourceLine classname="jp.co.isid.mos.bird.framework.entity.UILoginBirdUser" start="-1" end="-1" startBytecode="-1" endBytecode="-1" sourcefile="UILoginBirdUser.java" sourcepath="jp/co/isid/mos/bird/framework/entity/UILoginBirdUser.java"/>
+    </Field>
+    <SourceLine classname="jp.co.isid.mos.bird.framework.entity.UILoginBirdUser" start="113" end="113" startBytecode="2" endBytecode="2" sourcefile="UILoginBirdUser.java" sourcepath="jp/co/isid/mos/bird/framework/entity/UILoginBirdUser.java"/>
+  </BugInstance>
+  <BugInstance type="EI_EXPOSE_REP" priority="2" abbrev="EI" category="MALICIOUS_CODE">
+    <Class classname="jp.co.isid.mos.bird.framework.exception.ApplicationException">
+      <SourceLine classname="jp.co.isid.mos.bird.framework.exception.ApplicationException" start="-1" end="-1" startBytecode="-1" endBytecode="-1" sourcefile="ApplicationException.java" sourcepath="jp/co/isid/mos/bird/framework/exception/ApplicationException.java"/>
+    </Class>
+    <Method classname="jp.co.isid.mos.bird.framework.exception.ApplicationException" name="getMessageArgs" signature="()[Ljava/lang/String;" isStatic="false">
+      <SourceLine classname="jp.co.isid.mos.bird.framework.exception.ApplicationException" start="171" end="171" startBytecode="0" endBytecode="4" sourcefile="ApplicationException.java" sourcepath="jp/co/isid/mos/bird/framework/exception/ApplicationException.java"/>
+    </Method>
+    <Field classname="jp.co.isid.mos.bird.framework.exception.ApplicationException" name="messageArgs" signature="[Ljava/lang/String;" isStatic="false">
+      <SourceLine classname="jp.co.isid.mos.bird.framework.exception.ApplicationException" start="-1" end="-1" startBytecode="-1" endBytecode="-1" sourcefile="ApplicationException.java" sourcepath="jp/co/isid/mos/bird/framework/exception/ApplicationException.java"/>
+    </Field>
+    <SourceLine classname="jp.co.isid.mos.bird.framework.exception.ApplicationException" start="171" end="171" startBytecode="4" endBytecode="4" sourcefile="ApplicationException.java" sourcepath="jp/co/isid/mos/bird/framework/exception/ApplicationException.java"/>
+  </BugInstance>
+  <BugInstance type="RV_CHECK_FOR_POSITIVE_INDEXOF" priority="3" abbrev="RV" category="CORRECTNESS">
+    <Class classname="jp.co.isid.mos.bird.framework.interceptor.AccessCtlCheckInterceptor">
+      <SourceLine classname="jp.co.isid.mos.bird.framework.interceptor.AccessCtlCheckInterceptor" start="-1" end="-1" startBytecode="-1" endBytecode="-1" sourcefile="AccessCtlCheckInterceptor.java" sourcepath="jp/co/isid/mos/bird/framework/interceptor/AccessCtlCheckInterceptor.java"/>
+    </Class>
+    <Method classname="jp.co.isid.mos.bird.framework.interceptor.AccessCtlCheckInterceptor" name="browserCheck" signature="(Ljavax/servlet/http/HttpServletRequest;Ljava/util/List;)V" isStatic="false">
+      <SourceLine classname="jp.co.isid.mos.bird.framework.interceptor.AccessCtlCheckInterceptor" start="183" end="199" startBytecode="0" endBytecode="113" sourcefile="AccessCtlCheckInterceptor.java" sourcepath="jp/co/isid/mos/bird/framework/interceptor/AccessCtlCheckInterceptor.java"/>
+    </Method>
+    <SourceLine classname="jp.co.isid.mos.bird.framework.interceptor.AccessCtlCheckInterceptor" start="191" end="191" startBytecode="57" endBytecode="57" sourcefile="AccessCtlCheckInterceptor.java" sourcepath="jp/co/isid/mos/bird/framework/interceptor/AccessCtlCheckInterceptor.java"/>
+  </BugInstance>
+  <BugInstance type="RV_CHECK_FOR_POSITIVE_INDEXOF" priority="3" abbrev="RV" category="CORRECTNESS">
+    <Class classname="jp.co.isid.mos.bird.framework.interceptor.AccessCtlCheckInterceptor">
+      <SourceLine classname="jp.co.isid.mos.bird.framework.interceptor.AccessCtlCheckInterceptor" start="-1" end="-1" startBytecode="-1" endBytecode="-1" sourcefile="AccessCtlCheckInterceptor.java" sourcepath="jp/co/isid/mos/bird/framework/interceptor/AccessCtlCheckInterceptor.java"/>
+    </Class>
+    <Method classname="jp.co.isid.mos.bird.framework.interceptor.AccessCtlCheckInterceptor" name="browserCheck" signature="(Ljavax/servlet/http/HttpServletRequest;Ljava/util/List;)V" isStatic="false">
+      <SourceLine classname="jp.co.isid.mos.bird.framework.interceptor.AccessCtlCheckInterceptor" start="183" end="199" startBytecode="0" endBytecode="113" sourcefile="AccessCtlCheckInterceptor.java" sourcepath="jp/co/isid/mos/bird/framework/interceptor/AccessCtlCheckInterceptor.java"/>
+    </Method>
+    <SourceLine classname="jp.co.isid.mos.bird.framework.interceptor.AccessCtlCheckInterceptor" start="194" end="194" startBytecode="87" endBytecode="87" sourcefile="AccessCtlCheckInterceptor.java" sourcepath="jp/co/isid/mos/bird/framework/interceptor/AccessCtlCheckInterceptor.java"/>
+  </BugInstance>
+  <BugInstance type="SE_NO_SERIALVERSIONID" priority="3" abbrev="SnVI" category="CORRECTNESS">
+    <Class classname="jp.co.isid.mos.bird.framework.interceptor.AccessCtlCheckInterceptor">
+      <SourceLine classname="jp.co.isid.mos.bird.framework.interceptor.AccessCtlCheckInterceptor" start="-1" end="-1" startBytecode="-1" endBytecode="-1" sourcefile="AccessCtlCheckInterceptor.java" sourcepath="jp/co/isid/mos/bird/framework/interceptor/AccessCtlCheckInterceptor.java"/>
+    </Class>
+  </BugInstance>
+  <BugInstance type="SS_SHOULD_BE_STATIC" priority="2" abbrev="SS" category="PERFORMANCE">
+    <Class classname="jp.co.isid.mos.bird.framework.interceptor.AccessCtlCheckInterceptor">
+      <SourceLine classname="jp.co.isid.mos.bird.framework.interceptor.AccessCtlCheckInterceptor" start="-1" end="-1" startBytecode="-1" endBytecode="-1" sourcefile="AccessCtlCheckInterceptor.java" sourcepath="jp/co/isid/mos/bird/framework/interceptor/AccessCtlCheckInterceptor.java"/>
+    </Class>
+    <Field classname="jp.co.isid.mos.bird.framework.interceptor.AccessCtlCheckInterceptor" name="PARAM_BROWSER_CHK" signature="Ljava/lang/String;" isStatic="false">
+      <SourceLine classname="jp.co.isid.mos.bird.framework.interceptor.AccessCtlCheckInterceptor" start="-1" end="-1" startBytecode="-1" endBytecode="-1" sourcefile="AccessCtlCheckInterceptor.java" sourcepath="jp/co/isid/mos/bird/framework/interceptor/AccessCtlCheckInterceptor.java"/>
+    </Field>
+  </BugInstance>
+  <BugInstance type="SE_NO_SERIALVERSIONID" priority="2" abbrev="SnVI" category="CORRECTNESS">
+    <Class classname="jp.co.isid.mos.bird.framework.interceptor.BatchCheckInterceptor">
+      <SourceLine classname="jp.co.isid.mos.bird.framework.interceptor.BatchCheckInterceptor" start="-1" end="-1" startBytecode="-1" endBytecode="-1" sourcefile="BatchCheckInterceptor.java" sourcepath="jp/co/isid/mos/bird/framework/interceptor/BatchCheckInterceptor.java"/>
+    </Class>
+  </BugInstance>
+  <BugInstance type="DLS_DEAD_LOCAL_STORE" priority="2" abbrev="DLS" category="STYLE">
+    <Class classname="jp.co.isid.mos.bird.framework.interceptor.CommonInitTogoActionIntercepter">
+      <SourceLine classname="jp.co.isid.mos.bird.framework.interceptor.CommonInitTogoActionIntercepter" start="-1" end="-1" startBytecode="-1" endBytecode="-1" sourcefile="CommonInitTogoActionIntercepter.java" sourcepath="jp/co/isid/mos/bird/framework/interceptor/CommonInitTogoActionIntercepter.java"/>
+    </Class>
+    <Method classname="jp.co.isid.mos.bird.framework.interceptor.CommonInitTogoActionIntercepter" name="setupUserSession" signature="(Ljavax/servlet/http/HttpSession;Ljavax/servlet/http/HttpServletRequest;)Ljava/lang/String;" isStatic="false">
+      <SourceLine classname="jp.co.isid.mos.bird.framework.interceptor.CommonInitTogoActionIntercepter" start="125" end="174" startBytecode="0" endBytecode="43" sourcefile="CommonInitTogoActionIntercepter.java" sourcepath="jp/co/isid/mos/bird/framework/interceptor/CommonInitTogoActionIntercepter.java"/>
+    </Method>
+    <LocalVariable name="?" register="7" pc="22" role="LOCAL_VARIABLE_UNKNOWN"/>
+    <SourceLine classname="jp.co.isid.mos.bird.framework.interceptor.CommonInitTogoActionIntercepter" start="133" end="133" startBytecode="21" endBytecode="21" sourcefile="CommonInitTogoActionIntercepter.java" sourcepath="jp/co/isid/mos/bird/framework/interceptor/CommonInitTogoActionIntercepter.java"/>
+  </BugInstance>
+  <BugInstance type="RCN_REDUNDANT_NULLCHECK_OF_NULL_VALUE" priority="2" abbrev="RCN" category="CORRECTNESS">
+    <Class classname="jp.co.isid.mos.bird.framework.interceptor.CommonInitTogoActionIntercepter">
+      <SourceLine classname="jp.co.isid.mos.bird.framework.interceptor.CommonInitTogoActionIntercepter" start="-1" end="-1" startBytecode="-1" endBytecode="-1" sourcefile="CommonInitTogoActionIntercepter.java" sourcepath="jp/co/isid/mos/bird/framework/interceptor/CommonInitTogoActionIntercepter.java"/>
+    </Class>
+    <Method classname="jp.co.isid.mos.bird.framework.interceptor.CommonInitTogoActionIntercepter" name="setupUserSession" signature="(Ljavax/servlet/http/HttpSession;Ljavax/servlet/http/HttpServletRequest;)Ljava/lang/String;" isStatic="false">
+      <SourceLine classname="jp.co.isid.mos.bird.framework.interceptor.CommonInitTogoActionIntercepter" start="125" end="174" startBytecode="0" endBytecode="43" sourcefile="CommonInitTogoActionIntercepter.java" sourcepath="jp/co/isid/mos/bird/framework/interceptor/CommonInitTogoActionIntercepter.java"/>
+    </Method>
+    <SourceLine classname="jp.co.isid.mos.bird.framework.interceptor.CommonInitTogoActionIntercepter" start="165" end="165" startBytecode="52" endBytecode="52" sourcefile="CommonInitTogoActionIntercepter.java" sourcepath="jp/co/isid/mos/bird/framework/interceptor/CommonInitTogoActionIntercepter.java" role="SOURCE_REDUNDANT_NULL_CHECK"/>
+  </BugInstance>
+  <BugInstance type="URF_UNREAD_FIELD" priority="2" abbrev="UrF" category="PERFORMANCE">
+    <Class classname="jp.co.isid.mos.bird.framework.logic.impl.GetGamenRoleLogicImple">
+      <SourceLine classname="jp.co.isid.mos.bird.framework.logic.impl.GetGamenRoleLogicImple" start="-1" end="-1" startBytecode="-1" endBytecode="-1"/>
+    </Class>
+    <Field classname="jp.co.isid.mos.bird.framework.logic.impl.GetGamenRoleLogicImple" name="MSG_TYPE_NULL" signature="Ljava/lang/String;" isStatic="false">
+      <SourceLine classname="jp.co.isid.mos.bird.framework.logic.impl.GetGamenRoleLogicImple" start="-1" end="-1" startBytecode="-1" endBytecode="-1"/>
+    </Field>
+  </BugInstance>
+  <BugInstance type="RI_REDUNDANT_INTERFACES" priority="3" abbrev="RI" category="STYLE">
+    <Class classname="jp.co.isid.mos.bird.framework.text.converter.ChangeLineEditConverter">
+      <SourceLine classname="jp.co.isid.mos.bird.framework.text.converter.ChangeLineEditConverter" start="-1" end="-1" startBytecode="-1" endBytecode="-1" sourcefile="ChangeLineEditConverter.java" sourcepath="jp/co/isid/mos/bird/framework/text/converter/ChangeLineEditConverter.java"/>
+    </Class>
+    <Class classname="javax.faces.convert.Converter" role="INTERFACE_TYPE">
+      <SourceLine classname="javax.faces.convert.Converter" start="-1" end="-1" startBytecode="-1" endBytecode="-1" sourcefile="Converter.java" sourcepath="javax/faces/convert/Converter.java"/>
+    </Class>
+  </BugInstance>
+  <BugInstance type="RI_REDUNDANT_INTERFACES" priority="3" abbrev="RI" category="STYLE">
+    <Class classname="jp.co.isid.mos.bird.framework.text.converter.ChangeLineRefConverter">
+      <SourceLine classname="jp.co.isid.mos.bird.framework.text.converter.ChangeLineRefConverter" start="-1" end="-1" startBytecode="-1" endBytecode="-1" sourcefile="ChangeLineRefConverter.java" sourcepath="jp/co/isid/mos/bird/framework/text/converter/ChangeLineRefConverter.java"/>
+    </Class>
+    <Class classname="javax.faces.convert.Converter" role="INTERFACE_TYPE">
+      <SourceLine classname="javax.faces.convert.Converter" start="-1" end="-1" startBytecode="-1" endBytecode="-1" sourcefile="Converter.java" sourcepath="javax/faces/convert/Converter.java"/>
+    </Class>
+  </BugInstance>
+  <BugInstance type="DM_STRING_TOSTRING" priority="2" abbrev="Dm" category="PERFORMANCE">
+    <Class classname="jp.co.isid.mos.bird.framework.text.converter.CharacterEncodingConverter">
+      <SourceLine classname="jp.co.isid.mos.bird.framework.text.converter.CharacterEncodingConverter" start="-1" end="-1" startBytecode="-1" endBytecode="-1" sourcefile="CharacterEncodingConverter.java" sourcepath="jp/co/isid/mos/bird/framework/text/converter/CharacterEncodingConverter.java"/>
+    </Class>
+    <Method classname="jp.co.isid.mos.bird.framework.text.converter.CharacterEncodingConverter" name="getAsString" signature="(Ljavax/faces/context/FacesContext;Ljavax/faces/component/UIComponent;Ljava/lang/Object;)Ljava/lang/String;" isStatic="false">
+      <SourceLine classname="jp.co.isid.mos.bird.framework.text.converter.CharacterEncodingConverter" start="57" end="59" startBytecode="0" endBytecode="17" sourcefile="CharacterEncodingConverter.java" sourcepath="jp/co/isid/mos/bird/framework/text/converter/CharacterEncodingConverter.java"/>
+    </Method>
+    <SourceLine classname="jp.co.isid.mos.bird.framework.text.converter.CharacterEncodingConverter" start="58" end="58" startBytecode="7" endBytecode="7" sourcefile="CharacterEncodingConverter.java" sourcepath="jp/co/isid/mos/bird/framework/text/converter/CharacterEncodingConverter.java"/>
+  </BugInstance>
+  <BugInstance type="RI_REDUNDANT_INTERFACES" priority="3" abbrev="RI" category="STYLE">
+    <Class classname="jp.co.isid.mos.bird.framework.text.converter.CharacterEncodingConverter">
+      <SourceLine classname="jp.co.isid.mos.bird.framework.text.converter.CharacterEncodingConverter" start="-1" end="-1" startBytecode="-1" endBytecode="-1" sourcefile="CharacterEncodingConverter.java" sourcepath="jp/co/isid/mos/bird/framework/text/converter/CharacterEncodingConverter.java"/>
+    </Class>
+    <Class classname="javax.faces.convert.Converter" role="INTERFACE_TYPE">
+      <SourceLine classname="javax.faces.convert.Converter" start="-1" end="-1" startBytecode="-1" endBytecode="-1" sourcefile="Converter.java" sourcepath="javax/faces/convert/Converter.java"/>
+    </Class>
+    <Class classname="jp.co.isid.mos.bird.framework.util.formatter.Formatter" role="INTERFACE_TYPE">
+      <SourceLine classname="jp.co.isid.mos.bird.framework.util.formatter.Formatter" start="-1" end="-1" startBytecode="-1" endBytecode="-1" sourcefile="Formatter.java" sourcepath="jp/co/isid/mos/bird/framework/util/formatter/Formatter.java"/>
+    </Class>
+  </BugInstance>
+  <BugInstance type="RI_REDUNDANT_INTERFACES" priority="3" abbrev="RI" category="STYLE">
+    <Class classname="jp.co.isid.mos.bird.framework.text.converter.CodeConverter">
+      <SourceLine classname="jp.co.isid.mos.bird.framework.text.converter.CodeConverter" start="-1" end="-1" startBytecode="-1" endBytecode="-1" sourcefile="CodeConverter.java" sourcepath="jp/co/isid/mos/bird/framework/text/converter/CodeConverter.java"/>
+    </Class>
+    <Class classname="javax.faces.convert.Converter" role="INTERFACE_TYPE">
+      <SourceLine classname="javax.faces.convert.Converter" start="-1" end="-1" startBytecode="-1" endBytecode="-1" sourcefile="Converter.java" sourcepath="javax/faces/convert/Converter.java"/>
+    </Class>
+    <Class classname="jp.co.isid.mos.bird.framework.util.formatter.Formatter" role="INTERFACE_TYPE">
+      <SourceLine classname="jp.co.isid.mos.bird.framework.util.formatter.Formatter" start="-1" end="-1" startBytecode="-1" endBytecode="-1" sourcefile="Formatter.java" sourcepath="jp/co/isid/mos/bird/framework/util/formatter/Formatter.java"/>
+    </Class>
+  </BugInstance>
+  <BugInstance type="RI_REDUNDANT_INTERFACES" priority="3" abbrev="RI" category="STYLE">
+    <Class classname="jp.co.isid.mos.bird.framework.text.converter.DateConverter">
+      <SourceLine classname="jp.co.isid.mos.bird.framework.text.converter.DateConverter" start="-1" end="-1" startBytecode="-1" endBytecode="-1" sourcefile="DateConverter.java" sourcepath="jp/co/isid/mos/bird/framework/text/converter/DateConverter.java"/>
+    </Class>
+    <Class classname="javax.faces.convert.Converter" role="INTERFACE_TYPE">
+      <SourceLine classname="javax.faces.convert.Converter" start="-1" end="-1" startBytecode="-1" endBytecode="-1" sourcefile="Converter.java" sourcepath="javax/faces/convert/Converter.java"/>
+    </Class>
+    <Class classname="jp.co.isid.mos.bird.framework.util.formatter.Formatter" role="INTERFACE_TYPE">
+      <SourceLine classname="jp.co.isid.mos.bird.framework.util.formatter.Formatter" start="-1" end="-1" startBytecode="-1" endBytecode="-1" sourcefile="Formatter.java" sourcepath="jp/co/isid/mos/bird/framework/util/formatter/Formatter.java"/>
+    </Class>
+  </BugInstance>
+  <BugInstance type="RI_REDUNDANT_INTERFACES" priority="3" abbrev="RI" category="STYLE">
+    <Class classname="jp.co.isid.mos.bird.framework.text.converter.MaskConverter">
+      <SourceLine classname="jp.co.isid.mos.bird.framework.text.converter.MaskConverter" start="-1" end="-1" startBytecode="-1" endBytecode="-1" sourcefile="MaskConverter.java" sourcepath="jp/co/isid/mos/bird/framework/text/converter/MaskConverter.java"/>
+    </Class>
+    <Class classname="javax.faces.convert.Converter" role="INTERFACE_TYPE">
+      <SourceLine classname="javax.faces.convert.Converter" start="-1" end="-1" startBytecode="-1" endBytecode="-1" sourcefile="Converter.java" sourcepath="javax/faces/convert/Converter.java"/>
+    </Class>
+    <Class classname="jp.co.isid.mos.bird.framework.util.formatter.Formatter" role="INTERFACE_TYPE">
+      <SourceLine classname="jp.co.isid.mos.bird.framework.util.formatter.Formatter" start="-1" end="-1" startBytecode="-1" endBytecode="-1" sourcefile="Formatter.java" sourcepath="jp/co/isid/mos/bird/framework/util/formatter/Formatter.java"/>
+    </Class>
+  </BugInstance>
+  <BugInstance type="RI_REDUNDANT_INTERFACES" priority="3" abbrev="RI" category="STYLE">
+    <Class classname="jp.co.isid.mos.bird.framework.text.converter.NumericConverter">
+      <SourceLine classname="jp.co.isid.mos.bird.framework.text.converter.NumericConverter" start="-1" end="-1" startBytecode="-1" endBytecode="-1" sourcefile="NumericConverter.java" sourcepath="jp/co/isid/mos/bird/framework/text/converter/NumericConverter.java"/>
+    </Class>
+    <Class classname="javax.faces.convert.Converter" role="INTERFACE_TYPE">
+      <SourceLine classname="javax.faces.convert.Converter" start="-1" end="-1" startBytecode="-1" endBytecode="-1" sourcefile="Converter.java" sourcepath="javax/faces/convert/Converter.java"/>
+    </Class>
+    <Class classname="jp.co.isid.mos.bird.framework.util.formatter.Formatter" role="INTERFACE_TYPE">
+      <SourceLine classname="jp.co.isid.mos.bird.framework.util.formatter.Formatter" start="-1" end="-1" startBytecode="-1" endBytecode="-1" sourcefile="Formatter.java" sourcepath="jp/co/isid/mos/bird/framework/util/formatter/Formatter.java"/>
+    </Class>
+  </BugInstance>
+  <BugInstance type="RI_REDUNDANT_INTERFACES" priority="3" abbrev="RI" category="STYLE">
+    <Class classname="jp.co.isid.mos.bird.framework.text.converter.TimeConverter">
+      <SourceLine classname="jp.co.isid.mos.bird.framework.text.converter.TimeConverter" start="-1" end="-1" startBytecode="-1" endBytecode="-1" sourcefile="TimeConverter.java" sourcepath="jp/co/isid/mos/bird/framework/text/converter/TimeConverter.java"/>
+    </Class>
+    <Class classname="javax.faces.convert.Converter" role="INTERFACE_TYPE">
+      <SourceLine classname="javax.faces.convert.Converter" start="-1" end="-1" startBytecode="-1" endBytecode="-1" sourcefile="Converter.java" sourcepath="javax/faces/convert/Converter.java"/>
+    </Class>
+    <Class classname="jp.co.isid.mos.bird.framework.util.formatter.Formatter" role="INTERFACE_TYPE">
+      <SourceLine classname="jp.co.isid.mos.bird.framework.util.formatter.Formatter" start="-1" end="-1" startBytecode="-1" endBytecode="-1" sourcefile="Formatter.java" sourcepath="jp/co/isid/mos/bird/framework/util/formatter/Formatter.java"/>
+    </Class>
+  </BugInstance>
+  <BugInstance type="RI_REDUNDANT_INTERFACES" priority="3" abbrev="RI" category="STYLE">
+    <Class classname="jp.co.isid.mos.bird.framework.text.converter.TimestampConverter">
+      <SourceLine classname="jp.co.isid.mos.bird.framework.text.converter.TimestampConverter" start="-1" end="-1" startBytecode="-1" endBytecode="-1" sourcefile="TimestampConverter.java" sourcepath="jp/co/isid/mos/bird/framework/text/converter/TimestampConverter.java"/>
+    </Class>
+    <Class classname="javax.faces.convert.Converter" role="INTERFACE_TYPE">
+      <SourceLine classname="javax.faces.convert.Converter" start="-1" end="-1" startBytecode="-1" endBytecode="-1" sourcefile="Converter.java" sourcepath="javax/faces/convert/Converter.java"/>
+    </Class>
+    <Class classname="jp.co.isid.mos.bird.framework.util.formatter.Formatter" role="INTERFACE_TYPE">
+      <SourceLine classname="jp.co.isid.mos.bird.framework.util.formatter.Formatter" start="-1" end="-1" startBytecode="-1" endBytecode="-1" sourcefile="Formatter.java" sourcepath="jp/co/isid/mos/bird/framework/util/formatter/Formatter.java"/>
+    </Class>
+  </BugInstance>
+  <BugInstance type="RI_REDUNDANT_INTERFACES" priority="3" abbrev="RI" category="STYLE">
+    <Class classname="jp.co.isid.mos.bird.framework.text.validator.CodeValidator">
+      <SourceLine classname="jp.co.isid.mos.bird.framework.text.validator.CodeValidator" start="-1" end="-1" startBytecode="-1" endBytecode="-1" sourcefile="CodeValidator.java" sourcepath="jp/co/isid/mos/bird/framework/text/validator/CodeValidator.java"/>
+    </Class>
+    <Class classname="javax.faces.validator.Validator" role="INTERFACE_TYPE">
+      <SourceLine classname="javax.faces.validator.Validator" start="-1" end="-1" startBytecode="-1" endBytecode="-1" sourcefile="Validator.java" sourcepath="javax/faces/validator/Validator.java"/>
+    </Class>
+    <Class classname="jp.co.isid.mos.bird.framework.util.verifier.Verifier" role="INTERFACE_TYPE">
+      <SourceLine classname="jp.co.isid.mos.bird.framework.util.verifier.Verifier" start="-1" end="-1" startBytecode="-1" endBytecode="-1" sourcefile="Verifier.java" sourcepath="jp/co/isid/mos/bird/framework/util/verifier/Verifier.java"/>
+    </Class>
+  </BugInstance>
+  <BugInstance type="RI_REDUNDANT_INTERFACES" priority="3" abbrev="RI" category="STYLE">
+    <Class classname="jp.co.isid.mos.bird.framework.text.validator.DateValidator">
+      <SourceLine classname="jp.co.isid.mos.bird.framework.text.validator.DateValidator" start="-1" end="-1" startBytecode="-1" endBytecode="-1" sourcefile="DateValidator.java" sourcepath="jp/co/isid/mos/bird/framework/text/validator/DateValidator.java"/>
+    </Class>
+    <Class classname="javax.faces.validator.Validator" role="INTERFACE_TYPE">
+      <SourceLine classname="javax.faces.validator.Validator" start="-1" end="-1" startBytecode="-1" endBytecode="-1" sourcefile="Validator.java" sourcepath="javax/faces/validator/Validator.java"/>
+    </Class>
+    <Class classname="jp.co.isid.mos.bird.framework.util.verifier.Verifier" role="INTERFACE_TYPE">
+      <SourceLine classname="jp.co.isid.mos.bird.framework.util.verifier.Verifier" start="-1" end="-1" startBytecode="-1" endBytecode="-1" sourcefile="Verifier.java" sourcepath="jp/co/isid/mos/bird/framework/util/verifier/Verifier.java"/>
+    </Class>
+  </BugInstance>
+  <BugInstance type="RI_REDUNDANT_INTERFACES" priority="3" abbrev="RI" category="STYLE">
+    <Class classname="jp.co.isid.mos.bird.framework.text.validator.HankakuEisujiValidator">
+      <SourceLine classname="jp.co.isid.mos.bird.framework.text.validator.HankakuEisujiValidator" start="-1" end="-1" startBytecode="-1" endBytecode="-1" sourcefile="HankakuEisujiValidator.java" sourcepath="jp/co/isid/mos/bird/framework/text/validator/HankakuEisujiValidator.java"/>
+    </Class>
+    <Class classname="javax.faces.validator.Validator" role="INTERFACE_TYPE">
+      <SourceLine classname="javax.faces.validator.Validator" start="-1" end="-1" startBytecode="-1" endBytecode="-1" sourcefile="Validator.java" sourcepath="javax/faces/validator/Validator.java"/>
+    </Class>
+    <Class classname="jp.co.isid.mos.bird.framework.util.verifier.Verifier" role="INTERFACE_TYPE">
+      <SourceLine classname="jp.co.isid.mos.bird.framework.util.verifier.Verifier" start="-1" end="-1" startBytecode="-1" endBytecode="-1" sourcefile="Verifier.java" sourcepath="jp/co/isid/mos/bird/framework/util/verifier/Verifier.java"/>
+    </Class>
+  </BugInstance>
+  <BugInstance type="RI_REDUNDANT_INTERFACES" priority="3" abbrev="RI" category="STYLE">
+    <Class classname="jp.co.isid.mos.bird.framework.text.validator.HankakuKatakanaValidator">
+      <SourceLine classname="jp.co.isid.mos.bird.framework.text.validator.HankakuKatakanaValidator" start="-1" end="-1" startBytecode="-1" endBytecode="-1" sourcefile="HankakuKatakanaValidator.java" sourcepath="jp/co/isid/mos/bird/framework/text/validator/HankakuKatakanaValidator.java"/>
+    </Class>
+    <Class classname="javax.faces.validator.Validator" role="INTERFACE_TYPE">
+      <SourceLine classname="javax.faces.validator.Validator" start="-1" end="-1" startBytecode="-1" endBytecode="-1" sourcefile="Validator.java" sourcepath="javax/faces/validator/Validator.java"/>
+    </Class>
+    <Class classname="jp.co.isid.mos.bird.framework.util.verifier.Verifier" role="INTERFACE_TYPE">
+      <SourceLine classname="jp.co.isid.mos.bird.framework.util.verifier.Verifier" start="-1" end="-1" startBytecode="-1" endBytecode="-1" sourcefile="Verifier.java" sourcepath="jp/co/isid/mos/bird/framework/util/verifier/Verifier.java"/>
+    </Class>
+  </BugInstance>
+  <BugInstance type="RI_REDUNDANT_INTERFACES" priority="3" abbrev="RI" category="STYLE">
+    <Class classname="jp.co.isid.mos.bird.framework.text.validator.HankakuValidator">
+      <SourceLine classname="jp.co.isid.mos.bird.framework.text.validator.HankakuValidator" start="-1" end="-1" startBytecode="-1" endBytecode="-1" sourcefile="HankakuValidator.java" sourcepath="jp/co/isid/mos/bird/framework/text/validator/HankakuValidator.java"/>
+    </Class>
+    <Class classname="javax.faces.validator.Validator" role="INTERFACE_TYPE">
+      <SourceLine classname="javax.faces.validator.Validator" start="-1" end="-1" startBytecode="-1" endBytecode="-1" sourcefile="Validator.java" sourcepath="javax/faces/validator/Validator.java"/>
+    </Class>
+    <Class classname="jp.co.isid.mos.bird.framework.util.verifier.Verifier" role="INTERFACE_TYPE">
+      <SourceLine classname="jp.co.isid.mos.bird.framework.util.verifier.Verifier" start="-1" end="-1" startBytecode="-1" endBytecode="-1" sourcefile="Verifier.java" sourcepath="jp/co/isid/mos/bird/framework/util/verifier/Verifier.java"/>
+    </Class>
+  </BugInstance>
+  <BugInstance type="RI_REDUNDANT_INTERFACES" priority="3" abbrev="RI" category="STYLE">
+    <Class classname="jp.co.isid.mos.bird.framework.text.validator.MaskValidator">
+      <SourceLine classname="jp.co.isid.mos.bird.framework.text.validator.MaskValidator" start="-1" end="-1" startBytecode="-1" endBytecode="-1" sourcefile="MaskValidator.java" sourcepath="jp/co/isid/mos/bird/framework/text/validator/MaskValidator.java"/>
+    </Class>
+    <Class classname="javax.faces.validator.Validator" role="INTERFACE_TYPE">
+      <SourceLine classname="javax.faces.validator.Validator" start="-1" end="-1" startBytecode="-1" endBytecode="-1" sourcefile="Validator.java" sourcepath="javax/faces/validator/Validator.java"/>
+    </Class>
+    <Class classname="jp.co.isid.mos.bird.framework.util.verifier.Verifier" role="INTERFACE_TYPE">
+      <SourceLine classname="jp.co.isid.mos.bird.framework.util.verifier.Verifier" start="-1" end="-1" startBytecode="-1" endBytecode="-1" sourcefile="Verifier.java" sourcepath="jp/co/isid/mos/bird/framework/util/verifier/Verifier.java"/>
+    </Class>
+  </BugInstance>
+  <BugInstance type="EI_EXPOSE_REP" priority="2" abbrev="EI" category="MALICIOUS_CODE">
+    <Class classname="jp.co.isid.mos.bird.framework.text.validator.NormalValidator">
+      <SourceLine classname="jp.co.isid.mos.bird.framework.text.validator.NormalValidator" start="-1" end="-1" startBytecode="-1" endBytecode="-1" sourcefile="NormalValidator.java" sourcepath="jp/co/isid/mos/bird/framework/text/validator/NormalValidator.java"/>
+    </Class>
+    <Method classname="jp.co.isid.mos.bird.framework.text.validator.NormalValidator" name="getMessageArgs" signature="()[Ljava/lang/String;" isStatic="false">
+      <SourceLine classname="jp.co.isid.mos.bird.framework.text.validator.NormalValidator" start="93" end="93" startBytecode="0" endBytecode="4" sourcefile="NormalValidator.java" sourcepath="jp/co/isid/mos/bird/framework/text/validator/NormalValidator.java"/>
+    </Method>
+    <Field classname="jp.co.isid.mos.bird.framework.text.validator.NormalValidator" name="messageArgs" signature="[Ljava/lang/String;" isStatic="false">
+      <SourceLine classname="jp.co.isid.mos.bird.framework.text.validator.NormalValidator" start="-1" end="-1" startBytecode="-1" endBytecode="-1" sourcefile="NormalValidator.java" sourcepath="jp/co/isid/mos/bird/framework/text/validator/NormalValidator.java"/>
+    </Field>
+    <SourceLine classname="jp.co.isid.mos.bird.framework.text.validator.NormalValidator" start="93" end="93" startBytecode="4" endBytecode="4" sourcefile="NormalValidator.java" sourcepath="jp/co/isid/mos/bird/framework/text/validator/NormalValidator.java"/>
+  </BugInstance>
+  <BugInstance type="EI_EXPOSE_REP2" priority="2" abbrev="EI2" category="MALICIOUS_CODE">
+    <Class classname="jp.co.isid.mos.bird.framework.text.validator.NormalValidator">
+      <SourceLine classname="jp.co.isid.mos.bird.framework.text.validator.NormalValidator" start="-1" end="-1" startBytecode="-1" endBytecode="-1" sourcefile="NormalValidator.java" sourcepath="jp/co/isid/mos/bird/framework/text/validator/NormalValidator.java"/>
+    </Class>
+    <Method classname="jp.co.isid.mos.bird.framework.text.validator.NormalValidator" name="setMessageArgs" signature="([Ljava/lang/String;)V" isStatic="false">
+      <SourceLine classname="jp.co.isid.mos.bird.framework.text.validator.NormalValidator" start="101" end="102" startBytecode="0" endBytecode="5" sourcefile="NormalValidator.java" sourcepath="jp/co/isid/mos/bird/framework/text/validator/NormalValidator.java"/>
+    </Method>
+    <Field classname="jp.co.isid.mos.bird.framework.text.validator.NormalValidator" name="messageArgs" signature="[Ljava/lang/String;" isStatic="true">
+      <SourceLine classname="jp.co.isid.mos.bird.framework.text.validator.NormalValidator" start="-1" end="-1" startBytecode="-1" endBytecode="-1" sourcefile="NormalValidator.java" sourcepath="jp/co/isid/mos/bird/framework/text/validator/NormalValidator.java"/>
+    </Field>
+    <SourceLine classname="jp.co.isid.mos.bird.framework.text.validator.NormalValidator" start="101" end="101" startBytecode="2" endBytecode="2" sourcefile="NormalValidator.java" sourcepath="jp/co/isid/mos/bird/framework/text/validator/NormalValidator.java"/>
+  </BugInstance>
+  <BugInstance type="RI_REDUNDANT_INTERFACES" priority="3" abbrev="RI" category="STYLE">
+    <Class classname="jp.co.isid.mos.bird.framework.text.validator.NumericValidator">
+      <SourceLine classname="jp.co.isid.mos.bird.framework.text.validator.NumericValidator" start="-1" end="-1" startBytecode="-1" endBytecode="-1" sourcefile="NumericValidator.java" sourcepath="jp/co/isid/mos/bird/framework/text/validator/NumericValidator.java"/>
+    </Class>
+    <Class classname="javax.faces.validator.Validator" role="INTERFACE_TYPE">
+      <SourceLine classname="javax.faces.validator.Validator" start="-1" end="-1" startBytecode="-1" endBytecode="-1" sourcefile="Validator.java" sourcepath="javax/faces/validator/Validator.java"/>
+    </Class>
+    <Class classname="jp.co.isid.mos.bird.framework.util.verifier.Verifier" role="INTERFACE_TYPE">
+      <SourceLine classname="jp.co.isid.mos.bird.framework.util.verifier.Verifier" start="-1" end="-1" startBytecode="-1" endBytecode="-1" sourcefile="Verifier.java" sourcepath="jp/co/isid/mos/bird/framework/util/verifier/Verifier.java"/>
+    </Class>
+  </BugInstance>
+  <BugInstance type="RI_REDUNDANT_INTERFACES" priority="3" abbrev="RI" category="STYLE">
+    <Class classname="jp.co.isid.mos.bird.framework.text.validator.PhoneValidator">
+      <SourceLine classname="jp.co.isid.mos.bird.framework.text.validator.PhoneValidator" start="-1" end="-1" startBytecode="-1" endBytecode="-1" sourcefile="PhoneValidator.java" sourcepath="jp/co/isid/mos/bird/framework/text/validator/PhoneValidator.java"/>
+    </Class>
+    <Class classname="javax.faces.validator.Validator" role="INTERFACE_TYPE">
+      <SourceLine classname="javax.faces.validator.Validator" start="-1" end="-1" startBytecode="-1" endBytecode="-1" sourcefile="Validator.java" sourcepath="javax/faces/validator/Validator.java"/>
+    </Class>
+    <Class classname="jp.co.isid.mos.bird.framework.util.verifier.Verifier" role="INTERFACE_TYPE">
+      <SourceLine classname="jp.co.isid.mos.bird.framework.util.verifier.Verifier" start="-1" end="-1" startBytecode="-1" endBytecode="-1" sourcefile="Verifier.java" sourcepath="jp/co/isid/mos/bird/framework/util/verifier/Verifier.java"/>
+    </Class>
+  </BugInstance>
+  <BugInstance type="RI_REDUNDANT_INTERFACES" priority="3" abbrev="RI" category="STYLE">
+    <Class classname="jp.co.isid.mos.bird.framework.text.validator.ZenkakuKatakanaValidator">
+      <SourceLine classname="jp.co.isid.mos.bird.framework.text.validator.ZenkakuKatakanaValidator" start="-1" end="-1" startBytecode="-1" endBytecode="-1" sourcefile="ZenkakuKatakanaValidator.java" sourcepath="jp/co/isid/mos/bird/framework/text/validator/ZenkakuKatakanaValidator.java"/>
+    </Class>
+    <Class classname="javax.faces.validator.Validator" role="INTERFACE_TYPE">
+      <SourceLine classname="javax.faces.validator.Validator" start="-1" end="-1" startBytecode="-1" endBytecode="-1" sourcefile="Validator.java" sourcepath="javax/faces/validator/Validator.java"/>
+    </Class>
+    <Class classname="jp.co.isid.mos.bird.framework.util.verifier.Verifier" role="INTERFACE_TYPE">
+      <SourceLine classname="jp.co.isid.mos.bird.framework.util.verifier.Verifier" start="-1" end="-1" startBytecode="-1" endBytecode="-1" sourcefile="Verifier.java" sourcepath="jp/co/isid/mos/bird/framework/util/verifier/Verifier.java"/>
+    </Class>
+  </BugInstance>
+  <BugInstance type="RI_REDUNDANT_INTERFACES" priority="3" abbrev="RI" category="STYLE">
+    <Class classname="jp.co.isid.mos.bird.framework.text.validator.ZenkakuValidator">
+      <SourceLine classname="jp.co.isid.mos.bird.framework.text.validator.ZenkakuValidator" start="-1" end="-1" startBytecode="-1" endBytecode="-1" sourcefile="ZenkakuValidator.java" sourcepath="jp/co/isid/mos/bird/framework/text/validator/ZenkakuValidator.java"/>
+    </Class>
+    <Class classname="javax.faces.validator.Validator" role="INTERFACE_TYPE">
+      <SourceLine classname="javax.faces.validator.Validator" start="-1" end="-1" startBytecode="-1" endBytecode="-1" sourcefile="Validator.java" sourcepath="javax/faces/validator/Validator.java"/>
+    </Class>
+    <Class classname="jp.co.isid.mos.bird.framework.util.verifier.Verifier" role="INTERFACE_TYPE">
+      <SourceLine classname="jp.co.isid.mos.bird.framework.util.verifier.Verifier" start="-1" end="-1" startBytecode="-1" endBytecode="-1" sourcefile="Verifier.java" sourcepath="jp/co/isid/mos/bird/framework/util/verifier/Verifier.java"/>
+    </Class>
+  </BugInstance>
+  <BugInstance type="DLS_DEAD_LOCAL_STORE" priority="2" abbrev="DLS" category="STYLE">
+    <Class classname="jp.co.isid.mos.bird.framework.util.Converter">
+      <SourceLine classname="jp.co.isid.mos.bird.framework.util.Converter" start="-1" end="-1" startBytecode="-1" endBytecode="-1" sourcefile="Converter.java" sourcepath="jp/co/isid/mos/bird/framework/util/Converter.java"/>
+    </Class>
+    <Method classname="jp.co.isid.mos.bird.framework.util.Converter" name="decToString" signature="(Ljava/math/BigDecimal;I)Ljava/lang/String;" isStatic="true">
+      <SourceLine classname="jp.co.isid.mos.bird.framework.util.Converter" start="120" end="126" startBytecode="0" endBytecode="57" sourcefile="Converter.java" sourcepath="jp/co/isid/mos/bird/framework/util/Converter.java"/>
+    </Method>
+    <LocalVariable name="?" register="4" pc="98" role="LOCAL_VARIABLE_UNKNOWN"/>
+    <SourceLine classname="jp.co.isid.mos.bird.framework.util.Converter" start="130" end="130" startBytecode="97" endBytecode="97" sourcefile="Converter.java" sourcepath="jp/co/isid/mos/bird/framework/util/Converter.java"/>
+  </BugInstance>
+  <BugInstance type="DLS_DEAD_LOCAL_STORE" priority="2" abbrev="DLS" category="STYLE">
+    <Class classname="jp.co.isid.mos.bird.framework.util.Converter">
+      <SourceLine classname="jp.co.isid.mos.bird.framework.util.Converter" start="-1" end="-1" startBytecode="-1" endBytecode="-1" sourcefile="Converter.java" sourcepath="jp/co/isid/mos/bird/framework/util/Converter.java"/>
+    </Class>
+    <Method classname="jp.co.isid.mos.bird.framework.util.Converter" name="decToString" signature="(Ljava/math/BigDecimal;Ljava/lang/String;)Ljava/lang/String;" isStatic="true">
+      <SourceLine classname="jp.co.isid.mos.bird.framework.util.Converter" start="166" end="167" startBytecode="0" endBytecode="25" sourcefile="Converter.java" sourcepath="jp/co/isid/mos/bird/framework/util/Converter.java"/>
+    </Method>
+    <LocalVariable name="dummyRet" register="3" pc="31" role="LOCAL_VARIABLE_NAMED"/>
+    <SourceLine classname="jp.co.isid.mos.bird.framework.util.Converter" start="170" end="170" startBytecode="30" endBytecode="30" sourcefile="Converter.java" sourcepath="jp/co/isid/mos/bird/framework/util/Converter.java"/>
+  </BugInstance>
+  <BugInstance type="DLS_DEAD_LOCAL_STORE" priority="2" abbrev="DLS" category="STYLE">
+    <Class classname="jp.co.isid.mos.bird.framework.util.Converter3">
+      <SourceLine classname="jp.co.isid.mos.bird.framework.util.Converter3" start="-1" end="-1" startBytecode="-1" endBytecode="-1"/>
+    </Class>
+    <Method classname="jp.co.isid.mos.bird.framework.util.Converter3" name="decToString" signature="(Ljava/math/BigDecimal;I)Ljava/lang/String;" isStatic="true">
+      <SourceLine classname="jp.co.isid.mos.bird.framework.util.Converter3" start="300" end="306" startBytecode="0" endBytecode="57" sourcefile="Converter3.java" sourcepath="jp/co/isid/mos/bird/framework/util/Converter3.java"/>
+    </Method>
+    <LocalVariable name="?" register="4" pc="98" role="LOCAL_VARIABLE_UNKNOWN"/>
+    <SourceLine classname="jp.co.isid.mos.bird.framework.util.Converter3" start="310" end="310" startBytecode="97" endBytecode="97" sourcefile="Converter3.java" sourcepath="jp/co/isid/mos/bird/framework/util/Converter3.java"/>
+  </BugInstance>
+  <BugInstance type="DLS_DEAD_LOCAL_STORE" priority="2" abbrev="DLS" category="STYLE">
+    <Class classname="jp.co.isid.mos.bird.framework.util.Converter3">
+      <SourceLine classname="jp.co.isid.mos.bird.framework.util.Converter3" start="-1" end="-1" startBytecode="-1" endBytecode="-1"/>
+    </Class>
+    <Method classname="jp.co.isid.mos.bird.framework.util.Converter3" name="decToString" signature="(Ljava/math/BigDecimal;Ljava/lang/String;)Ljava/lang/String;" isStatic="true">
+      <SourceLine classname="jp.co.isid.mos.bird.framework.util.Converter3" start="346" end="347" startBytecode="0" endBytecode="25" sourcefile="Converter3.java" sourcepath="jp/co/isid/mos/bird/framework/util/Converter3.java"/>
+    </Method>
+    <LocalVariable name="dummyRet" register="3" pc="31" role="LOCAL_VARIABLE_NAMED"/>
+    <SourceLine classname="jp.co.isid.mos.bird.framework.util.Converter3" start="350" end="350" startBytecode="30" endBytecode="30" sourcefile="Converter3.java" sourcepath="jp/co/isid/mos/bird/framework/util/Converter3.java"/>
+  </BugInstance>
+  <BugInstance type="DLS_DEAD_LOCAL_STORE" priority="2" abbrev="DLS" category="STYLE">
+    <Class classname="jp.co.isid.mos.bird.framework.util.Converter3">
+      <SourceLine classname="jp.co.isid.mos.bird.framework.util.Converter3" start="-1" end="-1" startBytecode="-1" endBytecode="-1"/>
+    </Class>
+    <Method classname="jp.co.isid.mos.bird.framework.util.Converter3" name="stringToDecFormat" signature="(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;" isStatic="true">
+      <SourceLine classname="jp.co.isid.mos.bird.framework.util.Converter3" start="594" end="595" startBytecode="0" endBytecode="31" sourcefile="Converter3.java" sourcepath="jp/co/isid/mos/bird/framework/util/Converter3.java"/>
+    </Method>
+    <LocalVariable name="dum" register="3" pc="43" role="LOCAL_VARIABLE_NAMED"/>
+    <SourceLine classname="jp.co.isid.mos.bird.framework.util.Converter3" start="597" end="597" startBytecode="42" endBytecode="42" sourcefile="Converter3.java" sourcepath="jp/co/isid/mos/bird/framework/util/Converter3.java"/>
+  </BugInstance>
+  <BugInstance type="DLS_DEAD_LOCAL_STORE" priority="2" abbrev="DLS" category="STYLE">
+    <Class classname="jp.co.isid.mos.bird.framework.util.Converter3">
+      <SourceLine classname="jp.co.isid.mos.bird.framework.util.Converter3" start="-1" end="-1" startBytecode="-1" endBytecode="-1"/>
+    </Class>
+    <Method classname="jp.co.isid.mos.bird.framework.util.Converter3" name="stringToInt" signature="(Ljava/lang/String;)I" isStatic="true">
+      <SourceLine classname="jp.co.isid.mos.bird.framework.util.Converter3" start="844" end="851" startBytecode="0" endBytecode="17" sourcefile="Converter3.java" sourcepath="jp/co/isid/mos/bird/framework/util/Converter3.java"/>
+    </Method>
+    <LocalVariable name="big" register="1" pc="10" role="LOCAL_VARIABLE_NAMED"/>
+    <SourceLine classname="jp.co.isid.mos.bird.framework.util.Converter3" start="844" end="844" startBytecode="9" endBytecode="9" sourcefile="Converter3.java" sourcepath="jp/co/isid/mos/bird/framework/util/Converter3.java"/>
+  </BugInstance>
+  <BugInstance type="DLS_DEAD_LOCAL_STORE" priority="3" abbrev="DLS" category="STYLE">
+    <Class classname="jp.co.isid.mos.bird.framework.util.CsvInputUtil">
+      <SourceLine classname="jp.co.isid.mos.bird.framework.util.CsvInputUtil" start="-1" end="-1" startBytecode="-1" endBytecode="-1" sourcefile="CsvInputUtil.java" sourcepath="jp/co/isid/mos/bird/framework/util/CsvInputUtil.java"/>
+    </Class>
+    <Method classname="jp.co.isid.mos.bird.framework.util.CsvInputUtil" name="loadCSV" signature="(Ljava/io/InputStream;I)[[Ljava/lang/String;" isStatic="true">
+      <SourceLine classname="jp.co.isid.mos.bird.framework.util.CsvInputUtil" start="60" end="72" startBytecode="0" endBytecode="28" sourcefile="CsvInputUtil.java" sourcepath="jp/co/isid/mos/bird/framework/util/CsvInputUtil.java"/>
+    </Method>
+    <LocalVariable name="data" register="2" pc="20" role="LOCAL_VARIABLE_NAMED"/>
+    <SourceLine classname="jp.co.isid.mos.bird.framework.util.CsvInputUtil" start="64" end="64" startBytecode="19" endBytecode="19" sourcefile="CsvInputUtil.java" sourcepath="jp/co/isid/mos/bird/framework/util/CsvInputUtil.java"/>
+  </BugInstance>
+  <BugInstance type="DLS_DEAD_LOCAL_STORE" priority="3" abbrev="DLS" category="STYLE">
+    <Class classname="jp.co.isid.mos.bird.framework.util.CsvInputUtil">
+      <SourceLine classname="jp.co.isid.mos.bird.framework.util.CsvInputUtil" start="-1" end="-1" startBytecode="-1" endBytecode="-1" sourcefile="CsvInputUtil.java" sourcepath="jp/co/isid/mos/bird/framework/util/CsvInputUtil.java"/>
+    </Class>
+    <Method classname="jp.co.isid.mos.bird.framework.util.CsvInputUtil" name="loadCSV" signature="(Ljava/lang/String;I)[[Ljava/lang/String;" isStatic="true">
+      <SourceLine classname="jp.co.isid.mos.bird.framework.util.CsvInputUtil" start="86" end="127" startBytecode="0" endBytecode="80" sourcefile="CsvInputUtil.java" sourcepath="jp/co/isid/mos/bird/framework/util/CsvInputUtil.java"/>
+    </Method>
+    <LocalVariable name="?" register="8" pc="44" role="LOCAL_VARIABLE_UNKNOWN"/>
+    <SourceLine classname="jp.co.isid.mos.bird.framework.util.CsvInputUtil" start="101" end="101" startBytecode="43" endBytecode="43" sourcefile="CsvInputUtil.java" sourcepath="jp/co/isid/mos/bird/framework/util/CsvInputUtil.java"/>
+  </BugInstance>
+  <BugInstance type="DLS_DEAD_LOCAL_STORE" priority="3" abbrev="DLS" category="STYLE">
+    <Class classname="jp.co.isid.mos.bird.framework.util.CsvInputUtil">
+      <SourceLine classname="jp.co.isid.mos.bird.framework.util.CsvInputUtil" start="-1" end="-1" startBytecode="-1" endBytecode="-1" sourcefile="CsvInputUtil.java" sourcepath="jp/co/isid/mos/bird/framework/util/CsvInputUtil.java"/>
+    </Class>
+    <Method classname="jp.co.isid.mos.bird.framework.util.CsvInputUtil" name="loadCSV" signature="(Lorg/apache/myfaces/custom/fileupload/UploadedFile;IZ)[[Ljava/lang/String;" isStatic="true">
+      <SourceLine classname="jp.co.isid.mos.bird.framework.util.CsvInputUtil" start="139" end="158" startBytecode="0" endBytecode="35" sourcefile="CsvInputUtil.java" sourcepath="jp/co/isid/mos/bird/framework/util/CsvInputUtil.java"/>
+    </Method>
+    <LocalVariable name="?" register="4" pc="33" role="LOCAL_VARIABLE_UNKNOWN"/>
+    <SourceLine classname="jp.co.isid.mos.bird.framework.util.CsvInputUtil" start="147" end="147" startBytecode="32" endBytecode="32" sourcefile="CsvInputUtil.java" sourcepath="jp/co/isid/mos/bird/framework/util/CsvInputUtil.java"/>
+  </BugInstance>
+  <BugInstance type="RCN_REDUNDANT_NULLCHECK_OF_NONNULL_VALUE" priority="3" abbrev="RCN" category="CORRECTNESS">
+    <Class classname="jp.co.isid.mos.bird.framework.util.CsvInputUtil">
+      <SourceLine classname="jp.co.isid.mos.bird.framework.util.CsvInputUtil" start="-1" end="-1" startBytecode="-1" endBytecode="-1" sourcefile="CsvInputUtil.java" sourcepath="jp/co/isid/mos/bird/framework/util/CsvInputUtil.java"/>
+    </Class>
+    <Method classname="jp.co.isid.mos.bird.framework.util.CsvInputUtil" name="loadCSV" signature="(Ljava/lang/String;I)[[Ljava/lang/String;" isStatic="true">
+      <SourceLine classname="jp.co.isid.mos.bird.framework.util.CsvInputUtil" start="86" end="127" startBytecode="0" endBytecode="80" sourcefile="CsvInputUtil.java" sourcepath="jp/co/isid/mos/bird/framework/util/CsvInputUtil.java"/>
+    </Method>
+    <SourceLine classname="jp.co.isid.mos.bird.framework.util.CsvInputUtil" start="124" end="124" startBytecode="141" endBytecode="141" sourcefile="CsvInputUtil.java" sourcepath="jp/co/isid/mos/bird/framework/util/CsvInputUtil.java" role="SOURCE_REDUNDANT_NULL_CHECK"/>
+  </BugInstance>
+  <BugInstance type="RR_NOT_CHECKED" priority="3" abbrev="RR" category="CORRECTNESS">
+    <Class classname="jp.co.isid.mos.bird.framework.util.CsvInputUtil">
+      <SourceLine classname="jp.co.isid.mos.bird.framework.util.CsvInputUtil" start="-1" end="-1" startBytecode="-1" endBytecode="-1" sourcefile="CsvInputUtil.java" sourcepath="jp/co/isid/mos/bird/framework/util/CsvInputUtil.java"/>
+    </Class>
+    <Method classname="jp.co.isid.mos.bird.framework.util.CsvInputUtil" name="loadCSV" signature="(Ljava/io/InputStream;I)[[Ljava/lang/String;" isStatic="true">
+      <SourceLine classname="jp.co.isid.mos.bird.framework.util.CsvInputUtil" start="60" end="72" startBytecode="0" endBytecode="51" sourcefile="CsvInputUtil.java" sourcepath="jp/co/isid/mos/bird/framework/util/CsvInputUtil.java"/>
+    </Method>
+    <Method classname="java.io.InputStream" name="read" signature="([B)I" isStatic="false" role="METHOD_CALLED">
+      <SourceLine classname="java.io.InputStream" start="-1" end="-1" startBytecode="-1" endBytecode="-1"/>
+    </Method>
+    <SourceLine classname="jp.co.isid.mos.bird.framework.util.CsvInputUtil" start="67" end="67" startBytecode="29" endBytecode="29" sourcefile="CsvInputUtil.java" sourcepath="jp/co/isid/mos/bird/framework/util/CsvInputUtil.java"/>
+  </BugInstance>
+  <BugInstance type="DLS_DEAD_LOCAL_STORE" priority="2" abbrev="DLS" category="STYLE">
+    <Class classname="jp.co.isid.mos.bird.framework.util.DateManager">
+      <SourceLine classname="jp.co.isid.mos.bird.framework.util.DateManager" start="-1" end="-1" startBytecode="-1" endBytecode="-1" sourcefile="DateManager.java" sourcepath="jp/co/isid/mos/bird/framework/util/DateManager.java"/>
+    </Class>
+    <Method classname="jp.co.isid.mos.bird.framework.util.DateManager" name="getCurrentYear" signature="(Ljava/lang/String;)Ljava/lang/String;" isStatic="true">
+      <SourceLine classname="jp.co.isid.mos.bird.framework.util.DateManager" start="242" end="252" startBytecode="0" endBytecode="29" sourcefile="DateManager.java" sourcepath="jp/co/isid/mos/bird/framework/util/DateManager.java"/>
+    </Method>
+    <LocalVariable name="day" register="2" pc="18" role="LOCAL_VARIABLE_NAMED"/>
+    <SourceLine classname="jp.co.isid.mos.bird.framework.util.DateManager" start="243" end="243" startBytecode="17" endBytecode="17" sourcefile="DateManager.java" sourcepath="jp/co/isid/mos/bird/framework/util/DateManager.java"/>
+  </BugInstance>
+  <BugInstance type="UPM_UNCALLED_PRIVATE_METHOD" priority="3" abbrev="UPM" category="PERFORMANCE">
+    <Class classname="jp.co.isid.mos.bird.framework.util.DateManager2">
+      <SourceLine classname="jp.co.isid.mos.bird.framework.util.DateManager2" start="-1" end="-1" startBytecode="-1" endBytecode="-1"/>
+    </Class>
+    <Method classname="jp.co.isid.mos.bird.framework.util.DateManager2" name="getCalcDate" signature="(Ljava/lang/String;I)Ljava/lang/String;" isStatic="true">
+      <SourceLine classname="jp.co.isid.mos.bird.framework.util.DateManager2" start="20" end="20" startBytecode="0" endBytecode="9" sourcefile="DateManager2.java" sourcepath="jp/co/isid/mos/bird/framework/util/DateManager2.java"/>
+    </Method>
+  </BugInstance>
+  <BugInstance type="UPM_UNCALLED_PRIVATE_METHOD" priority="3" abbrev="UPM" category="PERFORMANCE">
+    <Class classname="jp.co.isid.mos.bird.framework.util.DateManager3">
+      <SourceLine classname="jp.co.isid.mos.bird.framework.util.DateManager3" start="-1" end="-1" startBytecode="-1" endBytecode="-1"/>
+    </Class>
+    <Method classname="jp.co.isid.mos.bird.framework.util.DateManager3" name="_getCalcDate" signature="(Ljava/lang/String;I)Ljava/lang/String;" isStatic="true">
+      <SourceLine classname="jp.co.isid.mos.bird.framework.util.DateManager3" start="56" end="56" startBytecode="0" endBytecode="9" sourcefile="DateManager3.java" sourcepath="jp/co/isid/mos/bird/framework/util/DateManager3.java"/>
+    </Method>
+  </BugInstance>
+  <BugInstance type="UPM_UNCALLED_PRIVATE_METHOD" priority="3" abbrev="UPM" category="PERFORMANCE">
+    <Class classname="jp.co.isid.mos.bird.framework.util.DateManager3">
+      <SourceLine classname="jp.co.isid.mos.bird.framework.util.DateManager3" start="-1" end="-1" startBytecode="-1" endBytecode="-1"/>
+    </Class>
+    <Method classname="jp.co.isid.mos.bird.framework.util.DateManager3" name="_getCalcMonth" signature="(Ljava/lang/String;I)Ljava/lang/String;" isStatic="true">
+      <SourceLine classname="jp.co.isid.mos.bird.framework.util.DateManager3" start="79" end="79" startBytecode="0" endBytecode="9" sourcefile="DateManager3.java" sourcepath="jp/co/isid/mos/bird/framework/util/DateManager3.java"/>
+    </Method>
+  </BugInstance>
+  <BugInstance type="UPM_UNCALLED_PRIVATE_METHOD" priority="3" abbrev="UPM" category="PERFORMANCE">
+    <Class classname="jp.co.isid.mos.bird.framework.util.DateManager3">
+      <SourceLine classname="jp.co.isid.mos.bird.framework.util.DateManager3" start="-1" end="-1" startBytecode="-1" endBytecode="-1"/>
+    </Class>
+    <Method classname="jp.co.isid.mos.bird.framework.util.DateManager3" name="_getCalcYear" signature="(Ljava/lang/String;I)Ljava/lang/String;" isStatic="true">
+      <SourceLine classname="jp.co.isid.mos.bird.framework.util.DateManager3" start="102" end="102" startBytecode="0" endBytecode="9" sourcefile="DateManager3.java" sourcepath="jp/co/isid/mos/bird/framework/util/DateManager3.java"/>
+    </Method>
+  </BugInstance>
+  <BugInstance type="UPM_UNCALLED_PRIVATE_METHOD" priority="3" abbrev="UPM" category="PERFORMANCE">
+    <Class classname="jp.co.isid.mos.bird.framework.util.DateManager3">
+      <SourceLine classname="jp.co.isid.mos.bird.framework.util.DateManager3" start="-1" end="-1" startBytecode="-1" endBytecode="-1"/>
+    </Class>
+    <Method classname="jp.co.isid.mos.bird.framework.util.DateManager3" name="_getZennenDouyouHosei" signature="(Ljava/lang/String;)Ljava/lang/String;" isStatic="true">
+      <SourceLine classname="jp.co.isid.mos.bird.framework.util.DateManager3" start="245" end="245" startBytecode="0" endBytecode="9" sourcefile="DateManager3.java" sourcepath="jp/co/isid/mos/bird/framework/util/DateManager3.java"/>
+    </Method>
+  </BugInstance>
+  <BugInstance type="UUF_UNUSED_FIELD" priority="2" abbrev="UuF" category="PERFORMANCE">
+    <Class classname="jp.co.isid.mos.bird.framework.util.DateManager3">
+      <SourceLine classname="jp.co.isid.mos.bird.framework.util.DateManager3" start="-1" end="-1" startBytecode="-1" endBytecode="-1"/>
+    </Class>
+    <Field classname="jp.co.isid.mos.bird.framework.util.DateManager3" name="_hashHoliday" signature="Ljava/util/Hashtable;" isStatic="true">
+      <SourceLine classname="jp.co.isid.mos.bird.framework.util.DateManager3" start="-1" end="-1" startBytecode="-1" endBytecode="-1"/>
+    </Field>
+  </BugInstance>
+  <BugInstance type="UUF_UNUSED_FIELD" priority="2" abbrev="UuF" category="PERFORMANCE">
+    <Class classname="jp.co.isid.mos.bird.framework.util.DateManager3">
+      <SourceLine classname="jp.co.isid.mos.bird.framework.util.DateManager3" start="-1" end="-1" startBytecode="-1" endBytecode="-1"/>
+    </Class>
+    <Field classname="jp.co.isid.mos.bird.framework.util.DateManager3" name="_holidayLastUpdate" signature="Ljava/lang/String;" isStatic="true">
+      <SourceLine classname="jp.co.isid.mos.bird.framework.util.DateManager3" start="-1" end="-1" startBytecode="-1" endBytecode="-1"/>
+    </Field>
+  </BugInstance>
+  <BugInstance type="REC_CATCH_EXCEPTION" priority="3" abbrev="REC" category="STYLE">
+    <Class classname="jp.co.isid.mos.bird.framework.util.DateUtils">
+      <SourceLine classname="jp.co.isid.mos.bird.framework.util.DateUtils" start="-1" end="-1" startBytecode="-1" endBytecode="-1" sourcefile="DateUtils.java" sourcepath="jp/co/isid/mos/bird/framework/util/DateUtils.java"/>
+    </Class>
+    <Method classname="jp.co.isid.mos.bird.framework.util.DateUtils" name="getDateString" signature="(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;" isStatic="true">
+      <SourceLine classname="jp.co.isid.mos.bird.framework.util.DateUtils" start="205" end="216" startBytecode="0" endBytecode="59" sourcefile="DateUtils.java" sourcepath="jp/co/isid/mos/bird/framework/util/DateUtils.java"/>
+    </Method>
+    <SourceLine classname="jp.co.isid.mos.bird.framework.util.DateUtils" start="213" end="213" startBytecode="55" endBytecode="55" sourcefile="DateUtils.java" sourcepath="jp/co/isid/mos/bird/framework/util/DateUtils.java"/>
+  </BugInstance>
+  <BugInstance type="DM_CONVERT_CASE" priority="3" abbrev="Dm" category="I18N">
+    <Class classname="jp.co.isid.mos.bird.framework.util.MakeSessionKey">
+      <SourceLine classname="jp.co.isid.mos.bird.framework.util.MakeSessionKey" start="-1" end="-1" startBytecode="-1" endBytecode="-1" sourcefile="MakeSessionKey.java" sourcepath="jp/co/isid/mos/bird/framework/util/MakeSessionKey.java"/>
+    </Class>
+    <Method classname="jp.co.isid.mos.bird.framework.util.MakeSessionKey" name="asHex" signature="([B)Ljava/lang/String;" isStatic="true">
+      <SourceLine classname="jp.co.isid.mos.bird.framework.util.MakeSessionKey" start="37" end="45" startBytecode="0" endBytecode="66" sourcefile="MakeSessionKey.java" sourcepath="jp/co/isid/mos/bird/framework/util/MakeSessionKey.java"/>
+    </Method>
+    <SourceLine classname="jp.co.isid.mos.bird.framework.util.MakeSessionKey" start="45" end="45" startBytecode="63" endBytecode="63" sourcefile="MakeSessionKey.java" sourcepath="jp/co/isid/mos/bird/framework/util/MakeSessionKey.java"/>
+  </BugInstance>
+  <BugInstance type="REC_CATCH_EXCEPTION" priority="3" abbrev="REC" category="STYLE">
+    <Class classname="jp.co.isid.mos.bird.framework.util.MakeSessionKey">
+      <SourceLine classname="jp.co.isid.mos.bird.framework.util.MakeSessionKey" start="-1" end="-1" startBytecode="-1" endBytecode="-1" sourcefile="MakeSessionKey.java" sourcepath="jp/co/isid/mos/bird/framework/util/MakeSessionKey.java"/>
+    </Class>
+    <Method classname="jp.co.isid.mos.bird.framework.util.MakeSessionKey" name="_makeSessionKey" signature="()Ljava/lang/String;" isStatic="false">
+      <SourceLine classname="jp.co.isid.mos.bird.framework.util.MakeSessionKey" start="20" end="32" startBytecode="0" endBytecode="54" sourcefile="MakeSessionKey.java" sourcepath="jp/co/isid/mos/bird/framework/util/MakeSessionKey.java"/>
+    </Method>
+    <SourceLine classname="jp.co.isid.mos.bird.framework.util.MakeSessionKey" start="29" end="29" startBytecode="39" endBytecode="39" sourcefile="MakeSessionKey.java" sourcepath="jp/co/isid/mos/bird/framework/util/MakeSessionKey.java"/>
+  </BugInstance>
+  <BugInstance type="DM_STRING_TOSTRING" priority="2" abbrev="Dm" category="PERFORMANCE">
+    <Class classname="jp.co.isid.mos.bird.framework.util.formatter.ChangeLineFormatter">
+      <SourceLine classname="jp.co.isid.mos.bird.framework.util.formatter.ChangeLineFormatter" start="-1" end="-1" startBytecode="-1" endBytecode="-1" sourcefile="ChangeLineFormatter.java" sourcepath="jp/co/isid/mos/bird/framework/util/formatter/ChangeLineFormatter.java"/>
+    </Class>
+    <Method classname="jp.co.isid.mos.bird.framework.util.formatter.ChangeLineFormatter" name="format" signature="(Ljava/lang/Object;Z)Ljava/lang/String;" isStatic="false">
+      <SourceLine classname="jp.co.isid.mos.bird.framework.util.formatter.ChangeLineFormatter" start="45" end="75" startBytecode="0" endBytecode="143" sourcefile="ChangeLineFormatter.java" sourcepath="jp/co/isid/mos/bird/framework/util/formatter/ChangeLineFormatter.java"/>
+    </Method>
+    <SourceLine classname="jp.co.isid.mos.bird.framework.util.formatter.ChangeLineFormatter" start="53" end="53" startBytecode="25" endBytecode="25" sourcefile="ChangeLineFormatter.java" sourcepath="jp/co/isid/mos/bird/framework/util/formatter/ChangeLineFormatter.java"/>
+  </BugInstance>
+  <BugInstance type="RV_RETURN_VALUE_IGNORED" priority="1" abbrev="RV" category="CORRECTNESS">
+    <Class classname="jp.co.isid.mos.bird.framework.util.formatter.ChangeLineFormatter">
+      <SourceLine classname="jp.co.isid.mos.bird.framework.util.formatter.ChangeLineFormatter" start="-1" end="-1" startBytecode="-1" endBytecode="-1" sourcefile="ChangeLineFormatter.java" sourcepath="jp/co/isid/mos/bird/framework/util/formatter/ChangeLineFormatter.java"/>
+    </Class>
+    <Method classname="jp.co.isid.mos.bird.framework.util.formatter.ChangeLineFormatter" name="format" signature="(Ljava/lang/Object;Z)Ljava/lang/String;" isStatic="false">
+      <SourceLine classname="jp.co.isid.mos.bird.framework.util.formatter.ChangeLineFormatter" start="45" end="75" startBytecode="0" endBytecode="143" sourcefile="ChangeLineFormatter.java" sourcepath="jp/co/isid/mos/bird/framework/util/formatter/ChangeLineFormatter.java"/>
+    </Method>
+    <Method classname="java.lang.String" name="toString" signature="()Ljava/lang/String;" isStatic="false" role="METHOD_CALLED">
+      <SourceLine classname="java.lang.String" start="-1" end="-1" startBytecode="-1" endBytecode="-1"/>
+    </Method>
+    <SourceLine classname="jp.co.isid.mos.bird.framework.util.formatter.ChangeLineFormatter" start="53" end="53" startBytecode="25" endBytecode="25" sourcefile="ChangeLineFormatter.java" sourcepath="jp/co/isid/mos/bird/framework/util/formatter/ChangeLineFormatter.java"/>
+  </BugInstance>
+  <BugInstance type="DB_DUPLICATE_BRANCHES" priority="2" abbrev="DB" category="STYLE">
+    <Class classname="jp.co.isid.mos.bird.framework.util.formatter.NumericFormatter">
+      <SourceLine classname="jp.co.isid.mos.bird.framework.util.formatter.NumericFormatter" start="-1" end="-1" startBytecode="-1" endBytecode="-1" sourcefile="NumericFormatter.java" sourcepath="jp/co/isid/mos/bird/framework/util/formatter/NumericFormatter.java"/>
+    </Class>
+    <Method classname="jp.co.isid.mos.bird.framework.util.formatter.NumericFormatter" name="format" signature="(Ljava/lang/Object;Z)Ljava/lang/String;" isStatic="false">
+      <SourceLine classname="jp.co.isid.mos.bird.framework.util.formatter.NumericFormatter" start="149" end="190" startBytecode="0" endBytecode="477" sourcefile="NumericFormatter.java" sourcepath="jp/co/isid/mos/bird/framework/util/formatter/NumericFormatter.java"/>
+    </Method>
+    <SourceLine classname="jp.co.isid.mos.bird.framework.util.formatter.NumericFormatter" start="158" end="158" startBytecode="24" endBytecode="24" sourcefile="NumericFormatter.java" sourcepath="jp/co/isid/mos/bird/framework/util/formatter/NumericFormatter.java"/>
+    <SourceLine classname="jp.co.isid.mos.bird.framework.util.formatter.NumericFormatter" start="161" end="161" startBytecode="33" endBytecode="33" sourcefile="NumericFormatter.java" sourcepath="jp/co/isid/mos/bird/framework/util/formatter/NumericFormatter.java"/>
+  </BugInstance>
+  <BugInstance type="REC_CATCH_EXCEPTION" priority="3" abbrev="REC" category="STYLE">
+    <Class classname="jp.co.isid.mos.bird.framework.util.formatter.TimeFormatter">
+      <SourceLine classname="jp.co.isid.mos.bird.framework.util.formatter.TimeFormatter" start="-1" end="-1" startBytecode="-1" endBytecode="-1" sourcefile="TimeFormatter.java" sourcepath="jp/co/isid/mos/bird/framework/util/formatter/TimeFormatter.java"/>
+    </Class>
+    <Method classname="jp.co.isid.mos.bird.framework.util.formatter.TimeFormatter" name="format" signature="(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Z)Ljava/lang/String;" isStatic="false">
+      <SourceLine classname="jp.co.isid.mos.bird.framework.util.formatter.TimeFormatter" start="92" end="116" startBytecode="0" endBytecode="80" sourcefile="TimeFormatter.java" sourcepath="jp/co/isid/mos/bird/framework/util/formatter/TimeFormatter.java"/>
+    </Method>
+    <SourceLine classname="jp.co.isid.mos.bird.framework.util.formatter.TimeFormatter" start="113" end="113" startBytecode="73" endBytecode="73" sourcefile="TimeFormatter.java" sourcepath="jp/co/isid/mos/bird/framework/util/formatter/TimeFormatter.java"/>
+  </BugInstance>
+  <BugInstance type="DB_DUPLICATE_SWITCH_CLAUSES" priority="3" abbrev="DB" category="STYLE">
+    <Class classname="jp.co.isid.mos.bird.framework.util.verifier.MaskVerifier">
+      <SourceLine classname="jp.co.isid.mos.bird.framework.util.verifier.MaskVerifier" start="-1" end="-1" startBytecode="-1" endBytecode="-1" sourcefile="MaskVerifier.java" sourcepath="jp/co/isid/mos/bird/framework/util/verifier/MaskVerifier.java"/>
+    </Class>
+    <Method classname="jp.co.isid.mos.bird.framework.util.verifier.MaskVerifier" name="validate" signature="(Ljava/lang/String;)Z" isStatic="false">
+      <SourceLine classname="jp.co.isid.mos.bird.framework.util.verifier.MaskVerifier" start="74" end="150" startBytecode="0" endBytecode="543" sourcefile="MaskVerifier.java" sourcepath="jp/co/isid/mos/bird/framework/util/verifier/MaskVerifier.java"/>
+    </Method>
+    <SourceLine classname="jp.co.isid.mos.bird.framework.util.verifier.MaskVerifier" start="98" end="104" startBytecode="143" endBytecode="161" sourcefile="MaskVerifier.java" sourcepath="jp/co/isid/mos/bird/framework/util/verifier/MaskVerifier.java"/>
+    <SourceLine classname="jp.co.isid.mos.bird.framework.util.verifier.MaskVerifier" start="106" end="112" startBytecode="162" endBytecode="180" sourcefile="MaskVerifier.java" sourcepath="jp/co/isid/mos/bird/framework/util/verifier/MaskVerifier.java"/>
+    <SourceLine classname="jp.co.isid.mos.bird.framework.util.verifier.MaskVerifier" start="122" end="128" startBytecode="200" endBytecode="218" sourcefile="MaskVerifier.java" sourcepath="jp/co/isid/mos/bird/framework/util/verifier/MaskVerifier.java"/>
+  </BugInstance>
+  <BugInstance type="NP_NULL_ON_SOME_PATH_EXCEPTION" priority="3" abbrev="NP" category="CORRECTNESS">
+    <Class classname="test.jp.co.isid.mos.bird.framework.util.ConverterTest">
+      <SourceLine classname="test.jp.co.isid.mos.bird.framework.util.ConverterTest" start="-1" end="-1" startBytecode="-1" endBytecode="-1" sourcefile="ConverterTest.java" sourcepath="test/jp/co/isid/mos/bird/framework/util/ConverterTest.java"/>
+    </Class>
+    <Method classname="test.jp.co.isid.mos.bird.framework.util.ConverterTest" name="testStringToDate" signature="()V" isStatic="false">
+      <SourceLine classname="test.jp.co.isid.mos.bird.framework.util.ConverterTest" start="52" end="90" startBytecode="0" endBytecode="53" sourcefile="ConverterTest.java" sourcepath="test/jp/co/isid/mos/bird/framework/util/ConverterTest.java"/>
+    </Method>
+    <SourceLine classname="test.jp.co.isid.mos.bird.framework.util.ConverterTest" start="61" end="61" startBytecode="25" endBytecode="25" sourcefile="ConverterTest.java" sourcepath="test/jp/co/isid/mos/bird/framework/util/ConverterTest.java"/>
+  </BugInstance>
+  <BugInstance type="DLS_DEAD_LOCAL_STORE" priority="2" abbrev="DLS" category="STYLE">
+    <Class classname="test.jp.co.isid.mos.bird.framework.util.CsvInputUtilTest">
+      <SourceLine classname="test.jp.co.isid.mos.bird.framework.util.CsvInputUtilTest" start="-1" end="-1" startBytecode="-1" endBytecode="-1" sourcefile="CsvInputUtilTest.java" sourcepath="test/jp/co/isid/mos/bird/framework/util/CsvInputUtilTest.java"/>
+    </Class>
+    <Method classname="test.jp.co.isid.mos.bird.framework.util.CsvInputUtilTest" name="test1" signature="()V" isStatic="false">
+      <SourceLine classname="test.jp.co.isid.mos.bird.framework.util.CsvInputUtilTest" start="51" end="62" startBytecode="0" endBytecode="20" sourcefile="CsvInputUtilTest.java" sourcepath="test/jp/co/isid/mos/bird/framework/util/CsvInputUtilTest.java"/>
+    </Method>
+    <LocalVariable name="str" register="3" pc="25" role="LOCAL_VARIABLE_NAMED"/>
+    <SourceLine classname="test.jp.co.isid.mos.bird.framework.util.CsvInputUtilTest" start="55" end="55" startBytecode="24" endBytecode="24" sourcefile="CsvInputUtilTest.java" sourcepath="test/jp/co/isid/mos/bird/framework/util/CsvInputUtilTest.java"/>
+  </BugInstance>
+  <BugInstance type="DMI_HARDCODED_ABSOLUTE_FILENAME" priority="2" abbrev="DMI" category="CORRECTNESS">
+    <Class classname="test.jp.co.isid.mos.bird.framework.util.CsvInputUtilTest">
+      <SourceLine classname="test.jp.co.isid.mos.bird.framework.util.CsvInputUtilTest" start="-1" end="-1" startBytecode="-1" endBytecode="-1" sourcefile="CsvInputUtilTest.java" sourcepath="test/jp/co/isid/mos/bird/framework/util/CsvInputUtilTest.java"/>
+    </Class>
+    <Method classname="test.jp.co.isid.mos.bird.framework.util.CsvInputUtilTest" name="test1" signature="()V" isStatic="false">
+      <SourceLine classname="test.jp.co.isid.mos.bird.framework.util.CsvInputUtilTest" start="51" end="62" startBytecode="0" endBytecode="20" sourcefile="CsvInputUtilTest.java" sourcepath="test/jp/co/isid/mos/bird/framework/util/CsvInputUtilTest.java"/>
+    </Method>
+    <String value="C:\eclipse\workspace.bird\birdframework\WEB-INF\src\test\jp\co\isid\mos\bird\framework\util\testfile.csv" role="FILE_NAME"/>
+    <SourceLine classname="test.jp.co.isid.mos.bird.framework.util.CsvInputUtilTest" start="51" end="51" startBytecode="6" endBytecode="6" sourcefile="CsvInputUtilTest.java" sourcepath="test/jp/co/isid/mos/bird/framework/util/CsvInputUtilTest.java"/>
+  </BugInstance>
+  <BugInstance type="REC_CATCH_EXCEPTION" priority="3" abbrev="REC" category="STYLE">
+    <Class classname="test.jp.co.isid.mos.bird.framework.util.CsvInputUtilTest">
+      <SourceLine classname="test.jp.co.isid.mos.bird.framework.util.CsvInputUtilTest" start="-1" end="-1" startBytecode="-1" endBytecode="-1" sourcefile="CsvInputUtilTest.java" sourcepath="test/jp/co/isid/mos/bird/framework/util/CsvInputUtilTest.java"/>
+    </Class>
+    <Method classname="test.jp.co.isid.mos.bird.framework.util.CsvInputUtilTest" name="test1" signature="()V" isStatic="false">
+      <SourceLine classname="test.jp.co.isid.mos.bird.framework.util.CsvInputUtilTest" start="51" end="62" startBytecode="0" endBytecode="37" sourcefile="CsvInputUtilTest.java" sourcepath="test/jp/co/isid/mos/bird/framework/util/CsvInputUtilTest.java"/>
+    </Method>
+    <SourceLine classname="test.jp.co.isid.mos.bird.framework.util.CsvInputUtilTest" start="59" end="59" startBytecode="32" endBytecode="32" sourcefile="CsvInputUtilTest.java" sourcepath="test/jp/co/isid/mos/bird/framework/util/CsvInputUtilTest.java"/>
+  </BugInstance>
+  <Errors></Errors>
+  <FindBugsSummary timestamp="Wed, 9 Nov 2005 13:30:26 +0900" total_classes="79" total_bugs="107" total_size="0" num_packages="15" clock_seconds="99.16" priority_3="68" priority_2="38" priority_1="1">
+    <PackageStats package="jp.co.isid.mos.bird.framework.action" total_bugs="4" total_types="10" total_size="0" priority_3="4">
+      <ClassStats class="jp.co.isid.mos.bird.framework.action.BatchExecuteAction" interface="false" size="0" bugs="0"/>
+      <ClassStats class="jp.co.isid.mos.bird.framework.action.FileDownloadAction" interface="false" size="0" bugs="0"/>
+      <ClassStats class="jp.co.isid.mos.bird.framework.action.FileDownloadActionImpl" interface="false" size="0" bugs="1" priority_3="1"/>
+      <ClassStats class="jp.co.isid.mos.bird.framework.action.FileUploadAction" interface="false" size="0" bugs="0"/>
+      <ClassStats class="jp.co.isid.mos.bird.framework.action.FileUploadActionImpl" interface="false" size="0" bugs="1" priority_3="1"/>
+      <ClassStats class="jp.co.isid.mos.bird.framework.action.GraphOutputAction" interface="false" size="0" bugs="0"/>
+      <ClassStats class="jp.co.isid.mos.bird.framework.action.PdfOutputAction" interface="false" size="0" bugs="0"/>
+      <ClassStats class="jp.co.isid.mos.bird.framework.action.PdfOutputActionImpl" interface="false" size="0" bugs="1" priority_3="1"/>
+      <ClassStats class="jp.co.isid.mos.bird.framework.action.UltraseekAction" interface="false" size="0" bugs="0"/>
+      <ClassStats class="jp.co.isid.mos.bird.framework.action.UltraseekActionImpl" interface="false" size="0" bugs="1" priority_3="1"/>
+    </PackageStats>
+    <PackageStats package="jp.co.isid.mos.bird.framework.action.impl" total_bugs="18" total_types="10" total_size="0" priority_3="17" priority_2="1">
+      <ClassStats class="jp.co.isid.mos.bird.framework.action.impl.BatchExecuteActionImpl" interface="false" size="0" bugs="3" priority_3="3"/>
+      <ClassStats class="jp.co.isid.mos.bird.framework.action.impl.CsvDownloadActionImpl" interface="false" size="0" bugs="1" priority_3="1"/>
+      <ClassStats class="jp.co.isid.mos.bird.framework.action.impl.ExcelOutputActionImpl" interface="false" size="0" bugs="2" priority_3="2"/>
+      <ClassStats class="jp.co.isid.mos.bird.framework.action.impl.FileDownloadActionImpl" interface="false" size="0" bugs="1" priority_3="1"/>
+      <ClassStats class="jp.co.isid.mos.bird.framework.action.impl.FileUploadActionImpl" interface="false" size="0" bugs="1" priority_3="1"/>
+      <ClassStats class="jp.co.isid.mos.bird.framework.action.impl.GraphOutputActionImpl" interface="false" size="0" bugs="0"/>
+      <ClassStats class="jp.co.isid.mos.bird.framework.action.impl.MenuActionImpl" interface="false" size="0" bugs="4" priority_3="4"/>
+      <ClassStats class="jp.co.isid.mos.bird.framework.action.impl.MenuCreateActionImpl" interface="false" size="0" bugs="2" priority_3="1" priority_2="1"/>
+      <ClassStats class="jp.co.isid.mos.bird.framework.action.impl.PdfOutputActionImpl" interface="false" size="0" bugs="1" priority_3="1"/>
+      <ClassStats class="jp.co.isid.mos.bird.framework.action.impl.UltraseekActionImpl" interface="false" size="0" bugs="3" priority_3="3"/>
+    </PackageStats>
+    <PackageStats package="jp.co.isid.mos.bird.framework.control" total_bugs="2" total_types="2" total_size="0" priority_3="2">
+      <ClassStats class="jp.co.isid.mos.bird.framework.control.BirdDateInfo" interface="false" size="0" bugs="1" priority_3="1"/>
+      <ClassStats class="jp.co.isid.mos.bird.framework.control.BirdUserInfo" interface="false" size="0" bugs="1" priority_3="1"/>
+    </PackageStats>
+    <PackageStats package="jp.co.isid.mos.bird.framework.dto" total_bugs="7" total_types="3" total_size="0" priority_3="3" priority_2="4">
+      <ClassStats class="jp.co.isid.mos.bird.framework.dto.CommonDto" interface="false" size="0" bugs="0"/>
+      <ClassStats class="jp.co.isid.mos.bird.framework.dto.CommonMiseDtoImpl" interface="false" size="0" bugs="4" priority_2="4"/>
+      <ClassStats class="jp.co.isid.mos.bird.framework.dto.CopyOfCommonDto" interface="false" size="0" bugs="3" priority_3="3"/>
+    </PackageStats>
+    <PackageStats package="jp.co.isid.mos.bird.framework.entity" total_bugs="7" total_types="4" total_size="0" priority_3="3" priority_2="4">
+      <ClassStats class="jp.co.isid.mos.bird.framework.entity.CtlUserLogin" interface="false" size="0" bugs="1" priority_3="1"/>
+      <ClassStats class="jp.co.isid.mos.bird.framework.entity.MstUser" interface="false" size="0" bugs="1" priority_3="1"/>
+      <ClassStats class="jp.co.isid.mos.bird.framework.entity.UIBirdUser" interface="false" size="0" bugs="1" priority_3="1"/>
+      <ClassStats class="jp.co.isid.mos.bird.framework.entity.UILoginBirdUser" interface="false" size="0" bugs="4" priority_2="4"/>
+    </PackageStats>
+    <PackageStats package="jp.co.isid.mos.bird.framework.exception" total_bugs="1" total_types="1" total_size="0" priority_2="1">
+      <ClassStats class="jp.co.isid.mos.bird.framework.exception.ApplicationException" interface="false" size="0" bugs="1" priority_2="1"/>
+    </PackageStats>
+    <PackageStats package="jp.co.isid.mos.bird.framework.interceptor" total_bugs="14" total_types="7" total_size="0" priority_3="3" priority_2="11">
+      <ClassStats class="jp.co.isid.mos.bird.framework.interceptor.AccessCtlCheckInterceptor" interface="false" size="0" bugs="5" priority_3="3" priority_2="2"/>
+      <ClassStats class="jp.co.isid.mos.bird.framework.interceptor.ActionThrowsInterceptor" interface="false" size="0" bugs="0"/>
+      <ClassStats class="jp.co.isid.mos.bird.framework.interceptor.BatchCheckInterceptor" interface="false" size="0" bugs="1" priority_2="1"/>
+      <ClassStats class="jp.co.isid.mos.bird.framework.interceptor.CommonInitActionIntercepter" interface="false" size="0" bugs="1" priority_2="1"/>
+      <ClassStats class="jp.co.isid.mos.bird.framework.interceptor.CommonInitTogoActionIntercepter" interface="false" size="0" bugs="3" priority_2="3"/>
+      <ClassStats class="jp.co.isid.mos.bird.framework.interceptor.ExclusiveWindowInterceptor" interface="false" size="0" bugs="3" priority_2="3"/>
+      <ClassStats class="jp.co.isid.mos.bird.framework.interceptor.LeaveOutMenuInterceptor" interface="false" size="0" bugs="1" priority_2="1"/>
+    </PackageStats>
+    <PackageStats package="jp.co.isid.mos.bird.framework.interceptor.log" total_bugs="0" total_types="2" total_size="0">
+      <ClassStats class="jp.co.isid.mos.bird.framework.interceptor.log.ErrorLogInterceptor" interface="false" size="0" bugs="0"/>
+      <ClassStats class="jp.co.isid.mos.bird.framework.interceptor.log.LogInterceptor" interface="false" size="0" bugs="0"/>
+    </PackageStats>
+    <PackageStats package="jp.co.isid.mos.bird.framework.logic.impl" total_bugs="1" total_types="4" total_size="0" priority_2="1">
+      <ClassStats class="jp.co.isid.mos.bird.framework.logic.impl.AccessCtlCheckLogicImpl" interface="false" size="0" bugs="0"/>
+      <ClassStats class="jp.co.isid.mos.bird.framework.logic.impl.GetAccessMenuLogic" interface="false" size="0" bugs="0"/>
+      <ClassStats class="jp.co.isid.mos.bird.framework.logic.impl.GetGamenRoleLogicImple" interface="false" size="0" bugs="1" priority_2="1"/>
+      <ClassStats class="jp.co.isid.mos.bird.framework.logic.impl.UltraseekLogicImpl" interface="false" size="0" bugs="0"/>
+    </PackageStats>
+    <PackageStats package="jp.co.isid.mos.bird.framework.text.converter" total_bugs="10" total_types="9" total_size="0" priority_3="9" priority_2="1">
+      <ClassStats class="jp.co.isid.mos.bird.framework.text.converter.ChangeLineEditConverter" interface="false" size="0" bugs="1" priority_3="1"/>
+      <ClassStats class="jp.co.isid.mos.bird.framework.text.converter.ChangeLineRefConverter" interface="false" size="0" bugs="1" priority_3="1"/>
+      <ClassStats class="jp.co.isid.mos.bird.framework.text.converter.CharacterEncodingConverter" interface="false" size="0" bugs="2" priority_3="1" priority_2="1"/>
+      <ClassStats class="jp.co.isid.mos.bird.framework.text.converter.CodeConverter" interface="false" size="0" bugs="1" priority_3="1"/>
+      <ClassStats class="jp.co.isid.mos.bird.framework.text.converter.DateConverter" interface="false" size="0" bugs="1" priority_3="1"/>
+      <ClassStats class="jp.co.isid.mos.bird.framework.text.converter.MaskConverter" interface="false" size="0" bugs="1" priority_3="1"/>
+      <ClassStats class="jp.co.isid.mos.bird.framework.text.converter.NumericConverter" interface="false" size="0" bugs="1" priority_3="1"/>
+      <ClassStats class="jp.co.isid.mos.bird.framework.text.converter.TimeConverter" interface="false" size="0" bugs="1" priority_3="1"/>
+      <ClassStats class="jp.co.isid.mos.bird.framework.text.converter.TimestampConverter" interface="false" size="0" bugs="1" priority_3="1"/>
+    </PackageStats>
+    <PackageStats package="jp.co.isid.mos.bird.framework.text.validator" total_bugs="12" total_types="11" total_size="0" priority_3="10" priority_2="2">
+      <ClassStats class="jp.co.isid.mos.bird.framework.text.validator.CodeValidator" interface="false" size="0" bugs="1" priority_3="1"/>
+      <ClassStats class="jp.co.isid.mos.bird.framework.text.validator.DateValidator" interface="false" size="0" bugs="1" priority_3="1"/>
+      <ClassStats class="jp.co.isid.mos.bird.framework.text.validator.HankakuEisujiValidator" interface="false" size="0" bugs="1" priority_3="1"/>
+      <ClassStats class="jp.co.isid.mos.bird.framework.text.validator.HankakuKatakanaValidator" interface="false" size="0" bugs="1" priority_3="1"/>
+      <ClassStats class="jp.co.isid.mos.bird.framework.text.validator.HankakuValidator" interface="false" size="0" bugs="1" priority_3="1"/>
+      <ClassStats class="jp.co.isid.mos.bird.framework.text.validator.MaskValidator" interface="false" size="0" bugs="1" priority_3="1"/>
+      <ClassStats class="jp.co.isid.mos.bird.framework.text.validator.NormalValidator" interface="false" size="0" bugs="2" priority_2="2"/>
+      <ClassStats class="jp.co.isid.mos.bird.framework.text.validator.NumericValidator" interface="false" size="0" bugs="1" priority_3="1"/>
+      <ClassStats class="jp.co.isid.mos.bird.framework.text.validator.PhoneValidator" interface="false" size="0" bugs="1" priority_3="1"/>
+      <ClassStats class="jp.co.isid.mos.bird.framework.text.validator.ZenkakuKatakanaValidator" interface="false" size="0" bugs="1" priority_3="1"/>
+      <ClassStats class="jp.co.isid.mos.bird.framework.text.validator.ZenkakuValidator" interface="false" size="0" bugs="1" priority_3="1"/>
+    </PackageStats>
+    <PackageStats package="jp.co.isid.mos.bird.framework.util" total_bugs="22" total_types="8" total_size="0" priority_3="13" priority_2="9">
+      <ClassStats class="jp.co.isid.mos.bird.framework.util.Converter" interface="false" size="0" bugs="2" priority_2="2"/>
+      <ClassStats class="jp.co.isid.mos.bird.framework.util.Converter3" interface="false" size="0" bugs="4" priority_2="4"/>
+      <ClassStats class="jp.co.isid.mos.bird.framework.util.CsvInputUtil" interface="false" size="0" bugs="5" priority_3="5"/>
+      <ClassStats class="jp.co.isid.mos.bird.framework.util.DateManager" interface="false" size="0" bugs="1" priority_2="1"/>
+      <ClassStats class="jp.co.isid.mos.bird.framework.util.DateManager2" interface="false" size="0" bugs="1" priority_3="1"/>
+      <ClassStats class="jp.co.isid.mos.bird.framework.util.DateManager3" interface="false" size="0" bugs="6" priority_3="4" priority_2="2"/>
+      <ClassStats class="jp.co.isid.mos.bird.framework.util.DateUtils" interface="false" size="0" bugs="1" priority_3="1"/>
+      <ClassStats class="jp.co.isid.mos.bird.framework.util.MakeSessionKey" interface="false" size="0" bugs="2" priority_3="2"/>
+    </PackageStats>
+    <PackageStats package="jp.co.isid.mos.bird.framework.util.formatter" total_bugs="4" total_types="3" total_size="0" priority_3="1" priority_2="2" priority_1="1">
+      <ClassStats class="jp.co.isid.mos.bird.framework.util.formatter.ChangeLineFormatter" interface="false" size="0" bugs="2" priority_2="1" priority_1="1"/>
+      <ClassStats class="jp.co.isid.mos.bird.framework.util.formatter.NumericFormatter" interface="false" size="0" bugs="1" priority_2="1"/>
+      <ClassStats class="jp.co.isid.mos.bird.framework.util.formatter.TimeFormatter" interface="false" size="0" bugs="1" priority_3="1"/>
+    </PackageStats>
+    <PackageStats package="jp.co.isid.mos.bird.framework.util.verifier" total_bugs="1" total_types="3" total_size="0" priority_3="1">
+      <ClassStats class="jp.co.isid.mos.bird.framework.util.verifier.CodeVerifier" interface="false" size="0" bugs="0"/>
+      <ClassStats class="jp.co.isid.mos.bird.framework.util.verifier.MaskVerifier" interface="false" size="0" bugs="1" priority_3="1"/>
+      <ClassStats class="jp.co.isid.mos.bird.framework.util.verifier.PhoneVerifier" interface="false" size="0" bugs="0"/>
+    </PackageStats>
+    <PackageStats package="test.jp.co.isid.mos.bird.framework.util" total_bugs="4" total_types="2" total_size="0" priority_3="2" priority_2="2">
+      <ClassStats class="test.jp.co.isid.mos.bird.framework.util.ConverterTest" interface="false" size="0" bugs="1" priority_3="1"/>
+      <ClassStats class="test.jp.co.isid.mos.bird.framework.util.CsvInputUtilTest" interface="false" size="0" bugs="3" priority_3="1" priority_2="2"/>
+    </PackageStats>
+  </FindBugsSummary>
+  <ClassFeatures></ClassFeatures>
+  <History></History>
+</BugCollection>

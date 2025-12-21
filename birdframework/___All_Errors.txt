@@ -1,0 +1,8 @@
+CorrelationId: 182daeb8-9a4a-46b1-9394-247bfbd61468
+UTC DateTime: 12/16/2025 02:55:22
+
+The following files/folders have not been downloaded
+0. birdframework/WEB-INF/classes/appMessages.properties
+1. birdframework/WEB-INF/classes/appMessages_ja.properties
+2. birdframework/WEB-INF/src/appMessages.properties
+3. birdframework/WEB-INF/src/appMessages_ja.properties
