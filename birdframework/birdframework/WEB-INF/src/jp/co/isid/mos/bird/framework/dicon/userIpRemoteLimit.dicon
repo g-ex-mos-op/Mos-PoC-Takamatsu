@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="Shift_JIS"?>
+<!DOCTYPE components PUBLIC "-//SEASAR2.1//DTD S2Container//EN"
+"http://www.seasar.org/dtd/components21.dtd">
+<components>
+	<component name="allowIPMap" class="java.util.HashMap">
+	    <initMethod name="put">
+        	<arg>"1"</arg>
+            <arg>"172.20."</arg>
+        </initMethod>
+
+	    <initMethod name="put">
+        	<arg>"2"</arg>
+            <arg>"172.30."</arg>
+        </initMethod>
+
+	    <initMethod name="put">
+        	<arg>"3"</arg>
+            <arg>"133.158.136.2"</arg>
+        </initMethod>
+
+	    <initMethod name="put">
+        	<arg>"4"</arg>
+            <arg>"127.0.0.2"</arg>
+        </initMethod>       
+        
+    </component>
+	<component name="denyIPMap" class="java.util.HashMap">
+	    <initMethod name="put">
+	    	<arg>"1"</arg>
+            <arg>"133.158.000.888"</arg>
+        </initMethod>
+        
+        <initMethod name="put">
+        	<arg>"2"</arg>
+            <arg>"133.158.000.999"</arg>
+        </initMethod>
+    </component>
+
+	<component name="allowHonbuMenuIPMap" class="java.util.HashMap">
+	    <initMethod name="put">
+	    	<arg>"1"</arg>
+            <arg>"172.20."</arg>
+        </initMethod>
+        <initMethod name="put">
+        	<arg>"2"</arg>
+            <arg>"172.19.24."</arg>
+        </initMethod>
+        <initMethod name="put">
+        	<arg>"3"</arg>
+            <arg>"172.19.25."</arg>
+        </initMethod>
+        <initMethod name="put">
+        	<arg>"4"</arg>
+            <arg>"172.19.26."</arg>
+        </initMethod>
+        <initMethod name="put">
+        	<arg>"5"</arg>
+            <arg>"172.19.27."</arg>
+        </initMethod>
+        <initMethod name="put">
+        	<arg>"6"</arg>
+            <arg>"133.158.136."</arg>
+        </initMethod>
+        <initMethod name="put">
+        	<arg>"7"</arg>
+            <arg>"127.0.0.1"</arg>
+        </initMethod>
+    </component>
+
+	<component name="denyHonbuMenuIPMap" class="java.util.HashMap">
+	    <initMethod name="put">
+	    	<arg>"1"</arg>
+            <arg>"000.000.000.000"</arg>
+        </initMethod>
+    </component>
+    
+    <component autoBinding="auto" name="allowIP"
+               class="jp.co.isid.mos.bird.framework.control.PropertyInjection">
+    	<arg>allowIPMap</arg>
+    </component>
+    <component autoBinding="auto" name="denyIP"
+               class="jp.co.isid.mos.bird.framework.control.PropertyInjection">
+    	<arg>denyIPMap</arg>
+    </component>
+
+    <component autoBinding="auto" name="allowHonbuMenuIP"
+               class="jp.co.isid.mos.bird.framework.control.PropertyInjection">
+    	<arg>allowHonbuMenuIPMap</arg>
+    </component>
+    <component autoBinding="auto" name="denyHonbuMenuIP"
+               class="jp.co.isid.mos.bird.framework.control.PropertyInjection">
+    	<arg>denyHonbuMenuIPMap</arg>
+    </component>
+</components>

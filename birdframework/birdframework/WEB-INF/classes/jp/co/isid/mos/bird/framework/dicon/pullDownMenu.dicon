@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="Shift_JIS"?>
+<!DOCTYPE components PUBLIC "-//SEASAR2.1//DTD S2Container//EN"
+	"http://www.seasar.org/dtd/components21.dtd">
+<components  namespace='pullDownMenu'>
+	<include path="dao.dicon"/>
+	<component class="jp.co.isid.mos.bird.framework.dao.CtlBirdMenuDao" >
+		<aspect>dao.interceptor</aspect>
+	</component>
+	<component class="jp.co.isid.mos.bird.framework.dao.CtlDisableMenuDao">
+		<aspect>dao.interceptor</aspect>
+	</component>
+	<component class="jp.co.isid.mos.bird.framework.dao.CtlGamenRoleDao">
+		<aspect>dao.interceptor</aspect>
+	</component>
+	<component class="jp.co.isid.mos.bird.framework.dao.CtlUserRoleDao">
+		<aspect>dao.interceptor</aspect>
+	</component>
+	<component name="trnOutSystemLogDao" class="jp.co.isid.mos.bird.framework.dao.TrnOutSystemLogDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+
+
+	<component class="jp.co.isid.mos.bird.framework.control.BirdUserInfo" instance="session"/>
+
+	<component name="pullDownMenuDto" class="jp.co.isid.mos.bird.framework.dto.PullDownMenuDto" instance="session"/>
+	<component name="getAccessMenuLogic" class="jp.co.isid.mos.bird.framework.logic.impl.GetAccessMenuLogic"/>
+	<component name="regOutputLogLogic" class="jp.co.isid.mos.bird.framework.logic.impl.RegOutputLogLogicImpl"/>
+
+	<component name="menuActionIntercepter" class="jp.co.isid.mos.bird.framework.interceptor.MenuActionIntercepter"/>
+	<component name="menuAction" class="jp.co.isid.mos.bird.framework.action.impl.MenuActionImpl" instance="session" >
+		<property name="pullDownMenuDto">pullDownMenuDto</property>
+	</component>
+
+	<component name="registMenuIdThresholdAmount" class="java.lang.String">"50"</component>
+
+</components>

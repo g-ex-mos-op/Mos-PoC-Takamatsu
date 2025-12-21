@@ -1,0 +1,10 @@
+package jp.co.isid.mos.bird.framework.dto;
+
+
+/**
+ * CSVèoóÕópDTO
+ * @author xnkusama
+ */
+public interface CsvOutputDto {
+
+}

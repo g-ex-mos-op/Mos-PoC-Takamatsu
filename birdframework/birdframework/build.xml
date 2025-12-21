@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="birdframework" default="compile">
+	<description>
+	</description>
+
+	<!-- 現在時刻 -->
+	<tstamp>
+		<format property="build.datetime" pattern="yyyy/MM/dd HH:mm" />
+	</tstamp>
+
+	<!-- プロパティ -->
+	<property file="build.properties" />
+
+	<!-- jarファイル名 -->
+	<property name="jar.file.name" value="${ant.project.name}.jar" />
+
+	<!-- ライブラリ -->
+	<path id="project.classpath">
+		<fileset dir="${lib.dir}" includes="**/*.jar" />
+		<pathelement location="${build.dir}" />
+		<pathelement location="${java.class.path}" />
+	</path>
+
+	<!--
+	    clean
+	-->
+	<target name="clean" description="初期化を行います。">
+		<delete dir="${classes.dir}" failonerror="false" includeEmptyDirs="true" />
+		<mkdir dir="${classes.dir}" />
+	</target>
+
+	<!--
+	    compile
+	-->
+	<target name="compile" depends="clean" description="コンパイルしclassと設定ファイルを出力します。">
+
+		<!-- resourcesディレクトリ内をclassesにコピー -->
+		<copy todir="${classes.dir}/">
+			<fileset dir="${resource.dir}/">
+				<exclude name="**/*.classes" />
+				<exclude name="**/*.java" />
+			</fileset>
+		</copy>
+
+		<!-- コンパイル -->
+		<javac
+			includeAntRuntime = "false"
+    		srcdir            = "${src.dir}"
+			destdir           = "${classes.dir}"
+			executable        = "${jdk.home}/bin/javac"
+			encoding          = "MS932"
+			debug             = "true"
+			fork              = "yes"
+			classpathref      = "project.classpath">
+			<compilerarg line = "-Xlint:deprecation,unchecked" />
+		</javac>
+	</target>
+
+	<!--
+		Jar 生成
+	-->
+	<target name="jar" depends="compile" description="dest以下にjarファイルを生成します。">
+		<jar destfile="${dest.dir}/${jar.file.name}">
+			<fileset dir="${classes.dir}"/>
+			<manifest>
+				<attribute name="Built-By" value="${user.name}"/>
+				<attribute name="Built-Date" value="${build.datetime}"/>
+			</manifest>
+		</jar>
+	</target>
+
+	<!--
+		Copy 生成
+	-->
+	<target name="copy" description="jarファイルを使用しているプロジェクトにコピーします。">
+		<copy file="${dest.dir}/${jar.file.name}" todir="${bird.lib.dir}" overwrite="true"/>
+	</target>
+</project>
