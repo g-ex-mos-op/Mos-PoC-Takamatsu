@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="Shift_JIS"?>
+<!DOCTYPE components PUBLIC "-//SEASAR//DTD S2Container 2.3//EN"
+    "http://www.seasar.org/dtd/components23.dtd">
+<components namespace="projectplanoffer">
+    <include path="dao.dicon"/>
+    <include path="jp/co/isid/mos/bird/common/dicon/birdCommon.dicon"/>
+	<include path="jp/co/isid/mos/bird/framework/dicon/birdInterceptor.dicon"/>
+
+	<component class="org.seasar.framework.container.autoregister.AspectAutoRegister">
+	    <property name="interceptor">birdInterceptor.actionInterceptorChain</property>
+	    <initMethod name="addClassPattern">
+	        <arg>"jp.co.isid.mos.bird"</arg>
+	        <arg>".*ActionImpl"</arg>
+	    </initMethod>
+	    <initMethod name="registerAll"/>
+	</component> 
+	<component 
+	  class="org.seasar.framework.container.autoregister.AspectAutoRegister">
+	    <property name="interceptor">birdInterceptor.logicInterceptorChain</property>
+	    <initMethod name="addClassPattern">
+	        <arg>"jp.co.isid.mos.bird"</arg>
+	        <arg>".*LogicImpl"</arg>
+	    </initMethod>
+	    <initMethod name="registerAll"/>  
+	</component>
+	
+	<!-- OTHER -->
+	<component class="jp.co.isid.mos.bird.framework.control.BirdUserInfo" instance="session"/>
+	<component class="jp.co.isid.mos.bird.framework.control.BirdDateInfo" instance="session"/>
+
+	<!-- DAO -->
+	<component name="uiOfferMiseInfoDao" class="jp.co.isid.mos.bird.entry.projectplanoffer.dao.UIOfferMiseInfoDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="uiOnerInfoDao" class="jp.co.isid.mos.bird.entry.projectplanoffer.dao.UIOfferOnerInfoDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="uiOfferNoticeInfoDao" class="jp.co.isid.mos.bird.entry.projectplanoffer.dao.UIOfferNoticeInfoDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="uiOfferDutyPersonInfoDao" class="jp.co.isid.mos.bird.entry.projectplanoffer.dao.UIOfferDutyPersonInfoDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="uiOfferJoinPersonInfoDao" class="jp.co.isid.mos.bird.entry.projectplanoffer.dao.UIOfferJoinPersonInfoDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="uiOfferEntrustInfoDao" class="jp.co.isid.mos.bird.entry.projectplanoffer.dao.UIOfferEntrustInfoDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="uiOfferDutyDao" class="jp.co.isid.mos.bird.entry.projectplanoffer.dao.UIOfferDutyDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="uiOfferJoinDao" class="jp.co.isid.mos.bird.entry.projectplanoffer.dao.UIOfferJoinDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="uiOfferIninDao" class="jp.co.isid.mos.bird.entry.projectplanoffer.dao.UIOfferIninDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="uiOfferEntryStateDao" class="jp.co.isid.mos.bird.entry.projectplanoffer.dao.UIOfferEntryStateDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+
+	<!-- LOGIC -->
+	<component name="checkOfferInputParamLogic" class="jp.co.isid.mos.bird.entry.projectplanoffer.logic.impl.CheckOfferInputParamLogicImpl"/>
+	<component name="getOfferMiseInfoLogic" class="jp.co.isid.mos.bird.entry.projectplanoffer.logic.impl.GetOfferMiseInfoLogicImpl"/>
+	<component name="getOfferInfoLogic" class="jp.co.isid.mos.bird.entry.projectplanoffer.logic.impl.GetOfferInfoLogicImpl"/>
+	<component name="getOfferRegistLogic" class="jp.co.isid.mos.bird.entry.projectplanoffer.logic.impl.GetOfferRegistLogicImpl">
+		<aspect>j2ee.requiresNewTx</aspect>
+	</component>
+
+	<!-- DTO -->
+	<component name="pullDownMenuDto" class="jp.co.isid.mos.bird.framework.dto.PullDownMenuDto" autoBinding="none" instance="session"/>
+	<component name="projectPlanOfferDto" class="jp.co.isid.mos.bird.entry.projectplanoffer.dto.ProjectPlanOfferDto" autoBinding="none" instance="session"/>	
+	<component name="projectPlanOfferBakDto" class="jp.co.isid.mos.bird.entry.projectplanoffer.dto.ProjectPlanOfferBakDto" autoBinding="none" instance="session"/>	
+	<component name="eventListDto" class="jp.co.isid.mos.bird.entry.eventlist.dto.EventListDto" autoBinding="none" instance="session"/>
+	<component name="entryStaffSearchDto" class="jp.co.isid.mos.bird.entry.commonform.entrystaffsearch.dto.EntryStaffSearchDto" autoBinding="none" instance="session"/>
+	
+	<!-- ACTION -->
+	<component name="projectPlanOfferEditAction" class="jp.co.isid.mos.bird.entry.projectplanoffer.action.impl.ProjectPlanOfferEditActionImpl" instance="request">
+		<property name="projectPlanOfferDto">projectPlanOfferDto</property>
+	</component>
+	<component name="projectPlanOfferIninAction" class="jp.co.isid.mos.bird.entry.projectplanoffer.action.impl.ProjectPlanOfferIninActionImpl" instance="request">
+		<property name="projectPlanOfferDto">projectPlanOfferDto</property>
+	</component>
+	<component name="projectPlanOfferConfirmAction" class="jp.co.isid.mos.bird.entry.projectplanoffer.action.impl.ProjectPlanOfferComfirmActionImpl" instance="request">
+		<property name="projectPlanOfferDto">projectPlanOfferDto</property>
+	</component>		
+
+	<!-- CONVERTER -->
+	<component name="numericConverter" class="jp.co.isid.mos.bird.framework.text.converter.NumericConverter" instance="request"/>
+	<component name="projectPlanOfferCharacterEncodingConverter" class="jp.co.isid.mos.bird.framework.text.converter.CharacterEncodingConverter" instance="request"/>
+	<component name="projectPlanOfferZipConverter" class="jp.co.isid.mos.bird.framework.text.converter.MaskConverter" instance="request">
+		<arg>"###-####"</arg>
+	</component>
+</components>

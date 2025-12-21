@@ -1,0 +1,296 @@
+SELECT CKANRI_NO
+,      TITLE
+,      TARGET_FROM
+,      TARGET_TO
+,      DEFAULT_FROM
+,      DEFAULT_TO
+,      YOBI_FROM
+,      YOBI_TO
+,      COMPANY_CD
+,      COMPANY_NAME
+,      MISE_CD
+,      MISE_NAME_KJ
+,      SHOKU_CD AS SHO_CD_DAI
+,      SHOKU_NAME_KNA
+,      DECIMAL((CASE WHEN AMT_CASE < 0 THEN 0 ELSE AMT_CASE END)) AS AMT_CASE
+,      DECIMAL((CASE WHEN AMT_BARA < 0 THEN 0 ELSE AMT_BARA END)) AS AMT_BARA
+,      AMT_BL
+,      SHO_AMT_BARA
+,      RESERVE_CONV_AMT
+,      TOJITUZAIKO
+,      DECIMAL(TOJITUZAIKO-RESERVE_CONV_AMT) AS TOJITSU_YZ
+,      DECIMAL((TOJITUZAIKO-RESERVE_CONV_AMT+YOKUJITSU_SHO_AMT_BARA-YOKUJITSU_RESERVE_CONV_AMT)) AS YOKUJITSU_YZ
+,      DECIMAL(CASE WHEN (TOJITUZAIKO-RESERVE_CONV_AMT) <= (TOJITUZAIKO-RESERVE_CONV_AMT+YOKUJITSU_SHO_AMT_BARA-YOKUJITSU_RESERVE_CONV_AMT) 
+                    THEN (TOJITUZAIKO-RESERVE_CONV_AMT)
+                    ELSE (TOJITUZAIKO-RESERVE_CONV_AMT+YOKUJITSU_SHO_AMT_BARA-YOKUJITSU_RESERVE_CONV_AMT)
+               END) AS KANOU_AMT
+,      DECIMAL(CASE WHEN DECIMAL(TOJITUZAIKO-RESERVE_CONV_AMT-YOKUJITSU_RESERVE_CONV_AMT) < 0 THEN DECIMAL(TOJITUZAIKO-RESERVE_CONV_AMT)
+                    ELSE DECIMAL(TOJITUZAIKO-RESERVE_CONV_AMT)
+                      -(CASE WHEN (TOJITUZAIKO-RESERVE_CONV_AMT) 
+                                      <= (TOJITUZAIKO-RESERVE_CONV_AMT+YOKUJITSU_SHO_AMT_BARA-YOKUJITSU_RESERVE_CONV_AMT) 
+                             THEN (TOJITUZAIKO-RESERVE_CONV_AMT)
+                             ELSE (TOJITUZAIKO-RESERVE_CONV_AMT+YOKUJITSU_SHO_AMT_BARA-YOKUJITSU_RESERVE_CONV_AMT)
+                        END)
+               END
+       ) AS TOJITSU_ZZ
+,      YOKUJITSU_SHO_AMT_BARA
+,      YOKUJITSU_RESERVE_CONV_AMT
+,      DECIMAL((
+        (CASE WHEN DECIMAL(TOJITUZAIKO-RESERVE_CONV_AMT) <= (
+                DECIMAL(CASE WHEN DECIMAL(TOJITUZAIKO-RESERVE_CONV_AMT-YOKUJITSU_RESERVE_CONV_AMT) < 0 THEN DECIMAL(TOJITUZAIKO-RESERVE_CONV_AMT)
+                    ELSE DECIMAL(TOJITUZAIKO-RESERVE_CONV_AMT)
+                      -(CASE WHEN (TOJITUZAIKO-RESERVE_CONV_AMT) 
+                                      <= (TOJITUZAIKO-RESERVE_CONV_AMT+YOKUJITSU_SHO_AMT_BARA-YOKUJITSU_RESERVE_CONV_AMT) 
+                             THEN (TOJITUZAIKO-RESERVE_CONV_AMT)
+                             ELSE (TOJITUZAIKO-RESERVE_CONV_AMT+YOKUJITSU_SHO_AMT_BARA-YOKUJITSU_RESERVE_CONV_AMT)
+                        END)
+               END
+       ) )
+              THEN DECIMAL(TOJITUZAIKO-RESERVE_CONV_AMT) 
+              ELSE (
+                DECIMAL(CASE WHEN DECIMAL(TOJITUZAIKO-RESERVE_CONV_AMT-YOKUJITSU_RESERVE_CONV_AMT) < 0 THEN DECIMAL(TOJITUZAIKO-RESERVE_CONV_AMT)
+                    ELSE DECIMAL(TOJITUZAIKO-RESERVE_CONV_AMT)
+                      -(CASE WHEN (TOJITUZAIKO-RESERVE_CONV_AMT) 
+                                      <= (TOJITUZAIKO-RESERVE_CONV_AMT+YOKUJITSU_SHO_AMT_BARA-YOKUJITSU_RESERVE_CONV_AMT) 
+                             THEN (TOJITUZAIKO-RESERVE_CONV_AMT)
+                             ELSE (TOJITUZAIKO-RESERVE_CONV_AMT+YOKUJITSU_SHO_AMT_BARA-YOKUJITSU_RESERVE_CONV_AMT)
+                        END)
+               END
+       )               )
+         END) 
+         + YOKUJITSU_SHO_AMT_BARA - YOKUJITSU_RESERVE_CONV_AMT) ) AS YOKUJITSU_ZZ
+,      FIRST_USER
+,      FIRST_PGM
+,      FIRST_TMSP
+,      LAST_USER
+,      LAST_PGM
+,      LAST_TMSP
+FROM (
+    SELECT MST.CKANRI_NO
+    ,      MST.TITLE
+    ,      MST.TARGET_FROM
+    ,      MST.TARGET_TO
+    ,      MST.DEFAULT_FROM
+    ,      MST.DEFAULT_TO
+    ,      MST.YOBI_FROM
+    ,      MST.YOBI_TO
+    ,      MST.COMPANY_CD
+    ,      MST.COMPANY_NAME
+    ,      MST.MISE_CD
+    ,      MST.MISE_NAME_KJ
+    ,      MST.SHOKU_CD
+    ,      MST.SHOKU_NAME_KNA
+    ,      SUM(DECIMAL(CASE WHEN BT69.AMT_CASE IS NULL 
+                        THEN (CASE WHEN BT68.AMOUNT IS NULL THEN 0
+                                   WHEN BT68.AMOUNT < 0 THEN 0
+                                   ELSE DECIMAL(BT68.AMOUNT/DECIMAL(MST.IRIME1+0.5, 9,0))
+                              END)
+                        ELSE BT69.AMT_CASE 
+                   END)) AS AMT_CASE
+    ,      SUM(DECIMAL(CASE WHEN BT69.AMT_BARA IS NULL 
+                        THEN DECIMAL(CASE WHEN BT68.AMOUNT IS NULL THEN 0
+                                          WHEN BT68.AMOUNT < 0 THEN 0
+                                     ELSE (BT68.AMOUNT-(
+                                     	DECIMAL(MST.IRIME1+0.5, 9,0)*DECIMAL(BT68.AMOUNT/DECIMAL(MST.IRIME1+0.5, 9,0)))
+                                          )
+                                     END)
+                        ELSE BT69.AMT_BARA 
+                   END)) AS AMT_BARA
+    ,      SUM(DECIMAL(CASE WHEN BT69.AMT_BL IS NULL THEN 0 ELSE BT69.AMT_BL END)) AS AMT_BL
+    ,      SUM(DECIMAL(CASE WHEN BT67_TODAY.SHO_AMT_BARA IS NULL THEN 0 ELSE BT67_TODAY.SHO_AMT_BARA END)) AS SHO_AMT_BARA 
+    ,      SUM(DECIMAL(CASE WHEN TODAY_RESV.AMOUNT IS NULL THEN 0 ELSE TODAY_RESV.AMOUNT END)) AS RESERVE_CONV_AMT
+    ,      SUM(DECIMAL(CASE WHEN BT67_TOMORROW.SHO_AMT_BARA IS NULL THEN 0 ELSE BT67_TOMORROW.SHO_AMT_BARA 
+                   END)) AS YOKUJITSU_SHO_AMT_BARA
+    ,      SUM(DECIMAL(CASE WHEN TOMORROW_RESV.AMOUNT IS NULL THEN 0 ELSE TOMORROW_RESV.AMOUNT END)) AS YOKUJITSU_RESERVE_CONV_AMT
+    ,      SUM(DECIMAL((
+              (DECIMAL(
+              	  CASE WHEN BT69.AMT_CASE IS NULL 
+                       THEN (CASE WHEN BT68.AMOUNT IS NULL THEN 0 WHEN BT68.AMOUNT < 0 THEN 0 ELSE BT68.AMOUNT END)
+                       ELSE (BT69.AMT_CASE*DECIMAL(MST.IRIME1+0.5, 9,0)
+                              +(CASE WHEN BT69.AMT_BARA IS NULL THEN 0 ELSE BT69.AMT_BARA END)
+                            )
+                  END)
+              )          
+              +(CASE WHEN BT67_TODAY.SHO_AMT_BARA IS NULL THEN 0 ELSE BT67_TODAY.SHO_AMT_BARA END)
+              +(CASE WHEN BT69.AMT_BL IS NULL THEN 0 ELSE BT69.AMT_BL END)))) AS TOJITUZAIKO
+    ,      BT69.FIRST_USER
+    ,      BT69.FIRST_PGM
+    ,      BT69.FIRST_TMSP
+    ,      BT69.LAST_USER
+    ,      BT69.LAST_PGM
+    ,      BT69.LAST_TMSP
+    FROM (
+        select BM39.CKANRI_NO
+        ,      BM39.TITLE
+        ,      BM39.TARGET_FROM
+        ,      BM39.TARGET_TO
+        ,      BM39.DEFAULT_FROM
+        ,      BM39.DEFAULT_TO
+        ,      BM39.YOBI_FROM
+        ,      BM39.YOBI_TO
+        ,      BM01.COMPANY_CD
+        ,      BC05.COMPANY_NAME
+        ,      BM01.MISE_CD
+        ,      BM01.MISE_NAME_KJ
+        ,      BM41.SHOKU_CD
+        ,      PM06.SHOKU_NAME_KNA
+        ,      PM06.IRIME1
+        from BM39CPRD BM39
+        ,    BM40CMGP BM40
+        ,    BM41CMNU BM41
+        ,    BM01TENM BM01
+        ,    BC05KCOM BC05
+        ,    PM06SHOK PM06
+        WHERE BM01.COMPANY_CD    = /*companyCd*/'00'
+        AND   BM39.CKANRI_NO     = /*ckanriNo*/'200601'
+        AND   BM01.MISE_CD       = /*miseCd*/'00017'
+/*IF !shokuCd.equals("all")*/
+        AND   PM06.SHOKU_CD      = /*shokuCd*/'00088'
+/*END*/
+        AND   BM40.CKANRI_NO     = BM39.CKANRI_NO
+        AND   BM41.CKANRI_NO     = BM40.CKANRI_NO 
+        AND   BM41.MENU_GROUP = BM40.MENU_GROUP 
+        AND   BM41.SHOKU_CD   = PM06.SHOKU_CD
+        AND   BC05.COMPANY_CD = BM01.COMPANY_CD 
+        AND   BM01.OPEN_DT <= BM39.TARGET_FROM 
+        AND   BM01.CLOSE_DT > BM39.TARGET_FROM 
+        group by BM39.CKANRI_NO
+        ,        BM39.TITLE
+        ,        BM39.TARGET_FROM
+        ,        BM39.TARGET_TO
+        ,        BM39.DEFAULT_FROM
+        ,        BM39.DEFAULT_TO
+        ,        BM39.YOBI_FROM
+        ,        BM39.YOBI_TO
+        ,        BM01.COMPANY_CD
+        ,        BC05.COMPANY_NAME
+        ,        BM01.MISE_CD
+        ,        BM01.MISE_NAME_KJ
+        ,        BM41.SHOKU_CD
+        ,        PM06.SHOKU_NAME_KNA
+        ,        PM06.IRIME1
+    ) MST
+    LEFT JOIN BT67CJKN BT67_TODAY
+    ON ( BT67_TODAY.COMPANY_CD = MST.COMPANY_CD 
+     AND BT67_TODAY.MISE_CD = MST.MISE_CD
+     AND BT67_TODAY.SHO_CD_DAI = MST.SHOKU_CD
+     AND BT67_TODAY.NOHIN_DT = /*thisDate*/'20061224'
+     AND BT67_TODAY.SAKUJO_FLG <> '1'
+    )
+    LEFT JOIN BT67CJKN BT67_TOMORROW
+    ON ( BT67_TOMORROW.COMPANY_CD = MST.COMPANY_CD 
+     AND BT67_TOMORROW.MISE_CD = MST.MISE_CD
+     AND BT67_TOMORROW.SHO_CD_DAI = MST.SHOKU_CD
+     AND BT67_TOMORROW.NOHIN_DT = /*nextDate*/'20061225'
+     AND BT67_TOMORROW.SAKUJO_FLG <> '1'
+    )
+    LEFT JOIN BT68CMZK BT68
+    ON ( BT68.COMPANY_CD = MST.COMPANY_CD 
+     AND BT68.MISE_CD = MST.MISE_CD
+     AND BT68.SHO_CD_DAI = MST.SHOKU_CD
+     AND BT68.ZAIKO_DT = /*lastDate*/'20061224'
+    )
+    LEFT JOIN BT69CZIN BT69
+    ON ( BT69.COMPANY_CD = MST.COMPANY_CD 
+     AND BT69.MISE_CD = MST.MISE_CD
+     AND BT69.SHO_CD_DAI = MST.SHOKU_CD
+     AND BT69.EIGYO_DT = /*thisDate*/'20061224'
+    )
+    LEFT JOIN (
+        SELECT SUB.COMPANY_CD
+        ,      SUB.MISE_CD
+        ,      SUB.CKANRI_NO
+        ,      SUB.SHOKU_CD
+        ,      SUM(SUB.RESERVE_CONV_AMT) AS AMOUNT
+        FROM (
+            SELECT BT71.COMPANY_CD
+            ,      BT71.MISE_CD
+            ,      BT71.CKANRI_NO
+            ,      BT71.MENU_CD
+            ,      CMNU.SHOKU_CD
+            ,      DECIMAL(BT71.RESERVE_AMT*CMNU.CONV_VALUE) AS RESERVE_CONV_AMT
+            FROM BM41CMNU CMNU
+            ,    BT70CRSV BT70
+            ,    BT71CRSD BT71
+            WHERE BT70.COMPANY_CD = /*companyCd*/'00'
+            AND   CMNU.CKANRI_NO= /*ckanriNo*/'200601'
+            AND   BT70.MISE_CD  = /*miseCd*/'00017'
+            AND   BT70.RESERVE_DT = /*thisDate*/'20061224'
+            AND   BT70.CANCEL_FLG <> '1'
+            AND   BT70.CKANRI_NO = CMNU.CKANRI_NO
+            AND   BT71.CKANRI_NO = BT70.CKANRI_NO
+            AND   BT71.COMPANY_CD = BT70.COMPANY_CD
+            AND   BT71.MISE_CD = BT70.MISE_CD
+            AND   BT71.SEQ_NO = BT70.SEQ_NO
+            AND   BT71.MENU_CD = CMNU.MENU_CD
+              ) SUB
+        GROUP BY SUB.COMPANY_CD
+        ,        SUB.MISE_CD
+        ,        SUB.CKANRI_NO
+        ,        SUB.SHOKU_CD
+        ) TODAY_RESV
+    ON ( TODAY_RESV.COMPANY_CD = MST.COMPANY_CD 
+     AND TODAY_RESV.MISE_CD    = MST.MISE_CD
+     AND TODAY_RESV.CKANRI_NO  = MST.CKANRI_NO
+     AND TODAY_RESV.SHOKU_CD = MST.SHOKU_CD
+    )
+    LEFT JOIN (
+        SELECT SUB.COMPANY_CD
+        ,      SUB.MISE_CD
+        ,      SUB.CKANRI_NO
+        ,      SUB.SHOKU_CD
+        ,      SUM(SUB.RESERVE_CONV_AMT) AS AMOUNT
+        FROM (
+            SELECT BT71.COMPANY_CD
+            ,      BT71.MISE_CD
+            ,      BT71.CKANRI_NO
+            ,      BT71.MENU_CD
+            ,      CMNU.SHOKU_CD
+            ,      DECIMAL(BT71.RESERVE_AMT*CMNU.CONV_VALUE) AS RESERVE_CONV_AMT
+            FROM BM41CMNU CMNU
+            ,    BT70CRSV BT70
+            ,    BT71CRSD BT71
+            WHERE BT70.COMPANY_CD = /*companyCd*/'00'
+            AND   CMNU.CKANRI_NO= /*ckanriNo*/'200601'
+            AND   BT70.MISE_CD  = /*miseCd*/'00017'
+            AND   BT70.RESERVE_DT = /*nextDate*/'20061225'
+            AND   BT70.CANCEL_FLG <> '1'
+            AND   BT70.CKANRI_NO = CMNU.CKANRI_NO
+            AND   BT71.CKANRI_NO = BT70.CKANRI_NO
+            AND   BT71.COMPANY_CD = BT70.COMPANY_CD
+            AND   BT71.MISE_CD = BT70.MISE_CD
+            AND   BT71.SEQ_NO = BT70.SEQ_NO
+            AND   BT71.MENU_CD = CMNU.MENU_CD
+              ) SUB
+        GROUP BY SUB.COMPANY_CD
+        ,        SUB.MISE_CD
+        ,        SUB.CKANRI_NO
+        ,        SUB.SHOKU_CD
+        ) TOMORROW_RESV
+    ON ( TOMORROW_RESV.COMPANY_CD = MST.COMPANY_CD 
+     AND TOMORROW_RESV.MISE_CD    = MST.MISE_CD
+     AND TOMORROW_RESV.CKANRI_NO  = MST.CKANRI_NO
+     AND TOMORROW_RESV.SHOKU_CD = MST.SHOKU_CD
+    )
+    GROUP BY MST.CKANRI_NO
+    ,        MST.TITLE
+    ,        MST.TARGET_FROM
+    ,        MST.TARGET_TO
+    ,        MST.DEFAULT_FROM
+    ,        MST.DEFAULT_TO
+    ,        MST.YOBI_FROM
+    ,        MST.YOBI_TO
+    ,        MST.COMPANY_CD
+    ,        MST.COMPANY_NAME
+    ,        MST.MISE_CD
+    ,        MST.MISE_NAME_KJ
+    ,        MST.SHOKU_CD
+    ,        MST.SHOKU_NAME_KNA
+    ,        BT69.FIRST_USER
+    ,        BT69.FIRST_PGM
+    ,        BT69.FIRST_TMSP
+    ,        BT69.LAST_USER
+    ,        BT69.LAST_PGM
+    ,        BT69.LAST_TMSP
+) STATUSINFO
+ORDER BY SHO_CD_DAI

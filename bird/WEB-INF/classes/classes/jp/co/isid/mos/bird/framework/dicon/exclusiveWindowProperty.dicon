@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="Shift_JIS"?>
+<!DOCTYPE components PUBLIC "-//SEASAR2.1//DTD S2Container//EN"
+	"http://www.seasar.org/dtd/components21.dtd">
+<components  namespace='exclusiveWindowProperty'>
+	<component name="exclusiveViewId" class="java.util.ArrayList">
+		<initMethod name="add" >
+			<arg>
+				"BCO"
+			</arg>
+		</initMethod>
+	</component>
+</components>

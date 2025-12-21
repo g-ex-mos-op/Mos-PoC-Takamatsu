@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="Shift_JIS"?>
+<!DOCTYPE components PUBLIC "-//SEASAR2.1//DTD S2Container//EN"
+	"http://www.seasar.org/dtd/components21.dtd">
+<components namespace="portalTop">
+    <include path="dao.dicon"/>
+    <include path="jp/co/isid/mos/bird/framework/dicon/birdInterceptor.dicon"/>
+    <include path="jp/co/isid/mos/bird/common/dicon/birdCommon.dicon"/>
+
+	<component class="org.seasar.framework.container.autoregister.AspectAutoRegister">
+	    <property name="interceptor">birdInterceptor.actionInterceptorChain</property>
+	    <initMethod name="addClassPattern">
+	        <arg>"jp.co.isid.mos.bird"</arg>
+	        <arg>".*ActionImpl"</arg>
+	    </initMethod>
+	    <initMethod name="registerAll"/>
+	</component>
+	<component class="org.seasar.framework.container.autoregister.AspectAutoRegister">
+	    <property name="interceptor">birdInterceptor.logicInterceptorChain</property>
+	    <initMethod name="addClassPattern">
+	        <arg>"jp.co.isid.mos.bird"</arg>
+	        <arg>".*LogicImpl"</arg>
+	    </initMethod>
+	    <initMethod name="registerAll"/>
+	</component>
+	<component class="org.seasar.framework.container.autoregister.AspectAutoRegister">
+	    <property name="interceptor">birdInterceptor.insideactionInterceptorChain</property>
+	    <initMethod name="addClassPattern">
+	        <arg>"jp.co.isid.mos.bird"</arg>
+	        <arg>".*InsideactionImpl"</arg>
+	    </initMethod>
+	    <initMethod name="registerAll"/>
+	</component>
+
+	<!-- DAO -->
+	<component name="trnOutSystemLogDao" class="jp.co.isid.mos.bird.framework.dao.TrnOutSystemLogDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="commonUIOutLinkDao" class="jp.co.isid.mos.bird.common.dao.UIOutLinkDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="portalTopUISokuDao" class="jp.co.isid.mos.bird.portal.top.dao.UISokuDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="portalTopUIOsiraseDao" class="jp.co.isid.mos.bird.portal.top.dao.UIOsiraseDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="portalTopUIScheduleDao" class="jp.co.isid.mos.bird.portal.top.dao.UIScheduleDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="portalTopUITutatuLastUpdateDtDao" class="jp.co.isid.mos.bird.portal.top.dao.UITutatuLastUpdateDtDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="myMenuDao" class="jp.co.isid.mos.bird.framework.dao.MyMenuDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="trnMyMenuDao" class="jp.co.isid.mos.bird.framework.dao.TrnMyMenuDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="portalTopUIShozokuCompanyDao" class="jp.co.isid.mos.bird.portal.top.dao.UIShozokuCompanyDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="portalTopUICalenderDayInfoDao" class="jp.co.isid.mos.bird.portal.top.dao.UICalenderDayInfoDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="portalTopUICalenderMonthInfoDao" class="jp.co.isid.mos.bird.portal.top.dao.UICalenderMonthInfoDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="commonUIChannelParamDao" class="jp.co.isid.mos.bird.common.dao.UIChannelParamDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+
+	<!-- LOGIC -->
+	<component name="regOutputLogLogic" class="jp.co.isid.mos.bird.framework.logic.impl.RegOutputLogLogicImpl"/>
+	<component name="commonGetOutLinkLogic" class="jp.co.isid.mos.bird.common.logic.impl.GetOutLinkLogicImpl"/>
+	<component name="commonGetChannelParamLogic" class="jp.co.isid.mos.bird.common.logic.impl.GetChannelParamLogicImpl"/>
+	<component name="portalTopGetSokuLogic" class="jp.co.isid.mos.bird.portal.top.logic.impl.GetSokuLogicImpl"/>
+	<component name="portalTopGetOsiraseLogic" class="jp.co.isid.mos.bird.portal.top.logic.impl.GetOsiraseLogicImpl"/>
+	<component name="portalTopGetScheduleLogic" class="jp.co.isid.mos.bird.portal.top.logic.impl.GetScheduleLogicImpl"/>
+	<component name="portalTopGetTutatuLastUpdateDtLogic" class="jp.co.isid.mos.bird.portal.top.logic.impl.GetTutatuLastUpdateDtLogicImpl"/>
+	<component name="portalTopRegMyMenuLogic" class="jp.co.isid.mos.bird.portal.top.logic.impl.RegMyMenuLogicImpl"/>
+	<component name="portalTopGetCalenderInfoLogic" class="jp.co.isid.mos.bird.portal.top.logic.impl.GetCalenderInfoLogicImpl"/>
+
+	<!-- DTO -->
+	<component name="matrixDto" class="jp.co.isid.mos.bird.portal.login.dto.MatrixDto" instance="session">
+		<property name="matrixList">null</property>
+	</component>
+	<component name="portalTopDto" class="jp.co.isid.mos.bird.portal.top.dto.PortalTopDto" autoBinding="none" instance="session">
+		<property name="pullDownMenuDto">pullDownMenuDto</property>
+	</component>
+	<component name="commonOutLinkDto" class="jp.co.isid.mos.bird.common.dto.OutLinkDto" instance="request"/>
+	<component name="portalTopCalenderInfoDto" class="jp.co.isid.mos.bird.portal.top.dto.CalenderInfoDto" instance="request"/>
+
+	<!-- ENTITY -->
+	<!-- OTHER -->
+	<component class="jp.co.isid.mos.bird.framework.control.BirdUserInfo" instance="session"/>
+	<component class="jp.co.isid.mos.bird.framework.control.BirdDateInfo" instance="session"/>
+
+	<!-- CONVERTER -->
+	<component name="bizreportNumericCnvt" class="jp.co.isid.mos.bird.framework.text.converter.NumericConverter" instance="request">
+		<arg>"#,##0"</arg><arg>true</arg>
+	</component>
+	<component name="dateConverterYMDEKj" class="jp.co.isid.mos.bird.framework.text.converter.DateConverter" instance="request">
+		<arg>@jp.co.isid.mos.bird.framework.util.formatter.DateFormatter@DATE_TYPE_YMD</arg>
+		<arg>"yyyy'年'MM'月'dd'日（'E'）'"</arg>
+	</component>
+	<component name="dateConverterMDEKj" class="jp.co.isid.mos.bird.framework.text.converter.DateConverter" instance="request">
+		<arg>@jp.co.isid.mos.bird.framework.util.formatter.DateFormatter@DATE_TYPE_YMD</arg>
+		<arg>@jp.co.isid.mos.bird.framework.util.formatter.DateFormatter@PATTERN_DAY_KANJI</arg>
+	</component>
+	<component name="dateConverterM" class="jp.co.isid.mos.bird.framework.text.converter.DateConverter" instance="request">
+		<arg>@jp.co.isid.mos.bird.framework.util.formatter.DateFormatter@DATE_TYPE_YMD</arg>
+		<arg>"MM"</arg>
+	</component>
+	<component name="numericConverter" class="jp.co.isid.mos.bird.framework.text.converter.NumericConverter" instance="request"/>
+
+	<!-- ACTION -->
+	<component name="portalTopAction" class="jp.co.isid.mos.bird.portal.top.action.impl.PortalTopActionImpl" instance="request"/>
+	<component name="portalTopLinkAction" class="jp.co.isid.mos.bird.portal.top.action.impl.LinkActionImpl" instance="request"/>
+	<component name="portalTopOsiraseAction" class="jp.co.isid.mos.bird.portal.top.action.inside.impl.OsiraseInsideactionImpl" instance="request"/>
+	<component name="portalTopScheduleAction" class="jp.co.isid.mos.bird.portal.top.action.inside.impl.ScheduleInsideactionImpl" instance="request"/>
+	<component name="portalTopSokuhoAction" class="jp.co.isid.mos.bird.portal.top.action.inside.impl.SokuhoInsideactionImpl" instance="request"/>
+	<component name="portalTopTutatuAction" class="jp.co.isid.mos.bird.portal.top.action.inside.impl.TutatuInsideactionImpl" instance="request"/>
+	<component name="outLinkAction" class="jp.co.isid.mos.bird.common.action.impl.OutLinkActionImpl" instance="request"/>
+	<component name="portalTopCalenderInfoAction" class="jp.co.isid.mos.bird.portal.top.action.inside.impl.CalenderInfoInsideactionImpl" instance="request"/>
+	<component name="portalTopAllianceInfoAction" class="jp.co.isid.mos.bird.portal.top.action.inside.impl.AllianceInfoInsideactionImpl" instance="request"/>
+	<component name="portalSessionKeyAction" class="jp.co.isid.mos.bird.portal.top.action.impl.GetSessionKeyActionImpl" instance="request"/>
+	<!-- コンバーター -->
+	<component name="changeLineEditConverter" class="jp.co.isid.mos.bird.framework.text.converter.ChangeLineEditConverter" instance="request"/>
+	<component name="changeLineRefConverter" class="jp.co.isid.mos.bird.framework.text.converter.ChangeLineRefConverter" instance="request"/>
+</components>

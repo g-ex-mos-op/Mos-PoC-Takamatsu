@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="Shift_JIS"?>
+<!DOCTYPE components PUBLIC "-//SEASAR//DTD S2Container 2.3//EN"
+    "http://www.seasar.org/dtd/components23.dtd">
+<components namespace="moscardNipoRef">
+    <include path="dao.dicon"/>
+	<include path="jp/co/isid/mos/bird/framework/dicon/birdInterceptor.dicon"/>
+	<include path="jp/co/isid/mos/bird/common/dicon/birdCommon.dicon"/>
+	<include path="jp/co/isid/mos/bird/storeinfo/miseref/dicon/miseRef.dicon"/>
+	<include path="jp/co/isid/mos/bird/bizreport/common/dicon/bizreportCommon.dicon" />
+	
+	<component
+	  class="org.seasar.framework.container.autoregister.AspectAutoRegister">
+	    <property name="interceptor">birdInterceptor.actionInterceptorChain</property>
+	    <initMethod name="addClassPattern">
+	        <arg>"jp.co.isid.mos.bird"</arg>
+	        <arg>".*ActionImpl"</arg>
+	    </initMethod>
+	    <initMethod name="registerAll"/>
+	</component> 
+	
+	<component
+	  class="org.seasar.framework.container.autoregister.AspectAutoRegister">
+	    <property name="interceptor">birdInterceptor.logicInterceptorChain</property>
+	    <initMethod name="addClassPattern">
+	        <arg>"jp.co.isid.mos.bird"</arg>
+	        <arg>".*LogicImpl"</arg>
+	    </initMethod>
+	    <initMethod name="registerAll"/>
+	</component>
+
+	<component class="jp.co.isid.mos.bird.framework.control.BirdUserInfo" instance="session"/>
+	<component class="jp.co.isid.mos.bird.framework.control.BirdDateInfo" instance="session"/>
+
+	<!-- DAO -->
+	<component name="moscardNipoRefMstSibuInfoDao" class="jp.co.isid.mos.bird.bizreport.moscardniporef.dao.MstSibuInfoDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="moscardNipoRefTrnUriageInfoDao" class="jp.co.isid.mos.bird.bizreport.moscardniporef.dao.TrnUriageInfoDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="moscardNipoRefTrnUriageSegInfoDao" class="jp.co.isid.mos.bird.bizreport.moscardniporef.dao.TrnUriageSegInfoDao">
+        <aspect>dao.interceptor</aspect>
+	</component>	
+	<component name="moscardNipoRefTrnYosanInfoDao" class="jp.co.isid.mos.bird.bizreport.moscardniporef.dao.TrnYosanInfoDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="moscardNipoRefTrnUriageNipoInfoDao" class="jp.co.isid.mos.bird.bizreport.moscardniporef.dao.TrnUriageNipoInfoDao">
+        <aspect>dao.interceptor</aspect>
+	</component>	
+	<component name="moscardNipoRefTrnUriageGepoInfoDao" class="jp.co.isid.mos.bird.bizreport.moscardniporef.dao.TrnUriageGepoInfoDao">
+        <aspect>dao.interceptor</aspect>
+	</component>	
+	<component name="moscardNipoRefTrnSegmentInfoDao" class="jp.co.isid.mos.bird.bizreport.moscardniporef.dao.MstSegmentInfoDao">
+        <aspect>dao.interceptor</aspect>
+	</component>	
+    <component name="moscardNipoRefUIOnerGepoCSVDao" class="jp.co.isid.mos.bird.bizreport.moscardniporef.dao.UIOnerGepoCSVDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="moscardNipoRefUIOnerGepoAvgCSVDao" class="jp.co.isid.mos.bird.bizreport.moscardniporef.dao.UIOnerGepoAvgCSVDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+
+	<!-- Logic -->
+	<component name="viewSibuInfoLogic" class="jp.co.isid.mos.bird.bizreport.moscardniporef.logic.impl.ViewSibuInfoLogicImpl"/>
+	<component name="uriageInfoLogic" class="jp.co.isid.mos.bird.bizreport.moscardniporef.logic.impl.UriageInfoLogicImpl"/>
+	<component name="moscardNipoRefViewUriYosanLogic" class="jp.co.isid.mos.bird.bizreport.moscardniporef.logic.impl.ViewUriYosanLogicImpl"/>
+	<component name="uriageNipoInfoLogic" class="jp.co.isid.mos.bird.bizreport.moscardniporef.logic.impl.UriageNipoInfoLogicImpl">
+		<property name="mstSibuDao">birdCommon.mstSibuDao</property>
+	</component>
+	<component name="targetSibuInfoLogic" class="jp.co.isid.mos.bird.bizreport.moscardniporef.logic.impl.TargetSibuInfoLogicImpl"/>
+	<component name="moscardNipoSearchLogic" class="jp.co.isid.mos.bird.bizreport.moscardniporef.logic.impl.SearchLogicImpl">
+		<property name="ctlBirdUserDao">birdCommon.ctlBirdUserDao</property>
+	</component>
+	<component name="moscardNipoRefCsvOutputSibuLogic" class="jp.co.isid.mos.bird.bizreport.moscardniporef.logic.impl.SibuCsvOutputLogicImpl"/>
+	<component name="moscardNipoRefCsvOutputMiseLogic" class="jp.co.isid.mos.bird.bizreport.moscardniporef.logic.impl.MiseCsvOutputLogicImpl"/>
+	<component name="moscardNipoRefCsvOutputOnerLogic" class="jp.co.isid.mos.bird.bizreport.moscardniporef.logic.impl.OnerCsvOutputLogicImpl"/>
+	<component name="moscardNipoRefCsvOutputOnerGepoLogic" class="jp.co.isid.mos.bird.bizreport.moscardniporef.logic.impl.OnerGepoCsvOutputLogicImpl"/>
+	<component name="honbuUriageInfoLogic" class="jp.co.isid.mos.bird.bizreport.moscardniporef.logic.impl.HonbuUriageInfoLogicImpl"/>	
+	<!-- DTO -->
+	<component name="newSvSearchDto" class="jp.co.isid.mos.bird.commonform.svsearchnew.dto.SvSearchDto" instance="session">
+		<property name="RCompanyCdList">new java.util.ArrayList(0)</property>
+		<property name="sibuCd">null</property>
+	</component>
+	<component name="moscardNipoRefMapResultDto" class="jp.co.isid.mos.bird.bizreport.common.dto.NipoRefResultMapDto" instance="session">
+	</component>
+	<component name="moscardNipoRefResultDto" class="jp.co.isid.mos.bird.bizreport.moscardniporef.dto.ResultDto" instance="request">
+		<property name="uriageList">new java.util.ArrayList(0)</property>
+		<property name="kyakusuList">new java.util.ArrayList(0)</property>
+		<property name="uriAvgList">new java.util.ArrayList(0)</property>
+		<property name="kyakuAvgList">new java.util.ArrayList(0)</property>
+	</component>	
+	<!-- Action -->
+	<component name="moscardNipoRefConditionAction" class="jp.co.isid.mos.bird.bizreport.moscardniporef.action.impl.MoscardNipoRefConditionActionImpl" instance="request">
+		<property name="conditionLogic">bizreportCommon.conditionLogic</property>
+		<property name="nipoRefConditionDto">bizreportCommon.nipoRefConditionDto</property>
+		<property name="nipoRefSearchParameterDto">bizreportCommon.nipoRefSearchParameterDto</property>
+		<property name="nipoRefResultParameterDto">bizreportCommon.nipoRefResultParameterDto</property>
+		<property name="csvOutputLogic">moscardNipoRefCsvOutputOnerGepoLogic</property>
+		<property name="csvOutputDto">bizreportCommon.nipoRefSearchParameterDto</property>
+	</component>
+	<component name="moscardNipoRefSibuConfirmAction" class="jp.co.isid.mos.bird.bizreport.moscardniporef.action.impl.MoscardNipoRefSibuConfirmActionImpl" instance="request">
+		<property name="mstSibuInfoLogic">bizreportCommon.mstSibuInfoLogic</property>
+		<property name="nipoRefConditionDto">bizreportCommon.nipoRefConditionDto</property>
+		<property name="nipoRefSearchParameterDto">bizreportCommon.nipoRefSearchParameterDto</property>
+		<property name="nipoRefResultParameterDto">bizreportCommon.nipoRefResultParameterDto</property>
+		<property name="moscardNipoRefCsvOutputSibuLogic">moscardNipoRefCsvOutputSibuLogic</property>
+		<property name="moscardNipoRefCsvOutputMiseLogic">moscardNipoRefCsvOutputMiseLogic</property>
+		<property name="csvOutputLogic">null</property>
+		<property name="csvOutputDto">null</property>
+		<property name="moscardNipoSearchLogic">moscardNipoSearchLogic</property>
+	</component>
+	<component name="moscardNipoRefMiseConfirmAction" class="jp.co.isid.mos.bird.bizreport.moscardniporef.action.impl.MoscardNipoRefMiseConfirmActionImpl" instance="request">
+		<property name="mstSibuInfoLogic">bizreportCommon.mstSibuInfoLogic</property>
+		<property name="nipoRefConditionDto">bizreportCommon.nipoRefConditionDto</property>
+		<property name="nipoRefSearchParameterDto">bizreportCommon.nipoRefSearchParameterDto</property>
+		<property name="nipoRefResultParameterDto">bizreportCommon.nipoRefResultParameterDto</property>
+		<property name="csvOutputLogic">moscardNipoRefCsvOutputMiseLogic</property>
+		<property name="csvOutputDto">null</property>
+		<property name="moscardNipoSearchLogic">moscardNipoSearchLogic</property>
+	</component>
+	<component name="moscardNipoRefOnerConfirmAction" class="jp.co.isid.mos.bird.bizreport.moscardniporef.action.impl.MoscardNipoRefOnerConfirmActionImpl" instance="request">
+		<property name="nipoRefConditionDto">bizreportCommon.nipoRefConditionDto</property>
+		<property name="nipoRefSearchParameterDto">bizreportCommon.nipoRefSearchParameterDto</property>
+		<property name="nipoRefResultParameterDto">bizreportCommon.nipoRefResultParameterDto</property>
+		<property name="moscardNipoRefCsvOutputOnerLogic">moscardNipoRefCsvOutputOnerLogic</property>
+		<property name="moscardNipoRefCsvOutputOnerGepoLogic">moscardNipoRefCsvOutputOnerGepoLogic</property>
+		<property name="csvOutputLogic">null</property>
+		<property name="csvOutputDto">null</property>
+		<property name="moscardNipoSearchLogic">moscardNipoSearchLogic</property>
+	</component>
+
+	<!-- CONVERTER -->	
+	<component name="numericConverter" class="jp.co.isid.mos.bird.framework.text.converter.NumericConverter" instance="request"/>
+</components>

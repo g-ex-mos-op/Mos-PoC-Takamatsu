@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="Shift_JIS"?>
+<!DOCTYPE components PUBLIC "-//SEASAR//DTD S2Container 2.3//EN"
+    "http://www.seasar.org/dtd/components23.dtd">
+<components namespace="budgetRegist">
+    <include path="dao.dicon"/>
+	<include path="jp/co/isid/mos/bird/framework/dicon/birdInterceptor.dicon"/>
+	<component
+	  class="org.seasar.framework.container.autoregister.AspectAutoRegister">
+	    <property name="interceptor">birdInterceptor.actionInterceptorChain</property>
+	    <initMethod name="addClassPattern">
+	        <arg>"jp.co.isid.mos.bird"</arg>
+	        <arg>".*ActionImpl"</arg>
+	    </initMethod>
+	    <initMethod name="registerAll"/>
+	</component>
+
+	<component
+	  class="org.seasar.framework.container.autoregister.AspectAutoRegister">
+	    <property name="interceptor">birdInterceptor.logicInterceptorChain</property>
+	    <initMethod name="addClassPattern">
+	        <arg>"jp.co.isid.mos.bird"</arg>
+	        <arg>".*LogicImpl"</arg>
+	    </initMethod>
+	    <initMethod name="registerAll"/>
+	</component>
+
+	<component class="jp.co.isid.mos.bird.framework.control.BirdUserInfo" instance="session"/>
+	<component class="jp.co.isid.mos.bird.framework.control.BirdDateInfo" instance="session"/>
+
+	<!-- DAO -->
+	<component name="codCompanyInfoDao" class="jp.co.isid.mos.bird.bizsupport.common.dao.CodCompanyDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="mstMiseInfoDao" class="jp.co.isid.mos.bird.bizsupport.budgetregist.dao.MstMiseInfoDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="trnBudgetInfoDao" class="jp.co.isid.mos.bird.bizsupport.budgetregist.dao.TrnBudgetInfoDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="budgetRegistMstSibuDao" class="jp.co.isid.mos.bird.common.dao.MstSibuDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="budgetRegistMstNextNendoSibuDao" class="jp.co.isid.mos.bird.common.dao.MstNextNendoSibuDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="ctlYosanControlDateDao" class="jp.co.isid.mos.bird.bizsupport.common.dao.CtlYosanControlDateDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+
+
+	<!-- Logic -->
+	<component name="budgetRegistErrorInfoCsvOutputLogicImpl" class="jp.co.isid.mos.bird.bizsupport.budgetregist.logic.impl.BudgetRegistErrorInfoCsvOutputLogicImpl"/>
+	<component name="budgetRegistTemplateCsvOutputLogic" class="jp.co.isid.mos.bird.bizsupport.budgetregist.logic.impl.BudgetRegistTemplateCsvOutputLogicImpl"/>
+	<component name="budgetRegistCheckLogic" class="jp.co.isid.mos.bird.bizsupport.budgetregist.logic.impl.BudgetRegistCheckLogicImpl"/>
+	<component name="getUserCompanyLogic" class="jp.co.isid.mos.bird.bizsupport.common.logic.impl.GetUserCompanyLogicImpl"/>
+	<component name="conditionLogic" class="jp.co.isid.mos.bird.bizsupport.budgetregist.logic.impl.ConditionLogicImpl"/>
+	<component name="budgetRegistLogic" class="jp.co.isid.mos.bird.bizsupport.budgetregist.logic.impl.BudgetRegistLogicImpl">
+		<aspect>j2ee.requiresNewTx</aspect>
+	</component>
+	<component name="budgetRegistClearLogic" class="jp.co.isid.mos.bird.bizsupport.budgetregist.logic.impl.BudgetRegistClearLogicImpl">
+		<aspect>j2ee.requiresNewTx</aspect>
+	</component>
+	<component name="yosanControlDateLogic" class="jp.co.isid.mos.bird.bizsupport.common.logic.impl.YosanControlDateLogicImpl"/>
+
+	<!-- DTO -->
+	<component name="budgetRegistDto" class="jp.co.isid.mos.bird.bizsupport.budgetregist.dto.BudgetRegistDto" autoBinding="none" instance="session"/>
+	<component name="pullDownMenuDto" class="jp.co.isid.mos.bird.framework.dto.PullDownMenuDto" autoBinding="none" instance="session"/>
+
+	<!-- Action -->
+	<component name="budgetRegistAction" class="jp.co.isid.mos.bird.bizsupport.budgetregist.action.impl.BudgetRegistActionImpl" instance="request">
+		<property name="budgetRegistTemplateCsvOutputAction">budgetRegistTemplateCsvOutputAction</property>
+		<property name="budgetRegistCsvOutputAction">budgetRegistCsvOutputAction</property>
+	</component>
+	<component name="budgetRegistTemplateCsvOutputAction" class="jp.co.isid.mos.bird.framework.action.impl.CsvOutputActionImpl" instance="request">
+		<property name="csvOutputLogic">budgetRegistTemplateCsvOutputLogic</property>
+		<property name="csvOutputDto">budgetRegistDto</property>
+	</component>
+	<component name="budgetRegistCsvOutputAction" class="jp.co.isid.mos.bird.framework.action.impl.CsvOutputActionImpl" instance="request">
+		<property name="csvOutputLogic">budgetRegistErrorInfoCsvOutputLogicImpl</property>
+		<property name="csvOutputDto">budgetRegistDto</property>
+	</component>
+
+
+	<!-- Verifier -->
+    <component name="budgetVerifier" class="jp.co.isid.mos.bird.framework.util.verifier.NumericVerifier">
+    	<arg>false</arg>
+    	<arg>11</arg>
+	</component>
+    <component name="sibuCdVerifier" class="jp.co.isid.mos.bird.framework.util.verifier.CodeVerifier">
+		<arg>3</arg>
+		<arg>false</arg>
+	</component>
+    <component name="areaDaiVerifier" class="jp.co.isid.mos.bird.framework.util.verifier.CodeVerifier">
+		<arg>3</arg>
+		<arg>false</arg>
+	</component>
+    <component name="miseCdVerifier" class="jp.co.isid.mos.bird.framework.util.verifier.CodeVerifier">
+		<arg>5</arg>
+		<arg>false</arg>
+	</component>
+    <component name="miseKariCdVerifier" class="jp.co.isid.mos.bird.framework.util.verifier.CodeVerifier">
+		<arg>4</arg>
+		<arg>false</arg>
+	</component>
+
+</components>

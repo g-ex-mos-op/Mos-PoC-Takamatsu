@@ -1,0 +1,13 @@
+select 
+      BM10.COMPANY_CD
+,     BM04.GYOTAI_KBN
+,     BM10.SIBU_CD
+,     BM10.SIBU_NAME
+from 
+      BM10GSIB BM10
+,     BM04GTCP BM04
+where 
+      BM10.COMPANY_CD=BM04.COMPANY_CD
+AND   BM04.GYOTAI_KBN = /*gyotaiKbn*/'101'
+AND   BM10.AREA_DAI_FLG <> '0'
+

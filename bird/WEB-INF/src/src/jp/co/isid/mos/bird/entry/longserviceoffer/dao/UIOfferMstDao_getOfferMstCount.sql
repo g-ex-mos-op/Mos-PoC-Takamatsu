@@ -1,0 +1,10 @@
+SELECT
+	count(*)
+FROM BT21ENOJ
+WHERE 
+	BT21ENOJ.ENTRY_CD = /*entryCd*/'00' AND
+    BT21ENOJ.ENTRY_YEAR = /*entryYear*/'2007' AND
+    BT21ENOJ.ENTRY_KAI = /*entryKai*/'001' AND
+    BT21ENOJ.COMPANY_CD = /*companyCd*/'00' AND
+    BT21ENOJ.ONER_CD = /*onerCd*/'36478' AND
+	BT21ENOJ.ATESAKI_KBN = /*atesakiKbn*/'00'

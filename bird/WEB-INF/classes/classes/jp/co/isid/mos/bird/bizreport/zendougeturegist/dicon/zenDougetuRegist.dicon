@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="Shift_JIS"?>
+<!DOCTYPE components PUBLIC "-//SEASAR//DTD S2Container 2.3//EN"
+    "http://www.seasar.org/dtd/components23.dtd">
+<components namespace="zendougetuRegist">
+    <include path="dao.dicon"/>
+	<include path="jp/co/isid/mos/bird/framework/dicon/birdInterceptor.dicon"/>
+	<include path="jp/co/isid/mos/bird/bizreport/common/dicon/bizreportCommon.dicon" />
+	<include path="jp/co/isid/mos/bird/storeinfo/miseref/dicon/miseRef.dicon"/>
+	<include path="jp/co/isid/mos/bird/common/dicon/birdCommon.dicon"/>
+
+	<component
+	  class="org.seasar.framework.container.autoregister.AspectAutoRegister">
+	    <property name="interceptor">birdInterceptor.actionInterceptorChain</property>
+	    <initMethod name="addClassPattern">
+	        <arg>"jp.co.isid.mos.bird"</arg>
+	        <arg>".*ActionImpl"</arg>
+	    </initMethod>
+	    <initMethod name="registerAll"/>
+	</component> 
+
+	<component
+	  class="org.seasar.framework.container.autoregister.AspectAutoRegister">
+	    <property name="interceptor">birdInterceptor.logicInterceptorChain</property>
+	    <initMethod name="addClassPattern">
+	        <arg>"jp.co.isid.mos.bird"</arg>
+	        <arg>".*LogicImpl"</arg>
+	    </initMethod>
+	    <initMethod name="registerAll"/>
+	</component>
+
+	<component class="jp.co.isid.mos.bird.framework.control.BirdUserInfo" instance="session"/>
+	<component class="jp.co.isid.mos.bird.framework.control.BirdDateInfo" instance="session"/>
+
+	<!-- DAO -->
+	<component name="ctlZennenDouyouInfoDao" class="jp.co.isid.mos.bird.bizreport.zendougeturegist.dao.CtlZennenDouyouInfoDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="zendougetuRegistCtlYosanControlDateDao" class="jp.co.isid.mos.bird.bizreport.zendougeturegist.dao.CtlYosanControlDateDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="zendougetuRegistCtlYosanHirituDao" class="jp.co.isid.mos.bird.bizreport.zendougeturegist.dao.CtlYosanHirituDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+
+	<!-- DTO -->
+	<component name="zenDougetuRegistDto" class="jp.co.isid.mos.bird.bizreport.zendougeturegist.dto.ZenDougetuRegistDto" instance="session">
+		<property name="listTaishouNendo">null</property>
+		<property name="listUserRCompany">null</property>
+		<property name="listZenDougetu">null</property>
+	</component>
+	<component name="pullDownMenuDto" class="jp.co.isid.mos.bird.framework.dto.PullDownMenuDto" autoBinding="none" instance="session"/>
+
+	<!-- Logic -->
+	<component name="zenDougetuRegistCheckLogic" class="jp.co.isid.mos.bird.bizreport.zendougeturegist.logic.impl.ZenDougetuRegistCheckLogicImpl"/>
+	<component name="zenDougetuRegistInfoLogic" class="jp.co.isid.mos.bird.bizreport.zendougeturegist.logic.impl.ZenDougetuRegistInfoLogicImpl"/>
+	<component name="zenDougetuRegistLogic" class="jp.co.isid.mos.bird.bizreport.zendougeturegist.logic.impl.ZenDougetuRegistLogicImpl">
+			<aspect>j2ee.requiresNewTx</aspect>
+	</component>
+	<component name="zenDougetuRegistGetHolidayLogic" class="jp.co.isid.mos.bird.common.logic.impl.GetHolidayLogicImpl"/>
+	<component name="zenDougetuRegistGetUserCompanyLogic" class="jp.co.isid.mos.bird.common.logic.impl.GetUserCompanyLogicImpl"/>
+	<component name="zenDougetuRegistEmptyDataLogic" class="jp.co.isid.mos.bird.bizreport.zendougeturegist.logic.impl.ZenDougetuRegistEmptyDataLogicImpl"/>
+	<component name="zenDougetuRegistHolidayLogicImpl" class="jp.co.isid.mos.bird.bizreport.zendougeturegist.logic.impl.ZenDougetuRegistHolidayLogicImpl"/>
+	<component name="zenDougetuRegistCheckEditableLogic" class="jp.co.isid.mos.bird.bizreport.zendougeturegist.logic.impl.CheckEditableLogicImpl"/>
+
+	<!-- Action -->
+	<component name="zenDougetuRegistCondAction" class="jp.co.isid.mos.bird.bizreport.zendougeturegist.action.impl.ZenDougetuRegistCondActionImpl" instance="request"/>
+	<component name="zenDougetuRegistConfirmAction" class="jp.co.isid.mos.bird.bizreport.zendougeturegist.action.impl.ZenDougetuRegistConfirmActionImpl" instance="request"/>
+	<component name="zenDougetuRegistEditAction" class="jp.co.isid.mos.bird.bizreport.zendougeturegist.action.impl.ZenDougetuRegistEditActionImpl" instance="request"/>
+
+
+</components>

@@ -1,0 +1,5 @@
+SELECT NOTICE2
+FROM BR51ENCI
+WHERE ENTRY_CD = /*entryCd*/'10' 
+AND   ENTRY_YEAR = /*entryYear*/'2006'
+AND   ENTRY_KAI = /*entryKai*/'001'

@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="Shift_JIS"?>
+<!DOCTYPE components PUBLIC "-//SEASAR//DTD S2Container 2.3//EN"
+    "http://www.seasar.org/dtd/components23.dtd">
+<components namespace="tenantPayPdfRegist">
+    <include path="dao.dicon"/>
+	<include path="jp/co/isid/mos/bird/framework/dicon/birdInterceptor.dicon"/>
+    <include path="jp/co/isid/mos/bird/common/dicon/birdPortal.dicon"/>
+
+	<component
+	  class="org.seasar.framework.container.autoregister.AspectAutoRegister">
+	    <property name="interceptor">birdInterceptor.actionInterceptorChain</property>
+	    <initMethod name="addClassPattern">
+	        <arg>"jp.co.isid.mos.bird"</arg>
+	        <arg>".*ActionImpl"</arg>
+	    </initMethod>
+	    <initMethod name="registerAll"/>
+	</component> 
+	<component
+	  class="org.seasar.framework.container.autoregister.AspectAutoRegister">
+	    <property name="interceptor">birdInterceptor.logicInterceptorChain</property>
+	    <initMethod name="addClassPattern">
+	        <arg>"jp.co.isid.mos.bird"</arg>
+	        <arg>".*LogicImpl"</arg>
+	    </initMethod>
+	    <initMethod name="registerAll"/>
+	</component>
+
+	<!-- DAO -->
+	<component name="tenantPayPdfRegistMstCategoryShubetuInfoDao" class="jp.co.isid.mos.bird.bizsupport.tenantpaypdfregist.dao.MstCategoryShubetuInfoDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="tenantPayPdfRegistTrnPayDetaileStatementDao" class="jp.co.isid.mos.bird.bizsupport.tenantpaypdfregist.dao.TrnPayDetaileStatementDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="tenantPayPdfRegistUIUrikakesakiNameDao" class="jp.co.isid.mos.bird.bizsupport.tenantpaypdfregist.dao.UIUrikakesakiNameDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	
+	<!-- DTO -->
+	<component name="miseSearchDto" class="jp.co.isid.mos.bird.commonform.misesearch.dto.MiseSearchDto" instance="session">
+		<property name="RCompanyCdList">null</property>
+	</component>
+	<component name="pullDownMenuDto" class="jp.co.isid.mos.bird.framework.dto.PullDownMenuDto" autoBinding="none" instance="session"/>
+	<component name="tenantPayPdfRegistSesDto" class="jp.co.isid.mos.bird.bizsupport.tenantpaypdfregist.dto.SessionDto" instance="session">
+		<property name="maxSize">5</property>
+		<property name="listTaishoYm">null</property>
+		<property name="uploadedFile">null</property>
+		<property name="listSearchData">null</property>
+	</component>
+	<component name="tenantPayPdfRegistSearchedDto" class="jp.co.isid.mos.bird.bizsupport.tenantpaypdfregist.dto.SearchedDto" instance="session">
+		<property name="tenantPayPdfRegistSesDto">tenantPayPdfRegistSesDto</property>
+		<property name="listTaishoYm">null</property>
+		<property name="listSearchData">null</property>
+	</component>
+	<component name="tenantPayPdfRegistReqDto" class="jp.co.isid.mos.bird.bizsupport.tenantpaypdfregist.dto.RequestDto" instance="request">
+		<property name="tenantPayPdfRegistSesDto">tenantPayPdfRegistSesDto</property>
+		<property name="listTaishoYm">null</property>
+	</component>
+	<!-- Logic -->
+	<component name="tenantPayPdfRegistConditionLogic" class="jp.co.isid.mos.bird.bizsupport.tenantpaypdfregist.logic.impl.ConditionLogicImpl"/>
+	<component name="tenantPayPdfRegistSearchLogic" class="jp.co.isid.mos.bird.bizsupport.tenantpaypdfregist.logic.impl.SearchLogicImpl">
+		<property name="tenantPayPdfRegistTrnPayDetaileStatementDao">tenantPayPdfRegistTrnPayDetaileStatementDao</property>
+	</component>
+	<component name="tenantPayPdfRegistDownloadLogic" class="jp.co.isid.mos.bird.bizsupport.tenantpaypdfregist.logic.impl.DownloadLogicImpl"/>
+	<component name="tenantPayPdfRegistUploadLogic" class="jp.co.isid.mos.bird.bizsupport.tenantpaypdfregist.logic.impl.UploadLogicImpl"/>
+	<component name="tenantPayPdfRegistCheckInputDataLogic" class="jp.co.isid.mos.bird.bizsupport.tenantpaypdfregist.logic.impl.CheckInputDataLogicImpl"/>
+	<component name="tenantPayPdfRegistLogic" class="jp.co.isid.mos.bird.bizsupport.tenantpaypdfregist.logic.impl.RegistLogicImpl">
+		<property name="tenantPayPdfRegistTrnPayDetaileStatementDao">tenantPayPdfRegistTrnPayDetaileStatementDao</property>
+	</component>
+
+	<!-- Action -->
+	<component name="tenantPayPdfRegistConditionAction" class="jp.co.isid.mos.bird.bizsupport.tenantpaypdfregist.action.impl.ConditionActionImpl" instance="request">
+		<property name="downloadLogic">tenantPayPdfRegistDownloadLogic</property>
+		<property name="downloadDto">tenantPayPdfRegistSearchedDto</property>
+	</component>
+	<component name="tenantPayPdfRegistEditAction" class="jp.co.isid.mos.bird.bizsupport.tenantpaypdfregist.action.impl.EditActionImpl" instance="request">
+		<property name="uploadLogic">tenantPayPdfRegistUploadLogic</property>
+		<property name="uploadDto">tenantPayPdfRegistSesDto</property>
+	</component>
+	<component name="tenantPayPdfRegistConfirmAction" class="jp.co.isid.mos.bird.bizsupport.tenantpaypdfregist.action.impl.ConfirmActionImpl" instance="request"/>
+
+	<!-- Converter -->
+	<component name="dateCnvtYMKj" class="jp.co.isid.mos.bird.framework.text.converter.DateConverter" instance="request">
+		<arg>@jp.co.isid.mos.bird.framework.util.formatter.DateFormatter@DATE_TYPE_YM</arg>
+		<arg>@jp.co.isid.mos.bird.framework.util.formatter.DateFormatter@PATTERN_MONTH_KANJI_YM</arg>
+	</component>
+	<component name="numericCnvtSeq" class="jp.co.isid.mos.bird.framework.text.converter.NumericConverter" instance="request">
+		<arg>0</arg>
+	</component>
+</components>
+

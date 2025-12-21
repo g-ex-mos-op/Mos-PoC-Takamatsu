@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="Shift_JIS"?>
+<!DOCTYPE components PUBLIC "-//SEASAR2.1//DTD S2Container//EN"
+	"http://www.seasar.org/dtd/components21.dtd">
+<components namespace="useractregist">
+	<include path="dao.dicon"/>
+	<include path="jp/co/isid/mos/bird/framework/dicon/birdInterceptor.dicon"/>
+	<include path="jp/co/isid/mos/bird/framework/dicon/pullDownMenu.dicon"/>
+	<!-- ハンドリング -->
+	<component 
+	  class="org.seasar.framework.container.autoregister.AspectAutoRegister">
+	    <property name="interceptor">birdInterceptor.actionInterceptorChain</property>
+	    <initMethod name="addClassPattern">
+	        <arg>"jp.co.isid.mos.bird"</arg>
+	        <arg>".*ActionImpl"</arg>
+	    </initMethod>
+	    <initMethod name="registerAll"/>
+	</component> 
+	<component 
+	  class="org.seasar.framework.container.autoregister.AspectAutoRegister">
+	    <property name="interceptor">birdInterceptor.logicInterceptorChain</property>
+	    <initMethod name="addClassPattern">
+	        <arg>"jp.co.isid.mos.bird"</arg>
+	        <arg>".*LogicImpl"</arg>
+	    </initMethod>
+	    <initMethod name="registerAll"/>  
+	</component>
+	
+	<!-- DAO -->
+	<component name="CtlUserActDao" class="jp.co.isid.mos.bird.sysadmin.useractregist.dao.CtlUserActDao">
+		<aspect>dao.interceptor</aspect>
+	</component>
+	<component name="UIBirdMenuDao" class="jp.co.isid.mos.bird.sysadmin.useractregist.dao.UIBirdMenuDao">
+		<aspect>dao.interceptor</aspect>
+	</component>
+	<component name="useractregistBirdUserDao" class="jp.co.isid.mos.bird.sysadmin.useractregist.dao.UIBirdUserDao">
+		<aspect>dao.interceptor</aspect>
+	</component>
+	<component name="useractregistUserMiseDao" class="jp.co.isid.mos.bird.sysadmin.useractregist.dao.UIUserMiseDao">
+		<aspect>dao.interceptor</aspect>
+	</component>
+	<component name="useractregistUserOnerDao" class="jp.co.isid.mos.bird.sysadmin.useractregist.dao.UIUserOnerDao">
+		<aspect>dao.interceptor</aspect>
+	</component>
+
+	<!-- DTO -->
+	<component name="userActConditionDto" class="jp.co.isid.mos.bird.sysadmin.useractregist.dto.UserActConditionDto" instance="session">
+		<property name="userList">null</property>
+		<property name="allUserList">null</property>
+	</component>
+	<component name="userActRegistDto" class="jp.co.isid.mos.bird.sysadmin.useractregist.dto.UserActRegistDto" instance="session">
+		<property name="roleList">null</property>
+	</component>
+	<component name="userSearchDto" class="jp.co.isid.mos.bird.commonform.usersearch.dto.UserSearchDto" instance="session">
+		<property name="RCompanyCdList">null</property>
+	</component>
+	<component name="pullDownMenuDto" class="jp.co.isid.mos.bird.framework.dto.PullDownMenuDto" autoBinding="none" instance="session"/>
+		
+	<!-- Logic -->
+	<component name="SearchMenuLogic" class="jp.co.isid.mos.bird.sysadmin.useractregist.logic.impl.SearchMenuLogicImpl">
+		<aspect>birdInterceptor.logicInterceptorChain</aspect>
+	</component>
+	<component name="GetGamenRoleLogic" class="jp.co.isid.mos.bird.framework.logic.impl.GetGamenRoleLogicImpl">
+		<aspect>birdInterceptor.logicInterceptorChain</aspect>
+	</component>
+	<component name="useractregistGetBirdUserLogic" class="jp.co.isid.mos.bird.sysadmin.useractregist.logic.impl.GetBirdUserLogicImpl">
+		<aspect>birdInterceptor.logicInterceptorChain</aspect>
+	</component>
+	<component name="GetUserInfoLogic" class="jp.co.isid.mos.bird.sysadmin.useractregist.logic.impl.GetUserInfoLogicImpl">
+		<aspect>birdInterceptor.logicInterceptorChain</aspect>
+	</component>
+	<component name="UpdateUserActLogic" class="jp.co.isid.mos.bird.sysadmin.useractregist.logic.impl.UpdateUserActLogicImpl">
+		<aspect>birdInterceptor.logicInterceptorChain</aspect>
+	</component>
+		
+	<!-- OTHER -->
+	<component class="jp.co.isid.mos.bird.framework.control.BirdUserInfo" instance="session"/>
+	<component class="jp.co.isid.mos.bird.framework.control.BirdDateInfo" instance="session"/>
+ 	
+	<!-- Action -->
+	<component name="userActConditionAction" class="jp.co.isid.mos.bird.sysadmin.useractregist.action.impl.UserActConditionActionImpl" instance="request">
+		<property name="userActConditionDto">userActConditionDto</property>
+		<property name="userSearchDto">userSearchDto</property>
+	</component>
+	<component name="userActRegistAction" class="jp.co.isid.mos.bird.sysadmin.useractregist.action.impl.UserActRegistActionImpl" instance="request">
+		<property name="userActConditionDto">userActConditionDto</property>	
+		<property name="userActRegistDto">userActRegistDto</property>
+	</component>
+	<component name="userActConfirmAction" class="jp.co.isid.mos.bird.sysadmin.useractregist.action.impl.UserActConfirmActionImpl" instance="request">
+		<property name="userActConditionDto">userActConditionDto</property>	
+		<property name="userActRegistDto">userActRegistDto</property>
+	</component>
+	
+	<component name="logInterceptor" class="jp.co.isid.mos.bird.framework.interceptor.log.LogInterceptor" instance="request"/>
+
+</components>

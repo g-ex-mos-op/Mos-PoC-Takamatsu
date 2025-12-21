@@ -1,0 +1,242 @@
+<html xmlns:m="http://www.seasar.org/maya" m:action="#{mssSurveyDataRefAction.initialize}" m:extends="/jsf/layout/layoutNoNavi.html">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=Windows-31j" />
+		<title>サーベイデータ登録</title>
+	</head>
+	<body>
+		<input type="hidden" m:id="UP_FILE" m:value="mssSurvey:csvFile"/>
+		<input type="hidden" m:id="H_UP_FILE" m:value=""/>
+		<span m:inject="f:param" m:name="layoutTitle" m:value="サーベイデータ登録"/>
+		<span m:inject="s:insert" m:name="bodyTitleName">■ サーベイデータ登録</span>
+		<span m:inject="f:param" m:name="onLoadName" m:value="init();"/>
+		<span m:inject="f:param" m:name="viewIdValue" m:value="BSM012V01"/>
+		<span m:inject="s:insert" m:name="body">
+			<style type="text/css">
+			<!--
+				.field_name {
+				width : 800px;
+				}
+			-->
+		</style>
+		<SCRIPT LANGUAGE="javascript">
+		<!--
+			function init(){
+				registFlg = document.forms['mssSurvey'].elements['mssSurvey:registFlg'].value;
+				shoriFlg = document.forms['mssSurvey'].elements['mssSurvey:shoriFlg'].value;
+				fileKind = document.forms['mssSurvey'].elements['mssSurvey:fileKind'].value;
+				userType = document.forms['mssSurvey'].elements['mssSurvey:usertypeCd'].value;
+				selectFlg = document.forms['mssSurvey'].elements['mssSurvey:selectFlg'].value;
+			    if(userType != 01){
+				  document.forms['mssSurvey'].elements['mssSurvey:batchR'].disabled = true;
+				  document.forms['mssSurvey'].elements['mssSurvey:uploadR'].disabled = true;
+				  document.forms['mssSurvey'].elements['mssSurvey:uploadFile'].disabled = true;
+				  document.forms['mssSurvey'].elements['mssSurvey:uploadFileExe'].disabled = true;
+			    }
+				if(document.forms['mssSurvey'].elements['mssSurvey:succMsg'].value != ""){
+					alert(document.forms['mssSurvey'].elements['mssSurvey:succMsg'].value);
+					document.forms['mssSurvey'].elements['mssSurvey:succMsg'].value = "";
+				}
+
+				if(registFlg != 2){
+				  document.forms['mssSurvey'].elements['mssSurvey:batchR'].checked = true;
+				}
+				offOn(selectFlg);
+				/* このJSFのパスを取得します。*/
+				//formのサブミットのactionからUrlを取得
+				var submitUrl = document.forms['mssSurvey'].action;
+				//上記で取得したUrlから最後のスラッシュまでの文字列を取得します。
+				var pathUrl = submitUrl.substr(0, (submitUrl.lastIndexOf('/')+1));
+				//IFRAMEへステータス画面のロケーションを指定実行します。
+				window.STATUS_DISPLAY.location.href = pathUrl+"mssSurveyDataBottom.html";
+			}
+			function execute(para){
+				if(para=='1'){
+					document.forms['mssSurvey'].elements['mssSurvey:__link_clicked__'].value='mssSurvey:execute';
+				}else if(para=='2'){
+					document.forms['mssSurvey'].elements['mssSurvey:__link_clicked__'].value='mssSurvey:batch';
+				}else {
+				}
+				document.forms['mssSurvey'].submit();
+			}
+
+            function upload(){
+				filecheck = document.forms['mssSurvey'].elements['mssSurvey:fileCheck'].value;
+				msg = document.forms['mssSurvey'].elements['mssSurvey:strFileMsg'].value;
+				if(filecheck ==1){
+  				  if(!confirm(msg) ){
+  				  return false;
+				  }
+				}
+            }
+
+			function offOn(para){
+			    registFlg = document.forms['mssSurvey'].elements['mssSurvey:registFlg'].value;
+				if(para=='2'){
+					document.getElementById('mssSurvey:div_upload').style.display = "none";
+					document.getElementById('mssSurvey:div_batch').style.display = "inline";
+				    document.forms['mssSurvey'].elements['mssSurvey:uploadR'].checked = true;
+				    document.forms['mssSurvey'].elements['mssSurvey:batchR'].checked = false;
+				}else if(para=='1'){
+				    if(registFlg == 1){
+    					document.forms['mssSurvey'].elements['mssSurvey:koumoku'].checked = true;
+				    }else if(registFlg == 2){
+    					document.forms['mssSurvey'].elements['mssSurvey:uploadR'].disabled = true;
+				    }
+					document.getElementById('mssSurvey:div_batch').style.display = "none";
+					document.getElementById('mssSurvey:div_upload').style.display = "block";
+				}
+			}
+		//-->
+		</SCRIPT>
+			<form m:id="mssSurvey" enctype="multipart/form-data">
+				<input type="hidden" m:id="initMenuId" m:value="#{menuAction.initMenuId}"/>
+				<input type="hidden" m:id="initSubMenuId" m:value="#{menuAction.initSubMenuId}"/>
+				<input type="hidden" m:id="viewId" m:value="#{viewIdValue}"/>
+				<input type="hidden" m:id="registFlg" m:value="#{mssSuerveyUploadDto.registFlg}"/>
+				<input type="hidden" m:id="succMsg" m:value="#{mssSuerveyBatchDto.successMsg}"/>
+        		<input type="hidden" m:id="fileCheck" m:value="#{mssSuerveyUploadDto.fileCheck}"/>
+        		<input type="hidden" m:id="strFileMsg" m:value="#{mssSuerveyUploadDto.confMsg}"/>
+        		<input type="hidden" m:id="fileKind" m:value="#{mssSuerveyUploadDto.fileFlg}"/>
+        		<input type="hidden" m:id="shoriFlg" m:value="#{mssSuerveyBatchDto.shoriFlg}"/>
+  		        <input type="hidden" m:id="usertypeCd" m:value="#{mssSuerveyDataRefDto.userType}"/>
+        		<input type="hidden" m:id="selectFlg" m:value="#{mssSuerveyDataRefDto.selectFlg}"/>
+        		<a m:id="clearErr" m:action="#{mssSurveyDataRefAction.clearErr}"/>
+				<a m:id="execute" m:action="#{mssSurveyDataRefAction.execute}"/>
+				<a m:id="batch"  m:action="#{mssSurveyDataRefAction.batchKick}"/>
+        		<div align="center">
+        		<div style="width:500px;text-align:left;">
+    				<span m:inject="s:selectOneRadio2" m:value="#{mssSuerveyDataRefDto.selectFlg}">
+						<input m:id="batchR" type="radio" name="selectFlg" m:value="1" onclick="offOn('1');" checked="checked"/>
+						転送
+						<input m:id="uploadR" type="radio" name="selectFlg" m:value="2" onclick="offOn('2');"/>
+						起動
+	        		</span>
+				</div>
+				<table class="body_table" style="width:500px; margin-top:4px;">
+					<tr>
+						<th>会社</th>
+						<td align="left">
+							<div class="hideArea">
+							<select class="condition_field"
+									m:id="companyCd"
+									m:value="#{mssSuerveyBatchDto.companyCd}"
+									m:items="#{mssSuerveyDataRefDto.companyList}"
+    								m:itemValue="companyCd"
+	    							m:itemLabel="companyName">
+								<option value="00">モスフードサービス</option>
+								<option value="01">トモス</option>
+								<option value="02">四季菜</option>
+							</select>
+
+							</div>
+						</td>
+						<th>対象年度</th>
+						<td align="left">
+							<div class="hideArea">
+							<select m:value="#{mssSuerveyBatchDto.nendo}"
+								m:items="#{mssSuerveyDataRefDto.taishoNendo}"
+								m:itemValue="#{mssSuerveyDataRefDto.taishoNendo}"
+								m:itemLabel="#{mssSuerveyDataRefDto.taishoNendo}">
+								<option value=""></option>
+							</select>年度
+							</div>
+						</td>
+						<th>対象回</th>
+						<td align="left">
+							<div class="hideArea">
+							<select size=1 m:value="#{mssSuerveyBatchDto.kai}" style="width:50px;" >
+								<option value="01">01</option>
+								<option value="02">02</option>
+								<option value="03">03</option>
+								<option value="04">04</option>
+							</select>回
+							</div>
+						</td>
+					</tr>
+				</table>
+				<br/>
+					<table class="body_table" width="500px" m:id="div_batch"
+					       m:style="#{mssSuerveyDataRefDto.selectFlg == 2 ? 'display:inline;' : 'display:none;'}">
+                        <tr>
+							<th>登録起動処理</th>
+						</tr>
+						<tr>
+							<td>
+							<div class="hideArea">
+								<select size=1  name="shoriFlg" m:value="#{mssSuerveyBatchDto.shoriKbn}" style="width:150px;">
+									<option value="0">取り込み</option>
+									<option value="1">支部洗え替え</option>
+								</select>
+								&nbsp;<input type="button" value="起動" onclick="execute(2);"/>
+							</div>
+							</td>
+						</tr>
+					</table>
+					<div m:id="div_upload" m:style="display:none;">
+					    <div m:rendered="#{mssSuerveyUploadDto.registFlg == 2}">
+							<input width="500px" align="left" type="button" value="登録"
+							       m:onclick="return upload(); return false;"
+							       ondblclick="return false;"
+							        m:action="#{mssSurveyUploadAction.upload}"/>&nbsp;&nbsp;
+							<input m:name="mssSurveyUpload:clear" type="button" value="戻る"
+							       m:action="#{mssSurveyDataRefAction.back}" ondblclick="return false;"/>
+						</div>
+	        			<table class="body_table" width="500px">
+							<tr>
+								<th>CSVファイル名</th>
+							</tr>
+							<div m:rendered="#{mssSuerveyUploadDto.registFlg == 1}">
+								<tr>
+									<td>
+										<span m:converter="#{characterEncodingConverter}" m:inject="x:inputFileUpload" m:id="uploadFile"  m:value="#{mssSuerveyUploadDto.uploadedFile}" m:size="60"/>
+										<input m:id="uploadFileExe" type="button" value="決定"
+										       m:action="#{mssSurveyUploadAction.uploadTemporary}" ondblclick="return false;"/>
+									</td>
+								</tr>
+								<tr>
+									<th>ファイルタイプ</th>
+								</tr>
+								<span m:inject="s:selectOneRadio2" m:value="#{mssSuerveyUploadDto.fileFlg}">
+									<tr>
+										<td align="left">
+											<input m:id="koumoku" type="radio" name="fileFlg" m:value="1" checked />
+											項目マスタ
+											<span m:converter="#{characterEncodingConverter}" m:value="#{mssSuerveyUploadDto.uploadFileKoumokuName}"/>
+										</td>
+									</tr>
+									<tr>
+										<td align="left">
+											<input m:id="hyouka" type="radio" name="fileFlg" m:value="2" />
+											評価データ
+											<span m:converter="#{characterEncodingConverter}" m:value="#{mssSuerveyUploadDto.uploadFileHyoukaName}"/>
+										</td>
+									</tr>
+									<tr>
+										<td align="left">
+											<input m:id="chousa" type="radio" name="fileFlg" m:value="3" />
+											調査データ
+											<span m:converter="#{characterEncodingConverter}" m:value="#{mssSuerveyUploadDto.uploadFileChousaName}"/>
+										</td>
+									</tr>
+								</span>
+							</div>
+						    <div m:rendered="#{mssSuerveyUploadDto.registFlg == 2}">
+								<tr>
+									<td colspan="4" align="left">
+										<span m:converter="#{characterEncodingConverter}" m:value="#{mssSuerveyUploadDto.uploadedFile}"/>
+									</td>
+								</tr>
+								<tr>
+									<td colspan="4" align="left">
+										ファイルタイプ：<span m:converter="#{characterEncodingConverter}" m:value="#{mssSuerveyUploadDto.fileKind}"/>
+									</td>
+								</tr>
+							</div>
+						</table>
+					</div>
+			<iframe src="" height="140px" width="100%" frameborder="0" name="STATUS_DISPLAY"></iframe>
+			</div>
+		    </form>
+         </span>
+	</body>
+</html>

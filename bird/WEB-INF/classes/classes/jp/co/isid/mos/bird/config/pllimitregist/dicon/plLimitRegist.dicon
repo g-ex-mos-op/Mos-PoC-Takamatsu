@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="Shift_JIS"?>
+<!DOCTYPE components PUBLIC "-//SEASAR//DTD S2Container 2.3//EN"
+    "http://www.seasar.org/dtd/components23.dtd">
+<components namespace="plLimitRegist">
+    <include path="dao.dicon"/>
+	<include path="jp/co/isid/mos/bird/framework/dicon/birdInterceptor.dicon"/>
+
+	<component
+	  class="org.seasar.framework.container.autoregister.AspectAutoRegister">
+	    <property name="interceptor">birdInterceptor.actionInterceptorChain</property>
+	    <initMethod name="addClassPattern">
+	        <arg>"jp.co.isid.mos.bird"</arg>
+	        <arg>".*ActionImpl"</arg>
+	    </initMethod>
+	    <initMethod name="registerAll"/>
+	</component> 
+	<component
+	  class="org.seasar.framework.container.autoregister.AspectAutoRegister">
+	    <property name="interceptor">birdInterceptor.logicInterceptorChain</property>
+	    <initMethod name="addClassPattern">
+	        <arg>"jp.co.isid.mos.bird"</arg>
+	        <arg>".*LogicImpl"</arg>
+	    </initMethod>
+	    <initMethod name="registerAll"/>
+	</component>
+
+	<component class="jp.co.isid.mos.bird.framework.control.BirdUserInfo" instance="session"/>
+
+	<!-- DAO -->
+	<component name="ctlPLLimitDao" class="jp.co.isid.mos.bird.config.pllimitregist.dao.CtlPLLimitDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+
+	<!-- Logic -->
+	<component name="getPLLimitLogic" class="jp.co.isid.mos.bird.config.pllimitregist.logic.impl.GetPLLimitLogicImpl"/>
+	<component name="clearLimitValueLogic" class="jp.co.isid.mos.bird.config.pllimitregist.logic.impl.ClearLimitValueLogicImpl"/>
+	<component name="checkPLLimitLogic" class="jp.co.isid.mos.bird.config.pllimitregist.logic.impl.CheckPLLimitLogicImpl">
+		<property name="limitNormalVerifier">limitNormalVerifier</property>
+		<property name="limitSumVerifier">limitSumVerifier</property>
+		<property name="limitRatioVerifier">limitRatioVerifier</property>
+	</component>
+	<component name="registPLLimitLogic" class="jp.co.isid.mos.bird.config.pllimitregist.logic.impl.RegistPLLimitLogicImpl"/>
+
+	<!-- DTO -->
+	<component name="plLimitRegistDto" class="jp.co.isid.mos.bird.config.pllimitregist.dto.PlLimitRegistDto" instance="session">
+		<property name="plLimitList">null</property>
+	</component>
+	<component name="pullDownMenuDto" class="jp.co.isid.mos.bird.framework.dto.PullDownMenuDto" autoBinding="none" instance="session"/>
+
+	<!-- Action -->
+	<component name="plLimitRegistConditionAction" class="jp.co.isid.mos.bird.config.pllimitregist.action.impl.PlLimitRegistConditionActionImpl" instance="request"/>
+	<component name="plLimitRegistEditAction" class="jp.co.isid.mos.bird.config.pllimitregist.action.impl.PlLimitRegistEditActionImpl" instance="request"/>
+	<component name="plLimitRegistConfirmAction" class="jp.co.isid.mos.bird.config.pllimitregist.action.impl.PlLimitRegistConfirmActionImpl" instance="request"/>
+
+	<!-- Converter -->
+	<component name="plLimitConverter" class="jp.co.isid.mos.bird.config.pllimitregist.text.converter.PlLimitConverter">
+		<property name="limitSumVerifier">limitSumVerifier</property>
+		<property name="limitRatioVerifier">limitRatioVerifier</property>
+	</component>
+
+	<!-- Formatter -->
+	<component name="limitSumFormatter" class="java.text.DecimalFormat">
+		<arg>"##,###,###,##0"</arg>
+	</component>
+	<component name="limitRatioFormatter" class="java.text.DecimalFormat">
+		<arg>"##,###,###,##0.00"</arg>
+	</component>
+
+	<!-- Verifier -->
+    <component name="limitNormalVerifier" class="jp.co.isid.mos.bird.framework.util.verifier.NumericVerifier">
+    	<arg>true</arg>
+    	<arg>999</arg>
+    	<arg>99</arg>
+	</component>
+    <component name="limitSumVerifier" class="jp.co.isid.mos.bird.framework.util.verifier.NumericVerifier">
+    	<arg>true</arg>
+    	<arg>999</arg>
+    	<arg>0</arg>
+	</component>
+    <component name="limitRatioVerifier" class="jp.co.isid.mos.bird.framework.util.verifier.NumericVerifier">
+    	<arg>true</arg>
+    	<arg>999</arg>
+    	<arg>2</arg>
+	</component>
+
+	<!-- 金額:最大値 -->
+	<component name="limitSumMaxValue" class="java.math.BigDecimal">
+		<arg>"99999999999"</arg>
+	</component>
+	<!-- 金額:最小値 -->
+	<component name="limitSumMinValue" class="java.math.BigDecimal">
+		<arg>"-99999999999"</arg>
+	</component>
+	<!-- 構成比:最大値 -->
+	<component name="limitRatioMaxValue" class="java.math.BigDecimal">
+		<arg>"999.99"</arg>
+	</component>
+	<!-- 構成比:最小値 -->
+	<component name="limitRatioMinValue" class="java.math.BigDecimal">
+		<arg>"-999.99"</arg>
+	</component>
+
+</components>

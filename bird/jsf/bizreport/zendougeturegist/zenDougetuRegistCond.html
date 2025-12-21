@@ -1,0 +1,89 @@
+<html xmlns:m="http://www.seasar.org/maya" m:action="#{zenDougetuRegistCondAction.initialize}" m:extends="/jsf/layout/layoutNoNavi.html">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Windows-31j"/>
+<title>前年同月設定登録</title>
+</head>
+<body>
+<span m:inject="f:param" m:name="layoutTitle" m:value="前年同月設定登録"/>
+<span m:inject="s:insert" m:name="bodyTitleName">■前年同月設定登録</span>
+<span m:inject="f:param" m:name="onLoadName" m:value="bodyLoad();"/>
+<span m:inject="f:param" m:name="viewIdValue" m:value="BBR010V01"/>
+<span m:inject="f:param" m:name="userTypeCd" m:value=""/>
+<span  m:inject="s:insert" m:name="body">
+<style type="text/css">
+<!--
+iframe{
+ border: 0px;
+}
+
+-->
+</style>
+
+<script type="text/javascript">
+<!--
+ function bodyLoad(){
+  userTypeCode = document.forms['conditionForm'].elements['conditionForm:usertypeCd'].value;
+  if(userTypeCode != '01') {
+      document.forms['conditionForm'].elements['conditionForm:execute'].disabled = true;
+  }
+  focusElement("conditionForm");
+ }
+
+-->
+</script>
+
+<form m:id="conditionForm">
+ <input type="hidden" m:id="viewId" m:value="#{viewIdValue}"/>
+ <input type="hidden" m:id="initMenuId" m:value="#{menuAction.initMenuId}"/>
+ <input type="hidden" m:id="initSubMenuId" m:value="#{menuAction.initSubMenuId}"/>
+ <input type="hidden" m:id="usertypeCd" m:value="#{zenDougetuRegistDto.usertypeCd}"/>
+ <input type="hidden" m:id="windowId" m:value="#{zenDougetuRegistDto.windowId}"/>
+ <table>
+  <tr>
+   <td>
+    <table class="body_table">
+     <tr>
+      <th nowrap=" nowrap">会社</th>
+      <td>
+       <div class="hideArea">
+        <select class="condition_field"
+         m:id="companyCd"
+         m:value="#{zenDougetuRegistDto.companyCd}"
+         m:items="#{zenDougetuRegistDto.listUserRCompany}"
+         m:itemValue="companyCd"
+         m:itemLabel="companyName">
+         <option value="00">モスフードサービス</option>
+         <option value="01">トモス</option>
+         <option value="02">四季菜</option>
+        </select>
+        </div>
+       </td>
+      <th nowrap=" nowrap">対象期間</th>
+      <td nowrap=" nowrap">
+       <div class="hideArea">
+        <select m:value="#{zenDougetuRegistDto.taishoNendo}"
+          m:items="#{zenDougetuRegistDto.listTaishouNendo}"
+          m:itemValue="#{zenDougetuRegistDto.listTaishouNendo}"
+          m:itemLabel="#{zenDougetuRegistDto.listTaishouNendo}">
+         <option value=""></option>
+        </select>
+       </div>
+      </td>
+     </tr>
+    </table>
+    </td>
+    <td>
+     <input m:name="conditionForm:execute"
+            m:id="execute" type="submit" value="実行"
+             m:action="#{zenDougetuRegistCondAction.execute}"/>
+    </td>
+  </tr>
+ </table>
+<script type="text/javascript">
+<!--
+ focusElement("conditionForm");
+-->
+</script>
+</form></span>
+</body>
+</html>

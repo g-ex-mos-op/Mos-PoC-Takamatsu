@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="Shift_JIS"?>
+<!DOCTYPE components PUBLIC "-//SEASAR2.1//DTD S2Container//EN"
+"http://www.seasar.org/dtd/components21.dtd">
+<components>
+	<include path="jp/co/isid/mos/bird/framework/dicon/commonProperty.dicon"/>
+	<include path="jp/co/isid/mos/bird/framework/dicon/fileProperty.dicon"/>
+	<include path="jp/co/isid/mos/bird/framework/dicon/userIpRemoteLimit.dicon"/>
+    <include path="jp/co/isid/mos/bird/framework/dicon/accessCtlCheckProperty.dicon"/>
+    <include path="jp/co/isid/mos/bird/framework/dicon/exclusiveWindowProperty.dicon"/>
+</components>

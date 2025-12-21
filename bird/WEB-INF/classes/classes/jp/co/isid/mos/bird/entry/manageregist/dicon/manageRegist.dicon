@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE components PUBLIC "-//SEASAR//DTD S2Container 2.3//EN"
+	"http://www.seasar.org/dtd/components23.dtd">
+<components namespace="manageRegist">
+	<include path="dao.dicon"/>
+	<include path="jp/co/isid/mos/bird/common/dicon/birdCommon.dicon"/>
+	<include path="jp/co/isid/mos/bird/framework/dicon/birdInterceptor.dicon"/>
+	
+	<!-- インターセプターを自動登録 -->
+	<component class="org.seasar.framework.container.autoregister.AspectAutoRegister">
+	    <property name="interceptor">birdInterceptor.actionInterceptorChain</property>
+	    <initMethod name="addClassPattern">
+	        <arg>"jp.co.isid.mos.bird"</arg>
+	        <arg>".*ActionImpl"</arg>
+	    </initMethod>
+	    <initMethod name="registerAll"/>
+	</component> 
+	<component class="org.seasar.framework.container.autoregister.AspectAutoRegister">
+	    <property name="interceptor">birdInterceptor.logicInterceptorChain</property>
+	    <initMethod name="addClassPattern">
+	        <arg>"jp.co.isid.mos.bird"</arg>
+	        <arg>".*LogicImpl"</arg>
+	    </initMethod>
+	    <initMethod name="registerAll"/>  
+	</component>
+
+	<!-- DTO -->
+	<component name="pullDownMenuDto" class="jp.co.isid.mos.bird.framework.dto.PullDownMenuDto" autoBinding="none" instance="session"/>
+	<component name="manageRegistDto" class="jp.co.isid.mos.bird.entry.manageregist.dto.ManageRegistDto" instance="session">
+		<property name="dateSize">5</property>
+		<property name="entryKbnSize">10</property>
+		<property name="optionalSize">10</property>
+		<property name="mstInfoList">null</property>
+		<property name="dateInfoList">null</property>
+		<property name="entryKbnList">null</property>
+		<property name="optionalList">null</property>
+	</component>	
+
+	<!-- DAO -->
+	<component name="uiEntryMstDao" class="jp.co.isid.mos.bird.entry.manageregist.dao.UIEntryMstDao">
+		<aspect>dao.interceptor</aspect>
+	</component>
+	<component name="uiEntryDateDao" class="jp.co.isid.mos.bird.entry.manageregist.dao.UIEntryDateDao">
+		<aspect>dao.interceptor</aspect>
+	</component>
+	<component name="uiEntrySelectionDao" class="jp.co.isid.mos.bird.entry.manageregist.dao.UIEntrySelectionDao">
+		<aspect>dao.interceptor</aspect>
+	</component>
+
+	<!-- LOGIC -->
+	<component name="searchEntryLogic" class="jp.co.isid.mos.bird.entry.manageregist.logic.impl.SearchEntryLogicImpl"/>
+	<component name="searchEntryListLogic" class="jp.co.isid.mos.bird.entry.manageregist.logic.impl.SearchEntryListLogicImpl"/>
+	<component name="CheckEntryLogic" class="jp.co.isid.mos.bird.entry.manageregist.logic.impl.CheckEntryLogicImpl">
+		<property name="entryTitleSize">60</property>
+		<property name="selectionNameSize">30</property>
+	</component>
+	<component name="updateEntryLogic" class="jp.co.isid.mos.bird.entry.manageregist.logic.impl.UpdateEntryLogicImpl">
+		<aspect>j2ee.requiresNewTx</aspect>
+	</component>
+
+	<!-- ACTION -->
+	<component name="manageRegistSelectAction" class="jp.co.isid.mos.bird.entry.manageregist.action.impl.ManageRegistSelectActionImpl" instance="request"/>
+	<component name="manageRegistEditAction" class="jp.co.isid.mos.bird.entry.manageregist.action.impl.ManageRegistEditActionImpl" instance="request"/>
+	<component name="manageRegistConfirmAction" class="jp.co.isid.mos.bird.entry.manageregist.action.impl.ManageRegistConfirmActionImpl" instance="request"/>
+
+	<!-- CONVERTER -->
+	<component name="dateConverter" class="jp.co.isid.mos.bird.framework.text.converter.DateConverter" instance="request">
+		<arg>@jp.co.isid.mos.bird.framework.util.formatter.DateFormatter@DATE_TYPE_YMD</arg>
+		<arg>@jp.co.isid.mos.bird.framework.util.formatter.DateFormatter@PATTERN_SLASH</arg>
+	</component>
+	<component name="dateConverterWeek" class="jp.co.isid.mos.bird.framework.text.converter.DateConverter" instance="request">
+		<arg>@jp.co.isid.mos.bird.framework.util.formatter.DateFormatter@DATE_TYPE_YMD</arg>
+		<arg>"yyyy/MM/dd(E)"</arg>
+	</component>
+</components>

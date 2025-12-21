@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="Shift_JIS"?>
+<!DOCTYPE components PUBLIC "-//SEASAR//DTD S2Container 2.3//EN"
+    "http://www.seasar.org/dtd/components23.dtd">
+<components namespace="eiseiRef">
+    <include path="dao.dicon"/>
+    <include path="jp/co/isid/mos/bird/common/dicon/birdCommon.dicon"/>
+	<include path="jp/co/isid/mos/bird/framework/dicon/birdInterceptor.dicon"/>
+
+	<component class="org.seasar.framework.container.autoregister.AspectAutoRegister">
+	    <property name="interceptor">birdInterceptor.actionInterceptorChain</property>
+	    <initMethod name="addClassPattern">
+	        <arg>"jp.co.isid.mos.bird"</arg>
+	        <arg>".*ActionImpl"</arg>
+	    </initMethod>
+	    <initMethod name="registerAll"/>
+	</component> 
+	<component 
+	  class="org.seasar.framework.container.autoregister.AspectAutoRegister">
+	    <property name="interceptor">birdInterceptor.logicInterceptorChain</property>
+	    <initMethod name="addClassPattern">
+	        <arg>"jp.co.isid.mos.bird"</arg>
+	        <arg>".*LogicImpl"</arg>
+	    </initMethod>
+	    <initMethod name="registerAll"/>  
+	</component>
+	
+	<!-- OTHER -->
+	<component class="jp.co.isid.mos.bird.framework.control.BirdUserInfo" instance="session"/>
+	<component class="jp.co.isid.mos.bird.framework.control.BirdDateInfo" instance="session"/>
+	<!-- DAO -->
+	<component name="eiseiRefTrnMosplateDao" class="jp.co.isid.mos.bird.storeinfo.eiseiref.dao.TrnMosplateDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="eiseiRefTrnBd32setbDao" class="jp.co.isid.mos.bird.storeinfo.eiseiref.dao.TrnBd32setbDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="eiseiRefTrnBd33shtbDao" class="jp.co.isid.mos.bird.storeinfo.eiseiref.dao.TrnBd33shtbDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="eiseiRefTrnBd34vstbDao" class="jp.co.isid.mos.bird.storeinfo.eiseiref.dao.TrnBd34vstbDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	
+	<!-- LOGIC -->
+	<component name="eiseiRefCondisionLogic" class="jp.co.isid.mos.bird.storeinfo.eiseiref.logic.impl.ConditionLogicImpl">
+		<property name="codHyojiTaishoDao">birdCommon.codHyojiTaishoDao</property>
+	</component>
+	<component name="eiseiRefSearchLogic" class="jp.co.isid.mos.bird.storeinfo.eiseiref.logic.impl.SearchLogicImpl"/>
+	<component name="eiseiRefDownloadLogic" class="jp.co.isid.mos.bird.storeinfo.eiseiref.logic.impl.DownloadLogicImpl">
+		<property name="codHyojiTaishoDao">birdCommon.codHyojiTaishoDao</property>
+	</component>
+	
+	<!-- DTO -->
+	<component name="pullDownMenuDto" class="jp.co.isid.mos.bird.framework.dto.PullDownMenuDto" autoBinding="none" instance="session"/>
+	<component name="miseSearchDto" class="jp.co.isid.mos.bird.commonform.misesearch.dto.MiseSearchDto" autoBinding="none" instance="session"/>
+	<component name="commonCodeDto" class="jp.co.isid.mos.bird.framework.dto.CommonCodeDto" autoBinding="none" instance="session"/>
+	<component name="eiseiRefFileDownloadDto" class="jp.co.isid.mos.bird.storeinfo.eiseiref.dto.FileDownloadDto" instance="request"/>
+	<component name="eiseiRefSessionDto" class="jp.co.isid.mos.bird.storeinfo.eiseiref.dto.SessionDto" instance="session">
+		<property name="listMise">new java.util.ArrayList(0)</property>
+		<property name="listNendo">new java.util.ArrayList(0)</property>
+	</component>		
+	<component name="eiseiRefRequestDto" class="jp.co.isid.mos.bird.storeinfo.eiseiref.dto.RequestDto" instance="request"/>
+	<component name="eiseiRefResultDto" class="jp.co.isid.mos.bird.storeinfo.eiseiref.dto.ResultDto" instance="request">
+		<property name="listData">new java.util.ArrayList(0)</property>
+	</component>
+	
+	<!-- ACTION -->
+	<component name="eiseiRefAction" class="jp.co.isid.mos.bird.storeinfo.eiseiref.action.impl.EiseiRefActionImpl" instance="request">
+		<property name="downloadDto">eiseiRefFileDownloadDto</property>
+		<property name="downloadLogic">eiseiRefDownloadLogic</property>
+	</component>
+	
+	<!-- Converter -->
+	<component name="cvtMiseCode" class="jp.co.isid.mos.bird.framework.text.converter.CodeConverter">
+		<property name="formatPattern">"00000"</property>
+	</component>
+</components>

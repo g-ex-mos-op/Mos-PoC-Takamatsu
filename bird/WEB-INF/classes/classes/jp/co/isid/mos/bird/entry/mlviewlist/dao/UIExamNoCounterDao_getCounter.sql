@@ -1,0 +1,11 @@
+select 
+	CNT_KBN,
+	rtrim(NO_COUNTER) as NO_COUNTER,
+	CNT_SHOKI,
+	LAST_USER,
+	LAST_PGM,
+	LAST_TMSP
+FROM
+	BR21MLCT
+WHERE
+	CNT_KBN = /*kbn*/'01'

@@ -1,0 +1,531 @@
+<html xmlns:m="http://www.seasar.org/maya" m:action="#{voiceRefListAction.initialize}" m:extends="/jsf/layout/layoutNoNavi.html">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Windows-31j" />
+<span m:inject="f:param" m:name="layoutTitle" m:value="お客様の声一覧"/>
+<title><span value="#{layoutTitle}"/></title>
+<span m:inject="s:insert" m:name="bodyTitleName"><span m:value="■#{layoutTitle}"/></span>
+<span m:inject="f:param" m:name="viewIdValue" m:value="BSM016V01"/>
+<span m:inject="f:param" m:name="userTypeCd" m:value="#{voiceRefSesDto.userTypeCd}"/>
+<span m:inject="f:param" m:name="onLoadName" m:value="load()"/>
+<span m:inject = "f:param" m:name = "msg" m:value="結果が表示されるまでに時間がかかります。よろしいですか？"/>
+</head>
+<body>
+<span m:inject="s:insert" m:name="body" >
+	<STYLE type="text/css">
+	<!--
+	/* テーブルヘッダデフォルト設定 パターン２*/
+	/* テーブルヘッダのセンタリング用 */
+	table.body_table2 tr th{
+	  font-size :small;
+	  text-align            : center;
+	  vertical-align		: middle;
+	}
+	/* テーブル枠の設定 */
+	table.tab_table{
+	  border-style          : solid;
+	  border-width          : 2px;
+	  border-collapse       : collapse;
+	}
+
+	table.data_table tr th.leftArea{
+	  border                : 1px solid;
+	  text-align            : left;
+	}
+	table.data_table tr td.numArea{
+	  border                : 1px solid;
+	  text-align            : right;
+	}
+	table.data_table tr th a{
+	  color            : blue;
+	}
+	/* テーブルヘッダデフォルト設定 パターン１*/
+	table.data_table tr.default_bkgColor{
+	  background-color      : #FFFFCC;
+	  border-color          : #808080 #808080 #808080 #808080;
+	}
+
+	/* 表：合計欄表示（タイプ１） */
+	.body_sum1, table tr.body_sum1 td{
+	  background-color      : #FFD2E9;
+	}
+	/* 表：合計欄表示（タイプ５） */
+	.body_sum5, table tr.body_sum5 td{
+	  background-color      : #FFC0A0;
+	}
+	.data_table_width {
+	    width:98%;
+	}
+	.width_Seq {
+	    width:15px;
+	}
+	.width_SibuName {
+	    width:120px;
+	}
+	.width_MiseName {
+	    width:160px;
+	}
+	.width_Bnr {
+	    width:55px;
+	    word-break:keep-all;
+	    white-space:nowrap;
+	}
+	.width_Naiyo {
+	    width:*;
+	    word-break:break-all;
+	    word-wrap:break-word;
+
+	}
+	.width_Taiou {
+	    width:250px;
+	}
+	.width_Jokyo {
+	    width:30px;
+	}
+	.width_KanriNo {
+		width:78px;
+	}
+	table.data_table{
+		border-collapse: collapse;
+		border-width:2px;
+	}
+	//-->
+	</STYLE>
+	<script type="text/javascript">
+	<!--
+	var userTypeHONBU = "01";
+	var userTypeONER = "02";
+	var userTypeMISE = "03";
+
+	/**
+	 * ウィンドウロードステータス取得処理
+	 *
+	 */
+	function isLoadingFlgOFF(){
+		return (document.conditionForm.elements['conditionForm:loadingFlg'].value != "ON");
+	}
+
+	/**
+	 * ユーザータイプ判別処理
+	 *
+	 */
+	function isUserType(code){
+		var userType = document.conditionForm.elements['conditionForm:userTypeCd'].value;
+		return (code == userType);
+	}
+	/**
+	 * 会社コードモスフード判別処理
+	 *
+	 */
+	function isCompanyCdMos(){
+		var companyCd = "";
+	    companyCd = document.conditionForm.elements['conditionForm:companyCd'].value;
+		return (companyCd == "00");
+	}
+
+	/**
+	 * ウィンドウロードフラグ設定処理
+	 *
+	 *
+	 */
+	function setLoadingFlg() {
+		document.conditionForm.elements['conditionForm:loadingFlg'].value = "ON";
+	}
+
+	function load(){
+		loadScroll("voiceListScroll", 420 );
+		var headTab=document.getElementById("tablehead");
+		var dataTab=document.getElementById("tabledata");
+		if(headTab!= null &&dataTab!= null){
+			var datatdwidth = dataTab.rows[1].cells[2].offsetWidth-3;
+			if(headTab.rows[0]!=null&&headTab.rows[0].cells[2]!=null){
+				headTab.rows[0].cells[2].width = datatdwidth;
+			}
+			if(headTab.rows[1]!=null&&headTab.rows[1].cells[2]!=null){
+				headTab.rows[1].cells[2].width = datatdwidth;
+			}
+		}
+		if(document.conditionForm.onerBtn != null && document.conditionForm.onerBtn.style.display != "none") {
+			focusElement('conditionForm');
+		}
+		if(document.conditionForm != null && document.conditionForm.elements['conditionForm:windowId'] != null) {
+			document.conditionForm.elements['conditionForm:loadingFlg'].value = "";
+	  	}
+	  	//印刷用の検索結果条件ヘッダ表示処理
+	//  	setPrintHeader();
+	}
+	/**
+	 * 表示内容プルダウンリスト変更時処理
+	 *
+	 * 表示内容プルダウンの値毎に
+	 * 条件項目の表示状態を変更します。
+	 */
+	function changeHyojiNaiyo(myElemtnt){
+	    //表示内容プルダウン変更処理
+	    var sIndex = myElemtnt.selectedIndex;
+	    var selectedValue = myElemtnt.options[sIndex].value;
+	    //対象条件別表示対象プルダウン設定処理
+	    if("4" == selectedValue) {
+		    changeDisplayStyle("td", "area_taishoJoken", "none");
+		    changeDisplayStyle("th", "area_taishoJoken", "none");
+	    }
+	    else {
+		    changeDisplayStyle("td", "area_taishoJoken", "");
+		    changeDisplayStyle("th", "area_taishoJoken", "");
+	    	if(isUserType(userTypeHONBU)) {
+	    		changeTaishoJoken(document.conditionForm.elements['conditionForm:taishoJokenPdwn']);
+	    	}
+	    }
+	}
+	/**
+	 * 対象条件プルダウンリスト変更時処理
+	 *
+	 * 対象条件プルダウンの値毎に
+	 * 表示対象のプルダウンを変更します。
+	 */
+	function changeTaishoJoken(myElemtnt){
+	    //対象条件プルダウン変更処理
+	    var sIndex = myElemtnt.selectedIndex;
+	    var selectedValue = myElemtnt.options[sIndex].value;
+
+	    //対象条件別表示対象プルダウン設定処理
+	    changeDisplay("div", "pdwn_ht_", selectedValue);
+	    changeDisplay("input", "pdwn_ht_", selectedValue);
+		//表示対象プルダウンリストエレメント取得処理
+		var	elementPullDown = getPullDownElement("select", "pdwn_ht_", selectedValue);
+		if(elementPullDown != null) {
+			elementPullDown.selectedIndex=0;
+		}
+		else if(selectedValue == "ONER") {
+			document.conditionForm.onerCd.focus();
+		}
+	}
+
+	/**
+	 * 検索ボタン押下時処理
+	 *
+	 */
+	function search(){
+		if(returnLoadingStatus()){
+			setJokenData();
+			document.conditionForm.elements['conditionForm:__link_clicked__'].value='conditionForm:search';
+			document.conditionForm.target ="_self";
+		    document.conditionForm.elements['conditionForm:btnExecute'].disabled = true;
+
+			document.conditionForm.submit();
+		}
+	}
+	/**
+	 * ウィンドウロードステータス取得処理
+	 *
+	 */
+	function returnLoadingStatus(){
+		if(isLoadingFlgOFF()) {
+			setLoadingFlg();
+			return true;
+		}
+		return false;
+	}
+	/**
+	 * 検索条件値設定処理
+	 *
+	 */
+	function setJokenData(){
+		//表示内容取得
+		var elementHyojiNaiyo = document.conditionForm.elements['conditionForm:hyojiNaiyo'];
+		var targetHyojiNaiyo = elementHyojiNaiyo.options[elementHyojiNaiyo.selectedIndex].value;
+		if(isUserType(userTypeHONBU)) {
+			//表示対象設定
+			var elementTarget = getPullDownElement("select", "pdwn_tj", "");
+		    var taishoJoken = elementTarget.options[elementTarget.selectedIndex].value;
+		    if("4" != targetHyojiNaiyo) {
+		    	var targetCode = "";
+			    if("ALL"==taishoJoken) {
+			    	targetCode = ""
+			    }
+			    else if ("ONER"==taishoJoken) {
+			    	targetCode = document.conditionForm.onerCd.value;
+			    }
+			    else {
+				    //プルダウンリストエレメント取得処理
+					var elementPullDown = getPullDownElement("select", "pdwn_ht_", taishoJoken);
+					targetCode = elementPullDown.options[elementPullDown.selectedIndex].value;
+				}
+		    	document.conditionForm.elements['conditionForm:taishoJoken'].value=taishoJoken;
+				document.conditionForm.elements['conditionForm:hyojiTaisho'].value=targetCode;
+			}
+		}
+	}
+	/**
+	 * プルダウンリストエレメント取得処理
+	 */
+	function getPullDownElement(targetTag, commonClassName, targetCode) {
+		var objsDiv = document.conditionForm.getElementsByTagName(targetTag);
+		for (i = 0; i < objsDiv.length; i++) {
+			var arrayClass = objsDiv[i].className.split(" ");
+			var targetClassName = commonClassName+targetCode;
+			if(arrayClass.indexOf(targetClassName) >=0){
+				return elementPullDown = objsDiv[i];
+			}
+		}
+		return null;
+	}
+	/*
+	 * 条件フォーム用表示ステータス変更処理
+	 */
+	function changeDisplayStyle(targetTag, targetCalssNm, disableStyle) {
+		var objs = document.conditionForm.getElementsByTagName(targetTag);
+		for (i = 0; i < objs.length; i++) {
+			var classNm = objs[i].className;
+			setStyleDisplay(objs[i], classNm, targetCalssNm, disableStyle);
+		}
+	}
+	/*
+	 * 条件フォーム用表示ステータス変更処理
+	 */
+	function changeDisplay(targetTag, firstCalssNm, lastClassNm) {
+		var objs = document.conditionForm.getElementsByTagName(targetTag);
+		for (i = 0; i < objs.length; i++) {
+			var arrayClass = objs[i].className.split(" ");
+			for (s=0; s < arrayClass.length; s++) {
+				if(arrayClass[s].indexOf(firstCalssNm) >= 0){
+					setStylesDisplay(objs[i], arrayClass[s].substring(firstCalssNm.length), lastClassNm);
+				}
+			}
+		}
+	}
+	/*
+	 * 条件フォーム用表示ステータス変更処理
+	 */
+	function changeDisplayForView(targetTag, firstCalssNm, lastClassNm) {
+		var objs = document.conditionForm.getElementsByTagName(targetTag);
+		for (i = 0; i < objs.length; i++) {
+			var classNm = objs[i].className;
+			if(classNm.substring(0,firstCalssNm.length) == firstCalssNm){
+				setStylesDisplay(objs[i], classNm.substring(classNm.length-lastClassNm.length),lastClassNm);
+			}
+		}
+	}
+	function setStylesDisplay(elementObj, eleClassName, targetClassName) {
+		if(eleClassName == targetClassName) {
+			setStyleDisplay(elementObj, eleClassName, targetClassName, "inline");
+		}else{
+			elementObj.style.display   = "none";
+		}
+	}
+	function setStyleDisplay(elementObj, eleClassName, targetClassName, disableStyle) {
+		if(eleClassName == targetClassName) {
+			elementObj.style.display     = disableStyle;
+		}
+	}
+	/**
+	 * 個店ポータル画面表示処理
+	 */
+	function kotenPortal(miseCd) {
+		document.conditionForm.elements['conditionForm:view_miseCd'].value=miseCd;
+		document.conditionForm.elements['conditionForm:isUseCommonDto'].value = '1';
+		document.conditionForm.elements['conditionForm:__link_clicked__'].value='conditionForm:kotenPortal';
+		document.conditionForm.elements['conditionForm:newWindowFlg'].value=false;
+		document.conditionForm.target ="_blank";
+		document.conditionForm.submit();
+		document.conditionForm.elements['conditionForm:isUseCommonDto'].value = "";
+	}
+	/**
+	 * 詳細画面表示処理
+	 */
+	function viewInfo(kanriNo) {
+		document.conditionForm.elements['conditionForm:view_kanriNo'].value=kanriNo;
+		document.conditionForm.elements['conditionForm:__link_clicked__'].value='conditionForm:viewInfo';
+		document.conditionForm.elements['conditionForm:newWindowFlg'].value=false;
+		document.conditionForm.target ="_blank";
+		document.conditionForm.elements['conditionForm:loadingFlg'].value = "";
+		document.conditionForm.submit();
+	}
+	/**
+	 * 詳細画面表示処理
+	 */
+	function callOnerForm() {
+		setJokenData();
+		document.conditionForm.elements['conditionForm:__link_clicked__'].value='conditionForm:callOnerForm';
+		document.conditionForm.target ="_self";
+	    document.conditionForm.elements['conditionForm:btnExecute'].disabled = true;
+		document.conditionForm.submit();
+	}
+
+	//-->
+	</script>
+	<form m:rendered="#{voiceRefRenderedDto.companyCd != null && voiceRefRenderedDto.conditionDataComp == true}" m:id="conditionForm" onKeyDown="return setDefaultSubmitButton('conditionForm','btnExecute');">
+		<input type="hidden" m:id="initMenuId" m:value="#{menuAction.initMenuId}"/>
+		<input type="hidden" m:id="initSubMenuId" m:value="#{menuAction.initSubMenuId}"/>
+		<input type="hidden" id="viewId" m:value="#{voiceRefReqDto.viewId}" />
+		<input type="hidden" id="windowId" m:value="#{voiceRefReqDto.windowId}"/>
+		<input type="hidden" id="userTypeCd" m:value="#{userTypeCd}" m:passthrough="true"/>
+		<input type="hidden" id="loadingFlg" value=""/>
+		<input type="hidden" id="newWindowFlg" m:value="#{voiceRefReqDto.newWindowFlg}"/>
+	    <input type="hidden" id="jyokenMsg" m:value="#{msg}"/>
+	    <input type="hidden" m:id="isUseCommonDto" m:value=""/>
+		<a id="callOnerForm" m:action="#{voiceRefListAction.callOnerForm}"/>
+		<a id="search" m:action="#{voiceRefListAction.search}"/>
+		<table class="hiddenBody element_browser">
+			<tr>
+				<td>
+		<table class="body_table">
+		    <tr>
+		      <th>表示内容</th>
+		      <td>
+		        <div class="hideArea">
+					<select m:id="hyojiNaiyo"
+							m:value="#{voiceRefReqDto.hyojiNaiyo}"
+							m:items="#{voiceRefReqDto.listHyojiNaiyo}"
+							m:itemValue="code"
+							m:itemLabel="name"
+							m:onchange="changeHyojiNaiyo(this)">
+						<option value="1">クレーム（全て）</option>
+						<option value="01">クレーム（未対応）</option>
+						<option value="4">お褒め</option>
+					</select>
+				  </div>
+		      </td>
+				<th>対象年月</th>
+				<td>
+				<div class="hideArea">
+					<select
+						m:value="#{voiceRefReqDto.taishoNengetu}"
+						m:items="#{voiceRefReqDto.listTaishoNengetu}"
+						m:itemValue="code"
+						m:itemLabel="name"
+						>
+						<option value="20080501">2008/05</option>
+						<option value="20080401">2008/04</option>
+						<option value="20080301">2008/03</option>
+					</select>
+				</div>
+				</td>
+				<th m:rendered="#{voiceRefSesDto.honbuUser}" class="area_taishoJoken" style="#{(voiceRefReqDto.ohome) ? 'display:none;' : ''}">対象条件</th>
+				<td m:rendered="#{voiceRefSesDto.honbuUser}" class="area_taishoJoken" style="#{(voiceRefReqDto.ohome) ? 'display:none;' : ''}">
+				<div class="hideArea">
+					<select class="pdwn_tj"
+					    id="taishoJokenPdwn"
+						m:value="#{voiceRefReqDto.taishoJoken}"
+						m:items="#{voiceRefReqDto.listTaishoJoken}"
+						m:itemValue="code"
+						m:itemLabel="name"
+						m:onchange="changeTaishoJoken(this)">
+							<option value="all">全社</option>
+							<option value="jg">事業本部</option>
+							<option value="area">営業エリア</option>
+							<option value="sibu">支部</option>
+							<option value="mise">オーナー</option>
+					</select>
+				</div>
+				</td>
+				<th m:rendered="#{voiceRefSesDto.honbuUser}"
+				    class="area_taishoJoken" style="#{(voiceRefReqDto.ohome) ? 'display:none;' : ''}">表示対象
+					<input type="button" onClick="return callOnerForm();" onDblClick="return false;" class="pdwn_ht_ONER button_in_table" value="検索"
+					       style="#{('ONER'==voiceRefReqDto.taishoJoken) ? '' : 'display:none;'}" name="onerBtn"/></th>
+				<td m:rendered="#{voiceRefSesDto.honbuUser}" class="area_taishoJoken" style="#{(voiceRefReqDto.ohome) ? 'display:none;' : ''}">
+					<div class="hideArea" style="float:left">
+						<span m:inject="s:forEach" m:items="#{voiceRefReqDto.listsHyojiTaisho}" m:var="listInfo" m:varindex="i">
+							<div class="pdwn_ht_#{listInfo.key}" style="#{(listInfo.key==voiceRefReqDto.taishoJoken || (i==0 && 'MISE'==voiceRefReqDto.taishoJoken && listInfo.key=='SLAREA')) ? '' : 'display:none;'}">
+						<input m:rendered="#{'ONER' == listInfo.key}"
+						       type="text" size="10" maxlength="5" name="onerCd" class="imenotuse height_11"
+						       m:value="#{('ONER'==voiceRefReqDto.taishoJoken) ? voiceRefReqDto.hyojiTaisho: ''}"  m:passthrough="true" />
+						<select m:rendered="#{listInfo.listData != null}" class="pdwn_ht_#{listInfo.key}"
+								m:value="#{voiceRefReqDto.hyojiTaisho}"
+								m:items="#{listInfo.listData}"
+								m:itemValue="hyojiTaishoCd"
+								m:itemLabel="hyojiTaishoName"
+								>
+						    <option value="11000">第１営業本部</option>
+						    <option value="12000">第２営業本部</option>
+						    <option value="13000">第３営業本部</option>
+						    <option value="14000">第４営業本部</option>
+						    <option value="19000">販社</option>
+						    <option value="21000">直営店</option>
+						    <option value="33001">直営本部</option>
+						    <option value="33002">マザーリーフ事業本部</option>
+						    <option value="33003">関連事業本部</option>
+						    <option value="34001">業態開発本部</option>
+						</select>
+						</div>
+						</span>
+					</div>
+				</td>
+		    </tr>
+		</table>
+				</td>
+				<td>
+		<input type="button" style="margin-left:3px;"
+		       name="conditionForm:btnExecute" m:value="#{voiceRefReqDto.searched==true?'再検索':'実行'}"
+		       onClick="return search();" onDblClick="return false;"/></td>
+		   </tr>
+		</table>
+		<input type="hidden" id="companyCd" m:value="#{voiceRefReqDto.companyCd}"/>
+		<input type="hidden" id="taishoJoken" m:value="#{voiceRefReqDto.taishoJoken}"/>
+		<input type="hidden" id="hyojiTaisho" m:value="#{voiceRefReqDto.hyojiTaisho}"/>
+		<input type="hidden" id="view_viewId" m:value="#{voiceRefViewDto.viewId}" />
+		<input type="hidden" id="view_windowId" m:value="#{voiceRefViewDto.windowId}"/>
+		<input type="hidden" id="view_companyCd" m:value="#{voiceRefViewDto.companyCd}"/>
+		<input type="hidden" id="view_hyojiNaiyo" m:value="#{voiceRefViewDto.hyojiNaiyo}"/>
+		<input type="hidden" id="view_taishoNengetu" m:value="#{voiceRefViewDto.taishoNengetu}"/>
+		<input type="hidden" id="view_taishoJoken" m:value="#{voiceRefViewDto.taishoJoken}"/>
+		<input type="hidden" id="view_hyojiTaisho" m:value="#{voiceRefViewDto.hyojiTaisho}"/>
+		<input type="hidden" id="view_bnrM" m:value="#{voiceRefViewDto.bnrM}"/>
+		<input type="hidden" id="view_kanriNo" m:value="#{voiceRefViewDto.kanriNo}"/>
+		<input type="hidden" id="view_miseCd" m:value="#{voiceRefViewDto.miseCd}"/>
+		<a id="viewInfo" m:action="#{voiceRefListAction.viewInfo}" />
+		<a id="kotenPortal" m:action="#{voiceRefListAction.kotenPortal}"/>
+	<sapn m:rendered="#{voiceRefViewDto.existSearchedData}">
+		<div class="scroll_padding_head">
+		<div class="scroll_hidden" style="margin-top: 4px;">
+		<table class="body_table2 data_table_width" id="tablehead">
+			<tr style="line-height:20px;">
+				<th rowspan="2" class="width_Seq">&nbsp;</th>
+				<th rowspan="2" class="width_MiseName">店舗</th>
+				<th width="">中分類</th>
+				<th rowspan="2" class="width_Naiyo">内容</th>
+				<!--<th rowspan="2" class="width_Taiou">対応</th>-->
+				<th m:rendered="#{voiceRefViewDto.ohome==false}" rowspan="2" class="width_Jokyo">状況</th>
+				<th m:rendered="#{voiceRefViewDto.ohome==false}" rowspan="2" class="width_KanriNo">受付番号</th>
+			</tr>
+			<tr style="line-height:20px;">
+				<th width="">小分類</th>
+			</tr>
+		</table>
+		</div>
+		</div>
+		<div class="scroll_padding_data">
+		<div id="voiceListScroll" class="scroll_standby">
+			<table class="body_table2 data_table data_table_width " style="border-top:0px" id="tabledata">
+		    <span m:inject="s:forEach" m:items="#{voiceRefViewDto.listSearchData}" m:var="ui" m:varindex="i">
+		      <tr m:rendered="#{ui.claimNo == null}" class="#{ui.trCssClass} non_top_border" style="line-height:12px;">
+		      	<td m:colspan="#{(voiceRefViewDto.ohome==true? '4':'6')}">
+		      		<b><span m:value="#{ui.jusinDt}" m:converter="#{dateCnvtSlashYMDW}"/></b>
+		      	</td>
+		      </tr>
+		      <tr m:rendered="#{ui.claimNo != null}" class="#{ui.trCssClass} non_top_border" style="line-height:12px;">
+		      	  <td rowspan="2" align="center" class="width_Seq font_size_12"><span m:converter="#{characterEncodingConverter}" m:value="#{ui.seq}"/></td>
+				  <td rowspan="2" class="width_MiseName font_size_12">
+					  <a m:rendered="#{voiceRefSesDto.viewKotenPortal && 'NO MISE' != ui.miseNameKj}" href="javaScript:void(0);" onClick="kotenPortal('#{ui.miseCd}'); return false;" onDblClick="return false;"><span m:value="#{ui.miseCd}"/>
+					  &nbsp;<span m:converter="#{characterEncodingConverter}" m:value="#{ui.miseNameKj}"/></a>
+					  <span m:converter="#{characterEncodingConverter}" m:rendered="#{voiceRefSesDto.viewKotenPortal==false || 'NO MISE' == ui.miseNameKj }"><span m:converter="#{characterEncodingConverter}" m:value="#{ui.miseCd}"/>&nbsp;<span m:converter="#{characterEncodingConverter}" m:value="#{'NO MISE' == ui.miseNameKj? '':ui.miseNameKj}"/></span>
+				  </td>
+		          <td class="width_Bnr font_size_12"><span m:converter="#{characterEncodingConverter}" m:value="#{ui.bnrMName}"/></td>
+				  <td class="width_Naiyo font_size_12" rowspan="2"><span m:converter="#{characterEncodingConverter}" m:value="#{ui.naiyou}"/></td>
+				  <td m:rendered="#{voiceRefViewDto.ohome==false}" rowspan="2" align="center" m:rendered="#{voiceRefViewDto.ohome==false}" class="width_Jokyo font_size_12"><span m:converter="#{characterEncodingConverter}" m:value="#{ui.jokyo}"/></td>
+				  <td m:rendered="#{voiceRefViewDto.ohome==false}" rowspan="2" m:rendered="#{voiceRefViewDto.ohome==false}" class="width_KanriNo font_size_12" >
+				  	<span m:value="#{ui.claimNo}"/>
+				  </td>
+				</tr>
+		       <tr m:rendered="#{ui.claimNo != null}" class="#{ui.trCssClass} non_top_border" style="line-height:12px;">
+				  <td class="width_Bnr font_size_12"><span m:converter="#{characterEncodingConverter}" m:value="#{ui.bnrSName}"/></td>
+				</tr>
+			</span>
+			</table>
+		</div>
+		</div>
+	</sapn>
+		<input type="text" m:id="dummyEnter" style="display:none"/>
+	</form>
+</span>
+</body>
+</html>

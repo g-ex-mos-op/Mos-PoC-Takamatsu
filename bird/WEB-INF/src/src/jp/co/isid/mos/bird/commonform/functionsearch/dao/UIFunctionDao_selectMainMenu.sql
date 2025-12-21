@@ -1,0 +1,19 @@
+SELECT MAIN.SUB_MENU_ID MENU_ID
+,      MAIN.SUB_MENU_NAME MENU_NAME
+,      MAIN.SORT_SEQ
+,      SUB.TYPE_NAME
+FROM (SELECT MENU_ID
+      ,      MENU_NAME
+      ,      SUB_MENU_ID
+      ,      SUB_MENU_NAME
+      ,      SORT_SEQ
+      FROM BR02BMNU
+      WHERE MENU_ID = '00') MAIN
+,     (SELECT DISTINCT MENU_ID 
+       ,      MENU_NAME
+       ,      CASE WHEN MENU_ID = '99' THEN ''
+            WHEN MENU_ID >= '50' THEN 'ìoò^ån'
+            ELSE 'è∆âÔån' END AS TYPE_NAME
+       FROM BR02BMNU WHERE MENU_ID != '00') SUB
+WHERE SUB.MENU_ID = MAIN.SUB_MENU_ID
+ORDER BY MAIN.SORT_SEQ

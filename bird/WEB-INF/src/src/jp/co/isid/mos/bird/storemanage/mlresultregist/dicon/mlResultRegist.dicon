@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE components PUBLIC "-//SEASAR2.1//DTD S2Container//EN"
+	"http://www.seasar.org/dtd/components21.dtd">
+<components namespace="mlResultRegist">
+	<include path="dao.dicon"/>
+    <include path="jp/co/isid/mos/bird/common/dicon/birdCommon.dicon"/>	
+	<include path="jp/co/isid/mos/bird/framework/dicon/birdInterceptor.dicon"/>
+
+	<!-- AutoRegister -->
+	<component
+	  class="org.seasar.framework.container.autoregister.AspectAutoRegister">
+	    <property name="interceptor">birdInterceptor.actionInterceptorChain</property>
+	    <initMethod name="addClassPattern">
+	        <arg>"jp.co.isid.mos.bird"</arg>
+	        <arg>".*ActionImpl"</arg>
+	    </initMethod>
+	    <initMethod name="registerAll"/>
+	</component>
+	<component
+	  class="org.seasar.framework.container.autoregister.AspectAutoRegister">
+	    <property name="interceptor">birdInterceptor.logicInterceptorChain</property>
+	    <initMethod name="addClassPattern">
+	        <arg>"jp.co.isid.mos.bird"</arg>
+	        <arg>".*LogicImpl"</arg>
+	    </initMethod>
+	    <initMethod name="registerAll"/>
+	</component>
+
+<!-- Action -->
+	<component name="mlResultRegistCondAction" class="jp.co.isid.mos.bird.storemanage.mlresultregist.action.impl.MlResultRegistCondActionImpl" instance="request"/>
+	<component name="mlResultRegistAbilityCheckListAction" class="jp.co.isid.mos.bird.storemanage.mlresultregist.action.impl.MlResultRegistAbilityCheckListActionImpl" instance="request">
+		<property name="mlrrGetAbilityCheckCategoryResultLogic">mlrrGetAbilityCheckCategoryResultLogic</property>
+		<property name="mlrrGetAbilityCheckLastCategoryResultLogic">mlrrGetAbilityCheckLastCategoryResultLogic</property>
+	</component>
+	<component name="mlResultRegistAbilityCheckEditAction" class="jp.co.isid.mos.bird.storemanage.mlresultregist.action.impl.MlResultRegistAbilityCheckEditActionImpl" instance="request"/>
+	<component name="mlResultRegistAbilityCheckConfirmAction" class="jp.co.isid.mos.bird.storemanage.mlresultregist.action.impl.MlResultRegistAbilityCheckConfirmActionImpl" instance="request">
+		<property name="mlrrGetAbilityCheckCategoryResultLogic">mlrrGetAbilityCheckCategoryResultLogic</property>
+		<property name="mlrrGetAbilityCheckLastCategoryResultLogic">mlrrGetAbilityCheckLastCategoryResultLogic</property>
+	</component>
+	<component name="mlResultRegistInterviewEditAction" class="jp.co.isid.mos.bird.storemanage.mlresultregist.action.impl.MlResultRegistInterviewEditActionImpl" instance="request"/>
+	<component name="mlResultRegistInterviewConfirmAction" class="jp.co.isid.mos.bird.storemanage.mlresultregist.action.impl.MlResultRegistInterviewConfirmActionImpl" instance="request"/>
+	<component name="mlResultRegistImportCsvConditionAction" class="jp.co.isid.mos.bird.storemanage.mlresultregist.action.impl.MlResultRegistImportCsvConditionActionImpl" instance="request">
+		<property name="takeResultCsvLogic">takeResultCsvLogic</property>
+		<property name="takeIssuLicenseCsvLogic">takeIssuLicenseCsvLogic</property>
+		<property name="takeUpdateLicenseCsvLogic">takeUpdateLicenseCsvLogic</property>
+		<property name="checkResultCsvLogic">checkResultCsvLogic</property>
+		<property name="checkIssueLicenseCsvLogic">checkIssueLicenseCsvLogic</property>
+		<property name="checkUpdateLicenseCsvLogic">checkUpdateLicenseCsvLogic</property>
+		<property name="registResultCsvLogic">registResultCsvLogic</property>
+		<property name="registIssueLicenseCsvLogic">registIssueLicenseCsvLogic</property>
+		<property name="registUpdateLicenseCsvLogic">registUpdateLicenseCsvLogic</property>
+	</component>
+	<component name="mlResultRegistImportCsvResultAction" class="jp.co.isid.mos.bird.storemanage.mlresultregist.action.impl.MlResultRegistImportCsvResultActionImpl" instance="request"/>
+
+<!-- Entity -->
+
+<!-- Dao -->
+	<component name="mlrrMstSibuCategoryInfoDao" class="jp.co.isid.mos.bird.storemanage.mlresultregist.dao.MSTSibuCategoryInfoDao" >
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="mlrrEntryDateDao" class="jp.co.isid.mos.bird.storemanage.mlresultregist.dao.EntryDateDao" >
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="mlrrTrnEntryStatusDao" class="jp.co.isid.mos.bird.storemanage.mlresultregist.dao.TrnEntryStatusDao" >
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="mlrrTrnAbilityCheckResultDao" class="jp.co.isid.mos.bird.storemanage.mlresultregist.dao.TrnAbilityCheckResultDao" >
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="mlrrTrnInterviewResultDao" class="jp.co.isid.mos.bird.storemanage.mlresultregist.dao.TrnInterviewResultDao" >
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="mlrrMstInterviewDao" class="jp.co.isid.mos.bird.storemanage.mlresultregist.dao.MstInterviewDao" >
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="mlrrUIMlResultDao" class="jp.co.isid.mos.bird.storemanage.mlresultregist.dao.UIMlResultDao" >
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="mlrrUIInterviewDtDao" class="jp.co.isid.mos.bird.storemanage.mlresultregist.dao.UIInterviewDtDao" >
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="uiMlLicenseeDao" class="jp.co.isid.mos.bird.storemanage.mlresultregist.dao.UIMlLicenseeDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="uiMlEntryStatusDao" class="jp.co.isid.mos.bird.storemanage.mlresultregist.dao.UIMlEntryStatusDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="trnAbilityCheckDetailResultDao" class="jp.co.isid.mos.bird.storemanage.mlresultregist.dao.TrnAbilityCheckDetailResultDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="mstAbilityCheckCategoryDao" class="jp.co.isid.mos.bird.storemanage.mlresultregist.dao.MstAbilityCheckCategoryDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	
+<!-- Dto -->
+	<component name="mlResultRegistDto" class="jp.co.isid.mos.bird.storemanage.mlresultregist.dto.MlResultRegistDto" instance="session" autoBinding="none"/>
+	<component name="miseSearchDto" class="jp.co.isid.mos.bird.commonform.misesearch.dto.MiseSearchDto" autoBinding="none" instance="session"/>
+	<component name="ownerSearchDto" class="jp.co.isid.mos.bird.commonform.ownersearch.dto.OwnerSearchDto" autoBinding="none" instance="session"/>
+	
+<!-- Logic -->	
+	<component name="mlrrGetTargetMLLogic" class="jp.co.isid.mos.bird.storemanage.mlresultregist.logic.impl.GetTargetMLLogicImpl"/>
+	<component name="mlrrGetAbilityCheckStaffListLogic" class="jp.co.isid.mos.bird.storemanage.mlresultregist.logic.impl.GetAbilityCheckStaffListLogicImpl"/>
+	<component name="mlrrGetAbilityCheckCategoryInfoLogic" class="jp.co.isid.mos.bird.storemanage.mlresultregist.logic.impl.GetAbilityCheckCategoryInfoLogicImpl"/>
+	<component name="mlrrGetAbilityCheckCategoryResultLogic" class="jp.co.isid.mos.bird.storemanage.mlresultregist.logic.impl.GetAbilityCheckCategoryResultLogicImpl"/>
+	<component name="mlrrGetAbilityCheckLastCategoryResultLogic" class="jp.co.isid.mos.bird.storemanage.mlresultregist.logic.impl.GetAbilityCheckLastCategoryResultLogicImpl"/>
+	<component name="mlrrGetAbilityCheckMeisaiInfoLogic" class="jp.co.isid.mos.bird.storemanage.mlresultregist.logic.impl.GetAbilityCheckMeisaiInfoLogicImpl"/>
+	<component name="mlrrJudgeAbilityCheckLogic" class="jp.co.isid.mos.bird.storemanage.mlresultregist.logic.impl.JudgeAbilityCheckLogicImpl"/>
+	<component name="mlrrGetInterviewResultLogic" class="jp.co.isid.mos.bird.storemanage.mlresultregist.logic.impl.GetInterviewResultLogicImpl"/>
+	<component name="mlrrGetMstInterviewLogic" class="jp.co.isid.mos.bird.storemanage.mlresultregist.logic.impl.GetMstInterviewLogicImpl"/>
+	<component name="mlrrJudgeInterviewLogic" class="jp.co.isid.mos.bird.storemanage.mlresultregist.logic.impl.JudgeInterviewLogicImpl"/>
+	<component name="mlrrCheckInterviewLogic" class="jp.co.isid.mos.bird.storemanage.mlresultregist.logic.impl.CheckInterviewLogicImpl"/>
+	<component name="mlrrUpdateInterviewLogic" class="jp.co.isid.mos.bird.storemanage.mlresultregist.logic.impl.UpdateInterviewLogicImpl"/>
+	<component name="takeResultCsvLogic" class="jp.co.isid.mos.bird.storemanage.mlresultregist.logic.impl.TakeResultCsvLogicImpl"/>
+	<component name="takeIssuLicenseCsvLogic" class="jp.co.isid.mos.bird.storemanage.mlresultregist.logic.impl.TakeIssuLicenseCsvLogicImpl"/>
+	<component name="takeUpdateLicenseCsvLogic" class="jp.co.isid.mos.bird.storemanage.mlresultregist.logic.impl.TakeUpdateLicenseCsvLogicImpl"/>
+	<component name="checkResultCsvLogic" class="jp.co.isid.mos.bird.storemanage.mlresultregist.logic.impl.CheckResultCsvLogicImpl">
+		<property name="mlrrTotalResultValueList">mlrrTotalResultValueList</property>
+		<property name="mlrrSub2ResultValueList">mlrrSub2ResultValueList</property>
+	</component>
+	<component name="checkIssueLicenseCsvLogic" class="jp.co.isid.mos.bird.storemanage.mlresultregist.logic.impl.CheckIssueLicenseCsvLogicImpl"/>
+	<component name="checkUpdateLicenseCsvLogic" class="jp.co.isid.mos.bird.storemanage.mlresultregist.logic.impl.CheckUpdateLicenseCsvLogicImpl"/>
+	<component name="registResultCsvLogic" class="jp.co.isid.mos.bird.storemanage.mlresultregist.logic.impl.RegistResultCsvLogicImpl"/>
+	<component name="registIssueLicenseCsvLogic" class="jp.co.isid.mos.bird.storemanage.mlresultregist.logic.impl.RegistIssueLicenseCsvLogicImpl"/>
+	<component name="registUpdateLicenseCsvLogic" class="jp.co.isid.mos.bird.storemanage.mlresultregist.logic.impl.RegistUpdateLicenseCsvLogicImpl"/>
+	<component name="mlrrRegistAbilityCheckLogic" class="jp.co.isid.mos.bird.storemanage.mlresultregist.logic.impl.RegistAbilityCheckLogicImpl"/>
+	<component name="mlrrCheckAbilityCheckLogic" class="jp.co.isid.mos.bird.storemanage.mlresultregist.logic.impl.CheckAbilityCheckLogicImpl"/>
+	<component name="gamenRoleLogic" class="jp.co.isid.mos.bird.framework.logic.impl.GetGamenRoleLogicImpl"/>
+
+<!-- Converter -->
+	<component name="mlresultStatusRefMiseConverter" class="jp.co.isid.mos.bird.framework.text.converter.CodeConverter" instance="request">
+		<property name="formatPattern">"00000"</property>
+	</component>
+	<component name="mlrrDateConverterYMKanji" class="jp.co.isid.mos.bird.framework.text.converter.DateConverter" instance="request">
+		<arg>@jp.co.isid.mos.bird.framework.util.formatter.DateFormatter@DATE_TYPE_YMD</arg>
+		<arg>@jp.co.isid.mos.bird.framework.util.formatter.DateFormatter@PATTERN_MONTH_KANJI_YM</arg>
+	</component>
+	<component name="mlrrDateConverterYMDSlash" class="jp.co.isid.mos.bird.framework.text.converter.DateConverter" instance="request">
+		<arg>@jp.co.isid.mos.bird.framework.util.formatter.DateFormatter@DATE_TYPE_YMD</arg>
+		<arg>@jp.co.isid.mos.bird.framework.util.formatter.DateFormatter@PATTERN_SLASH</arg>
+	</component>
+	<component name="mlrrGohiConverter" class="jp.co.isid.mos.bird.storemanage.mlresultregist.text.converter.GohiConverter" instance="request"/>
+	<component name="mlrrGohiInterviewHanteiConverter" class="jp.co.isid.mos.bird.storemanage.mlresultregist.text.converter.GohiInterviewHanteiConverter" instance="request"/>
+
+<!-- Formatter -->
+	<component name="mlrrExamNoFormatter" class="jp.co.isid.mos.bird.framework.util.formatter.CodeFormatter">
+		<arg>5</arg>
+		<property name="formatPattern">"00000"</property>
+	</component>
+	<component name="mlrrLicenseNoFormatter" class="jp.co.isid.mos.bird.framework.util.formatter.CodeFormatter">
+		<arg>10</arg>
+		<property name="formatPattern">"0000000000"</property>
+	</component>
+
+<!-- Other -->
+	<component name="mlrrTotalResultValueList" class="java.util.ArrayList">
+		<initMethod name="add"><arg>"0"</arg></initMethod>
+		<initMethod name="add"><arg>"1"</arg></initMethod>
+		<initMethod name="add"><arg>"2"</arg></initMethod>
+		<initMethod name="add"><arg>"3"</arg></initMethod>
+		<initMethod name="add"><arg>"4"</arg></initMethod>
+		<initMethod name="add"><arg>"9"</arg></initMethod>
+	</component>
+	<component name="mlrrSub2ResultValueList" class="java.util.ArrayList">
+		<initMethod name="add"><arg>"0"</arg></initMethod>
+		<initMethod name="add"><arg>"1"</arg></initMethod>
+		<initMethod name="add"><arg>"2"</arg></initMethod>
+		<initMethod name="add"><arg>"3"</arg></initMethod>
+		<initMethod name="add"><arg>"9"</arg></initMethod>
+	</component>
+</components>

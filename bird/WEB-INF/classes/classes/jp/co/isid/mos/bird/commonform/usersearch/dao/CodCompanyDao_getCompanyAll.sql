@@ -1,0 +1,7 @@
+select distinct
+    BC02COMP.R_COMPANY_CD AS COMPANY_CD
+,   BC02COMP.COMPANY_NAME
+from 
+    BC02COMP 
+order by
+    BC02COMP.R_COMPANY_CD

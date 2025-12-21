@@ -1,0 +1,253 @@
+<html xmlns:m="http://www.seasar.org/maya" m:action="#{tempStoreReplaceEditAction.initialize}" m:extends="/jsf/layout/layoutNoNavi.html">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Windows-31j"/>
+<meta http-equiv="Content-Style-Type" content="text/css"/>
+<meta http-equiv="Content-Script-Type" content="text/javascript"/>
+<title>仮店舗置換えメンテナンス</title>
+</head>
+<body>
+<span m:inject="f:param" m:name="layoutTitle" m:value="仮店舗置換えメンテナンス"/>
+<span m:inject="s:insert" m:name="bodyTitleName">■仮店舗置換えメンテナンス</span>
+<span m:inject="f:param" m:name="onLoadName" m:value="load()"/>
+<span m:inject="f:param" m:name="viewIdValue" m:value="BBS025V02"/>
+<div m:inject="s:insert" m:name="body">
+<style type="text/css">
+<!--
+.condition_body {
+}
+.scroll_area {
+	width:975px;
+	height:360px;
+}
+.body_table2 {
+	width:955px;
+}
+.body_table2 tr td.cenArea {
+	text-align:center;
+}
+table tr.item_type1 td {
+	background-color	: #CCCCCC;
+}
+table tr.item_type2 td {
+	background-color	: #FFCC66;
+}
+.date_width {
+	width:90px;
+}
+-->
+</style>
+
+<script type="text/javascript">
+<!--
+function load(){
+	var f = document.forms['tempStoreReplaceEdit'];
+	//var index = f.elements['tempStoreReplaceEdit:index'].value;
+	var index = document.getElementById("tempStoreReplaceEdit:index").innerText;
+	//var listIndex= document.tempStoreReplaceEdit.elements['tempStoreReplaceEdit:index'].value;
+	var focusParamName= targetElementName('tempStoreReplaceEdit','kakuteiDt', index);
+	if(focusParamName != ""){
+		document.tempStoreReplaceEdit.elements[focusParamName].focus();
+	}else{
+		focusElement("tempStoreReplaceEdit");
+	}
+
+
+
+}
+
+function back(){
+
+	var f = document.forms['tempStoreReplaceEdit'];
+	var msg = f.elements['tempStoreReplaceEdit:CONFIRM_MSG'].value;
+	if(!confirm(msg)) return;
+
+	f.target='';
+	f.elements['tempStoreReplaceEdit:__link_clicked__'].value='tempStoreReplaceEdit:backAction';
+	f.submit();
+	return false;
+}
+function clearElement(index) {
+    var labelObjArray = document.getElementsByTagName("span");
+    for (var i = 0; i < labelObjArray.length; i++) {
+        var labelObj = labelObjArray[i];
+        if (labelObj.className == "dspMiseCd" + index) {
+            labelObj.innerText = "";
+        }
+        if (labelObj.className == "openDt" + index) {
+            labelObj.innerText = "";
+        }
+    }
+ 	var elements = document.forms['tempStoreReplaceEdit'].elements;
+ 	for (var i = 0; i < elements.length; i++) {
+ 		if (elements[i].id == "tempStoreReplaceEdit:stateList_" + index + ":miseCd") {
+ 			elements[i].value = "";
+ 		}
+ 		if (elements[i].id == "tempStoreReplaceEdit:stateList_" + index + ":miseNameKj") {
+ 			elements[i].value = "";
+ 		}
+ 		if (elements[i].id == "tempStoreReplaceEdit:stateList_" + index + ":kakuteiDt") {
+ 			elements[i].value = "";
+ 		}
+ 		if (elements[i].id == "tempStoreReplaceEdit:stateList_" + index + ":openDt") {
+ 			elements[i].value = "";
+ 		}
+ 		if (elements[i].id == "tempStoreReplaceEdit:stateList_" + index + ":closeDt") {
+ 			elements[i].value = "";
+ 		}
+ 	}
+}
+//-->
+</script>
+
+<div class="condition_body">
+<form m:id="tempStoreReplaceEdit">
+<input type="hidden" m:id="viewId" m:value="#{viewIdValue}"/>
+<input type="hidden" m:id="initMenuId" m:value="#{menuAction.initMenuId}"/>
+<input type="hidden" m:id="initSubMenuId" m:value="#{menuAction.initSubMenuId}"/>
+<a m:id="backAction" m:action="#{tempStoreReplaceEditAction.back}"/>
+<a m:id="searchAction" m:action="#{tempStoreReplaceEditAction.searchStore}"/>
+<input type="hidden" id="CONFIRM_MSG" m:value="#{tempStoreReplaceDto.confirmMsg}"/>
+<!--<input type="hidden" id="index" m:value="#{tempStoreReplaceRequestDto.selectIndex}"/>-->
+<span m:converter="#{characterEncodingConverter}" id="index" m:value="#{tempStoreReplaceRequestDto.selectIndex}" style="display:none;"/>
+
+<input type="button" value="戻る" onclick="back();" style="margin-right:6px;"/>
+<input type="submit" value="確認" m:action="#{tempStoreReplaceEditAction.confirm}"/>
+
+<table class="body_table" style="margin-top:4px;margin-bottom:4px;">
+
+    <tr>
+      <th>会社</th>
+      <td><span m:converter="#{characterEncodingConverter}" m:value="#{tempStoreReplaceDto.companyName}" />&nbsp;</td>
+      <th>年度</th>
+      <td width="50" align="center">
+        <span m:value="#{tempStoreReplaceDto.condNendo}" />
+      </td>
+      <th width="70">対象店舗</th>
+      <td width="200">
+  		    <span m:rendered="#{tempStoreReplaceDto.condTargetCd == '0'}">全社</span>
+  		    <span m:converter="#{characterEncodingConverter}" m:rendered="#{tempStoreReplaceDto.condTargetCd == '1'}"><span m:converter="#{characterEncodingConverter}" m:value="#{tempStoreReplaceDto.condJigyoName}" /></span>
+  		    <span m:converter="#{characterEncodingConverter}" m:rendered="#{tempStoreReplaceDto.condTargetCd == '2'}"><span m:converter="#{characterEncodingConverter}" m:value="#{tempStoreReplaceDto.condSibuName}" /></span>
+      </td>
+      <th>確定</th>
+      <td width="80">
+        <span m:converter="#{characterEncodingConverter}" m:value="#{tempStoreReplaceDto.fixedStr}" />
+      </td>
+    </tr>
+
+</table>
+<font>
+店舗情報は店検索から店舗を選択し設定を行って下さい。
+</font>
+<!-- ヘッダー -->
+<table class="body_table2">
+	<tr class="header_row">
+	  <th width="40" rowspan="2">状況</th>
+	  <th colspan="4">仮店舗</th>
+	  <th colspan="4">実店舗</th>
+	</tr>
+	<tr class="header_row">
+	  <th width="200px">支部</th>
+	  <th width="40">種別</th>
+	  <th width="48">コード</th>
+	  <th width="130">予算設定開始月</th>
+	  <th class="date_width">置換え日</th>
+	  <th width="*">店番 店舗名称</th>
+	  <th class="date_width">オープン日</th>
+	  <th width="105px"></th>
+	</tr>
+</table>
+
+<!-- レコード -->
+<div class="scroll_area">
+<table class="body_table2" style="border-top-width:0px;">
+	<!-- TempStoreStateList -->
+	<span m:inject="s:forEach"
+	      m:items="#{tempStoreReplaceDto.listState}" m:var="e" m:varIndex="i" m:id="stateList">
+	<!-- ALL IN ONE -->
+	<tr m:class="#{e.setFlg=='1'?'item_type2':(e.ableUpdateFlg=='0'?'item_type1' : '')} non_top_border #{(e.setFlg != '1' && e.ableUpdateFlg == '1')?'line-height:24px;':''}">
+	  <!-- 状況 -->
+	  <td width="40" class="cenArea">
+	  	<span m:value="#{e.setFlg == '1'?'確定':''}"/>
+	  </td>
+	  <!-- 支部名称 -->
+	  <td width="200px"><span m:converter="#{characterEncodingConverter}" m:value="#{e.sibuName}" /></td>
+	  <!-- FCRC -->
+	  <td width="40">
+	  	<span m:rendered="#{e.fcRc == '1'}"><span m:value="FC" /></span>
+		<span m:rendered="#{e.fcRc == '2'}"><span m:value="RC" /></span>
+	  </td>
+	  <!-- 仮店番 -->
+	  <td width="48" class="cenArea"><span m:value="#{e.kariCd}" /></td>
+	  <!-- 予算設定開始日 -->
+	  <td width="130">
+	    <span m:value="#{e.yosanDt}" m:converter="#{dateConverterYosanDt}" />
+	  </td>
+	  <!-- 置換え日 -->
+	  <td class="date_width cenArea">
+	    <span m:rendered="#{e.setFlg == '1'}">
+	    	<span m:value="#{e.kakuteiDt}" m:converter="#{dateConverterKakuteiDt}" />
+	    </span>
+	  	<span m:rendered="#{e.setFlg != '1' && e.ableUpdateFlg == '0'}">
+	  		<input type="hidden" m:value="#{e.kakuteiDt}"/>
+	  	</span>
+	  	<span m:rendered="#{e.setFlg != '1' && e.ableUpdateFlg == '1'}">
+	  		<input m:id="kakuteiDt" type="text" class="imenotuse width_72" m:value="#{e.kakuteiDt}" m:converter="#{dateConverterKakuteiDt}" size="12" maxlength="10" />
+	  	</span>
+	  </td>
+	  <!-- 実店舗コード 実店舗名称 -->
+	  <td width="*">
+	    <span m:rendered="#{e.setFlg == '1'}">
+		    <span m:converter="#{characterEncodingConverter}" m:value="#{e.miseCd}" /> <span m:converter="#{characterEncodingConverter}" m:value="#{e.miseNameKj}" />
+	    </span>
+	  	<span m:rendered="#{e.setFlg != '1' && e.ableUpdateFlg == '0'}">
+	  	</span>
+	    <span m:rendered="#{e.setFlg != '1' && e.ableUpdateFlg == '1'}">
+		  	<span class="dspMiseCd#{i}">
+		  		<span m:converter="#{characterEncodingConverter}" m:value="#{e.miseCd} #{e.miseNameKj}"/><span m:converter="#{characterEncodingConverter}" m:rendered="#{(e.closeDt<tempStoreReplaceDto.sysdate) && e.closeDt!=''}">(CLOSE)</span>
+		  	</span>
+		  	<input type="hidden" m:id="miseCd" m:value="#{e.miseCd}" />
+		  	<input type="hidden" m:id="miseNameKj" m:value="#{e.miseNameKj}" />
+		  	<input type="hidden" m:id="closeDt" m:value="#{e.closeDt}" />
+	  	</span>
+	  </td>
+	  <!-- オープン日 -->
+	  <td class="date_width cenArea">
+	    <span m:rendered="#{e.setFlg == '1'}">
+			<span m:value="#{e.openDt}" m:converter="#{dateConverterOpenDt}" />
+	    </span>
+	  	<span m:rendered="#{e.setFlg != '1' && e.ableUpdateFlg == '0'}">
+		  	<span m:value="#{e.openDt}" m:converter="#{dateConverterOpenDt}" />
+		</span>
+	    <span m:rendered="#{e.setFlg != '1' && e.ableUpdateFlg == '1'}">
+			<span class="openDt#{i}" m:value="#{e.openDt}" m:converter="#{dateConverterOpenDt}" />
+			<input type="hidden" m:id="openDt" m:value="#{e.openDt}" />
+		</span>
+	  </td>
+	  <!-- ボタン -->
+	  <td width="105px" class="cenArea">
+	  	<div m:rendered="#{e.setFlg != '1' && e.ableUpdateFlg == '1'}" style="padding:0px;">
+	  	  <input type="submit" style="display:inline;"
+	  	         value="検索" m:action="#{tempStoreReplaceEditAction.searchStore}">
+	  	      <span m:converter="#{characterEncodingConverter}" m:inject="f:param" m:name="selectIndex" m:value="#{i}"/></input>
+	  	  <input type="button" style="display:inline;"
+	  	         value="クリア" onclick="clearElement(#{i})" class="width_50"/>
+	  	</div>
+	  </td>
+	</tr>
+
+	</span>
+</table>
+
+</div>
+
+
+<script type="text/javascript">
+<!--
+	focusElement("tempStoreReplaceEdit");
+-->
+</script>
+</form>
+</div>
+</div>
+</body>
+</html>

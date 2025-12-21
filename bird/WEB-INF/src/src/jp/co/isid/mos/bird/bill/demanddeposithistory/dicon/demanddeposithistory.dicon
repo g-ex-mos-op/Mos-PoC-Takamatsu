@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="Shift_JIS"?>
+<!DOCTYPE components PUBLIC "-//SEASAR2.1//DTD S2Container//EN"
+	"http://www.seasar.org/dtd/components21.dtd">
+<components namespace="demanddeposithistory">
+    <include path="dao.dicon"/>
+    <include path="jp/co/isid/mos/bird/common/dicon/birdCommon.dicon"/>
+	<include path="jp/co/isid/mos/bird/framework/dicon/birdInterceptor.dicon"/>
+	<include path="jp/co/isid/mos/bird/bill/common/dicon/seikyuBunruiKigouProperty.dicon"/>
+
+	<component class="org.seasar.framework.container.autoregister.AspectAutoRegister">
+	    <property name="interceptor">birdInterceptor.actionInterceptorChain</property>
+	    <initMethod name="addClassPattern">
+	        <arg>"jp.co.isid.mos.bird"</arg>
+	        <arg>".*ActionImpl"</arg>
+	    </initMethod>
+	    <initMethod name="registerAll"/>
+	</component>
+
+	<component class="org.seasar.framework.container.autoregister.AspectAutoRegister">
+	    <property name="interceptor">birdInterceptor.logicInterceptorChain</property>
+	    <initMethod name="addClassPattern">
+	        <arg>"jp.co.isid.mos.bird"</arg>
+	        <arg>".*LogicImpl"</arg>
+	    </initMethod>
+	    <initMethod name="registerAll"/>
+	</component>
+
+	<component class="jp.co.isid.mos.bird.framework.control.BirdUserInfo" instance="session"/>
+
+	<!-- DAO -->
+	<component name="uIBillRirekiDao" class="jp.co.isid.mos.bird.bill.demanddeposithistory.dao.UIBillRirekiDao">
+		<aspect>dao.interceptor</aspect>
+	</component>
+	<component name="uINyukinMeisaiDao" class="jp.co.isid.mos.bird.bill.demanddeposithistory.dao.UINyukinMeisaiDao">
+		<aspect>dao.interceptor</aspect>
+	</component>
+	<component name="codSeikyuBnruiDao" class="jp.co.isid.mos.bird.bill.demanddeposithistory.dao.CodSeikyuBnruiDao">
+		<aspect>dao.interceptor</aspect>
+	</component>
+	<component name="uIMiseSeikyuRirekiDao" class="jp.co.isid.mos.bird.bill.demanddeposithistory.dao.UIMiseSeikyuRirekiDao">
+		<aspect>dao.interceptor</aspect>
+	</component>
+	<component name="uIShoBnrSeikyuRirekiDao" class="jp.co.isid.mos.bird.bill.demanddeposithistory.dao.UIShoBnrSeikyuRirekiDao">
+		<aspect>dao.interceptor</aspect>
+	</component>
+<!-- add 2023/02/23 USI範 begin-->
+	<component name="UITaxRateWakeDao" class="jp.co.isid.mos.bird.bill.demanddeposithistory.dao.UITaxRateWakeDao">
+		<aspect>dao.interceptor</aspect>
+	</component>
+<!-- add 2023/02/23 USI範 end-->
+
+	<!-- Logic -->
+	<component name="getSeikyuNyukinInfoLogic" class="jp.co.isid.mos.bird.bill.demanddeposithistory.logic.impl.GetSeikyuNyukinInfoLogicImpl"/>
+	<component name="getSeikyuUtiwakeInfoLogic" class="jp.co.isid.mos.bird.bill.demanddeposithistory.logic.impl.GetSeikyuUtiwakeInfoLogicImpl">
+		<property name="seikyuBunruiList">seikyuBunruiKigouProperty.seikyuBunruiList</property>
+	</component>
+	<component name="downloadSeikyuMeisaiLogic" class="jp.co.isid.mos.bird.bill.demanddeposithistory.logic.impl.DownloadSeikyuMeisaiLogicImpl"/>
+
+	<!-- DTO -->
+	<component name="demandDepositHistoryDto" class="jp.co.isid.mos.bird.bill.demanddeposithistory.dto.DemandDepositHistoryDto" instance="session"/>
+	<component name="ownerSearchDto" class="jp.co.isid.mos.bird.commonform.ownersearch.dto.OwnerSearchDto" autoBinding="none" instance="session"/>
+
+	<!-- Action -->
+	<component name="demandDepositHistoryCondAction" class="jp.co.isid.mos.bird.bill.demanddeposithistory.action.impl.DemandDepositHistoryCondActionImpl" instance="request"/>
+	<component name="demandDepositHistoryAction" class="jp.co.isid.mos.bird.bill.demanddeposithistory.action.impl.DemandDepositHistoryActionImpl" instance="request"/>
+	<component name="demandDepositHistoryUtiwakeAction" class="jp.co.isid.mos.bird.bill.demanddeposithistory.action.impl.DemandDepositHistoryUtiwakeActionImpl" instance="request"/>
+	<component name="downloadSeikyuMeisaiCsvOutputAction" class="jp.co.isid.mos.bird.framework.action.impl.CsvOutputActionImpl" instance="request">
+		<property name="csvOutputLogic">downloadSeikyuMeisaiLogic</property>
+		<property name="csvOutputDto">demandDepositHistoryDto</property>
+	</component>
+
+	<!-- CONVERTER -->
+	<component name="numericConverter" class="jp.co.isid.mos.bird.framework.text.converter.NumericConverter" instance="request"/>
+
+	<!-- OTHER -->
+	<component class="jp.co.isid.mos.bird.framework.control.BirdDateInfo" instance="session"/>
+
+</components>

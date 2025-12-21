@@ -1,0 +1,6 @@
+SELECT 
+ COUNT(*)
+FROM
+ TM22SCHU
+WHERE
+ SHO_CD_DAI = /*shoCdDai*/'00000'

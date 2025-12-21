@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="Shift_JIS"?>
+<!DOCTYPE components PUBLIC "-//SEASAR//DTD S2Container 2.3//EN"
+    "http://www.seasar.org/dtd/components23.dtd">
+<components namespace="businessSearch">
+    <include path="dao.dicon"/>
+	<include path="jp/co/isid/mos/bird/framework/dicon/birdInterceptor.dicon"/>
+
+	<component
+	  class="org.seasar.framework.container.autoregister.AspectAutoRegister">
+	    <property name="interceptor">birdInterceptor.actionInterceptorChain</property>
+	    <initMethod name="addClassPattern">
+	        <arg>"jp.co.isid.mos.bird"</arg>
+	        <arg>".*ActionImpl"</arg>
+	    </initMethod>
+	    <initMethod name="registerAll"/>
+	</component> 
+	<component
+	  class="org.seasar.framework.container.autoregister.AspectAutoRegister">
+	    <property name="interceptor">birdInterceptor.logicInterceptorChain</property>
+	    <initMethod name="addClassPattern">
+	        <arg>"jp.co.isid.mos.bird"</arg>
+	        <arg>".*LogicImpl"</arg>
+	    </initMethod>
+	    <initMethod name="registerAll"/>
+	</component>
+
+	<component name="ctlManagementCompanyDao" class="jp.co.isid.mos.bird.commonform.businesssearch.dao.CtlManagementCompanyDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="uiGyotaiDao" class="jp.co.isid.mos.bird.commonform.businesssearch.dao.UIGyotaiDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+
+	<component name="searchCompanyListLogic" class="jp.co.isid.mos.bird.commonform.businesssearch.logic.impl.SearchCompanyListLogicImpl"/>
+	<component name="searchBusinessListLogic" class="jp.co.isid.mos.bird.commonform.businesssearch.logic.impl.SearchBusinessListLogicImpl"/>
+	<component name="searchBusinessResultLogic" class="jp.co.isid.mos.bird.commonform.businesssearch.logic.impl.SearchBusinessResultLogicImpl"/>
+
+	<component class="java.util.HashSet" instance="session"/>
+	<component class="java.util.ArrayList" instance="session"/>
+
+	<component name="businessSearchDto" class="jp.co.isid.mos.bird.commonform.businesssearch.dto.BusinessSearchDto" instance="session"/>
+	<component name="businessSearchListDto" class="jp.co.isid.mos.bird.commonform.businesssearch.dto.BusinessSearchListDto" instance="session"/>
+
+	<component name="businessSearchAction" class="jp.co.isid.mos.bird.commonform.businesssearch.action.impl.BusinessSearchActionImpl" instance="request"/>
+</components>

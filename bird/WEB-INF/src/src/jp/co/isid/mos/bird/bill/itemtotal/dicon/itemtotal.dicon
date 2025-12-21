@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="Shift_JIS"?>
+<!DOCTYPE components PUBLIC "-//SEASAR//DTD S2Container 2.3//EN"
+    "http://www.seasar.org/dtd/components23.dtd">
+<components namespace="itemtotal">
+    <include path="dao.dicon"/>
+	<include path="jp/co/isid/mos/bird/framework/dicon/birdInterceptor.dicon"/>
+	<include path="jp/co/isid/mos/bird/bill/common/dicon/seikyuBunruiKigouProperty.dicon"/>
+	<component
+	  class="org.seasar.framework.container.autoregister.AspectAutoRegister">
+	    <property name="interceptor">birdInterceptor.actionInterceptorChain</property>
+	    <initMethod name="addClassPattern">
+	        <arg>"jp.co.isid.mos.bird"</arg>
+	        <arg>".*ActionImpl"</arg>
+	    </initMethod>
+	    <initMethod name="registerAll"/>
+	</component> 
+	<component
+	  class="org.seasar.framework.container.autoregister.AspectAutoRegister">
+	    <property name="interceptor">birdInterceptor.logicInterceptorChain</property>
+	    <initMethod name="addClassPattern">
+	        <arg>"jp.co.isid.mos.bird"</arg>
+	        <arg>".*LogicImpl"</arg>
+	    </initMethod>
+	    <initMethod name="registerAll"/>
+	</component>
+
+	<component class="jp.co.isid.mos.bird.framework.control.BirdUserInfo" instance="session"/>
+	<component class="jp.co.isid.mos.bird.framework.control.BirdDateInfo" instance="session"/>
+
+	<!-- DAO -->
+	<component name="uiBunruiInfoDao" class="jp.co.isid.mos.bird.bill.itemtotal.dao.UIBunruiInfoDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="uiOnerCdDao" class="jp.co.isid.mos.bird.bill.itemtotal.dao.UIOnerCdDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="uiShohinBetuInfoDao" class="jp.co.isid.mos.bird.bill.itemtotal.dao.UIShohinBetuInfoDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="uiMiseInfoDao" class="jp.co.isid.mos.bird.bill.itemtotal.dao.UIMiseInfoDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="uiUriageDakaInfoDao" class="jp.co.isid.mos.bird.bill.itemtotal.dao.UIUriageDakaInfoDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="uiMeisaiInfoDao" class="jp.co.isid.mos.bird.bill.itemtotal.dao.UIMeisaiInfoDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="uiRirekiInfoDao" class="jp.co.isid.mos.bird.bill.itemtotal.dao.UIRirekiInfoDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	
+	<!-- Logic -->
+	<component name="getOnerCdLogic" class="jp.co.isid.mos.bird.bill.itemtotal.logic.impl.GetOnerCdLogicImpl"/>
+	<component name="getMiseInfoLogic" class="jp.co.isid.mos.bird.bill.itemtotal.logic.impl.GetMiseInfoLogicImpl"/>	
+	<component name="getBunruiInfoLogic" class="jp.co.isid.mos.bird.bill.itemtotal.logic.impl.GetBunruiInfoLogicImpl">
+		<property name="seikyuBunruiList">seikyuBunruiKigouProperty.seikyuBunruiList</property>
+	</component>
+	<component name="getShohinBetuInfoLogic" class="jp.co.isid.mos.bird.bill.itemtotal.logic.impl.GetShohinBetuInfoLogicImpl"/>
+	<component name="getUriageDakaInfoLogic" class="jp.co.isid.mos.bird.bill.itemtotal.logic.impl.GetUriageDakaInfoLogicImpl"/>	
+	<component name="getRirekiInfoLogic" class="jp.co.isid.mos.bird.bill.itemtotal.logic.impl.GetRirekiInfoLogicImpl"/>	
+	<component name="getMeisaiInfoLogic" class="jp.co.isid.mos.bird.bill.itemtotal.logic.impl.GetMeisaiInfoLogicImpl"/>
+	<component name="shohinBetuPdfInfoLogic" class="jp.co.isid.mos.bird.bill.itemtotal.logic.impl.ShohinBetuPdfInfoLogicImpl"/>
+	
+	<!-- DTO -->
+	<component name="shobetuGoukeiDto" class="jp.co.isid.mos.bird.bill.itemtotal.dto.ShobetuGoukeiDto" autoBinding="none" instance="session"/>
+	<component name="shobetuGoukeiInfoDto" class="jp.co.isid.mos.bird.bill.itemtotal.dto.ShobetuGoukeiInfoDto" autoBinding="none" instance="session"/>
+	<component name="shobetuGoukeiDetailDto" class="jp.co.isid.mos.bird.bill.itemtotal.dto.ShobetuGoukeiDetailDto" autoBinding="none" instance="session"/>
+	<component name="ownerSearchDto" class="jp.co.isid.mos.bird.commonform.ownersearch.dto.OwnerSearchDto" instance="session"/>
+	
+	<!-- Action -->
+	<component name="shobetuGoukeiAction" class="jp.co.isid.mos.bird.bill.itemtotal.action.impl.ShobetuGoukeiActionImpl" instance="request">
+		<property name="shobetuGoukeiDto">shobetuGoukeiDto</property>
+	</component>
+	<component name="shobetuGoukeiDetailAction" class="jp.co.isid.mos.bird.bill.itemtotal.action.impl.ShobetuGoukeiDetailActionImpl" instance="request">
+		<property name="shobetuGoukeiDetailDto">shobetuGoukeiDetailDto</property>
+	</component>
+	<component name="shobetuGoukeiPdfOutputAction" class="jp.co.isid.mos.bird.framework.action.impl.PdfOutputActionImpl" instance="request">
+		<property name="pdfOutputDto">shobetuGoukeiDto</property>
+		<property name="pdfOutputLogic">shohinBetuPdfInfoLogic</property>
+	</component>
+	
+	<!-- Converter -->
+	<component name="itemTotalNumericConverter" class="jp.co.isid.mos.bird.framework.text.converter.NumericConverter" instance="request">
+		<property name="formatPattern">"#,##0"</property>
+		<property name="defaultText">"0"</property>
+	</component>
+	<component name="itemTotalNumericConverterGokei" class="jp.co.isid.mos.bird.framework.text.converter.NumericConverter" instance="request">
+		<property name="formatPattern">"#,###"</property>
+		<property name="defaultText">""</property>
+	</component>
+	<component name="numericConverterTanka" class="jp.co.isid.mos.bird.framework.text.converter.NumericConverter" instance="request">
+		<arg>2</arg>
+	</component>
+	<component name="itemTotalConverterYM" class="jp.co.isid.mos.bird.framework.text.converter.DateConverter">
+		<arg>@jp.co.isid.mos.bird.framework.util.formatter.DateFormatter@DATE_TYPE_YM</arg>
+		<arg>@jp.co.isid.mos.bird.framework.util.formatter.DateFormatter@PATTERN_MONTH_SLASH</arg>
+	</component>
+	<component name="itemTotalConverterYMD" class="jp.co.isid.mos.bird.framework.text.converter.DateConverter">
+		<arg>@jp.co.isid.mos.bird.framework.util.formatter.DateFormatter@DATE_TYPE_YMD</arg>
+		<arg>@jp.co.isid.mos.bird.framework.util.formatter.DateFormatter@PATTERN_SLASH</arg>
+	</component>	
+</components>

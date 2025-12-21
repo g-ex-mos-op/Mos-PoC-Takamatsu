@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="Shift_JIS"?>
+<!DOCTYPE components PUBLIC
+    "-//SEASAR//DTD S2Container 2.3//EN"
+    "http://www.seasar.org/dtd/components23.dtd">
+<components namespace="staffRegist">
+	<include path="dao.dicon"/>
+	<include path="jp/co/isid/mos/bird/common/dicon/birdCommon.dicon"/>
+	<include path="jp/co/isid/mos/bird/framework/dicon/birdInterceptor.dicon"/>
+
+	<component class="org.seasar.framework.container.autoregister.AspectAutoRegister">
+	    <property name="interceptor">birdInterceptor.actionInterceptorChain</property>
+	    <initMethod name="addClassPattern">
+	        <arg>"jp.co.isid.mos.bird"</arg>
+	        <arg>".*ActionImpl"</arg>
+	    </initMethod>
+	    <initMethod name="registerAll"/>
+	</component> 
+	<component class="org.seasar.framework.container.autoregister.AspectAutoRegister">
+	    <property name="interceptor">birdInterceptor.logicInterceptorChain</property>
+	    <initMethod name="addClassPattern">
+	        <arg>"jp.co.isid.mos.bird"</arg>
+	        <arg>".*LogicImpl"</arg>
+	    </initMethod>
+	    <initMethod name="registerAll"/>  
+	</component>
+
+	<component class="jp.co.isid.mos.bird.framework.control.BirdUserInfo" instance="session"/>
+	<component class="jp.co.isid.mos.bird.framework.control.BirdDateInfo" instance="session"/>
+
+	<!-- DAO -->
+	<component name="mstStaffDao" class="jp.co.isid.mos.bird.storemanage.staffregist.dao.MstStaffDao">
+		<aspect>dao.interceptor</aspect>
+	</component>
+	<component name="trnStaffIDDao" class="jp.co.isid.mos.bird.storemanage.misemaintenance.dao.TrnStaffIDDao">
+		<aspect>dao.interceptor</aspect>
+	</component>
+	<component name="mstStaffMiseDao" class="jp.co.isid.mos.bird.storemanage.staffregist.dao.MstStaffMiseDao">
+		<aspect>dao.interceptor</aspect>
+	</component>
+	<component name="trnStaffStateDao" class="jp.co.isid.mos.bird.storemanage.staffregist.dao.TrnStaffStateDao">
+		<aspect>dao.interceptor</aspect>
+	</component>
+	<component name="trnEntryDataDao" class="jp.co.isid.mos.bird.storemanage.staffregist.dao.TrnEntryDataDao">
+		<aspect>dao.interceptor</aspect>
+	</component>
+	<component name="staffRegistUIStaffLicensInfoDao" class="jp.co.isid.mos.bird.storemanage.staffregist.dao.UIStaffLicensInfoDao">
+		<aspect>dao.interceptor</aspect>
+	</component>
+
+	<!-- DTO -->
+	<component name="staffRegistDto" class="jp.co.isid.mos.bird.storemanage.staffregist.dto.StaffRegistDto" instance="session">
+		<property name="mstStaffList">null</property>
+		<property name="mstStaffMiseList">null</property>
+		<property name="situationKbnList">null</property>
+	</component>
+	<component name="staffRegistIFDto" class="jp.co.isid.mos.bird.storemanage.staffregist.dto.StaffRegistIFDto" instance="session"/>
+	<component name="ownerSearchDto" class="jp.co.isid.mos.bird.commonform.ownersearch.dto.OwnerSearchDto" autoBinding="none" instance="session"/>
+	<component name="pullDownMenuDto" class="jp.co.isid.mos.bird.framework.dto.PullDownMenuDto" autoBinding="none" instance="session"/>
+	<component name="staffRegistStaffDownloadDto" class="jp.co.isid.mos.bird.storemanage.staffregist.dto.StaffDownloadDto" instance="request"/>
+
+	<!-- Logic -->
+	<component name="staffListLogic" class="jp.co.isid.mos.bird.storemanage.staffregist.logic.impl.StaffListLogicImpl"/>	
+	<component name="staffRegistLogic" class="jp.co.isid.mos.bird.storemanage.staffregist.logic.impl.StaffRegistLogicImpl"/>
+	<component name="getMiseListLogic" class="jp.co.isid.mos.bird.storemanage.staffregist.logic.impl.GetMiseListLogicImpl"/>
+	<component name="createStaffInfoLogic" class="jp.co.isid.mos.bird.storemanage.staffregist.logic.impl.CreateStaffInfoLogicImpl"/>	
+	<component name="getStaffInfoLogic" class="jp.co.isid.mos.bird.storemanage.staffregist.logic.impl.GetStaffInfoLogicImpl"/>	
+	<component name="existOwnerCodeLogic" class="jp.co.isid.mos.bird.storemanage.staffregist.logic.impl.ExistOwnerCodeLogicImpl"/>	
+	<component name="checkStaffStateLogic" class="jp.co.isid.mos.bird.storemanage.staffregist.logic.impl.CheckStaffStateLogicImpl"/>
+	<component name="gamenRoleLogic" class="jp.co.isid.mos.bird.framework.logic.impl.GetGamenRoleLogicImpl"/>
+	<component name="checkEntryLogicImpl" class="jp.co.isid.mos.bird.storemanage.staffregist.logic.impl.CheckEntryLogicImpl"/>
+	<component name="staffRegistCsvLogic" class="jp.co.isid.mos.bird.storemanage.staffregist.logic.impl.CsvLogicImpl"/>
+	<component name="staffRegistCheckDuplicateNameLogic" class="jp.co.isid.mos.bird.storemanage.staffregist.logic.impl.CheckDuplicateNameLogicImpl"/>
+
+	<!-- Action -->
+	<component name="staffRegistSelectAction" class="jp.co.isid.mos.bird.storemanage.staffregist.action.impl.StaffRegistSelectActionImpl" instance="request">
+		<property name="csvOutputDto">staffRegistStaffDownloadDto</property>
+		<property name="csvOutputLogic">staffRegistCsvLogic</property>
+	</component>
+	<component name="staffRegistEditAction" class="jp.co.isid.mos.bird.storemanage.staffregist.action.impl.StaffRegistEditActionImpl" instance="request"/>
+
+	<component name="listSpecificItemEditableKbn" class="java.util.ArrayList">
+		<initMethod name="add" >
+			<arg>"01"</arg>
+		</initMethod>
+	</component>
+</components>

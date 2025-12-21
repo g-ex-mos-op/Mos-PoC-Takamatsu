@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="Shift_JIS"?>
+<!DOCTYPE components PUBLIC "-//SEASAR//DTD S2Container 2.3//EN"
+    "http://www.seasar.org/dtd/components23.dtd">
+<components namespace="scheduleregist">
+    <include path="dao.dicon"/>
+    <include path="jp/co/isid/mos/bird/common/dicon/birdCommon.dicon"/>
+    <include path="jp/co/isid/mos/bird/framework/dicon/commonDto.dicon"/>
+	<include path="jp/co/isid/mos/bird/framework/dicon/birdInterceptor.dicon"/>
+
+	<component
+	  class="org.seasar.framework.container.autoregister.AspectAutoRegister">
+	    <property name="interceptor">birdInterceptor.actionInterceptorChain</property>
+	    <initMethod name="addClassPattern">
+	        <arg>"jp.co.isid.mos.bird"</arg>
+	        <arg>".*ActionImpl"</arg>
+	    </initMethod>
+	    <initMethod name="registerAll"/>
+	</component> 
+	<component
+	  class="org.seasar.framework.container.autoregister.AspectAutoRegister">
+	    <property name="interceptor">birdInterceptor.logicInterceptorChain</property>
+	    <initMethod name="addClassPattern">
+	        <arg>"jp.co.isid.mos.bird"</arg>
+	        <arg>".*LogicImpl"</arg>
+	    </initMethod>
+	    <initMethod name="registerAll"/>
+	</component>
+
+	<component class="jp.co.isid.mos.bird.framework.control.BirdUserInfo" instance="session"/>
+	<component class="jp.co.isid.mos.bird.framework.control.BirdDateInfo" instance="session"/>
+
+
+	<!-- DAO -->
+	<component name="scheduleregistCtlScheduleDao" class="jp.co.isid.mos.bird.config.scheduleregist.dao.CtlScheduleDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="scheduleregistUICompanyPulldownDao" class="jp.co.isid.mos.bird.config.scheduleregist.dao.UICompanyPulldownDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+
+	<!-- LOGIC -->
+	<component name="scheduleregistConditionLogic" class="jp.co.isid.mos.bird.config.scheduleregist.logic.impl.ScheduleRegistCondtionLogicImpl"/>
+	<component name="scheduleregistSearchScheduleLogic" class="jp.co.isid.mos.bird.config.scheduleregist.logic.impl.SearchScheduleLogicImpl"/>
+	<component name="scheduleregistCheckLogic" class="jp.co.isid.mos.bird.config.scheduleregist.logic.impl.ScheduleRegistCheckLogicImpl"/>
+	<component name="scheduleregistRegistLogic" class="jp.co.isid.mos.bird.config.scheduleregist.logic.impl.ScheduleRegistLogicImpl">
+		<aspect>j2ee.requiresNewTx</aspect>
+	</component>
+	<!-- DTO -->
+	<component name="scheduleregistReqDto" class="jp.co.isid.mos.bird.config.scheduleregist.dto.ScheduleRegistRequestDto" autoBinding="none" instance="request"/>
+	<component name="scheduleregistDto" class="jp.co.isid.mos.bird.config.scheduleregist.dto.ScheduleRegistSessionDto" autoBinding="none" instance="session"/>
+	<component name="pullDownMenuDto" class="jp.co.isid.mos.bird.framework.dto.PullDownMenuDto" autoBinding="none" instance="session"/>
+	<!-- ACTION -->
+	<component name="scheduleregistCondAction" class="jp.co.isid.mos.bird.config.scheduleregist.action.impl.ScheduleRegistCondActionImpl" instance="request"/>
+	<component name="scheduleregistEditAction" class="jp.co.isid.mos.bird.config.scheduleregist.action.impl.ScheduleRegistEditActionImpl" instance="request"/>
+	<component name="scheduleregistConfirmAction" class="jp.co.isid.mos.bird.config.scheduleregist.action.impl.ScheduleRegistConfirmActionImpl" instance="request"/>
+	<!-- Formatter -->
+
+	<!-- Converter -->
+	<component name="scheduleregistDateConvMDE" class="jp.co.isid.mos.bird.framework.text.converter.DateConverter" instance="request">
+		<arg>@jp.co.isid.mos.bird.framework.util.formatter.DateFormatter@DATE_TYPE_YMD</arg>
+		<arg>"MM'/'dd'（'E'）'"</arg>
+	</component>
+	<component name="scheduleregistDateConvYMDE" class="jp.co.isid.mos.bird.framework.text.converter.DateConverter" instance="request">
+		<arg>@jp.co.isid.mos.bird.framework.util.formatter.DateFormatter@DATE_TYPE_YMD</arg>
+		<arg>@jp.co.isid.mos.bird.framework.util.formatter.DateFormatter@PATTERN_SLASH_WEEK</arg>
+	</component>
+	<component name="scheduleregistStatusConverter" class="jp.co.isid.mos.bird.config.scheduleregist.text.converter.StatusConverter" instance="request"/>
+	<!-- Verifier -->
+</components>

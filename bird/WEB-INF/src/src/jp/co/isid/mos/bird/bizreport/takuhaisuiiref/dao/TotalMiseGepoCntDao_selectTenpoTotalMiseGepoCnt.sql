@@ -1,0 +1,19 @@
+SELECT 
+    count(distinct BT73.MISE_CD) as TOTAL_TEMPO_CNT
+FROM
+    BT73TAKU BT73 
+   ,(SELECT * FROM BM01TENM 
+         WHERE COMPANY_CD = /*companyCd*/'00'
+         AND    MISE_CD IN (
+		    SELECT MISE_CD FROM BM07UTEN 
+		    WHERE USER_ID = /*userId*/'99990003'
+		    AND   COMPANY_CD = /*companyCd*/'00')) BM01 
+WHERE 
+      BT73.COMPANY_CD   = /*companyCd*/'00'
+  AND BT73.EIGYO_DT BETWEEN /*kikanStart*/'200506' AND /*kikanEnd*/'200605'
+  AND BT73.OLDM_FLG     = '0'
+  AND BT73.TAKUHAI_KBN <> ' '
+  AND BT73.TAKUHAI_KBN <> '00' 
+  AND BT73.OPEN_KBN  = 1 
+  AND BT73.COMPANY_CD = BM01.COMPANY_CD 
+  AND BT73.MISE_CD    = BM01.MISE_CD 

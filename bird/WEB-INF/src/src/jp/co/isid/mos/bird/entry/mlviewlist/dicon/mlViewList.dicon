@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="Shift_JIS"?>
+<!DOCTYPE components PUBLIC "-//SEASAR2.1//DTD S2Container//EN"
+	"http://www.seasar.org/dtd/components21.dtd">
+<components namespace="mlViewList">	
+    <include path="dao.dicon"/>
+    <include path="jp/co/isid/mos/bird/common/dicon/birdCommon.dicon"/>
+	<include path="jp/co/isid/mos/bird/framework/dicon/birdInterceptor.dicon"/>
+
+	<component class="org.seasar.framework.container.autoregister.AspectAutoRegister">
+	    <property name="interceptor">birdInterceptor.actionInterceptorChain</property>
+	    <initMethod name="addClassPattern">
+	        <arg>"jp.co.isid.mos.bird"</arg>
+	        <arg>".*ActionImpl"</arg>
+	    </initMethod>
+	    <initMethod name="registerAll"/>
+	</component> 
+	<component class="org.seasar.framework.container.autoregister.AspectAutoRegister">
+	    <property name="interceptor">birdInterceptor.logicInterceptorChain</property>
+	    <initMethod name="addClassPattern">
+	        <arg>"jp.co.isid.mos.bird"</arg>
+	        <arg>".*LogicImpl"</arg>
+	    </initMethod>
+	    <initMethod name="registerAll"/>  
+	</component>
+    
+  	<!-- DAO -->
+  	<component name="uIMlListDao" class="jp.co.isid.mos.bird.entry.mlviewlist.dao.UIMlListDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="uIMlEntryListDao" class="jp.co.isid.mos.bird.entry.mlviewlist.dao.UIMlEntryListDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="uIMlEntryCsvListDao" class="jp.co.isid.mos.bird.entry.mlviewlist.dao.UIMlEntryCsvListDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="ctlGamenRoleDao" class="jp.co.isid.mos.bird.framework.dao.CtlGamenRoleDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="uiExamNoCounterDao" class="jp.co.isid.mos.bird.entry.mlviewlist.dao.UIExamNoCounterDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="uiMlResultStatusDao" class="jp.co.isid.mos.bird.entry.mlviewlist.dao.UIMlResultStatusDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+
+    <!-- LOGIC -->
+    <component name="getMlListLogic" class="jp.co.isid.mos.bird.entry.mlviewlist.logic.impl.GetMlListLogicImpl"/>
+    <component name="getMlEntryListLogic" class="jp.co.isid.mos.bird.entry.mlviewlist.logic.impl.GetMlEntryListLogicImpl"/>
+	<component name="mlViewListCsvLogic" class="jp.co.isid.mos.bird.entry.mlviewlist.logic.impl.MlViewListCsvLogicImpl"/>
+	<component name="mlExecuteSaibanLogic" class="jp.co.isid.mos.bird.entry.mlviewlist.logic.impl.ExecuteSaibanLogicImpl">
+		<aspect>j2ee.requiresNewTx</aspect>
+	</component>
+	<!-- DTO -->
+	<component name="pullDownMenuDto" class="jp.co.isid.mos.bird.framework.dto.PullDownMenuDto" autoBinding="none" instance="session"/>
+	<component name="mlViewListCommonDto" class="jp.co.isid.mos.bird.entry.mlviewlist.dto.MlViewListDto" instance="session"/>
+	<component name="mlViewListDto" class="jp.co.isid.mos.bird.entry.mlviewlist.dto.MlViewListDto" instance="request"/>
+
+	<component name="miseSearchDto" class="jp.co.isid.mos.bird.commonform.misesearch.dto.MiseSearchDto" instance="session"/>
+	<component name="ownerSearchDto" class="jp.co.isid.mos.bird.commonform.ownersearch.dto.OwnerSearchDto" autoBinding="none" instance="session"/>
+	<!-- OTHER -->
+	<component class="jp.co.isid.mos.bird.framework.control.BirdUserInfo" instance="session"/>
+	<component class="jp.co.isid.mos.bird.framework.control.BirdDateInfo" instance="session"/>
+
+	<!-- ACTION -->
+	<component name="mlViewListSelectAction" class="jp.co.isid.mos.bird.entry.mlviewlist.action.impl.MlViewListSelectActionImpl" instance="request">
+		<property name="mlViewListDto">mlViewListDto</property>
+		<property name="mlViewListCommonDto">mlViewListCommonDto</property>
+	</component>
+	<component name="mlViewListConfirmAction" class="jp.co.isid.mos.bird.entry.mlviewlist.action.impl.MlViewListConfirmActionImpl" instance="request">
+		<property name="mlViewListDto">mlViewListDto</property>
+		<property name="mlViewListCommonDto">mlViewListCommonDto</property>
+	</component>
+	<component name="mlViewListCsvOutputAction" class="jp.co.isid.mos.bird.framework.action.impl.CsvOutputActionImpl" instance="request">
+		<property name="csvOutputDto">mlViewListCommonDto</property>
+		<property name="csvOutputLogic">mlViewListCsvLogic</property>
+	</component>
+
+	<!-- CONVERTER -->
+	<component name="numericConverterKingakuRound" class="jp.co.isid.mos.bird.entry.mlviewlist.text.converter.NumericConverter" instance="request">
+		<arg>0</arg>
+	</component>
+
+	<component name="mlDateConverter" class="jp.co.isid.mos.bird.framework.text.converter.DateConverter" instance="request">
+		<arg>@jp.co.isid.mos.bird.framework.util.formatter.DateFormatter@DATE_TYPE_YMD</arg>
+		<arg>@jp.co.isid.mos.bird.framework.util.formatter.DateFormatter@PATTERN_SLASH</arg>
+	</component>
+	<component name="mlDateConverter2" class="jp.co.isid.mos.bird.framework.text.converter.DateConverter" instance="request">
+		<arg>@jp.co.isid.mos.bird.framework.util.formatter.DateFormatter@DATE_TYPE_YMD</arg>
+		<arg>"MM'/'dd'（'E'）'"</arg>
+	</component>
+	<component name="mlDateConverter3" class="jp.co.isid.mos.bird.framework.text.converter.DateConverter">
+		<arg>@jp.co.isid.mos.bird.framework.util.formatter.DateFormatter@DATE_TYPE_YM</arg>
+		<arg>@jp.co.isid.mos.bird.framework.util.formatter.DateFormatter@PATTERN_MONTH_SLASH</arg>
+	</component>
+	<component name="maskConverterPostCd" class="jp.co.isid.mos.bird.framework.text.converter.MaskConverter" instance="request">
+		<arg>"###-####"</arg>
+	</component>
+	<component name="NumericConverter" class="jp.co.isid.mos.bird.framework.text.converter.NumericConverter" instance="request">
+	</component>
+	<component name="characterEncodingConverter" class="jp.co.isid.mos.bird.framework.text.converter.CharacterEncodingConverter" instance="request"/>
+	<component name="codeConverter5" class="jp.co.isid.mos.bird.framework.text.converter.CodeConverter" instance="request">
+		<property name="formatPattern">"00000"</property>
+	</component>
+
+</components>

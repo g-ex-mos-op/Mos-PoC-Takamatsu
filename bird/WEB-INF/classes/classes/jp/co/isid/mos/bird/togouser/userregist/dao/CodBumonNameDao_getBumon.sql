@@ -1,0 +1,8 @@
+SELECT
+    rtrim(BUMON_NAME) as BUMON_NAME
+FROM
+    BC08CBMN
+WHERE
+    BUMON_CD = /*bumon_cd*/
+ORDER BY
+    BUMON_CD       

@@ -1,0 +1,5 @@
+select rtrim(BC23.BLOCK_CD) as BLOCK_CD,
+	rtrim(BC23.BLOCK_NAME) as BLOCK_NAME
+from
+	BC23BLCK BC23
+order by BLOCK_CD

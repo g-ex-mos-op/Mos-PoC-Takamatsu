@@ -1,0 +1,101 @@
+<html xmlns:m="http://www.seasar.org/maya" m:action="#{entryStaffSearchAction.initialize}" m:extends="/jsf/layout/layoutNoNavi.html">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Windows-31j"/>
+<meta http-equiv="Content-Style-Type" content="text/css"/>
+<title>スタッフ選択</title>
+</head>
+<body>
+<span m:inject="f:param" m:name="layoutTitle" m:value="スタッフ選択"/>
+<span m:inject="s:insert" m:name="bodyTitleName">■スタッフ選択</span>
+<span m:inject="f:param" m:name="onLoadName" m:value="bodyLoad();"/>
+<div m:inject="s:insert" m:name="body">
+<style type="text/css">
+<!--
+.body_table2 {
+	width				: 780px;
+}
+.col_misenamekj {
+	width				: *;
+}
+.col_name {
+	width				: 200px;
+}
+.col_reentry_base_year {
+	width				: 180px;
+}
+.col_situation {
+	width				: 100px;
+}
+-->
+</style>
+<script type="text/javascript">
+<!--
+function selectStaff(staffId){
+	document.forms['entryStaffSearch'].elements['entryStaffSearch:selectStaffId'].value=staffId;
+	document.forms['entryStaffSearch'].elements['entryStaffSearch:__link_clicked__'].value='entryStaffSearch:selectStaff';
+	document.forms['entryStaffSearch'].submit();
+	return false;
+}
+
+function bodyLoad() {
+}
+-->
+</script>
+<form m:id="entryStaffSearch">
+<input type="hidden" m:id="viewId" m:value="#{viewIdValue}" />
+<input type="hidden" m:id="initMenuId" m:value="#{menuAction.initMenuId}"/>
+<input type="hidden" m:id="initSubMenuId" m:value="#{menuAction.initSubMenuId}"/>
+<input type="hidden" m:value="#{entryStaffSearchConditionDto.windowId}"/>
+<a id="selectStaff" m:action="#{entryStaffSearchAction.select}"/>
+<input type="hidden" m:id="selectStaffId" m:value="#{entryStaffSearchAction.selectStaffId}"/>
+
+<input type="submit" value="戻る" class="operation_button" m:action="#{entryStaffSearchAction.cancel}"/>
+<br/>
+<div class="search_result" m:rendered="#{entryStaffSearchResultDto.staffSearchListSize <= 0}">
+  <br/><span style="font-weight:bold;">選択可能なスタッフ情報が存在しません。</span>
+</div>
+
+<div class="search_result" m:rendered="#{entryStaffSearchResultDto.staffSearchListSize > 0}">
+
+<table class="body_table2" style="margin-top:4px;">
+    <tr class="header_row">
+        <th class="col_misenamekj">店舗名</th>
+        <th class="col_name">氏名</th>
+        <th m:rendered="#{entryStaffSearchConditionDto.mode == '1'}"
+            class="col_reentry_base_year">再エントリー基準年度</th>
+        <th class="col_situation">活動状況</th>
+    </tr>
+</table>
+<div class="scroll_area" style="width:799px; height:435px;">
+<table class="body_table2" style="border-top-width:0px">
+    <div m:inject="s:forEach" m:items="#{entryStaffSearchResultDto.listStaff}" m:var="e" m:varindex="i">
+	<tr class="non_top_border">
+		<td class="col_misenamekj"><span m:converter="#{characterEncodingConverter}" m:value="#{e.miseCd1Name}"/></td>
+	    <td class="col_name">
+		  <a href="#" onclick="selectStaff('#{e.staffId}')">
+	        <span m:converter="#{characterEncodingConverter}" m:value="#{e.staffLNameKj}"/>　<span m:converter="#{characterEncodingConverter}" m:value="#{e.staffFNameKj}"/>
+		  </a>
+	    </td>
+	    <td m:rendered="#{entryStaffSearchConditionDto.mode == '1'}" class="col_reentry_base_year">
+	      <span m:value="#{e.reentryBaseYear}"/><span m:rendered="#{e.reentryBaseYear!=null}">年度</span>
+	    </td>
+		<td class="col_situation">
+		  <span m:converter="#{characterEncodingConverter}" style="#{e.situationKbn == '0' ? 'color:red;' : ''}" m:value="#{e.situationKbnDisp}"/>
+		</td>
+	</tr>
+	</div>
+</table>
+</div>
+
+</div>
+<input type="text" m:id="dummyEnter" style="display:none"/>
+</form>
+<script type="text/javascript">
+<!--
+	focusElement("entryStaffSearch");
+-->
+</script>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,259 @@
+<html xmlns:m="http://www.seasar.org/maya" m:action="#{natiEntryConfirmAction.initialize}" m:extends="/jsf/layout/layoutNoNavi.html">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Windows-31j"/>
+<meta http-equiv="Content-Style-Type" content="text/css"/>
+<link href="./css/main.css" rel="stylesheet" type="text/css"/>
+<link href="./css/header.css" rel="stylesheet" type="text/css"/>
+<link href="./css/navi.css" rel="stylesheet" type="text/css"/>
+<link href="./css/body.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="./js/bird.js"></script>
+<title>全国大会申込（確認画面）</title>
+</head>
+<body>
+  <span m:inject="f:param" m:name="layoutTitle" m:value="全国大会申込（確認画面）"/>
+  <span m:inject="f:param" m:name="onLoadName" m:value=""/>
+  <span m:inject="s:insert" m:name="bodyTitleName">■全国大会申込（確認画面）</span>
+  <span m:inject="f:param" m:name="viewIdValue" m:value="BEN015V02"/>
+  <span m:inject="s:insert" m:name="body">
+<STYLE type="text/css">
+<!--
+
+/* 入力フィールドの右詰入力へ指定するためのスタイルシート */
+.ratio_style {
+  text-align       : right;
+  background-color : #FFFFFF;
+  color            : black;
+  ime-mode    : disabled;
+}
+	.scroll_area {
+		width:	  960px;
+		height:	  400px;
+	}
+	.body_table2 {
+		width:940px;
+	}
+
+td table.intable, td table.intable tr, td table.intable tr td{
+  border-style          : solid;
+  border-collapse       : collapse;
+  border-width          : 0px;
+  border-spacing        : 0px;
+  padding               : 0px;
+}
+//-->
+</STYLE>
+  <script type="text/javascript">
+  <!--
+	function longServi(){
+		var f=document.forms['nationalentry'];
+		f.elements['nationalentry:__link_clicked__'].value='nationalentry:moveLongServiceAction';
+		f.submit();
+		return false;
+	}
+
+	function backMove(){
+		var f=document.forms['nationalentry'];
+		f.elements['nationalentry:__link_clicked__'].value='nationalentry:backMoveAction';
+		f.submit();
+		return false;
+	}
+
+	function procEnd(){
+		var f=document.forms['nationalentry'];
+		f.elements['nationalentry:__link_clicked__'].value='nationalentry:procEndAction';
+		f.submit();
+		return false;
+	}
+
+  //-->
+  </script>
+  <form m:id="nationalentry">
+	<input type="hidden" m:id="viewId" m:value="#{viewIdValue}"/>
+	<input type="hidden" m:id="initMenuId" m:value="#{menuAction.initMenuId}"/>
+	<input type="hidden" m:id="initSubMenuId" m:value="#{menuAction.initSubMenuId}"/>
+	<input type="hidden" m:id="windowId" m:value="#{nationalEntryDto.windowId}"/>
+	<input type="hidden" m:id="editKbn" m:value="#{nationalEntryDto.viewKbn}"/>
+	<a m:id="backMoveAction" m:action="#{natiEntryConfirmAction.backMove}"/>
+	<a m:id="procEndAction" m:action="#{natiEntryConfirmAction.procEnd}"/>
+	<a m:id="moveLongServiceAction" m:action="#{natiEntryConfirmAction.moveLongService}"/>
+	<table width="980" style="margin-bottom:4px"cellspacing="0" cellpadding="0">
+	    <tr>
+	      <td>
+	      <span m:rendered = "#{nationalEntryDto.viewKbn == 'E'}">
+	        <input type="button" value="戻る" class="operation_button" m:onclick="backMove();"  onDblClick="return false"/>
+	        &nbsp;
+	      </span>
+	      <span m:rendered = "#{nationalEntryDto.viewKbn == 'V'}">
+	        &nbsp;
+	      </span>
+	      <input type="button" value="終了" class="operation_button" m:onclick="procEnd();" onDblClick="return false"/>&nbsp;&nbsp;
+          <span m:rendered = "#{nationalEntryDto.viewKbn == 'E' && nationalEntryDto.prmLongServButFlg != '1'}">
+            <input type="button" value="永年勤続申請" class="operation_button" m:onclick="longServi();" onDblClick="return false"/>&nbsp;&nbsp;
+          </span>
+	      <span m:rendered = "#{nationalEntryDto.viewKbn == 'V'}">
+	        &nbsp;
+	      </span>
+	      </td>
+	    </tr>
+	    <tr style="height:4px;"><td></td></tr>
+	    <span m:rendered = "#{nationalEntryDto.viewKbn == 'E' && nationalEntryDto.prmFormNonViewFlg == '0'}">
+	    <tr>
+	      <td><b>
+	      全国大会参加申込の登録が完了しました。<br/>
+          <span m:rendered = "#{nationalEntryDto.viewKbn == 'E' && nationalEntryDto.prmLongServButFlg != '1'}">
+	      永年勤続申請対象者がいる場合は、「永年勤続申請」ボタンを押下して下さい。<br/>
+          永年勤続申請を行わない場合は、
+          </span>
+	      「終了」ボタンを押下して下さい。<br/>
+	      </b></td>
+	    </tr>
+	    </span>
+	</table>
+
+	<!--　申込責任者 -->
+	<div class="scroll_area" m:id="fream">
+    <table cellspacing="0" cellpadding="0">
+      <caption class="body_caption" style="line-height:18px;">■申込責任者</caption>
+      <tr>
+        <td>
+          <table class="body_table2">
+            <tr>
+              <th style="width:150px;">会社名</th>
+              <td style="width:336px;"><span m:converter="#{characterEncodingConverter}" m:value="#{nationalEntryDto.prmDutyOnerName}"/></td>
+              <th style="width:150px;">参加</th>
+              <td style="width:289px;">
+	            <div m:rendered="#{nationalEntryDto.prmDutyEntryState == '1'}">参加</div>
+  				<div m:rendered="#{nationalEntryDto.prmDutyEntryState == '0'}">不参加</div>
+				<div m:rendered="#{nationalEntryDto.prmDutyEntryState == ''}">未登録</div>
+  		      </td>
+	        </tr>
+	        <tr>
+	          <th>申込責任者</th>
+	          <td><span m:converter="#{characterEncodingConverter}" m:value="#{nationalEntryDto.prmDutyName}"/></td>
+	          <th>電話番号</th>
+	          <td><span m:converter="#{characterEncodingConverter}" m:value="#{nationalEntryDto.prmDutyTel}"/></td>
+	        </tr>
+	        <tr>
+	          <th>申込担当者</th>
+	          <td><span m:converter="#{characterEncodingConverter}" m:value="#{nationalEntryDto.prmDutySoufuName}"/></td>
+	          <th>役職</th>
+	          <td><span m:converter="#{characterEncodingConverter}" m:value="#{nationalEntryDto.prmDutyJobType}"/></td>
+	        </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+	<!--　申込参加者1....３０ -->
+	<div m:rendered="#{nationalEntryDto.prmFormNonViewFlg == '0'}">
+	<div m:id="join" m:inject="s:forEach" m:items="#{nationalEntryDto.prmJoinList}" m:var="joinPers" m:varindex="i">
+	<table cellspacing="0" cellpadding="0" style="margin-top:#{i==0?'4':'22'}px;">
+	    <caption class="body_caption" style="line-height:18px;">■参加者<span m:converter="#{characterEncodingConverter}" m:value="#{joinPers.seqNo}"/></caption>
+	    <tr>
+	      <td>
+	        <table class="body_table2" cellspacing="0" cellpadding="0">
+
+	          <tr>
+		        <th>店舗</th>
+		        <td colspan="2"><span m:converter="#{characterEncodingConverter}" m:value="#{joinPers.miseNm}"/>
+		        </td>
+		        <th>職位</th>
+		        <td><span m:converter="#{characterEncodingConverter}" m:value="#{joinPers.jobType}"/>
+		        </td>
+		      </tr>
+		      <tr>
+		        <th style="width:150px;">氏名</th>
+		        <td style="width:166px;"><span m:converter="#{characterEncodingConverter}" m:value="#{joinPers.lNameKj}"/></td>
+		        <td style="width:165px;"><span m:converter="#{characterEncodingConverter}" m:value="#{joinPers.fNameKj}"/></td>
+		        <th style="width:150px;">性別</th>
+		        <td style="width:289px;">
+				  <div m:rendered="#{joinPers.sex == '0'}">男</div>
+  				  <div m:rendered="#{joinPers.sex == '1'}">女</div>
+		        </td>
+		      </tr>
+		      <tr>
+		        <th>フリガナ</th>
+		        <td><span m:converter="#{characterEncodingConverter}" m:value="#{joinPers.lNameKna}"/></td>
+		        <td colspan="3"><span m:converter="#{characterEncodingConverter}" m:value="#{joinPers.fNameKna}"/></td>
+		      </tr>
+		      <tr>
+		        <th>生年月日</th>
+		        <td colspan="4">
+                    <div style="width:255px; float:left; text-align:left;">
+                                                                  西暦&nbsp;<span m:value="#{joinPers.birthday_Year}"/>年
+                         <span m:value="#{joinPers.birthday_Month}"/>月
+                         <span m:value="#{joinPers.birthday_Day}"/>日
+                         <span m:value="#{joinPers.age}"/>&nbsp;歳</div>
+		        </td>
+		      </tr>
+	          <tr>
+	            <th>申込区分</th>
+	            <td colspan="4"><span m:converter="#{characterEncodingConverter}" m:value="#{joinPers.proposeKbnNm}"/></td>
+		      </tr>
+	          <tr>
+		        <th>オプショナル<br/>(宿泊関連)</th>
+		        <td colspan="4">
+                    <div style="width:255px; float:left; text-align:left;">
+                         <span m:converter="#{characterEncodingConverter}" m:value="#{joinPers.optional1Nm}"/>
+                         <span m:converter="#{characterEncodingConverter}" m:value="#{joinPers.optional2Nm}"/>
+                         <span m:converter="#{characterEncodingConverter}" m:value="#{joinPers.optional3Nm}"/>
+                         <span m:converter="#{characterEncodingConverter}" m:value="#{joinPers.optional4Nm}"/>
+                         <span m:converter="#{characterEncodingConverter}" m:value="#{joinPers.optional11Nm}"/>
+                         <span m:converter="#{characterEncodingConverter}" m:value="#{joinPers.optional12Nm}"/>
+                         <span m:converter="#{characterEncodingConverter}" m:value="#{joinPers.optional13Nm}"/>
+                         <span m:converter="#{characterEncodingConverter}" m:value="#{joinPers.optional14Nm}"/>
+                         <span m:converter="#{characterEncodingConverter}" m:value="#{joinPers.optional15Nm}"/>
+                         <span m:converter="#{characterEncodingConverter}" m:value="#{joinPers.optional16Nm}"/>
+                     </div>
+		        </td>
+		      </tr>
+	          <tr>
+		        <th>オプショナル<br/>(ツアー関連)</th>
+		        <td colspan="4">
+                    <div style="width:255px; float:left; text-align:left;">
+                         <span m:converter="#{characterEncodingConverter}" m:value="#{joinPers.optional5Nm}"/>
+                         <span m:converter="#{characterEncodingConverter}" m:value="#{joinPers.optional6Nm}"/>
+                         <span m:converter="#{characterEncodingConverter}" m:value="#{joinPers.optional7Nm}"/>
+                         <span m:converter="#{characterEncodingConverter}" m:value="#{joinPers.optional8Nm}"/>
+                         <span m:converter="#{characterEncodingConverter}" m:value="#{joinPers.optional9Nm}"/>
+                         <span m:converter="#{characterEncodingConverter}" m:value="#{joinPers.optional10Nm}"/></div>
+		        </td>
+		      </tr>
+		      <tr>
+		        <th>オプショナル<br/>(その他)</th>
+		        <td colspan="4">
+                    <div style="width:255px; float:left; text-align:left;">
+                         <span m:converter="#{characterEncodingConverter}" m:value="#{joinPers.optional21Nm}"/>
+                         <span m:converter="#{characterEncodingConverter}" m:value="#{joinPers.optional22Nm}"/>
+                         <span m:converter="#{characterEncodingConverter}" m:value="#{joinPers.optional23Nm}"/>
+                         <span m:converter="#{characterEncodingConverter}" m:value="#{joinPers.optional24Nm}"/>
+                         <span m:converter="#{characterEncodingConverter}" m:value="#{joinPers.optional25Nm}"/>
+                         <span m:converter="#{characterEncodingConverter}" m:value="#{joinPers.optional26Nm}"/>
+                         <span m:converter="#{characterEncodingConverter}" m:value="#{joinPers.optional27Nm}"/>
+                         <span m:converter="#{characterEncodingConverter}" m:value="#{joinPers.optional28Nm}"/>
+                         <span m:converter="#{characterEncodingConverter}" m:value="#{joinPers.optional29Nm}"/>
+                         <span m:converter="#{characterEncodingConverter}" m:value="#{joinPers.optional30Nm}"/>
+                     </div>
+		        </td>
+		      </tr>
+		      <tr>
+	            <th>備考1</th>
+	            <td colspan="4"><span m:value="#{joinPers.note1}" m:escape="false" m:converter="#{changeLineRefConverter}"/></td></tr>
+	          <tr>
+	            <th>備考2</th>
+	            <td colspan="4"><span m:value="#{joinPers.note}" m:escape="false" m:converter="#{changeLineRefConverter}"/></td></tr>
+	        </table>
+	      </td>
+	    </tr>
+      </table>
+    </div>
+    </div>
+    <!-- 申込参加者1....３０ -->
+    <br/>
+    </div>
+      <div align="center" m:rendered="#{nationalEntryDto.viewKbn == 'E' && nationalEntryDto.prmFormNonViewFlg == '1'}"><b>全国大会への申込は不参加で登録されました。</b></div>
+	  <div align="center" m:rendered="#{nationalEntryDto.viewKbn == 'V' && nationalEntryDto.noDataFlg == '1'}"><b>上記オーナーの全国大会申込情報は存在しません。</b></div>
+	  <div align="center" m:rendered="#{nationalEntryDto.viewKbn == 'V' && nationalEntryDto.prmFormNonViewFlg == '1'}"><b>上記オーナーの全国大会申込情報は不参加で登録されています。</b></div>
+  </form>
+  </span>
+</body>
+</html>

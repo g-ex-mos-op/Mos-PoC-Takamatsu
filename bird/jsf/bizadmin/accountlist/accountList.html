@@ -1,0 +1,96 @@
+<html xmlns:m="http://www.seasar.org/maya" m:action="#{accountListAction.initialize}" m:extends="/jsf/layout/layoutNoNavi.html">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Windows-31j"/>
+<meta http-equiv="Content-Style-Type" content="text/css"/>
+<meta http-equiv="Content-Script-Type" content="text/javascript"/>
+<title>利用者情報照会／変更</title>
+</head>
+<body>
+<span m:inject="f:param" m:name="layoutTitle" m:value="利用者情報照会／変更"/>
+<span m:inject="s:insert" m:name="bodyTitleName">■利用者情報照会／変更</span>
+<span m:inject="f:param" m:name="viewIdValue" m:value="BBA005V01"/>
+<div m:inject="s:insert" m:name="body">
+<style type="text/css">
+<!--
+.scroll_area {
+	width:	  970px;
+	height:   415px;
+	overflow: auto;
+}
+.table_class {
+  width: 953px;
+}
+-->
+</style>
+
+<script type="text/javascript">
+<!--
+function executeCsvDownload(userId) {
+  document.accountlist.elements['accountlist:editUserId'].value = userId;
+  document.accountlist.target = "_self";
+  document.accountlist.elements['accountlist:__link_clicked__'].value='accountlist:actionAccountEdit';
+  document.accountlist.submit();
+}
+-->
+</script>
+
+<form m:id="accountlist">
+<input type="hidden" m:id="viewId" m:value="#{viewIdValue}" />
+<input type="hidden" m:id="initMenuId" m:value="#{menuAction.initMenuId}"/>
+<input type="hidden" m:id="initSubMenuId" m:value="#{menuAction.initSubMenuId}"/>
+<input type="hidden" name=":isUseCommonDto" value="1" m:passthrough="true"/>
+<input type="hidden" m:id="editUserId" m:value="#{accountListDto.editUserId}"/>
+<a m:action="#{accountListAction.goAccountEdit}" m:id="actionAccountEdit"/>
+
+<span m:rendered="#{accountListDto.listAccount != null}">
+<table class="body_table2">
+  <tr>
+    <th>お申込日</th>
+    <td style="width:120px;"><span m:value="#{accountListDto.headerAppliedDt}" m:converter="#{accountlistDateKanjiConverter}"/></td>
+    <th>オーナー名</th>
+    <td><span m:converter="#{characterEncodingConverter}" m:value="#{accountListDto.headerOnerName}"/>&nbsp;</td>
+    <th>代表店舗</th>
+    <td m:style="#{accountListDto.headerRepresentativeMise == '' ? 'width:20px;' : ''}">
+    	<span m:converter="#{characterEncodingConverter}" m:value="#{accountListDto.headerRepresentativeMise}"/>&nbsp;</td>
+  </tr>
+</table>
+<table class="body_table2 table_class" style="table-layout:fixed;margin-top:4px;">
+  <tr class="header_row font_size_14">
+    <th width="9%">ユーザーID</th>
+    <th width="*">ご利用者名</th>
+    <th width="9%">お申込日</th>
+    <th width="5%">基本<br/>機能</th>
+    <th width="7%">ｵﾌﾟｼｮﾝ<br/>機能</th>
+    <th width="6%">データ<br/>提供</th>
+    <th width="9%">アクセス<br/>権限</th>
+    <th width="22%">メールアドレス</th>
+    <th width="8%">状態</th>
+  </tr>
+</table>
+<div class="scroll_area">
+<table class="body_table2 table_class" style="border-top:0px;table-layout:fixed">
+  <span m:inject="s:forEach" m:items="#{accountListDto.listAccount}" m:var="e" m:varindex="i">
+  <tr class="non_top_border font_size_14">
+    <td m:style="width:9%;  #{e.closeFlg == '1' ? 'background-color:#CCCCCC;' : ''}"><span m:value="#{e.userId}"/></td>
+    <td m:style="width: *;  #{e.closeFlg == '1' ? 'background-color:#CCCCCC;word-wrap: break-word;  word-break: normal;' : 'word-wrap: break-word;  word-break: normal;'}">
+      <span m:converter="#{characterEncodingConverter}"  m:value="#{e.userNameKj}"/>
+      <span style="float:right;" m:rendered="#{accountListDto.EnableEditLink && e.closeFlg != '1'}"><a href="#" onclick="javascript:executeCsvDownload('#{e.userId}')">[変更]</a></span>
+    </td>
+    <td m:style="width:9%;  #{e.closeFlg == '1' ? 'background-color:#CCCCCC;' : ''}"><span m:value="#{e.appliedDt}" m:converter="#{accountlistDateConverter}"/></td>
+    <td m:style="width:5%;  #{e.closeFlg == '1' ? 'text-align:center;background-color:#CCCCCC;' : 'text-align:center;'}"><span m:value="#{e.maxflg1}" m:converter="#{accountlistOptionConverter}"/></td>
+    <td m:style="width:7%;  #{e.closeFlg == '1' ? 'text-align:center;background-color:#CCCCCC;' : 'text-align:center;'}"><span m:value="#{e.maxflg2}" m:converter="#{accountlistOptionConverter}"/></td>
+    <td m:style="width:6%;  #{e.closeFlg == '1' ? 'text-align:center;background-color:#CCCCCC;' : 'text-align:center;'}"><span m:value="#{e.maxflg3}" m:converter="#{accountlistOptionConverter}"/></td>
+    <td m:style="width:9%;  #{e.closeFlg == '1' ? 'background-color:#CCCCCC;' : ''}"><span m:converter="#{characterEncodingConverter}" m:value="#{e.keiyakuTypeNm}"/></td>
+    <td m:style="width:22%; #{e.closeFlg == '1' ? 'background-color:#CCCCCC;' : '  word-wrap: break-word;  word-break: normal; '}"><span m:value="#{e.mailAdd}"/></td>
+    <td m:style="width:8%;  #{e.closeFlg == '1' ? 'background-color:#CCCCCC;' : ''}"><span m:rendered="#{e.closeFlg == '1'}" m:value="クローズ"/><span m:rendered="#{e.closeFlg != '1'}" m:value="#{e.jotaiKbn}" m:converter="#{accountlistStatusConverter}"/></td>
+  </tr>
+  </span>
+</table>
+</div>
+
+</span>
+<input type="text" m:id="dummyEnter" style="display:none"/>
+</form>
+</div>
+</body>
+</html>

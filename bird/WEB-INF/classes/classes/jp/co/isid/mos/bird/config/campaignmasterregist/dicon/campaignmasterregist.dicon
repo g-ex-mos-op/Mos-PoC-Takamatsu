@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="Shift_JIS"?>
+<!DOCTYPE components PUBLIC "-//SEASAR//DTD S2Container 2.3//EN"
+    "http://www.seasar.org/dtd/components23.dtd">
+<components namespace="campmasterregist">
+    <include path="dao.dicon"/>
+    <include path="jp/co/isid/mos/bird/common/dicon/birdCommon.dicon"/>
+	<include path="jp/co/isid/mos/bird/framework/dicon/birdInterceptor.dicon"/>
+
+	<component
+	  class="org.seasar.framework.container.autoregister.AspectAutoRegister">
+	    <property name="interceptor">birdInterceptor.actionInterceptorChain</property>
+	    <initMethod name="addClassPattern">
+	        <arg>"jp.co.isid.mos.bird"</arg>
+	        <arg>".*ActionImpl"</arg>
+	    </initMethod>
+	    <initMethod name="registerAll"/>
+	</component> 
+	<component
+	  class="org.seasar.framework.container.autoregister.AspectAutoRegister">
+	    <property name="interceptor">birdInterceptor.logicInterceptorChain</property>
+	    <initMethod name="addClassPattern">
+	        <arg>"jp.co.isid.mos.bird"</arg>
+	        <arg>".*LogicImpl"</arg>
+	    </initMethod>
+	    <initMethod name="registerAll"/>
+	</component>
+
+	<component class="jp.co.isid.mos.bird.framework.control.BirdUserInfo" instance="session"/>
+	<component class="jp.co.isid.mos.bird.framework.control.BirdDateInfo" instance="session"/>
+
+
+	<!-- DAO -->
+	<component name="campmasterregistMstCampMenuDao" class="jp.co.isid.mos.bird.config.campaignmasterregist.dao.MstCampMenuDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="campmasterregistMstCampMiseDao" class="jp.co.isid.mos.bird.config.campaignmasterregist.dao.MstCampMiseDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="campmasterregistMstCampSibuDao" class="jp.co.isid.mos.bird.config.campaignmasterregist.dao.MstCampSibuDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="campmasterregistMstCampSumMenuDao" class="jp.co.isid.mos.bird.config.campaignmasterregist.dao.MstCampSumMenuDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="campmasterregistMstCampaignDao" class="jp.co.isid.mos.bird.config.campaignmasterregist.dao.MstCampaignDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="campmasterregistMstMenuDao" class="jp.co.isid.mos.bird.config.campaignmasterregist.dao.MstMenuDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="campmasterregistMstMiseDao" class="jp.co.isid.mos.bird.config.campaignmasterregist.dao.MstMiseDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="campmasterregistUICampMenuDao" class="jp.co.isid.mos.bird.config.campaignmasterregist.dao.UICampMenuDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="campmasterregistUISibuListDao" class="jp.co.isid.mos.bird.config.campaignmasterregist.dao.UISibuListDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+
+	<!-- LOGIC -->
+	<component name="campmasterregistGetCampaignListLogic" class="jp.co.isid.mos.bird.config.campaignmasterregist.logic.impl.GetCampaignListLogicImpl"/>
+	<component name="campmasterregistGetMiseSibuInfoLogic" class="jp.co.isid.mos.bird.config.campaignmasterregist.logic.impl.GetMiseSibuInfoLogicImpl"/>
+	<component name="campmasterregistGetMenuListLogic" class="jp.co.isid.mos.bird.config.campaignmasterregist.logic.impl.GetMenuListLogicImpl"/>
+	<component name="campmasterregistCreateMenuListLogic" class="jp.co.isid.mos.bird.config.campaignmasterregist.logic.impl.CreateMenuListLogicImpl"/>
+	<component name="campmasterregistCheckCampaignInfoLogic" class="jp.co.isid.mos.bird.config.campaignmasterregist.logic.impl.CheckCampaignInfoLogicImpl"/>
+	<component name="campmasterregistCheckMiseUploadLogic" class="jp.co.isid.mos.bird.config.campaignmasterregist.logic.impl.CheckMiseUploadLogicImpl"/>
+	<component name="campmasterregistCampMasterRegistCsvOutputLogic" class="jp.co.isid.mos.bird.config.campaignmasterregist.logic.impl.CampMasterRegistCsvOutputLogicImpl"/>
+	<component name="campmasterregistRegistCampaignInfoLogic" class="jp.co.isid.mos.bird.config.campaignmasterregist.logic.impl.RegistCampaignInfoLogicImpl">
+		<aspect>j2ee.requiresNewTx</aspect>
+	</component>
+	<!-- DTO -->
+	<component name="campmasterregistReqDto" class="jp.co.isid.mos.bird.config.campaignmasterregist.dto.CampaignMasterListDto" autoBinding="none" instance="request"/>
+	<component name="campmasterregistDto" class="jp.co.isid.mos.bird.config.campaignmasterregist.dto.CampaignMasterRegistDto" autoBinding="none" instance="session"/>
+	<component name="pullDownMenuDto" class="jp.co.isid.mos.bird.framework.dto.PullDownMenuDto" autoBinding="none" instance="session"/>
+
+	<!-- ACTION -->
+	<component name="campmasterregistCondAction" class="jp.co.isid.mos.bird.config.campaignmasterregist.action.impl.CampMasterRegistCondActionImpl" instance="request"/>
+	<component name="campmasterregistEditAction" class="jp.co.isid.mos.bird.config.campaignmasterregist.action.impl.CampMasterRegistEditActionImpl" instance="request"/>
+	<component name="campmasterregistConfirmAction" class="jp.co.isid.mos.bird.config.campaignmasterregist.action.impl.CampMasterRegistConfirmActionImpl" instance="request"/>
+	<component name="campmasterregistCsvAction" class="jp.co.isid.mos.bird.framework.action.impl.CsvOutput2ActionImpl" instance="request">
+		<property name="csvOutputLogic">campmasterregistCampMasterRegistCsvOutputLogic</property>
+		<property name="csvOutputDto">campmasterregistDto</property>
+	</component>
+	
+	<!-- Formatter -->
+
+	<!-- Converter -->
+	<component name="campmasterregistDateConverter" class="jp.co.isid.mos.bird.framework.text.converter.DateConverter" instance="request">
+		<arg>@jp.co.isid.mos.bird.framework.util.formatter.DateFormatter@DATE_TYPE_YMD</arg>
+		<arg>@jp.co.isid.mos.bird.framework.util.formatter.DateFormatter@PATTERN_SLASH</arg>
+	</component>
+	<component name="campmasterregistTargetKbnConverter" class="jp.co.isid.mos.bird.config.campaignmasterregist.text.converter.TargetKbnConverter" instance="request"/>
+	<component name="campmasterregistMenuCodeConverter" class="jp.co.isid.mos.bird.framework.text.converter.CodeConverter" instance="request">
+		<arg>6</arg>
+		<arg>"000000"</arg>
+	</component>
+	<!-- Verifier -->
+    <component name="campmasterregistJapaneseVerifier" class="jp.co.isid.mos.bird.framework.util.verifier.DefaultJapaneseVerifier"/>
+
+	
+</components>

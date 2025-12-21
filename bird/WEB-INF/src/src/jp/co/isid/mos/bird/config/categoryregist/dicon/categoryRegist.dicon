@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="Shift_JIS"?>
+<!DOCTYPE components PUBLIC "-//SEASAR//DTD S2Container 2.3//EN"
+    "http://www.seasar.org/dtd/components23.dtd">
+<components namespace="categoryRegist">
+    <include path="dao.dicon"/>
+    <include path="jp/co/isid/mos/bird/common/dicon/birdCommon.dicon"/>
+	<include path="jp/co/isid/mos/bird/framework/dicon/birdInterceptor.dicon"/>
+
+	<component
+	  class="org.seasar.framework.container.autoregister.AspectAutoRegister">
+	    <property name="interceptor">birdInterceptor.actionInterceptorChain</property>
+	    <initMethod name="addClassPattern">
+	        <arg>"jp.co.isid.mos.bird"</arg>
+	        <arg>".*ActionImpl"</arg>
+	    </initMethod>
+	    <initMethod name="registerAll"/>
+	</component> 
+	<component
+	  class="org.seasar.framework.container.autoregister.AspectAutoRegister">
+	    <property name="interceptor">birdInterceptor.logicInterceptorChain</property>
+	    <initMethod name="addClassPattern">
+	        <arg>"jp.co.isid.mos.bird"</arg>
+	        <arg>".*LogicImpl"</arg>
+	    </initMethod>
+	    <initMethod name="registerAll"/>
+	</component>
+
+	<component class="jp.co.isid.mos.bird.framework.control.BirdUserInfo" instance="session"/>
+
+	<component name="categoryRegistCodeFormatter" class="jp.co.isid.mos.bird.framework.util.formatter.CodeFormatter">
+		<arg>3</arg>
+		<property name="formatPattern">"000"</property>
+	</component>
+
+	<!-- Verifier -->
+    <component name="categoryRegistVerifier" class="jp.co.isid.mos.bird.framework.util.verifier.DefaultJapaneseVerifier"/>
+
+	<!-- DAO -->
+	<component name="mstCategoryInfoDao" class="jp.co.isid.mos.bird.config.categoryregist.dao.MstCategoryInfoDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="mstSubCategoryInfoDao" class="jp.co.isid.mos.bird.config.categoryregist.dao.MstSubCategoryInfoDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="trnCateIdDao" class="jp.co.isid.mos.bird.config.categoryregist.dao.TrnCateIdDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="trnSubCateIdDao" class="jp.co.isid.mos.bird.config.categoryregist.dao.TrnSubCateIdDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+
+	<!-- LOGIC -->
+	<component name="searchCategoryLogic" class="jp.co.isid.mos.bird.config.categoryregist.logic.impl.SearchCategoryLogicImpl"/>
+	<component name="searchSubCategoryLogic" class="jp.co.isid.mos.bird.config.categoryregist.logic.impl.SearchSubCategoryLogicImpl"/>
+	<component name="createBlankCategoryLogic" class="jp.co.isid.mos.bird.config.categoryregist.logic.impl.CreateBlankCategoryLogicImpl">
+		<property name="lines">5</property>
+	</component>
+	<component name="checkCategoryLogic" class="jp.co.isid.mos.bird.config.categoryregist.logic.impl.CheckCategoryLogicImpl"/>
+	<component name="updateCategoryLogic" class="jp.co.isid.mos.bird.config.categoryregist.logic.impl.UpdateCategoryLogicImpl">
+		<property name="formatter">categoryRegistCodeFormatter</property>
+		<aspect>j2ee.requiresNewTx</aspect>
+	</component>
+	<component name="updateSubCategoryLogic" class="jp.co.isid.mos.bird.config.categoryregist.logic.impl.UpdateSubCategoryLogicImpl">
+		<property name="formatter">categoryRegistCodeFormatter</property>
+		<aspect>j2ee.requiresNewTx</aspect>
+	</component>
+
+	<component name="infoShu01" class="javax.faces.model.SelectItem" instance="session"><arg>"01"</arg><arg>"連絡"</arg></component>
+	<component name="infoShu02" class="javax.faces.model.SelectItem" instance="session"><arg>"02"</arg><arg>"お知らせ"</arg></component>
+	<component name="infoShu03" class="javax.faces.model.SelectItem" instance="session"><arg>"03"</arg><arg>"情報共有（文書）"</arg></component>
+	<component name="infoShu04" class="javax.faces.model.SelectItem" instance="session"><arg>"04"</arg><arg>"情報共有（フォーム）"</arg></component>
+	<component name="infoShu06" class="javax.faces.model.SelectItem" instance="session"><arg>"06"</arg><arg>"社内掲示板"</arg></component>
+	<component name="infoShuList" class="java.util.ArrayList" instance="session">
+		<initMethod name="add"><arg>infoShu01</arg></initMethod>
+		<initMethod name="add"><arg>infoShu02</arg></initMethod>
+		<initMethod name="add"><arg>infoShu03</arg></initMethod>
+		<initMethod name="add"><arg>infoShu04</arg></initMethod>
+		<initMethod name="add"><arg>infoShu06</arg></initMethod>
+	</component>
+	<component name="categoryList" class="java.util.ArrayList" instance="session"/>
+
+	<!-- DTO -->
+	<component name="categoryRegistDto" class="jp.co.isid.mos.bird.config.categoryregist.dto.CategoryRegistDto" autoBinding="none" instance="session">
+		<property name="infoShuList">infoShuList</property>
+		<property name="categoryList">categoryList</property>
+	</component>
+	<component name="pullDownMenuDto" class="jp.co.isid.mos.bird.framework.dto.PullDownMenuDto" autoBinding="none" instance="session"/>
+
+	<!-- ACTION -->
+	<component name="categoryRegistConditionAction" class="jp.co.isid.mos.bird.config.categoryregist.action.impl.CategoryRegistConditionActionImpl" instance="request"/>
+	<component name="categoryRegistEditAction" class="jp.co.isid.mos.bird.config.categoryregist.action.impl.CategoryRegistEditActionImpl" instance="request"/>
+	<component name="categoryRegistConfirmAction" class="jp.co.isid.mos.bird.config.categoryregist.action.impl.CategoryRegistConfirmActionImpl" instance="request"/>
+	
+	<!-- Converter -->
+	<component name="categoryRegistCodeConverter3" class="jp.co.isid.mos.bird.framework.text.converter.CodeConverter" instance="request">
+		<arg>3</arg>
+		<arg>"000"</arg>
+	</component>
+	
+</components>

@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="Shift_JIS"?>
+<!DOCTYPE components PUBLIC "-//SEASAR//DTD S2Container 2.3//EN"
+    "http://www.seasar.org/dtd/components23.dtd">
+<components namespace="kakouriage">
+    <include path="dao.dicon"/>
+    <include path="jp/co/isid/mos/bird/common/dicon/birdCommon.dicon"/>
+	<include path="jp/co/isid/mos/bird/framework/dicon/birdInterceptor.dicon"/>
+
+	<component
+	  class="org.seasar.framework.container.autoregister.AspectAutoRegister">
+	    <property name="interceptor">birdInterceptor.actionInterceptorChain</property>
+	    <initMethod name="addClassPattern">
+	        <arg>"jp.co.isid.mos.bird"</arg>
+	        <arg>".*ActionImpl"</arg>
+	    </initMethod>
+	    <initMethod name="registerAll"/>
+	</component> 
+	<component
+	  class="org.seasar.framework.container.autoregister.AspectAutoRegister">
+	    <property name="interceptor">birdInterceptor.logicInterceptorChain</property>
+	    <initMethod name="addClassPattern">
+	        <arg>"jp.co.isid.mos.bird"</arg>
+	        <arg>".*LogicImpl"</arg>
+	    </initMethod>
+	    <initMethod name="registerAll"/>
+	</component>
+
+	<!-- DAO -->
+	<component name="kakouriageTrnKakoUriageDao" class="jp.co.isid.mos.bird.analysis.kakouriage.dao.TrnKakoUriageDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<!-- LOGIC -->
+	<component name="kakouriageConditionLogic" class="jp.co.isid.mos.bird.analysis.kakouriage.logic.impl.ConditionInfoLogicImpl"/>
+	<component name="kakouriageSearchLogic" class="jp.co.isid.mos.bird.analysis.kakouriage.logic.impl.SearchKakoUriageLogicImpl"/>
+	<component name="kakouriageCsvLogic" class="jp.co.isid.mos.bird.analysis.kakouriage.logic.impl.KakoUriageCsvOutputLogicImpl"/>
+	
+	<!-- DTO -->
+	<component name="kakouriageDto" class="jp.co.isid.mos.bird.analysis.kakouriage.dto.KakoUriageDto" autoBinding="none" instance="session"/>
+	<component name="kakouriageReqDto" class="jp.co.isid.mos.bird.analysis.kakouriage.dto.KakoUriageReqDto" autoBinding="none" instance="request">
+		<property name="companyCd">'00'</property>
+	</component>
+	<component name="kakouriageViewDto" class="jp.co.isid.mos.bird.analysis.kakouriage.dto.KakoUriageReqDto" autoBinding="none" instance="request"/>
+	<component name="miseSearchDto" class="jp.co.isid.mos.bird.commonform.misesearch.dto.MiseSearchDto" instance="session">
+		<property name="RCompanyCdList">null</property>
+	</component>
+
+	<!-- ACTION -->
+	<component name="kakouriageAction" class="jp.co.isid.mos.bird.analysis.kakouriage.action.impl.KakoUriageActionImpl" instance="request"/>
+	<component name="kakouriageCsvAction" class="jp.co.isid.mos.bird.framework.action.impl.CsvOutput2ActionImpl" instance="request">
+		<property name="csvOutputLogic">kakouriageCsvLogic</property>
+		<property name="csvOutputDto">kakouriageViewDto</property>
+	</component>
+	
+	<!-- Formatter -->
+
+	<!-- Converter -->
+	<component name="kakouriageDigit0Con" class="jp.co.isid.mos.bird.framework.text.converter.NumericConverter" instance="request">
+		<arg>0</arg>
+	</component>
+	<component name="kakouriageDigit2Con" class="jp.co.isid.mos.bird.framework.text.converter.NumericConverter" instance="request">
+		<arg>2</arg>
+	</component>
+	<component name="kakouriageCodeConv" class="jp.co.isid.mos.bird.framework.text.converter.CodeConverter" instance="request"/>
+	
+</components>

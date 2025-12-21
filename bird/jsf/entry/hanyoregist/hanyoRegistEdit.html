@@ -1,0 +1,207 @@
+<html xmlns:m="http://www.seasar.org/maya" m:action="#{hanyoRegistEditAction.initialize}" m:extends="/jsf/layout/layoutNoNavi.html">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Windows-31j" />
+<title>研修エントリーマスタ登録（編集画面）</title>
+</head>
+<body>
+<span m:inject="f:param" m:name="layoutTitle" m:value="研修エントリーマスタ登録（編集画面）"/>
+<span m:inject="s:insert" m:name="bodyTitleName">■研修エントリーマスタ登録（編集画面）</span>
+<span m:inject="f:param" m:name="onLoadName" m:value="initField()"/>
+<span m:inject="f:param" m:name="viewIdValue" m:value="BEN004V02"/>
+<span m:inject="s:insert" m:name="body">
+<style type="text/css">
+<!--
+.disable_field {
+	background-color	: gainsboro;
+	color				: black;
+}
+-->
+</style>
+<script type="text/javascript">
+<!--
+function initField() {
+	var selectObj = document.hanyoRegistEdit.elements['hanyoRegistEdit:courseCd'];
+	var textObj = document.hanyoRegistEdit.elements['hanyoRegistEdit:courseName'];
+
+	if (selectObj.value != "99") {
+		textObj.value = selectObj.options[selectObj.selectedIndex].text;
+	}
+}
+function selectCourseName() {
+	var selectObj = document.hanyoRegistEdit.elements['hanyoRegistEdit:courseCd'];
+	var textObj = document.hanyoRegistEdit.elements['hanyoRegistEdit:courseName'];
+
+	if (selectObj.value == "99") {
+		textObj.value = "";
+		textObj.style.visibility = "visible";
+	} else {
+		textObj.style.visibility = "hidden";
+		textObj.value = selectObj.options[selectObj.selectedIndex].text;
+	}
+}
+//-->
+</script>
+<form m:id="hanyoRegistEdit" onKeyDown="return setDefaultSubmitButton('hanyoRegistEdit','btnExecute');">
+<input type="hidden" m:id="viewId" m:value="#{viewIdValue}"/>
+<input type="hidden" m:id="initMenuId" m:value="#{menuAction.initMenuId}"/>
+<input type="hidden" m:id="initSubMenuId" m:value="#{menuAction.initSubMenuId}"/>
+<input type="hidden" m:id="sessionKey" m:value="#{hanyoRegistSessionKeyDto.sessionKey}"/>
+<input type="submit" value="戻る" m:action="#{hanyoRegistEditAction.cancel}"/>&nbsp;&nbsp;
+<input type="submit" value="確認" m:id="btnExecute" m:action="#{hanyoRegistEditAction.confirm}"/>&nbsp;&nbsp;
+<table class="body_table2" style="margin-top:4px;">
+  <tr>
+    <th width="150px">
+      研修名</th>
+    <td colspan="3">
+      <span m:converter="#{characterEncodingConverter}" m:value="#{hanyoRegistDto.entryName}"/>
+    </td>
+  </tr>
+  <tr>
+    <th>登録モード</th>
+    <td colspan="3">
+      <span m:converter="#{characterEncodingConverter}" m:value="#{hanyoRegistDto.editModeName}"/>
+    </td>
+  </tr>
+  <tr>
+    <th>開催日</th>
+    <td colspan="3">
+      <input type="text" class="imenotuse" m:id="kaisaiFromDt" m:value="#{hanyoRegistDto.uiEntryDateKaisai.fromDt}" m:converter="#{dateConverter4HanyoRegist}" m:maxlength="10" m:readonly="#{!hanyoRegistDto.editableKaisaiFromDt}" m:style="#{(!hanyoRegistDto.editableKaisaiFromDt) ? 'background-color : gainsboro; color : black;' : ''}"/>
+      　～　
+      <input type="text" class="imenotuse" m:id="kaisaiToDt" m:value="#{hanyoRegistDto.uiEntryDateKaisai.toDt}" m:converter="#{dateConverter4HanyoRegist}" m:maxlength="10" m:readonly="#{!hanyoRegistDto.editableKaisaiFromDt}" m:style="#{(!hanyoRegistDto.editableKaisaiFromDt) ? 'background-color : gainsboro; color : black;' : ''}"/>
+    </td>
+  </tr>
+  <tr>
+    <th>開催名</th>
+    <td colspan="3">
+      <input type="text" class="imeon" m:id="entryTitle" m:value="#{hanyoRegistDto.uiEntryMst.entryTitle}" m:size="80" m:maxlength="100" m:converter="#{characterEncodingConverter}"/>
+    </td>
+  </tr>
+  <tr>
+    <th>
+      開催場所
+    </th>
+    <td colspan="3">
+      <input type="text" class="imeon" m:id="entryPlace" m:value="#{hanyoRegistDto.uiEntryMst.entryPlace}" m:size="80" m:maxlength="50" m:converter="#{characterEncodingConverter}"/>
+    </td>
+  </tr>
+  <tr>
+    <th>コース</th>
+    <td colspan="3">
+      <select id="courseCd"
+          m:value="#{hanyoRegistDto.uiEntryCourse.courseCd}"
+          m:items="#{hanyoRegistDto.courseList}"
+          m:itemValue="courseCd"
+          m:itemLabel="courseName"
+          onchange="selectCourseName()"
+          m:disabled="#{!hanyoRegistDto.editableKaisaiFromDt}">
+        <option value="01">出張ベーシック研修</option>
+      </select>
+      <input type="text" m:id="courseName" m:value="#{hanyoRegistDto.uiEntryCourse.courseName}" m:style="#{(hanyoRegistDto.uiEntryCourse.courseCd == 99) ? 'visibility:visible;' : 'visibility:hidden;'}" maxlength="20" m:readonly="#{!hanyoRegistDto.editableKaisaiFromDt}" m:class="#{(hanyoRegistDto.editableKaisaiFromDt) ? '' : 'disable_field'}"/>
+    </td>
+  </tr>
+  <tr>
+    <th width="150px">
+      オーナー：表示開始
+    </th>
+    <td width="180px">
+      <input type="text" class="imenotuse" m:id="onerHyojiFromDt" m:value="#{hanyoRegistDto.uiEntryDateOnerHyoji.fromDt}" m:converter="#{dateConverter4HanyoRegist}" m:maxlength="10" m:readonly="#{!hanyoRegistDto.editableKaisaiFromDt}" m:style="#{(!hanyoRegistDto.editableKaisaiFromDt) ? 'background-color : gainsboro; color : black;' : ''}"/>
+    </td>
+    <th width="150px">
+      本部：表示開始
+    </th>
+    <td width="180px">
+      <input type="text" class="imenotuse" m:id="honbuHyojiFromDt" m:value="#{hanyoRegistDto.uiEntryDateHonbuHyoji.fromDt}" m:converter="#{dateConverter4HanyoRegist}" m:maxlength="10" m:readonly="#{!hanyoRegistDto.editableKaisaiFromDt}" m:style="#{(!hanyoRegistDto.editableKaisaiFromDt) ? 'background-color : gainsboro; color : black;' : ''}"/>
+    </td>
+  </tr>
+  <tr>
+    <th>
+      オーナー：申込開始
+    </th>
+    <td>
+      <input type="text" class="imenotuse" m:id="onerTorokuFromDt" m:value="#{hanyoRegistDto.uiEntryDateOnerToroku.fromDt}" m:converter="#{dateConverter4HanyoRegist}" m:maxlength="10" m:readonly="#{!hanyoRegistDto.editableKaisaiFromDt}" m:style="#{(!hanyoRegistDto.editableKaisaiFromDt) ? 'background-color : gainsboro; color : black;' : ''}"/>
+    </td>
+    <th>
+      本部：申込開始
+    </th>
+    <td>
+      <input type="text" class="imenotuse" m:id="honbuTorokuFromDt" m:value="#{hanyoRegistDto.uiEntryDateHonbuToroku.fromDt}" m:converter="#{dateConverter4HanyoRegist}" m:maxlength="10" m:readonly="#{!hanyoRegistDto.editableKaisaiFromDt}" m:style="#{(!hanyoRegistDto.editableKaisaiFromDt) ? 'background-color : gainsboro; color : black;' : ''}"/>
+    </td>
+  </tr>
+  <tr>
+    <th>
+      オーナー：申込終了
+    </th>
+    <td>
+      <input type="text" class="imenotuse" m:id="onerTorokuToDt" m:value="#{hanyoRegistDto.uiEntryDateOnerToroku.toDt}" m:converter="#{dateConverter4HanyoRegist}" m:maxlength="10"/>
+    </td>
+    <th>
+      本部：申込終了
+    </th>
+    <td>
+      <input type="text" class="imenotuse" m:id="honbuTorokuToDt" m:value="#{hanyoRegistDto.uiEntryDateHonbuToroku.toDt}" m:converter="#{dateConverter4HanyoRegist}" m:maxlength="10"/>
+    </td>
+  </tr>
+  <tr>
+    <th>
+      オーナー：表示終了
+    </th>
+    <td>
+      <input type="text" class="imenotuse" m:id="onerHyojiToDt" m:value="#{hanyoRegistDto.uiEntryDateOnerHyoji.toDt}" m:converter="#{dateConverter4HanyoRegist}" m:maxlength="10"/>
+    </td>
+    <th>
+      本部：表示終了
+    </th>
+    <td>
+      <input type="text" class="imenotuse" m:id="honbuHyojiToDt" m:value="#{hanyoRegistDto.uiEntryDateHonbuHyoji.toDt}" m:converter="#{dateConverter4HanyoRegist}" m:maxlength="10"/>
+    </td>
+  </tr>
+  <tr>
+    <th>
+      結果開始
+    </th>
+    <td>
+      <input type="text" class="imenotuse" m:id="kekkaFromDt" m:value="#{hanyoRegistDto.uiEntryDateKekka.fromDt}" m:converter="#{dateConverter4HanyoRegist}" m:maxlength="10"/>
+    </td>
+    <th>
+      結果終了
+    </th>
+    <td>
+      <input type="text" class="imenotuse" m:id="kekkaToDt" m:value="#{hanyoRegistDto.uiEntryDateKekka.toDt}" m:converter="#{dateConverter4HanyoRegist}" m:maxlength="10"/>
+    </td>
+  </tr>
+  <tr>
+    <th>
+      定員
+    </th>
+    <td colspan="3" nowrap>
+      　申込　<input type="text" class="imenotuse" m:id="numberLimit" m:value="#{hanyoRegistDto.uiEntryMst.numberLimit}" style="text-align:right;" m:converter="#{numericConverter}" m:maxlength="5"/>
+      　　人　／　会場　<input type="text" class="imenotuse" m:id="placeLimit" m:value="#{hanyoRegistDto.uiEntryMst.placeLimit}" style="text-align:right;" m:converter="#{numericConverter}" m:maxlength="5"/>　人
+    </td>
+  </tr>
+  <tr>
+    <th>
+      備考
+    </th>
+    <td colspan="3">
+      <input type="text" class="imeon" m:id="note" m:value="#{hanyoRegistDto.uiEntryMst.note}" size="80" maxlength="100" m:converter="#{characterEncodingConverter}"/>
+    </td>
+  </tr>
+  <tr m:rendered="#{hanyoRegistDto.entryCd != '30'}">
+    <th>
+      注意事項
+    </th>
+    <td colspan="3">
+     <textarea m:id="notice" cols="96"  m:maxlength="500"  rows="3" m:value="#{hanyoRegistDto.uIEntryNotice.notice2}" m:converter="#{changeLineEditConverter}" style="ime-mode:active" m:escape="false"></textarea>
+    </td>
+ </tr>
+</table>
+<input type="text" m:id="dummyEnter" style="display:none">
+</form>
+<script type="text/javascript">
+<!--
+	focusElement("hanyoRegistEdit");
+-->
+</script>
+</span>
+</body>
+</html>

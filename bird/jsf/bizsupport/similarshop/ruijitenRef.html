@@ -1,0 +1,850 @@
+<html xmlns:m="http://www.seasar.org/maya"
+      m:action="#{ruijitenSearchAction.initialize}"
+      m:extends="/jsf/layout/layoutNoNavi.html">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Windows-31j" />
+<title>類似店検索</title>
+</head>
+<body>
+<span m:inject="f:param" m:name="layoutTitle" m:value="類似店検索"/>
+<span m:inject="f:param" m:name="onLoadName" m:value="init()"/>
+<span m:inject="s:insert" m:name="bodyTitleName">■類似店検索</span>
+<span m:inject="f:param" m:name="viewIdValue" m:value="BBS008V02"/>
+<span m:inject="f:param" m:name="isHonbu" m:value="#{ruijitenCommonDto.userTypeCd == '01'}"/>
+<span m:inject="f:param" m:name="isOner" m:value="#{ruijitenCommonDto.userTypeCd == '02'}"/>
+<span m:inject="s:insert" m:name="body">
+<script type="text/javascript">
+<!--
+
+function load(){
+	if( document.ruijitenRef.elements[ 'ruijitenRef:userTypeCd'].value == "01" ){
+		focusElement("ruijitenRef");
+	}
+}
+
+function init(){
+	if( document.ruijitenRef.elements[ 'ruijitenRef:userTypeCd'].value == "02"
+		&& document.ruijitenRef.elements[ 'ruijitenRef:miseCombo'] != null ){
+		miseChg();
+	}
+	return true;
+}
+
+function exec(){
+	if(document.ruijitenRef.elements[ 'ruijitenRef:miseSearchKbn'].value != "ON" &&
+	   document.ruijitenRef.elements['ruijitenRef:betugamen'].checked){
+		document.ruijitenRef.target = "_blank";
+	}else{
+		document.ruijitenRef.target = "_self";
+	}
+	document.ruijitenRef.elements[ 'ruijitenRef:miseSearchKbn'].value = "";
+	document.ruijitenRef.elements['ruijitenRef:__link_clicked__'].value='ruijitenRef:execute';
+	document.ruijitenRef.submit();
+}
+
+
+function miseChg(){
+
+	//選択された店コード
+	var miseCd = document.ruijitenRef.elements[ 'ruijitenRef:miseCombo'].value;
+
+	//選択された店の売上、オープン日をセット
+	var objForm = document.ruijitenRef;
+	var type;
+	for (i = 0; i < objForm.elements.length; i++) {
+		type = objForm.elements[i].type;
+		if ('hidden' == type) {
+			var nameLength = objForm.elements[i].name.length;
+			if (miseCd != "" &&
+				objForm.elements[i].name.substring(nameLength - 8, nameLength) == "infoMise" &&
+				objForm.elements[i].value == miseCd){
+				var uriage = objForm.elements[i].name.substring(0, nameLength - 8)+"infoUriage";
+				document.ruijitenRef.URIAGE.value = objForm.elements[uriage].value;
+				var opendt = objForm.elements[i].name.substring(0, nameLength - 8)+"infoOpenDt";
+				document.ruijitenRef.OPENDT.value = objForm.elements[opendt].value;
+				return true;
+			}
+		}
+	}
+}
+//-->
+</script>
+<STYLE type="text/css" media="screen">
+<!--
+.normal_field {
+}
+.minus_field {
+  color            : red;
+}
+.scroll_area {
+	width:	  790px;
+	height:   342px;
+}
+-->
+</STYLE>
+
+<form m:id="ruijitenRef" onkeydown="return setDefaultSubmitButton('ruijitenRef', 'research');">
+<input type="hidden" m:id="viewId" m:value="#{viewIdValue}"/>
+<input type="hidden" m:id="initMenuId" m:value="#{menuAction.initMenuId}"/>
+<input type="hidden" m:id="initSubMenuId" m:value="#{menuAction.initSubMenuId}"/>
+<input type="hidden" m:id="userTypeCd" m:value="#{ruijitenCommonDto.userTypeCd}"/>
+<input type="hidden" m:id="miseSearchKbn" m:value=""/>
+<!-- ウィンドウID -->
+<input type="hidden" m:id="windowId" m:value="#{ruijitenCommonDto.windowId}"/>
+<a id="execute" m:action="#{ruijitenSearchAction.execute}"/>
+<div m:rendered="#{ruijitenCommonDto.userTypeCd == '02' && ruijitenCommonDto.mstOnerHoyuMiseListSize==0}"
+      style="font-weight:bold;">
+  <p/>該当店舗が存在しません。Ｐ／Ｌが登録されていない可能性があります。</div>
+<table m:rendered="#{ruijitenCommonDto.userTypeCd != '02' || ruijitenCommonDto.mstOnerHoyuMiseListSize>=1}"
+	class="hiddenBody" style="margin-bottom:4px;">
+<tr>
+<td>
+<table class="body_table" width="740">
+    <tr>
+
+      <th width="80">店舗情報</th>
+<!-- -->
+      <td m:rendered="#{ruijitenCommonDto.userTypeCd == '01'}" width="*" colspan="5">
+		<input type="text" m:id="miseCd" m:size="7" m:maxlength="5" m:value="#{ruijitenReferenceDto.miseCd}" />
+		<input type="button" value="店選択" class="operation_button" m:action="#{ruijitenSearchAction.callMiseFormResult}"
+		       m:onclick="document.ruijitenRef.elements[ 'ruijitenRef:miseSearchKbn'].value = 'ON';"/>
+      </td>
+
+<!-- -->
+
+    <div m:rendered="#{ruijitenCommonDto.userTypeCd == '02'}">
+<!-- -->
+      <td width="*">
+      <div class="hideArea">
+      	<select m:onchange ="miseChg();" m:id="miseCombo"
+           		m:items="#{ruijitenCommonDto.mstOnerHoyuMiseList}"
+           		m:value="#{ruijitenReferenceDto.miseCd}"
+           		m:itemValue="miseCd"
+           		m:itemLabel="miseNameKj">
+       		<option value="">MOS</option>
+        </select>
+      </div>
+      </td>
+
+      <th width="100">売上情報</th>
+      <td width="*">
+       	<INPUT TYPE="text" m:name="URIAGE" m:disabled="true" STYLE="text-align:right" class="width_86" size="15" />
+      </td>
+      <th width="80">オープン日</th>
+      <td width="*">
+      	<INPUT TYPE="text" m:name="OPENDT" m:disabled="true" class="width_86" size="15" />
+      </td>
+
+    </div>
+    </tr>
+    <tr>
+      <th width="80">営業エリア</th>
+      <td width="*">
+      	<div class="hideArea">
+        <select m:value="#{ruijitenReferenceDto.area}" m:id="area" size="1">
+        <option value="">全国</option>
+        <option value="NOTALLAREA">所属エリア</option>
+        </select>
+        </div>
+      </td>
+      <th width="100">店舗形態</th>
+      <td width="*">
+      	<div class="hideArea">
+        <select m:value="#{ruijitenReferenceDto.tenpoKeitai}" m:id="misekeitai" size="1">
+        <option value="">指定しない</option>
+        <option value="DOUITU_KEITAI">同一形態</option>
+        </select>
+        </div>
+      </td>
+      <th width="80">立地</th>
+      <td width="*">
+      	<div class="hideArea">
+        <select m:value="#{ruijitenReferenceDto.ritti}" m:id="ritti" size="1">
+        <option value="">指定しない</option>
+        <option value="DOUITU_RITTI">同一立地</option>
+        </select>
+        </div>
+      </td>
+    </tr>
+    <tr>
+      <th width="80">売上差</th>
+      <td width="*">
+      	<div class="hideArea">－
+        <select m:value="#{ruijitenReferenceDto.uriageFrom}" m:id="uriagemin" size="1">
+        <option value="">指定しない</option>
+        <option value="0">０万</option>
+        <option value="1000000">１００万</option>
+        <option value="2000000">２００万</option>
+        <option value="3000000">３００万</option>
+        <option value="4000000">４００万</option>
+        <option value="5000000">５００万</option>
+        <option value="6000000">６００万</option>
+        <option value="7000000">７００万</option>
+        <option value="8000000">８００万</option>
+        <option value="9000000">９００万</option>
+        <option value="10000000">１０００万</option>
+        </select>　＋
+        <select m:value="#{ruijitenReferenceDto.uriageTo}" m:id="uriagemax" size="1">
+        <option value="">指定しない</option>
+        <option value="0">０万</option>
+        <option value="1000000">１００万</option>
+        <option value="2000000">２００万</option>
+        <option value="3000000">３００万</option>
+        <option value="4000000">４００万</option>
+        <option value="5000000">５００万</option>
+        <option value="6000000">６００万</option>
+        <option value="7000000">７００万</option>
+        <option value="8000000">８００万</option>
+        <option value="9000000">９００万</option>
+        <option value="10000000">１０００万</option>
+        </select>
+        </div>
+      </td>
+      <th width="100">オープン年差</th>
+      <td width="*" colspan=3>
+      	<div class="hideArea">－
+        <select m:value="#{ruijitenReferenceDto.openDtFrom}" m:id="openmin" size="1">
+        	<option value="">指定しない</option>
+        	<option value="0">０年</option>
+        	<option value="1">１年</option>
+        	<option value="2">２年</option>
+        	<option value="3">３年</option>
+        	<option value="4">４年</option>
+        	<option value="5">５年</option>
+        	<option value="6">６年</option>
+        	<option value="7">７年</option>
+        	<option value="8">８年</option>
+        	<option value="9">９年</option>
+        	<option value="10">１０年</option>
+        </select>　＋
+        <select m:value="#{ruijitenReferenceDto.openDtTo}" m:id="openmax" size="1">
+        	<option value="">指定しない</option>
+        	<option value="0">０年</option>
+        	<option value="1">１年</option>
+        	<option value="2">２年</option>
+        	<option value="3">３年</option>
+        	<option value="4">４年</option>
+        	<option value="5">５年</option>
+        	<option value="6">６年</option>
+        	<option value="7">７年</option>
+        	<option value="8">８年</option>
+        	<option value="9">９年</option>
+        	<option value="10">１０年</option>
+        </select>
+        </div>
+      </td>
+    </tr>
+</table>
+</td>
+	<td valign="bottom" width="">
+		<input id="research" name="research"
+		       type="button" value="再検索"
+		       style="margin:0px 4px;"
+		       onclick="exec();"/></td>
+	<td valign="bottom">
+		別ウィンドウに表示</td>
+	<td valign="bottom"><input type="checkbox" m:id="betugamen"
+		       m:value="#{ruijitenSearchAction.newWindowFlg}"/></td>
+</tr>
+</table>
+<div m:rendered="#{ruijitenReferenceDto.misePLData != null}">
+
+<table cellspacing="0" cellpadding="0" width="770px" class="element_browser">
+  <tr>
+    <td class="body_active_cell tab_change_area_0" width="140px" >
+      <a href="javascript:changeTabArea('0');"
+      	 name="body_anchor_area_0"  m:passthrough="true">グラフ</a>
+    </td>
+    <td class="body_non_active_cell tab_change_area_1" width="140px" >
+      <a href="javascript:changeTabArea('1');"
+      	 name="body_anchor_area_1"  m:passthrough="true">表</a>
+    </td>
+    <td>&nbsp;&nbsp;※15日までは前々月、16日以降は前月のPLデータで検索します。</td>
+  </tr>
+  <tr class="body_caption" style="height:5px;"><td colspan="3"/></tr>
+</table>
+
+<div class="tab_change_area_0 visible_tab">
+<div class="element_print"><p/>【　グラフ　】</div>
+<!--グラフ-->
+<img src="#{ruijitenReferenceDto.graphUrl}" m:rendered="#{ruijitenReferenceDto.graphUrl != null}"/>
+</div>
+
+
+
+<div class="tab_change_area_1 invisible_tab">
+<div class="element_print"><p/>【　表　】</div>
+<!--表タブ-->
+<table class="body_table2" width="770px">
+  <tr class="header_row">
+   	<th width="*" rowspan=2>科目</th>
+   	<th width=220 colspan=2><span m:converter="#{characterEncodingConverter}" m:value="#{ruijitenReferenceDto.misePLData.miseNameKj}"/></th>
+   	<th width=220 colspan=2>類似店</th>
+   	<th width=120 rowspan=2>金額差</th>
+  </tr>
+  <tr class="header_row">
+   	<th width=120>金額</th>
+   	<th width=100>構成比</th>
+   	<th width=120>金額</th>
+   	<th width=100>構成比</th>
+  </tr>
+</table>
+<div class="scroll_area">
+<table class="body_table2" width="770px" style="border-top-width:0px;text-align:right;">
+  <tr class="non_top_border">
+  	<th width="*">売上高</th>
+  	<td style="border-top-widht:0px" width=120 class="#{ruijitenReferenceDto.misePLData.uriageClass}" style="text-align:right;"><span m:value="#{ruijitenReferenceDto.misePLData.uriage}" m:converter="#{numericConverterKingakuRound}"/></td>
+  	<td style="border-top-widht:0px" width=100 class="#{ruijitenReferenceDto.misePLData.uriageClass}" style="background-color:#b0ff9f;text-align:right;"><span m:value="#{ruijitenReferenceDto.misePLData.uriage}" m:converter="#{uriageKosehiConverter}"/></td>
+  	<td style="border-top-widht:0px" width=120 class="#{ruijitenReferenceDto.miseRuijiPLData.uriageClass}" style="text-align:right;"><span m:value="#{ruijitenReferenceDto.miseRuijiPLData.uriage}" m:converter="#{numericConverterKingakuRound}"/></td>
+  	<td style="border-top-widht:0px" width=100 class="#{ruijitenReferenceDto.miseRuijiPLData.uriageClass}" style="background-color:#b0ff9f;text-align:right;"><span m:value="#{ruijitenReferenceDto.miseRuijiPLData.uriage}" m:converter="#{uriageKosehiRuijitenConverter}"/></td>
+ 	<td style="border-top-widht:0px" width=120 class="#{(ruijitenReferenceDto.misePLData.uriage - ruijitenReferenceDto.miseRuijiPLData.uriage) >= 0?'normal':'minus'}_field" style="text-align:right;"><span m:value="#{ruijitenReferenceDto.misePLData.uriage}_#{ruijitenReferenceDto.miseRuijiPLData.uriage}" m:converter="#{ruijitenKingakuSaConverter}"/></td>
+  </tr>
+  <tr>
+  	<th>物品販売</th>
+  	<td class="#{ruijitenReferenceDto.misePLData.buppanClass}" style="text-align:right;"><span m:value="#{ruijitenReferenceDto.misePLData.buppan}" m:converter="#{numericConverterKingakuRound}"/></td>
+  	<td class="#{ruijitenReferenceDto.misePLData.buppanClass}" style="background-color:#b0ff9f;text-align:right;"><span m:value="#{ruijitenReferenceDto.misePLData.buppan}" m:converter="#{uriageKosehiConverter}"/></td>
+  	<td class="#{ruijitenReferenceDto.miseRuijiPLData.buppanClass}" style="text-align:right;"><span m:value="#{ruijitenReferenceDto.miseRuijiPLData.buppan}" m:converter="#{numericConverterKingakuRound}"/></td>
+  	<td class="#{ruijitenReferenceDto.miseRuijiPLData.buppanClass}" style="background-color:#b0ff9f;text-align:right;"><span m:value="#{ruijitenReferenceDto.miseRuijiPLData.buppan}" m:converter="#{uriageKosehiRuijitenConverter}"/></td>
+  	<td class="#{(ruijitenReferenceDto.misePLData.buppan - ruijitenReferenceDto.miseRuijiPLData.buppan) >= 0?'normal':'minus'}_field" style="text-align:right;">
+  		<span m:value="#{ruijitenReferenceDto.misePLData.buppan}_#{ruijitenReferenceDto.miseRuijiPLData.buppan}" m:converter="#{ruijitenKingakuSaConverter}"/>
+  	</td>
+  </tr>
+  <tr>
+  	<th style="color:red;">売上合計</th>
+  	<td class="#{ruijitenReferenceDto.misePLData.uriagedakaClass}" style="text-align:right;"><span m:value="#{ruijitenReferenceDto.misePLData.uriagedaka}" m:converter="#{numericConverterKingakuRound}"/></td>
+  	<td class="#{ruijitenReferenceDto.misePLData.uriagedakaClass}" style="background-color:#b0ff9f;text-align:right;">***</td>
+  	<td class="#{ruijitenReferenceDto.miseRuijiPLData.uriagedakaClass}" style="text-align:right;"><span m:value="#{ruijitenReferenceDto.miseRuijiPLData.uriagedaka}" m:converter="#{numericConverterKingakuRound}"/></td>
+  	<td class="#{ruijitenReferenceDto.miseRuijiPLData.uriagedakaClass}" style="background-color:#b0ff9f;text-align:right;">***</td>
+    <td m:rendered="#{(ruijitenReferenceDto.misePLData.uriagedaka - ruijitenReferenceDto.miseRuijiPLData.uriagedaka) >= 0}"
+  	      class="normal_field" style="text-align:right;"><span m:value="#{ruijitenReferenceDto.misePLData.uriagedaka}_#{ruijitenReferenceDto.miseRuijiPLData.uriagedaka}" m:converter="#{ruijitenKingakuSaConverter}"/></td>
+    <td m:rendered="#{0 > (ruijitenReferenceDto.misePLData.uriagedaka - ruijitenReferenceDto.miseRuijiPLData.uriagedaka)}"
+  	      class="minus_field" style="text-align:right;"><span m:value="#{ruijitenReferenceDto.misePLData.uriagedaka}_#{ruijitenReferenceDto.miseRuijiPLData.uriagedaka}" m:converter="#{ruijitenKingakuSaConverter}"/></td>
+
+  </tr>
+  <tr>
+  	<th>原材料費計</th>
+  	<td class="#{ruijitenReferenceDto.misePLData.genzairyoKeiClass}" style="text-align:right;"><span m:value="#{ruijitenReferenceDto.misePLData.genzairyoKei}" m:converter="#{numericConverterKingakuRound}"/></td>
+  	<td class="#{ruijitenReferenceDto.misePLData.genzairyoKeiClass}" style="background-color:#b0ff9f;text-align:right;"><span m:value="#{ruijitenReferenceDto.misePLData.genzairyoKei}" m:converter="#{uriageKosehiConverter}"/></td>
+  	<td class="#{ruijitenReferenceDto.miseRuijiPLData.genzairyoKeiClass}" style="text-align:right;"><span m:value="#{ruijitenReferenceDto.miseRuijiPLData.genzairyoKei}" m:converter="#{numericConverterKingakuRound}"/></td>
+  	<td class="#{ruijitenReferenceDto.miseRuijiPLData.genzairyoKeiClass}" style="background-color:#b0ff9f;text-align:right;"><span m:value="#{ruijitenReferenceDto.miseRuijiPLData.genzairyoKei}" m:converter="#{uriageKosehiRuijitenConverter}"/></td>
+
+  	<div m:rendered="#{(ruijitenReferenceDto.misePLData.genzairyoKei - ruijitenReferenceDto.miseRuijiPLData.genzairyoKei) >= 0}">
+  	  <td class="normal_field" style="text-align:right;"><span m:value="#{ruijitenReferenceDto.misePLData.genzairyoKei}_#{ruijitenReferenceDto.miseRuijiPLData.genzairyoKei}" m:converter="#{ruijitenKingakuSaConverter}"/></td>
+    </div>
+  	<div m:rendered="#{0 > (ruijitenReferenceDto.misePLData.genzairyoKei - ruijitenReferenceDto.miseRuijiPLData.genzairyoKei)}">
+  	  <td class="minus_field" style="text-align:right;"><span m:value="#{ruijitenReferenceDto.misePLData.genzairyoKei}_#{ruijitenReferenceDto.miseRuijiPLData.genzairyoKei}" m:converter="#{ruijitenKingakuSaConverter}"/></td>
+    </div>
+  </tr>
+  <tr>
+  	<th>野菜計</th>
+  	<td class="#{ruijitenReferenceDto.misePLData.yasaiKeiClass}" style="text-align:right;"><span m:value="#{ruijitenReferenceDto.misePLData.yasaiKei}" m:converter="#{numericConverterKingakuRound}"/></td>
+  	<td class="#{ruijitenReferenceDto.misePLData.yasaiKeiClass}" style="background-color:#b0ff9f;text-align:right;"><span m:value="#{ruijitenReferenceDto.misePLData.yasaiKei}" m:converter="#{uriageKosehiConverter}"/></td>
+  	<td class="#{ruijitenReferenceDto.miseRuijiPLData.yasaiKeiClass}" style="text-align:right;"><span m:value="#{ruijitenReferenceDto.miseRuijiPLData.yasaiKei}" m:converter="#{numericConverterKingakuRound}"/></td>
+  	<td class="#{ruijitenReferenceDto.miseRuijiPLData.yasaiKeiClass}" style="background-color:#b0ff9f;text-align:right;"><span m:value="#{ruijitenReferenceDto.miseRuijiPLData.yasaiKei}" m:converter="#{uriageKosehiRuijitenConverter}"/></td>
+
+  	<div m:rendered="#{(ruijitenReferenceDto.misePLData.yasaiKei - ruijitenReferenceDto.miseRuijiPLData.yasaiKei) >= 0}">
+	  <td class="normal_field" style="text-align:right;"><span m:value="#{ruijitenReferenceDto.misePLData.yasaiKei}_#{ruijitenReferenceDto.miseRuijiPLData.yasaiKei}" m:converter="#{ruijitenKingakuSaConverter}"/></td>
+    </div>
+  	<div m:rendered="#{0 > (ruijitenReferenceDto.misePLData.yasaiKei - ruijitenReferenceDto.miseRuijiPLData.yasaiKei)}">
+	  <td class="minus_field" style="text-align:right;"><span m:value="#{ruijitenReferenceDto.misePLData.yasaiKei}_#{ruijitenReferenceDto.miseRuijiPLData.yasaiKei}" m:converter="#{ruijitenKingakuSaConverter}"/></td>
+    </div>
+  </tr>
+  <tr>
+  	<th>包装資材費計</th>
+  	<td class="#{ruijitenReferenceDto.misePLData.houzaiKeiClass}" style="text-align:right;"><span m:value="#{ruijitenReferenceDto.misePLData.houzaiKei}" m:converter="#{numericConverterKingakuRound}"/></td>
+  	<td class="#{ruijitenReferenceDto.misePLData.houzaiKeiClass}" style="background-color:#b0ff9f;text-align:right;"><span m:value="#{ruijitenReferenceDto.misePLData.houzaiKei}" m:converter="#{uriageKosehiConverter}"/></td>
+  	<td class="#{ruijitenReferenceDto.miseRuijiPLData.houzaiKeiClass}" style="text-align:right;"><span m:value="#{ruijitenReferenceDto.miseRuijiPLData.houzaiKei}" m:converter="#{numericConverterKingakuRound}"/></td>
+  	<td class="#{ruijitenReferenceDto.miseRuijiPLData.houzaiKeiClass}" style="background-color:#b0ff9f;text-align:right;"><span m:value="#{ruijitenReferenceDto.miseRuijiPLData.houzaiKei}" m:converter="#{uriageKosehiRuijitenConverter}"/></td>
+
+  	<div m:rendered="#{(ruijitenReferenceDto.misePLData.houzaiKei - ruijitenReferenceDto.miseRuijiPLData.houzaiKei) >= 0}">
+  	  <td class="normal_field" style="text-align:right;"><span m:value="#{ruijitenReferenceDto.misePLData.houzaiKei}_#{ruijitenReferenceDto.miseRuijiPLData.houzaiKei}" m:converter="#{ruijitenKingakuSaConverter}"/></td>
+    </div>
+  	<div m:rendered="#{0 > (ruijitenReferenceDto.misePLData.houzaiKei - ruijitenReferenceDto.miseRuijiPLData.houzaiKei)}">
+  	  <td class="minus_field" style="text-align:right;"><span m:value="#{ruijitenReferenceDto.misePLData.houzaiKei}_#{ruijitenReferenceDto.miseRuijiPLData.houzaiKei}" m:converter="#{ruijitenKingakuSaConverter}"/></td>
+    </div>
+  </tr>
+  <tr>
+  	<th>商品計</th>
+  	<td class="#{ruijitenReferenceDto.misePLData.buppanKeiClass}" style="text-align:right;"><span m:value="#{ruijitenReferenceDto.misePLData.buppanKei}" m:converter="#{numericConverterKingakuRound}"/></td>
+  	<td class="#{ruijitenReferenceDto.misePLData.buppanKeiClass}" style="background-color:#b0ff9f;text-align:right;"><span m:value="#{ruijitenReferenceDto.misePLData.buppanKei}" m:converter="#{uriageKosehiConverter}"/></td>
+  	<td class="#{ruijitenReferenceDto.miseRuijiPLData.buppanKeiClass}" style="text-align:right;"><span m:value="#{ruijitenReferenceDto.miseRuijiPLData.buppanKei}" m:converter="#{numericConverterKingakuRound}"/></td>
+  	<td class="#{ruijitenReferenceDto.miseRuijiPLData.buppanKeiClass}" style="background-color:#b0ff9f;text-align:right;"><span m:value="#{ruijitenReferenceDto.miseRuijiPLData.buppanKei}" m:converter="#{uriageKosehiRuijitenConverter}"/></td>
+
+  	<div m:rendered="#{(ruijitenReferenceDto.misePLData.buppanKei - ruijitenReferenceDto.miseRuijiPLData.buppanKei) >= 0}">
+  	  <td class="normal_field" style="text-align:right;"><span m:value="#{ruijitenReferenceDto.misePLData.buppanKei}_#{ruijitenReferenceDto.miseRuijiPLData.buppanKei}" m:converter="#{ruijitenKingakuSaConverter}"/></td>
+    </div>
+  	<div m:rendered="#{0 > (ruijitenReferenceDto.misePLData.buppanKei - ruijitenReferenceDto.miseRuijiPLData.buppanKei)}">
+  	  <td class="minus_field" style="text-align:right;"><span m:value="#{ruijitenReferenceDto.misePLData.buppanKei}_#{ruijitenReferenceDto.miseRuijiPLData.buppanKei}" m:converter="#{ruijitenKingakuSaConverter}"/></td>
+    </div>
+  </tr>
+  <tr>
+  	<th style="color:red;">売上原価計</th>
+  	<td class="#{ruijitenReferenceDto.misePLData.uriagegenkaClass}" style="text-align:right;"><span m:value="#{ruijitenReferenceDto.misePLData.uriagegenka}" m:converter="#{numericConverterKingakuRound}"/></td>
+  	<td class="#{ruijitenReferenceDto.misePLData.uriagegenkaClass}" style="background-color:#b0ff9f;text-align:right;"><span m:value="#{ruijitenReferenceDto.misePLData.uriagegenka}" m:converter="#{uriageKosehiConverter}"/></td>
+  	<td class="#{ruijitenReferenceDto.miseRuijiPLData.uriagegenkaClass}" style="text-align:right;"><span m:value="#{ruijitenReferenceDto.miseRuijiPLData.uriagegenka}" m:converter="#{numericConverterKingakuRound}"/></td>
+  	<td class="#{ruijitenReferenceDto.miseRuijiPLData.uriagegenkaClass}" style="background-color:#b0ff9f;text-align:right;"><span m:value="#{ruijitenReferenceDto.miseRuijiPLData.uriagegenka}" m:converter="#{uriageKosehiRuijitenConverter}"/></td>
+
+  	<div m:rendered="#{(ruijitenReferenceDto.misePLData.uriagegenka - ruijitenReferenceDto.miseRuijiPLData.uriagegenka) >= 0}">
+  	  <td class="normal_field" style="text-align:right;"><span m:value="#{ruijitenReferenceDto.misePLData.uriagegenka}_#{ruijitenReferenceDto.miseRuijiPLData.uriagegenka}" m:converter="#{ruijitenKingakuSaConverter}"/></td>
+    </div>
+  	<div m:rendered="#{(ruijitenReferenceDto.misePLData.uriagegenka - ruijitenReferenceDto.miseRuijiPLData.uriagegenka) < 0}">
+  	  <td class="minus_field" style="text-align:right;"><span m:value="#{ruijitenReferenceDto.misePLData.uriagegenka}_#{ruijitenReferenceDto.miseRuijiPLData.uriagegenka}" m:converter="#{ruijitenKingakuSaConverter}"/></td>
+    </div>
+  </tr>
+  <tr>
+  	<th style="color:blue;">売上純利益</th>
+  	<td class="#{ruijitenReferenceDto.misePLData.uriageSoRiekiClass}" style="text-align:right;"><span m:value="#{ruijitenReferenceDto.misePLData.uriageSoRieki}" m:converter="#{numericConverterKingakuRound}"/></td>
+  	<td class="#{ruijitenReferenceDto.misePLData.uriageSoRiekiClass}" style="background-color:#b0ff9f;text-align:right;"><span m:value="#{ruijitenReferenceDto.misePLData.uriageSoRieki}" m:converter="#{uriageKosehiConverter}"/></td>
+  	<td class="#{ruijitenReferenceDto.miseRuijiPLData.uriageSoRiekiClass}" style="text-align:right;"><span m:value="#{ruijitenReferenceDto.miseRuijiPLData.uriageSoRieki}" m:converter="#{numericConverterKingakuRound}"/></td>
+  	<td class="#{ruijitenReferenceDto.miseRuijiPLData.uriageSoRiekiClass}" style="background-color:#b0ff9f;text-align:right;"><span m:value="#{ruijitenReferenceDto.miseRuijiPLData.uriageSoRieki}" m:converter="#{uriageKosehiRuijitenConverter}"/></td>
+
+  	<div m:rendered="#{(ruijitenReferenceDto.misePLData.uriageSoRieki - ruijitenReferenceDto.miseRuijiPLData.uriageSoRieki) >= 0}">
+  	  <td class="normal_field" style="text-align:right;"><span m:value="#{ruijitenReferenceDto.misePLData.uriageSoRieki}_#{ruijitenReferenceDto.miseRuijiPLData.uriageSoRieki}" m:converter="#{ruijitenKingakuSaConverter}"/></td>
+    </div>
+  	<div m:rendered="#{(ruijitenReferenceDto.misePLData.uriageSoRieki - ruijitenReferenceDto.miseRuijiPLData.uriageSoRieki) < 0}">
+  	  <td class="minus_field" style="text-align:right;"><span m:value="#{ruijitenReferenceDto.misePLData.uriageSoRieki}_#{ruijitenReferenceDto.miseRuijiPLData.uriageSoRieki}" m:converter="#{ruijitenKingakuSaConverter}"/></td>
+    </div>
+  </tr>
+  <tr>
+  	<th>役員報酬</th>
+  	<td class="#{ruijitenReferenceDto.misePLData.yakuinSalaryClass}" style="text-align:right;"><span m:value="#{ruijitenReferenceDto.misePLData.yakuinSalary}" m:converter="#{numericConverterKingakuRound}"/></td>
+  	<td class="#{ruijitenReferenceDto.misePLData.yakuinSalaryClass}" style="background-color:#b0ff9f;text-align:right;"><span m:value="#{ruijitenReferenceDto.misePLData.yakuinSalary}" m:converter="#{uriageKosehiConverter}"/></td>
+  	<td class="#{ruijitenReferenceDto.miseRuijiPLData.yakuinSalaryClass}" style="text-align:right;"><span m:value="#{ruijitenReferenceDto.miseRuijiPLData.yakuinSalary}" m:converter="#{numericConverterKingakuRound}"/></td>
+  	<td class="#{ruijitenReferenceDto.miseRuijiPLData.yakuinSalaryClass}" style="background-color:#b0ff9f;text-align:right;"><span m:value="#{ruijitenReferenceDto.miseRuijiPLData.yakuinSalary}" m:converter="#{uriageKosehiRuijitenConverter}"/></td>
+
+  	<div m:rendered="#{(ruijitenReferenceDto.misePLData.yakuinSalary - ruijitenReferenceDto.miseRuijiPLData.yakuinSalary) >= 0}">
+  	  <td class="normal_field" style="text-align:right;"><span m:value="#{ruijitenReferenceDto.misePLData.yakuinSalary}_#{ruijitenReferenceDto.miseRuijiPLData.yakuinSalary}" m:converter="#{ruijitenKingakuSaConverter}"/></td>
+    </div>
+  	<div m:rendered="#{(ruijitenReferenceDto.misePLData.yakuinSalary - ruijitenReferenceDto.miseRuijiPLData.yakuinSalary) < 0}">
+  	  <td class="minus_field" style="text-align:right;"><span m:value="#{ruijitenReferenceDto.misePLData.yakuinSalary}_#{ruijitenReferenceDto.miseRuijiPLData.yakuinSalary}" m:converter="#{ruijitenKingakuSaConverter}"/></td>
+    </div>
+  </tr>
+  <tr>
+  	<th>給料手当</th>
+  	<td class="#{ruijitenReferenceDto.misePLData.salarySalaryClass}" style="text-align:right;"><span m:value="#{ruijitenReferenceDto.misePLData.salarySalary}" m:converter="#{numericConverterKingakuRound}"/></td>
+  	<td class="#{ruijitenReferenceDto.misePLData.salarySalaryClass}" style="background-color:#b0ff9f;text-align:right;"><span m:value="#{ruijitenReferenceDto.misePLData.salarySalary}" m:converter="#{uriageKosehiConverter}"/></td>
+  	<td class="#{ruijitenReferenceDto.miseRuijiPLData.salarySalaryClass}" style="text-align:right;"><span m:value="#{ruijitenReferenceDto.miseRuijiPLData.salarySalary}" m:converter="#{numericConverterKingakuRound}"/></td>
+  	<td class="#{ruijitenReferenceDto.miseRuijiPLData.salarySalaryClass}" style="background-color:#b0ff9f;text-align:right;"><span m:value="#{ruijitenReferenceDto.miseRuijiPLData.salarySalary}" m:converter="#{uriageKosehiRuijitenConverter}"/></td>
+
+  	<div m:rendered="#{(ruijitenReferenceDto.misePLData.salarySalary - ruijitenReferenceDto.miseRuijiPLData.salarySalary) >= 0}">
+      <td class="normal_field" style="text-align:right;"><span m:value="#{ruijitenReferenceDto.misePLData.salarySalary}_#{ruijitenReferenceDto.miseRuijiPLData.salarySalary}" m:converter="#{ruijitenKingakuSaConverter}"/></td>
+    </div>
+  	<div m:rendered="#{(ruijitenReferenceDto.misePLData.salarySalary - ruijitenReferenceDto.miseRuijiPLData.salarySalary) < 0}">
+      <td class="minus_field" style="text-align:right;"><span m:value="#{ruijitenReferenceDto.misePLData.salarySalary}_#{ruijitenReferenceDto.miseRuijiPLData.salarySalary}" m:converter="#{ruijitenKingakuSaConverter}"/></td>
+    </div>
+  </tr>
+  <tr>
+  	<th>雑給</th>
+  	<td class="#{ruijitenReferenceDto.misePLData.zakkyuSalaryClass}" style="text-align:right;"><span m:value="#{ruijitenReferenceDto.misePLData.zakkyuSalary}" m:converter="#{numericConverterKingakuRound}"/></td>
+  	<td class="#{ruijitenReferenceDto.misePLData.zakkyuSalaryClass}" style="background-color:#b0ff9f;text-align:right;"><span m:value="#{ruijitenReferenceDto.misePLData.zakkyuSalary}" m:converter="#{uriageKosehiConverter}"/></td>
+  	<td class="#{ruijitenReferenceDto.miseRuijiPLData.zakkyuSalaryClass}" style="text-align:right;"><span m:value="#{ruijitenReferenceDto.miseRuijiPLData.zakkyuSalary}" m:converter="#{numericConverterKingakuRound}"/></td>
+  	<td class="#{ruijitenReferenceDto.miseRuijiPLData.zakkyuSalaryClass}" style="background-color:#b0ff9f;text-align:right;"><span m:value="#{ruijitenReferenceDto.miseRuijiPLData.zakkyuSalary}" m:converter="#{uriageKosehiRuijitenConverter}"/></td>
+
+  	<div m:rendered="#{(ruijitenReferenceDto.misePLData.zakkyuSalary - ruijitenReferenceDto.miseRuijiPLData.zakkyuSalary) >= 0}">
+  	  <td class="normal_field" style="text-align:right;"><span m:value="#{ruijitenReferenceDto.misePLData.zakkyuSalary}_#{ruijitenReferenceDto.miseRuijiPLData.zakkyuSalary}" m:converter="#{ruijitenKingakuSaConverter}"/></td>
+    </div>
+  	<div m:rendered="#{(ruijitenReferenceDto.misePLData.zakkyuSalary - ruijitenReferenceDto.miseRuijiPLData.zakkyuSalary) < 0}">
+  	  <td class="minus_field" style="text-align:right;"><span m:value="#{ruijitenReferenceDto.misePLData.zakkyuSalary}_#{ruijitenReferenceDto.miseRuijiPLData.zakkyuSalary}" m:converter="#{ruijitenKingakuSaConverter}"/></td>
+    </div>
+  </tr>
+  <tr>
+  	<th>賞与</th>
+  	<td class="#{(ruijitenReferenceDto.shouyo < 0) ? 'minus_field' : 'normal_field'}" style="text-align:right;"><span m:value="#{ruijitenReferenceDto.shouyo}" m:converter="#{numericConverterKingakuRound}"/></td>
+  	<td class="#{(ruijitenReferenceDto.shouyo < 0) ? 'minus_field' : 'normal_field'}" style="background-color:#b0ff9f;text-align:right;"><span m:value="#{ruijitenReferenceDto.shouyo}" m:converter="#{uriageKosehiConverter}"/></td>
+  	<td class="#{(ruijitenReferenceDto.shouyoRuijiten < 0) ? 'minus_field' : 'normal_field'}" style="text-align:right;"><span m:value="#{ruijitenReferenceDto.shouyoRuijiten}" m:converter="#{numericConverterKingakuRound}"/></td>
+  	<td class="#{(ruijitenReferenceDto.shouyoRuijiten < 0) ? 'minus_field' : 'normal_field'}" style="background-color:#b0ff9f;text-align:right;"><span m:value="#{ruijitenReferenceDto.shouyoRuijiten}" m:converter="#{uriageKosehiRuijitenConverter}"/></td>
+
+  	<div m:rendered="#{(ruijitenReferenceDto.shouyo - ruijitenReferenceDto.shouyoRuijiten) >= 0}">
+  	  <td class="normal_field" style="text-align:right;"><span m:value="#{ruijitenReferenceDto.shouyo}_#{ruijitenReferenceDto.shouyoRuijiten}" m:converter="#{ruijitenKingakuSaConverter}"/></td>
+    </div>
+  	<div m:rendered="#{(ruijitenReferenceDto.shouyo - ruijitenReferenceDto.shouyoRuijiten) < 0}">
+  	  <td class="minus_field" style="text-align:right;"><span m:value="#{ruijitenReferenceDto.shouyo}_#{ruijitenReferenceDto.shouyoRuijiten}" m:converter="#{ruijitenKingakuSaConverter}"/></td>
+    </div>
+  </tr>
+  <tr>
+  	<th>人件費計</th>
+  	<td class="#{ruijitenReferenceDto.misePLData.salaryClass}" style="text-align:right;"><span m:value="#{ruijitenReferenceDto.misePLData.salary}" m:converter="#{numericConverterKingakuRound}"/></td>
+  	<td class="#{ruijitenReferenceDto.misePLData.salaryClass}" style="background-color:#b0ff9f;text-align:right;"><span m:value="#{ruijitenReferenceDto.misePLData.salary}" m:converter="#{uriageKosehiConverter}"/></td>
+  	<td class="#{ruijitenReferenceDto.miseRuijiPLData.salaryClass}" style="text-align:right;"><span m:value="#{ruijitenReferenceDto.miseRuijiPLData.salary}" m:converter="#{numericConverterKingakuRound}"/></td>
+  	<td class="#{ruijitenReferenceDto.miseRuijiPLData.salaryClass}" style="background-color:#b0ff9f;text-align:right;"><span m:value="#{ruijitenReferenceDto.miseRuijiPLData.salary}" m:converter="#{uriageKosehiRuijitenConverter}"/></td>
+
+  	<div m:rendered="#{(ruijitenReferenceDto.misePLData.salary - ruijitenReferenceDto.miseRuijiPLData.salary) >= 0}">
+  	  <td class="normal_field" style="text-align:right;"><span m:value="#{ruijitenReferenceDto.misePLData.salary}_#{ruijitenReferenceDto.miseRuijiPLData.salary}" m:converter="#{ruijitenKingakuSaConverter}"/></td>
+    </div>
+  	<div m:rendered="#{(ruijitenReferenceDto.misePLData.salary - ruijitenReferenceDto.miseRuijiPLData.salary) < 0}">
+  	  <td class="minus_field" style="text-align:right;"><span m:value="#{ruijitenReferenceDto.misePLData.salary}_#{ruijitenReferenceDto.miseRuijiPLData.salary}" m:converter="#{ruijitenKingakuSaConverter}"/></td>
+    </div>
+  </tr>
+  <tr>
+  	<th>家賃地代</th>
+  	<td class="#{ruijitenReferenceDto.misePLData.yachinClass}" style="text-align:right;"><span m:value="#{ruijitenReferenceDto.misePLData.yachin}" m:converter="#{numericConverterKingakuRound}"/></td>
+  	<td class="#{ruijitenReferenceDto.misePLData.yachinClass}" style="background-color:#b0ff9f;text-align:right;"><span m:value="#{ruijitenReferenceDto.misePLData.yachin}" m:converter="#{uriageKosehiConverter}"/></td>
+  	<td class="#{ruijitenReferenceDto.miseRuijiPLData.yachinClass}" style="text-align:right;"><span m:value="#{ruijitenReferenceDto.miseRuijiPLData.yachin}" m:converter="#{numericConverterKingakuRound}"/></td>
+  	<td class="#{ruijitenReferenceDto.miseRuijiPLData.yachinClass}" style="background-color:#b0ff9f;text-align:right;"><span m:value="#{ruijitenReferenceDto.miseRuijiPLData.yachin}" m:converter="#{uriageKosehiRuijitenConverter}"/></td>
+
+  	<div m:rendered="#{(ruijitenReferenceDto.misePLData.yachin - ruijitenReferenceDto.miseRuijiPLData.yachin) >= 0}">
+  	  <td class="normal_field" style="text-align:right;"><span m:value="#{ruijitenReferenceDto.misePLData.yachin}_#{ruijitenReferenceDto.miseRuijiPLData.yachin}" m:converter="#{ruijitenKingakuSaConverter}"/></td>
+    </div>
+  	<div m:rendered="#{(ruijitenReferenceDto.misePLData.yachin - ruijitenReferenceDto.miseRuijiPLData.yachin) < 0}">
+  	  <td class="minus_field" style="text-align:right;"><span m:value="#{ruijitenReferenceDto.misePLData.yachin}_#{ruijitenReferenceDto.miseRuijiPLData.yachin}" m:converter="#{ruijitenKingakuSaConverter}"/></td>
+    </div>
+  </tr>
+  <tr>
+  	<th>水道光熱費</th>
+  	<td class="#{ruijitenReferenceDto.misePLData.suikouHiClass}" style="text-align:right;"><span m:value="#{ruijitenReferenceDto.misePLData.suikouHi}" m:converter="#{numericConverterKingakuRound}"/></td>
+  	<td class="#{ruijitenReferenceDto.misePLData.suikouHiClass}" style="background-color:#b0ff9f;text-align:right;"><span m:value="#{ruijitenReferenceDto.misePLData.suikouHi}" m:converter="#{uriageKosehiConverter}"/></td>
+  	<td class="#{ruijitenReferenceDto.miseRuijiPLData.suikouHiClass}" style="text-align:right;"><span m:value="#{ruijitenReferenceDto.miseRuijiPLData.suikouHi}" m:converter="#{numericConverterKingakuRound}"/></td>
+  	<td class="#{ruijitenReferenceDto.miseRuijiPLData.suikouHiClass}" style="background-color:#b0ff9f;text-align:right;"><span m:value="#{ruijitenReferenceDto.miseRuijiPLData.suikouHi}" m:converter="#{uriageKosehiRuijitenConverter}"/></td>
+
+  	<div m:rendered="#{(ruijitenReferenceDto.misePLData.suikouHi - ruijitenReferenceDto.miseRuijiPLData.suikouHi) >= 0}">
+  	  <td class="normal_field" style="text-align:right;"><span m:value="#{ruijitenReferenceDto.misePLData.suikouHi}_#{ruijitenReferenceDto.miseRuijiPLData.suikouHi}" m:converter="#{ruijitenKingakuSaConverter}"/></td>
+    </div>
+  	<div m:rendered="#{(ruijitenReferenceDto.misePLData.suikouHi - ruijitenReferenceDto.miseRuijiPLData.suikouHi) < 0}">
+  	  <td class="minus_field" style="text-align:right;"><span m:value="#{ruijitenReferenceDto.misePLData.suikouHi}_#{ruijitenReferenceDto.miseRuijiPLData.suikouHi}" m:converter="#{ruijitenKingakuSaConverter}"/></td>
+    </div>
+  </tr>
+  <tr>
+  	<th>ロイヤルティ</th>
+  	<td class="#{ruijitenReferenceDto.misePLData.royaltyClass}" style="text-align:right;"><span m:value="#{ruijitenReferenceDto.misePLData.royalty}" m:converter="#{numericConverterKingakuRound}"/></td>
+  	<td class="#{ruijitenReferenceDto.misePLData.royaltyClass}" style="background-color:#b0ff9f;text-align:right;"><span m:value="#{ruijitenReferenceDto.misePLData.royalty}" m:converter="#{uriageKosehiConverter}"/></td>
+  	<td class="#{ruijitenReferenceDto.miseRuijiPLData.royaltyClass}" style="text-align:right;"><span m:value="#{ruijitenReferenceDto.miseRuijiPLData.royalty}" m:converter="#{numericConverterKingakuRound}"/></td>
+  	<td class="#{ruijitenReferenceDto.miseRuijiPLData.royaltyClass}" style="background-color:#b0ff9f;text-align:right;"><span m:value="#{ruijitenReferenceDto.miseRuijiPLData.royalty}" m:converter="#{uriageKosehiRuijitenConverter}"/></td>
+
+  	<div m:rendered="#{(ruijitenReferenceDto.misePLData.royalty - ruijitenReferenceDto.miseRuijiPLData.royalty) >= 0}">
+  	  <td class="normal_field" style="text-align:right;"><span m:value="#{ruijitenReferenceDto.misePLData.royalty}_#{ruijitenReferenceDto.miseRuijiPLData.royalty}" m:converter="#{ruijitenKingakuSaConverter}"/></td>
+    </div>
+  	<div m:rendered="#{(ruijitenReferenceDto.misePLData.royalty - ruijitenReferenceDto.miseRuijiPLData.royalty) < 0}">
+  	  <td class="minus_field" style="text-align:right;"><span m:value="#{ruijitenReferenceDto.misePLData.royalty}_#{ruijitenReferenceDto.miseRuijiPLData.royalty}" m:converter="#{ruijitenKingakuSaConverter}"/></td>
+    </div>
+  </tr>
+  <tr>
+  	<th>支払手数料</th>
+  	<td class="#{ruijitenReferenceDto.misePLData.tesuryoClass}" style="text-align:right;"><span m:value="#{ruijitenReferenceDto.misePLData.tesuryo}" m:converter="#{numericConverterKingakuRound}"/></td>
+  	<td class="#{ruijitenReferenceDto.misePLData.tesuryoClass}" style="background-color:#b0ff9f;text-align:right;"><span m:value="#{ruijitenReferenceDto.misePLData.tesuryo}" m:converter="#{uriageKosehiConverter}"/></td>
+  	<td class="#{ruijitenReferenceDto.miseRuijiPLData.tesuryoClass}" style="text-align:right;"><span m:value="#{ruijitenReferenceDto.miseRuijiPLData.tesuryo}" m:converter="#{numericConverterKingakuRound}"/></td>
+  	<td class="#{ruijitenReferenceDto.miseRuijiPLData.tesuryoClass}" style="background-color:#b0ff9f;text-align:right;"><span m:value="#{ruijitenReferenceDto.miseRuijiPLData.tesuryo}" m:converter="#{uriageKosehiRuijitenConverter}"/></td>
+
+  	<div m:rendered="#{(ruijitenReferenceDto.misePLData.tesuryo - ruijitenReferenceDto.miseRuijiPLData.tesuryo) >= 0}">
+  	  <td class="normal_field" style="text-align:right;"><span m:value="#{ruijitenReferenceDto.misePLData.tesuryo}_#{ruijitenReferenceDto.miseRuijiPLData.tesuryo}" m:converter="#{ruijitenKingakuSaConverter}"/></td>
+    </div>
+  	<div m:rendered="#{(ruijitenReferenceDto.misePLData.tesuryo - ruijitenReferenceDto.miseRuijiPLData.tesuryo) < 0}">
+  	  <td class="minus_field" style="text-align:right;"><span m:value="#{ruijitenReferenceDto.misePLData.tesuryo}_#{ruijitenReferenceDto.miseRuijiPLData.tesuryo}" m:converter="#{ruijitenKingakuSaConverter}"/></td>
+    </div>
+  </tr>
+  <tr>
+  	<th>広告費</th>
+  	<td class="#{ruijitenReferenceDto.misePLData.koukokuClass}" style="text-align:right;"><span m:value="#{ruijitenReferenceDto.misePLData.koukoku}" m:converter="#{numericConverterKingakuRound}"/></td>
+  	<td class="#{ruijitenReferenceDto.misePLData.koukokuClass}" style="background-color:#b0ff9f;text-align:right;"><span m:value="#{ruijitenReferenceDto.misePLData.koukoku}" m:converter="#{uriageKosehiConverter}"/></td>
+  	<td class="#{ruijitenReferenceDto.miseRuijiPLData.koukokuClass}" style="text-align:right;"><span m:value="#{ruijitenReferenceDto.miseRuijiPLData.koukoku}" m:converter="#{numericConverterKingakuRound}"/></td>
+  	<td class="#{ruijitenReferenceDto.miseRuijiPLData.koukokuClass}" style="background-color:#b0ff9f;text-align:right;"><span m:value="#{ruijitenReferenceDto.miseRuijiPLData.koukoku}" m:converter="#{uriageKosehiRuijitenConverter}"/></td>
+
+  	<div m:rendered="#{(ruijitenReferenceDto.misePLData.koukoku - ruijitenReferenceDto.miseRuijiPLData.koukoku) >= 0}">
+  	  <td class="normal_field" style="text-align:right;"><span m:value="#{ruijitenReferenceDto.misePLData.koukoku}_#{ruijitenReferenceDto.miseRuijiPLData.koukoku}" m:converter="#{ruijitenKingakuSaConverter}"/></td>
+    </div>
+  	<div m:rendered="#{(ruijitenReferenceDto.misePLData.koukoku - ruijitenReferenceDto.miseRuijiPLData.koukoku) < 0}">
+  	  <td class="minus_field" style="text-align:right;"><span m:value="#{ruijitenReferenceDto.misePLData.koukoku}_#{ruijitenReferenceDto.miseRuijiPLData.koukoku}" m:converter="#{ruijitenKingakuSaConverter}"/></td>
+    </div>
+  </tr>
+  <tr>
+  	<th>消耗品費</th>
+  	<td class="#{ruijitenReferenceDto.misePLData.shoumouClass}" style="text-align:right;"><span m:value="#{ruijitenReferenceDto.misePLData.shoumou}" m:converter="#{numericConverterKingakuRound}"/></td>
+  	<td class="#{ruijitenReferenceDto.misePLData.shoumouClass}" style="background-color:#b0ff9f;text-align:right;"><span m:value="#{ruijitenReferenceDto.misePLData.shoumou}" m:converter="#{uriageKosehiConverter}"/></td>
+  	<td class="#{ruijitenReferenceDto.miseRuijiPLData.shoumouClass}" style="text-align:right;"><span m:value="#{ruijitenReferenceDto.miseRuijiPLData.shoumou}" m:converter="#{numericConverterKingakuRound}"/></td>
+  	<td class="#{ruijitenReferenceDto.miseRuijiPLData.shoumouClass}" style="background-color:#b0ff9f;text-align:right;"><span m:value="#{ruijitenReferenceDto.miseRuijiPLData.shoumou}" m:converter="#{uriageKosehiRuijitenConverter}"/></td>
+
+  	<div m:rendered="#{(ruijitenReferenceDto.misePLData.shoumou - ruijitenReferenceDto.miseRuijiPLData.shoumou) >= 0}">
+  	  <td class="normal_field" style="text-align:right;"><span m:value="#{ruijitenReferenceDto.misePLData.shoumou}_#{ruijitenReferenceDto.miseRuijiPLData.shoumou}" m:converter="#{ruijitenKingakuSaConverter}"/></td>
+    </div>
+  	<div m:rendered="#{(ruijitenReferenceDto.misePLData.shoumou - ruijitenReferenceDto.miseRuijiPLData.shoumou) < 0}">
+  	  <td class="minus_field" style="text-align:right;"><span m:value="#{ruijitenReferenceDto.misePLData.shoumou}_#{ruijitenReferenceDto.miseRuijiPLData.shoumou}" m:converter="#{ruijitenKingakuSaConverter}"/></td>
+    </div>
+  </tr>
+  <tr>
+  	<th>法定福利費</th>
+  	<td class="#{ruijitenReferenceDto.misePLData.houteiFukuriClass}" style="text-align:right;"><span m:value="#{ruijitenReferenceDto.misePLData.houteiFukuri}" m:converter="#{numericConverterKingakuRound}"/></td>
+  	<td class="#{ruijitenReferenceDto.misePLData.houteiFukuriClass}" style="background-color:#b0ff9f;text-align:right;"><span m:value="#{ruijitenReferenceDto.misePLData.houteiFukuri}" m:converter="#{uriageKosehiConverter}"/></td>
+  	<td class="#{ruijitenReferenceDto.miseRuijiPLData.houteiFukuriClass}" style="text-align:right;"><span m:value="#{ruijitenReferenceDto.miseRuijiPLData.houteiFukuri}" m:converter="#{numericConverterKingakuRound}"/></td>
+  	<td class="#{ruijitenReferenceDto.miseRuijiPLData.houteiFukuriClass}" style="background-color:#b0ff9f;text-align:right;"><span m:value="#{ruijitenReferenceDto.miseRuijiPLData.houteiFukuri}" m:converter="#{uriageKosehiRuijitenConverter}"/></td>
+
+  	<div m:rendered="#{(ruijitenReferenceDto.misePLData.houteiFukuri - ruijitenReferenceDto.miseRuijiPLData.houteiFukuri) >= 0}">
+  	  <td class="normal_field" style="text-align:right;"><span m:value="#{ruijitenReferenceDto.misePLData.houteiFukuri}_#{ruijitenReferenceDto.miseRuijiPLData.houteiFukuri}" m:converter="#{ruijitenKingakuSaConverter}"/></td>
+    </div>
+  	<div m:rendered="#{(ruijitenReferenceDto.misePLData.houteiFukuri - ruijitenReferenceDto.miseRuijiPLData.houteiFukuri) < 0}">
+  	  <td class="minus_field" style="text-align:right;"><span m:value="#{ruijitenReferenceDto.misePLData.houteiFukuri}_#{ruijitenReferenceDto.miseRuijiPLData.houteiFukuri}" m:converter="#{ruijitenKingakuSaConverter}"/></td>
+    </div>
+  </tr>
+  <tr>
+  	<th>福利厚生費</th>
+  	<td class="#{ruijitenReferenceDto.misePLData.fukuriKouseiClass}" style="text-align:right;"><span m:value="#{ruijitenReferenceDto.misePLData.fukuriKousei}" m:converter="#{numericConverterKingakuRound}"/></td>
+  	<td class="#{ruijitenReferenceDto.misePLData.fukuriKouseiClass}" style="background-color:#b0ff9f;text-align:right;"><span m:value="#{ruijitenReferenceDto.misePLData.fukuriKousei}" m:converter="#{uriageKosehiConverter}"/></td>
+  	<td class="#{ruijitenReferenceDto.miseRuijiPLData.fukuriKouseiClass}" style="text-align:right;"><span m:value="#{ruijitenReferenceDto.miseRuijiPLData.fukuriKousei}" m:converter="#{numericConverterKingakuRound}"/></td>
+  	<td class="#{ruijitenReferenceDto.miseRuijiPLData.fukuriKouseiClass}" style="background-color:#b0ff9f;text-align:right;"><span m:value="#{ruijitenReferenceDto.miseRuijiPLData.fukuriKousei}" m:converter="#{uriageKosehiRuijitenConverter}"/></td>
+
+  	<div m:rendered="#{(ruijitenReferenceDto.misePLData.fukuriKousei - ruijitenReferenceDto.miseRuijiPLData.fukuriKousei) >= 0}">
+  	  <td class="normal_field" style="text-align:right;"><span m:value="#{ruijitenReferenceDto.misePLData.fukuriKousei}_#{ruijitenReferenceDto.miseRuijiPLData.fukuriKousei}" m:converter="#{ruijitenKingakuSaConverter}"/></td>
+    </div>
+  	<div m:rendered="#{(ruijitenReferenceDto.misePLData.fukuriKousei - ruijitenReferenceDto.miseRuijiPLData.fukuriKousei) < 0}">
+  	  <td class="minus_field" style="text-align:right;"><span m:value="#{ruijitenReferenceDto.misePLData.fukuriKousei}_#{ruijitenReferenceDto.miseRuijiPLData.fukuriKousei}" m:converter="#{ruijitenKingakuSaConverter}"/></td>
+    </div>
+  </tr>
+  <tr>
+  	<th>交際費</th>
+  	<td class="#{ruijitenReferenceDto.misePLData.kousaiClass}" style="text-align:right;"><span m:value="#{ruijitenReferenceDto.misePLData.kousai}" m:converter="#{numericConverterKingakuRound}"/></td>
+  	<td class="#{ruijitenReferenceDto.misePLData.kousaiClass}" style="background-color:#b0ff9f;text-align:right;"><span m:value="#{ruijitenReferenceDto.misePLData.kousai}" m:converter="#{uriageKosehiConverter}"/></td>
+  	<td class="#{ruijitenReferenceDto.miseRuijiPLData.kousaiClass}" style="text-align:right;"><span m:value="#{ruijitenReferenceDto.miseRuijiPLData.kousai}" m:converter="#{numericConverterKingakuRound}"/></td>
+  	<td class="#{ruijitenReferenceDto.miseRuijiPLData.kousaiClass}" style="background-color:#b0ff9f;text-align:right;"><span m:value="#{ruijitenReferenceDto.miseRuijiPLData.kousai}" m:converter="#{uriageKosehiRuijitenConverter}"/></td>
+
+  	<div m:rendered="#{(ruijitenReferenceDto.misePLData.kousai - ruijitenReferenceDto.miseRuijiPLData.kousai) >= 0}">
+  	  <td class="normal_field" style="text-align:right;"><span m:value="#{ruijitenReferenceDto.misePLData.kousai}_#{ruijitenReferenceDto.miseRuijiPLData.kousai}" m:converter="#{ruijitenKingakuSaConverter}"/></td>
+    </div>
+  	<div m:rendered="#{(ruijitenReferenceDto.misePLData.kousai - ruijitenReferenceDto.miseRuijiPLData.kousai) < 0}">
+  	  <td class="minus_field" style="text-align:right;"><span m:value="#{ruijitenReferenceDto.misePLData.kousai}_#{ruijitenReferenceDto.miseRuijiPLData.kousai}" m:converter="#{ruijitenKingakuSaConverter}"/></td>
+    </div>
+  </tr>
+  <tr>
+  	<th>旅費交通費</th>
+  	<td class="#{ruijitenReferenceDto.misePLData.ryohiClass}" style="text-align:right;"><span m:value="#{ruijitenReferenceDto.misePLData.ryohi}" m:converter="#{numericConverterKingakuRound}"/></td>
+  	<td class="#{ruijitenReferenceDto.misePLData.ryohiClass}" style="background-color:#b0ff9f;text-align:right;"><span m:value="#{ruijitenReferenceDto.misePLData.ryohi}" m:converter="#{uriageKosehiConverter}"/></td>
+  	<td class="#{ruijitenReferenceDto.miseRuijiPLData.ryohiClass}" style="text-align:right;"><span m:value="#{ruijitenReferenceDto.miseRuijiPLData.ryohi}" m:converter="#{numericConverterKingakuRound}"/></td>
+  	<td class="#{ruijitenReferenceDto.miseRuijiPLData.ryohiClass}" style="background-color:#b0ff9f;text-align:right;"><span m:value="#{ruijitenReferenceDto.miseRuijiPLData.ryohi}" m:converter="#{uriageKosehiRuijitenConverter}"/></td>
+
+  	<div m:rendered="#{(ruijitenReferenceDto.misePLData.ryohi - ruijitenReferenceDto.miseRuijiPLData.ryohi) >= 0}">
+  	  <td class="normal_field" style="text-align:right;"><span m:value="#{ruijitenReferenceDto.misePLData.ryohi}_#{ruijitenReferenceDto.miseRuijiPLData.ryohi}" m:converter="#{ruijitenKingakuSaConverter}"/></td>
+    </div>
+  	<div m:rendered="#{(ruijitenReferenceDto.misePLData.ryohi - ruijitenReferenceDto.miseRuijiPLData.ryohi) < 0}">
+  	  <td class="minus_field" style="text-align:right;"><span m:value="#{ruijitenReferenceDto.misePLData.ryohi}_#{ruijitenReferenceDto.miseRuijiPLData.ryohi}" m:converter="#{ruijitenKingakuSaConverter}"/></td>
+    </div>
+  </tr>
+  <tr>
+  	<th>通信費</th>
+  	<td class="#{ruijitenReferenceDto.misePLData.tusinClass}" style="text-align:right;"><span m:value="#{ruijitenReferenceDto.misePLData.tusin}" m:converter="#{numericConverterKingakuRound}"/></td>
+  	<td class="#{ruijitenReferenceDto.misePLData.tusinClass}" style="background-color:#b0ff9f;text-align:right;"><span m:value="#{ruijitenReferenceDto.misePLData.tusin}" m:converter="#{uriageKosehiConverter}"/></td>
+  	<td class="#{ruijitenReferenceDto.miseRuijiPLData.tusinClass}" style="text-align:right;"><span m:value="#{ruijitenReferenceDto.miseRuijiPLData.tusin}" m:converter="#{numericConverterKingakuRound}"/></td>
+  	<td class="#{ruijitenReferenceDto.miseRuijiPLData.tusinClass}" style="background-color:#b0ff9f;text-align:right;"><span m:value="#{ruijitenReferenceDto.miseRuijiPLData.tusin}" m:converter="#{uriageKosehiRuijitenConverter}"/></td>
+
+  	<div m:rendered="#{(ruijitenReferenceDto.misePLData.tusin - ruijitenReferenceDto.miseRuijiPLData.tusin) >= 0}">
+  	  <td class="normal_field" style="text-align:right;"><span m:value="#{ruijitenReferenceDto.misePLData.tusin}_#{ruijitenReferenceDto.miseRuijiPLData.tusin}" m:converter="#{ruijitenKingakuSaConverter}"/></td>
+    </div>
+  	<div m:rendered="#{(ruijitenReferenceDto.misePLData.tusin - ruijitenReferenceDto.miseRuijiPLData.tusin) < 0}">
+  	  <td class="minus_field" style="text-align:right;"><span m:value="#{ruijitenReferenceDto.misePLData.tusin}_#{ruijitenReferenceDto.miseRuijiPLData.tusin}" m:converter="#{ruijitenKingakuSaConverter}"/></td>
+    </div>
+  </tr>
+  <tr>
+  	<th>貸借リース費</th>
+  	<td class="#{ruijitenReferenceDto.misePLData.leaseClass}" style="text-align:right;"><span m:value="#{ruijitenReferenceDto.misePLData.lease}" m:converter="#{numericConverterKingakuRound}"/></td>
+  	<td class="#{ruijitenReferenceDto.misePLData.leaseClass}" style="background-color:#b0ff9f;text-align:right;"><span m:value="#{ruijitenReferenceDto.misePLData.lease}" m:converter="#{uriageKosehiConverter}"/></td>
+  	<td class="#{ruijitenReferenceDto.miseRuijiPLData.leaseClass}" style="text-align:right;"><span m:value="#{ruijitenReferenceDto.miseRuijiPLData.lease}" m:converter="#{numericConverterKingakuRound}"/></td>
+  	<td class="#{ruijitenReferenceDto.miseRuijiPLData.leaseClass}" style="background-color:#b0ff9f;text-align:right;"><span m:value="#{ruijitenReferenceDto.miseRuijiPLData.lease}" m:converter="#{uriageKosehiRuijitenConverter}"/></td>
+
+  	<div m:rendered="#{(ruijitenReferenceDto.misePLData.lease - ruijitenReferenceDto.miseRuijiPLData.lease) >= 0}">
+  	  <td class="normal_field" style="text-align:right;"><span m:value="#{ruijitenReferenceDto.misePLData.lease}_#{ruijitenReferenceDto.miseRuijiPLData.lease}" m:converter="#{ruijitenKingakuSaConverter}"/></td>
+    </div>
+  	<div m:rendered="#{(ruijitenReferenceDto.misePLData.lease - ruijitenReferenceDto.miseRuijiPLData.lease) < 0}">
+  	  <td class="minus_field" style="text-align:right;"><span m:value="#{ruijitenReferenceDto.misePLData.lease}_#{ruijitenReferenceDto.miseRuijiPLData.lease}" m:converter="#{ruijitenKingakuSaConverter}"/></td>
+    </div>
+  </tr>
+  <tr>
+  	<th>車輌費</th>
+  	<td class="#{ruijitenReferenceDto.misePLData.sharyoClass}" style="text-align:right;"><span m:value="#{ruijitenReferenceDto.misePLData.sharyo}" m:converter="#{numericConverterKingakuRound}"/></td>
+  	<td class="#{ruijitenReferenceDto.misePLData.sharyoClass}" style="background-color:#b0ff9f;text-align:right;"><span m:value="#{ruijitenReferenceDto.misePLData.sharyo}" m:converter="#{uriageKosehiConverter}"/></td>
+  	<td class="#{ruijitenReferenceDto.miseRuijiPLData.sharyoClass}" style="text-align:right;"><span m:value="#{ruijitenReferenceDto.miseRuijiPLData.sharyo}" m:converter="#{numericConverterKingakuRound}"/></td>
+  	<td class="#{ruijitenReferenceDto.miseRuijiPLData.sharyoClass}" style="background-color:#b0ff9f;text-align:right;"><span m:value="#{ruijitenReferenceDto.miseRuijiPLData.sharyo}" m:converter="#{uriageKosehiRuijitenConverter}"/></td>
+
+  	<div m:rendered="#{(ruijitenReferenceDto.misePLData.sharyo - ruijitenReferenceDto.miseRuijiPLData.sharyo) >= 0}">
+  	  <td class="normal_field" style="text-align:right;"><span m:value="#{ruijitenReferenceDto.misePLData.sharyo}_#{ruijitenReferenceDto.miseRuijiPLData.sharyo}" m:converter="#{ruijitenKingakuSaConverter}"/></td>
+    </div>
+  	<div m:rendered="#{(ruijitenReferenceDto.misePLData.sharyo - ruijitenReferenceDto.miseRuijiPLData.sharyo) < 0}">
+  	  <td class="minus_field" style="text-align:right;"><span m:value="#{ruijitenReferenceDto.misePLData.sharyo}_#{ruijitenReferenceDto.miseRuijiPLData.sharyo}" m:converter="#{ruijitenKingakuSaConverter}"/></td>
+    </div>
+  </tr>
+  <tr>
+  	<th>租税公課</th>
+  	<td class="#{ruijitenReferenceDto.misePLData.sozeiClass}" style="text-align:right;"><span m:value="#{ruijitenReferenceDto.misePLData.sozei}" m:converter="#{numericConverterKingakuRound}"/></td>
+  	<td class="#{ruijitenReferenceDto.misePLData.sozeiClass}" style="background-color:#b0ff9f;text-align:right;"><span m:value="#{ruijitenReferenceDto.misePLData.sozei}" m:converter="#{uriageKosehiConverter}"/></td>
+  	<td class="#{ruijitenReferenceDto.miseRuijiPLData.sozeiClass}" style="text-align:right;"><span m:value="#{ruijitenReferenceDto.miseRuijiPLData.sozei}" m:converter="#{numericConverterKingakuRound}"/></td>
+  	<td class="#{ruijitenReferenceDto.miseRuijiPLData.sozeiClass}" style="background-color:#b0ff9f;text-align:right;"><span m:value="#{ruijitenReferenceDto.miseRuijiPLData.sozei}" m:converter="#{uriageKosehiRuijitenConverter}"/></td>
+
+  	<div m:rendered="#{(ruijitenReferenceDto.misePLData.sozei - ruijitenReferenceDto.miseRuijiPLData.sozei) >= 0}">
+  	  <td class="normal_field" style="text-align:right;"><span m:value="#{ruijitenReferenceDto.misePLData.sozei}_#{ruijitenReferenceDto.miseRuijiPLData.sozei}" m:converter="#{ruijitenKingakuSaConverter}"/></td>
+    </div>
+  	<div m:rendered="#{(ruijitenReferenceDto.misePLData.sozei - ruijitenReferenceDto.miseRuijiPLData.sozei) < 0}">
+  	  <td class="minus_field" style="text-align:right;"><span m:value="#{ruijitenReferenceDto.misePLData.sozei}_#{ruijitenReferenceDto.miseRuijiPLData.sozei}" m:converter="#{ruijitenKingakuSaConverter}"/></td>
+    </div>
+  </tr>
+  <tr>
+  	<th>保険料</th>
+  	<td class="#{ruijitenReferenceDto.misePLData.hokenClass}" style="text-align:right;"><span m:value="#{ruijitenReferenceDto.misePLData.hoken}" m:converter="#{numericConverterKingakuRound}"/></td>
+  	<td class="#{ruijitenReferenceDto.misePLData.hokenClass}" style="background-color:#b0ff9f;text-align:right;"><span m:value="#{ruijitenReferenceDto.misePLData.hoken}" m:converter="#{uriageKosehiConverter}"/></td>
+  	<td class="#{ruijitenReferenceDto.miseRuijiPLData.hokenClass}" style="text-align:right;"><span m:value="#{ruijitenReferenceDto.miseRuijiPLData.hoken}" m:converter="#{numericConverterKingakuRound}"/></td>
+  	<td class="#{ruijitenReferenceDto.miseRuijiPLData.hokenClass}" style="background-color:#b0ff9f;text-align:right;"><span m:value="#{ruijitenReferenceDto.miseRuijiPLData.hoken}" m:converter="#{uriageKosehiRuijitenConverter}"/></td>
+
+  	<div m:rendered="#{(ruijitenReferenceDto.misePLData.hoken - ruijitenReferenceDto.miseRuijiPLData.hoken) >= 0}">
+  	  <td class="normal_field" style="text-align:right;"><span m:value="#{ruijitenReferenceDto.misePLData.hoken}_#{ruijitenReferenceDto.miseRuijiPLData.hoken}" m:converter="#{ruijitenKingakuSaConverter}"/></td>
+    </div>
+  	<div m:rendered="#{(ruijitenReferenceDto.misePLData.hoken - ruijitenReferenceDto.miseRuijiPLData.hoken) < 0}">
+  	  <td class="minus_field" style="text-align:right;"><span m:value="#{ruijitenReferenceDto.misePLData.hoken}_#{ruijitenReferenceDto.miseRuijiPLData.hoken}" m:converter="#{ruijitenKingakuSaConverter}"/></td>
+    </div>
+  </tr>
+  <tr>
+  	<th>運賃</th>
+  	<td class="#{ruijitenReferenceDto.misePLData.unchinClass}" style="text-align:right;"><span m:value="#{ruijitenReferenceDto.misePLData.unchin}" m:converter="#{numericConverterKingakuRound}"/></td>
+  	<td class="#{ruijitenReferenceDto.misePLData.unchinClass}" style="background-color:#b0ff9f;text-align:right;"><span m:value="#{ruijitenReferenceDto.misePLData.unchin}" m:converter="#{uriageKosehiConverter}"/></td>
+  	<td class="#{ruijitenReferenceDto.miseRuijiPLData.unchinClass}" style="text-align:right;"><span m:value="#{ruijitenReferenceDto.miseRuijiPLData.unchin}" m:converter="#{numericConverterKingakuRound}"/></td>
+  	<td class="#{ruijitenReferenceDto.miseRuijiPLData.unchinClass}" style="background-color:#b0ff9f;text-align:right;"><span m:value="#{ruijitenReferenceDto.miseRuijiPLData.unchin}" m:converter="#{uriageKosehiRuijitenConverter}"/></td>
+
+  	<div m:rendered="#{(ruijitenReferenceDto.misePLData.unchin - ruijitenReferenceDto.miseRuijiPLData.unchin) >= 0}">
+  	  <td class="normal_field" style="text-align:right;"><span m:value="#{ruijitenReferenceDto.misePLData.unchin}_#{ruijitenReferenceDto.miseRuijiPLData.unchin}" m:converter="#{ruijitenKingakuSaConverter}"/></td>
+    </div>
+  	<div m:rendered="#{(ruijitenReferenceDto.misePLData.unchin - ruijitenReferenceDto.miseRuijiPLData.unchin) < 0}">
+  	  <td class="minus_field" style="text-align:right;"><span m:value="#{ruijitenReferenceDto.misePLData.unchin}_#{ruijitenReferenceDto.miseRuijiPLData.unchin}" m:converter="#{ruijitenKingakuSaConverter}"/></td>
+    </div>
+  </tr>
+  <tr>
+  	<th>修繕費</th>
+  	<td class="#{ruijitenReferenceDto.misePLData.shuzenClass}" style="text-align:right;"><span m:value="#{ruijitenReferenceDto.misePLData.shuzen}" m:converter="#{numericConverterKingakuRound}"/></td>
+  	<td class="#{ruijitenReferenceDto.misePLData.shuzenClass}" style="background-color:#b0ff9f;text-align:right;"><span m:value="#{ruijitenReferenceDto.misePLData.shuzen}" m:converter="#{uriageKosehiConverter}"/></td>
+  	<td class="#{ruijitenReferenceDto.miseRuijiPLData.shuzenClass}" style="text-align:right;"><span m:value="#{ruijitenReferenceDto.miseRuijiPLData.shuzen}" m:converter="#{numericConverterKingakuRound}"/></td>
+  	<td class="#{ruijitenReferenceDto.miseRuijiPLData.shuzenClass}" style="background-color:#b0ff9f;text-align:right;"><span m:value="#{ruijitenReferenceDto.miseRuijiPLData.shuzen}" m:converter="#{uriageKosehiRuijitenConverter}"/></td>
+
+  	<div m:rendered="#{(ruijitenReferenceDto.misePLData.shuzen - ruijitenReferenceDto.miseRuijiPLData.shuzen) >= 0}">
+  	  <td class="normal_field" style="text-align:right;"><span m:value="#{ruijitenReferenceDto.misePLData.shuzen}_#{ruijitenReferenceDto.miseRuijiPLData.shuzen}" m:converter="#{ruijitenKingakuSaConverter}"/></td>
+    </div>
+  	<div m:rendered="#{(ruijitenReferenceDto.misePLData.shuzen - ruijitenReferenceDto.miseRuijiPLData.shuzen) < 0}">
+  	  <td class="minus_field" style="text-align:right;"><span m:value="#{ruijitenReferenceDto.misePLData.shuzen}_#{ruijitenReferenceDto.miseRuijiPLData.shuzen}" m:converter="#{ruijitenKingakuSaConverter}"/></td>
+    </div>
+  </tr>
+  <tr>
+  	<th>雑費</th>
+  	<td class="#{ruijitenReferenceDto.misePLData.zappiClass}" style="text-align:right;"><span m:value="#{ruijitenReferenceDto.misePLData.zappi}" m:converter="#{numericConverterKingakuRound}"/></td>
+  	<td class="#{ruijitenReferenceDto.misePLData.zappiClass}" style="background-color:#b0ff9f;text-align:right;"><span m:value="#{ruijitenReferenceDto.misePLData.zappi}" m:converter="#{uriageKosehiConverter}"/></td>
+  	<td class="#{ruijitenReferenceDto.miseRuijiPLData.zappiClass}" style="text-align:right;"><span m:value="#{ruijitenReferenceDto.miseRuijiPLData.zappi}" m:converter="#{numericConverterKingakuRound}"/></td>
+  	<td class="#{ruijitenReferenceDto.miseRuijiPLData.zappiClass}" style="background-color:#b0ff9f;text-align:right;"><span m:value="#{ruijitenReferenceDto.miseRuijiPLData.zappi}" m:converter="#{uriageKosehiRuijitenConverter}"/></td>
+
+  	<div m:rendered="#{(ruijitenReferenceDto.misePLData.zappi - ruijitenReferenceDto.miseRuijiPLData.zappi) >= 0}">
+  	  <td class="normal_field" style="text-align:right;"><span m:value="#{ruijitenReferenceDto.misePLData.zappi}_#{ruijitenReferenceDto.miseRuijiPLData.zappi}" m:converter="#{ruijitenKingakuSaConverter}"/></td>
+    </div>
+  	<div m:rendered="#{(ruijitenReferenceDto.misePLData.zappi - ruijitenReferenceDto.miseRuijiPLData.zappi) < 0}">
+  	  <td class="minus_field" style="text-align:right;"><span m:value="#{ruijitenReferenceDto.misePLData.zappi}_#{ruijitenReferenceDto.miseRuijiPLData.zappi}" m:converter="#{ruijitenKingakuSaConverter}"/></td>
+    </div>
+  </tr>
+  <tr>
+  	<th style="color:red;">経費小計</th>
+  	<td class="#{ruijitenReferenceDto.misePLData.keihiShokeiClass}" style="text-align:right;"><span m:value="#{ruijitenReferenceDto.misePLData.keihiShokei}" m:converter="#{numericConverterKingakuRound}"/></td>
+  	<td class="#{ruijitenReferenceDto.misePLData.keihiShokeiClass}" style="background-color:#b0ff9f;text-align:right;"><span m:value="#{ruijitenReferenceDto.misePLData.keihiShokei}" m:converter="#{uriageKosehiConverter}"/></td>
+  	<td class="#{ruijitenReferenceDto.miseRuijiPLData.keihiShokeiClass}" style="text-align:right;"><span m:value="#{ruijitenReferenceDto.miseRuijiPLData.keihiShokei}" m:converter="#{numericConverterKingakuRound}"/></td>
+  	<td class="#{ruijitenReferenceDto.miseRuijiPLData.keihiShokeiClass}" style="background-color:#b0ff9f;text-align:right;"><span m:value="#{ruijitenReferenceDto.miseRuijiPLData.keihiShokei}" m:converter="#{uriageKosehiRuijitenConverter}"/></td>
+
+  	<div m:rendered="#{(ruijitenReferenceDto.misePLData.keihiShokei - ruijitenReferenceDto.miseRuijiPLData.keihiShokei) >= 0}">
+  	  <td class="normal_field" style="text-align:right;"><span m:value="#{ruijitenReferenceDto.misePLData.keihiShokei}_#{ruijitenReferenceDto.miseRuijiPLData.keihiShokei}" m:converter="#{ruijitenKingakuSaConverter}"/></td>
+    </div>
+  	<div m:rendered="#{(ruijitenReferenceDto.misePLData.keihiShokei - ruijitenReferenceDto.miseRuijiPLData.keihiShokei) < 0}">
+  	  <td class="minus_field" style="text-align:right;"><span m:value="#{ruijitenReferenceDto.misePLData.keihiShokei}_#{ruijitenReferenceDto.miseRuijiPLData.keihiShokei}" m:converter="#{ruijitenKingakuSaConverter}"/></td>
+    </div>
+  </tr>
+  <tr>
+  	<th>償却前利益</th>
+  	<td class="#{ruijitenReferenceDto.misePLData.shokyakuRiekiClass}" style="text-align:right;"><span m:value="#{ruijitenReferenceDto.misePLData.shokyakuRieki}" m:converter="#{numericConverterKingakuRound}"/></td>
+  	<td class="#{ruijitenReferenceDto.misePLData.shokyakuRiekiClass}" style="background-color:#b0ff9f;text-align:right;"><span m:value="#{ruijitenReferenceDto.misePLData.shokyakuRieki}" m:converter="#{uriageKosehiConverter}"/></td>
+  	<td class="#{ruijitenReferenceDto.miseRuijiPLData.shokyakuRiekiClass}" style="text-align:right;"><span m:value="#{ruijitenReferenceDto.miseRuijiPLData.shokyakuRieki}" m:converter="#{numericConverterKingakuRound}"/></td>
+  	<td class="#{ruijitenReferenceDto.miseRuijiPLData.shokyakuRiekiClass}" style="background-color:#b0ff9f;text-align:right;"><span m:value="#{ruijitenReferenceDto.miseRuijiPLData.shokyakuRieki}" m:converter="#{uriageKosehiRuijitenConverter}"/></td>
+
+  	<div m:rendered="#{(ruijitenReferenceDto.misePLData.shokyakuRieki - ruijitenReferenceDto.miseRuijiPLData.shokyakuRieki) >= 0}">
+  	  <td class="normal_field" style="text-align:right;"><span m:value="#{ruijitenReferenceDto.misePLData.shokyakuRieki}_#{ruijitenReferenceDto.miseRuijiPLData.shokyakuRieki}" m:converter="#{ruijitenKingakuSaConverter}"/></td>
+    </div>
+  	<div m:rendered="#{(ruijitenReferenceDto.misePLData.shokyakuRieki - ruijitenReferenceDto.miseRuijiPLData.shokyakuRieki) < 0}">
+  	  <td class="minus_field" style="text-align:right;"><span m:value="#{ruijitenReferenceDto.misePLData.shokyakuRieki}_#{ruijitenReferenceDto.miseRuijiPLData.shokyakuRieki}" m:converter="#{ruijitenKingakuSaConverter}"/></td>
+    </div>
+  </tr>
+  <tr>
+  	<th>減価償却費</th>
+  	<td class="#{ruijitenReferenceDto.misePLData.genkaShokyakuClass}" style="text-align:right;"><span m:value="#{ruijitenReferenceDto.misePLData.genkaShokyaku}" m:converter="#{numericConverterKingakuRound}"/></td>
+  	<td class="#{ruijitenReferenceDto.misePLData.genkaShokyakuClass}" style="background-color:#b0ff9f;text-align:right;"><span m:value="#{ruijitenReferenceDto.misePLData.genkaShokyaku}" m:converter="#{uriageKosehiConverter}"/></td>
+  	<td class="#{ruijitenReferenceDto.miseRuijiPLData.genkaShokyakuClass}" style="text-align:right;"><span m:value="#{ruijitenReferenceDto.miseRuijiPLData.genkaShokyaku}" m:converter="#{numericConverterKingakuRound}"/></td>
+  	<td class="#{ruijitenReferenceDto.miseRuijiPLData.genkaShokyakuClass}" style="background-color:#b0ff9f;text-align:right;"><span m:value="#{ruijitenReferenceDto.miseRuijiPLData.genkaShokyaku}" m:converter="#{uriageKosehiRuijitenConverter}"/></td>
+
+  	<div m:rendered="#{(ruijitenReferenceDto.misePLData.genkaShokyaku - ruijitenReferenceDto.miseRuijiPLData.genkaShokyaku) >= 0}">
+  	  <td class="normal_field" style="text-align:right;"><span m:value="#{ruijitenReferenceDto.misePLData.genkaShokyaku}_#{ruijitenReferenceDto.miseRuijiPLData.genkaShokyaku}" m:converter="#{ruijitenKingakuSaConverter}"/></td>
+    </div>
+  	<div m:rendered="#{(ruijitenReferenceDto.misePLData.genkaShokyaku - ruijitenReferenceDto.miseRuijiPLData.genkaShokyaku) < 0}">
+  	  <td class="minus_field" style="text-align:right;"><span m:value="#{ruijitenReferenceDto.misePLData.genkaShokyaku}_#{ruijitenReferenceDto.miseRuijiPLData.genkaShokyaku}" m:converter="#{ruijitenKingakuSaConverter}"/></td>
+    </div>
+  </tr>
+  <tr>
+  	<th>営業外収益</th>
+  	<td class="#{ruijitenReferenceDto.misePLData.eigaiShuekiClass}" style="text-align:right;"><span m:value="#{ruijitenReferenceDto.misePLData.eigaiShueki}" m:converter="#{numericConverterKingakuRound}"/></td>
+  	<td class="#{ruijitenReferenceDto.misePLData.eigaiShuekiClass}" style="background-color:#b0ff9f;text-align:right;"><span m:value="#{ruijitenReferenceDto.misePLData.eigaiShueki}" m:converter="#{uriageKosehiConverter}"/></td>
+  	<td class="#{ruijitenReferenceDto.miseRuijiPLData.eigaiShuekiClass}" style="text-align:right;"><span m:value="#{ruijitenReferenceDto.miseRuijiPLData.eigaiShueki}" m:converter="#{numericConverterKingakuRound}"/></td>
+  	<td class="#{ruijitenReferenceDto.miseRuijiPLData.eigaiShuekiClass}" style="background-color:#b0ff9f;text-align:right;"><span m:value="#{ruijitenReferenceDto.miseRuijiPLData.eigaiShueki}" m:converter="#{uriageKosehiRuijitenConverter}"/></td>
+
+  	<div m:rendered="#{(ruijitenReferenceDto.misePLData.eigaiShueki - ruijitenReferenceDto.miseRuijiPLData.eigaiShueki) >= 0}">
+  	  <td class="normal_field" style="text-align:right;"><span m:value="#{ruijitenReferenceDto.misePLData.eigaiShueki}_#{ruijitenReferenceDto.miseRuijiPLData.eigaiShueki}" m:converter="#{ruijitenKingakuSaConverter}"/></td>
+    </div>
+  	<div m:rendered="#{(ruijitenReferenceDto.misePLData.eigaiShueki - ruijitenReferenceDto.miseRuijiPLData.eigaiShueki) < 0}">
+  	  <td class="minus_field" style="text-align:right;"><span m:value="#{ruijitenReferenceDto.misePLData.eigaiShueki}_#{ruijitenReferenceDto.miseRuijiPLData.eigaiShueki}" m:converter="#{ruijitenKingakuSaConverter}"/></td>
+    </div>
+  </tr>
+  <tr>
+  	<th>営業外費用</th>
+  	<td class="#{ruijitenReferenceDto.misePLData.eigaiHiyoClass}" style="text-align:right;"><span m:value="#{ruijitenReferenceDto.misePLData.eigaiHiyo}" m:converter="#{numericConverterKingakuRound}"/></td>
+  	<td class="#{ruijitenReferenceDto.misePLData.eigaiHiyoClass}" style="background-color:#b0ff9f;text-align:right;"><span m:value="#{ruijitenReferenceDto.misePLData.eigaiHiyo}" m:converter="#{uriageKosehiConverter}"/></td>
+  	<td class="#{ruijitenReferenceDto.miseRuijiPLData.eigaiHiyoClass}" style="text-align:right;"><span m:value="#{ruijitenReferenceDto.miseRuijiPLData.eigaiHiyo}" m:converter="#{numericConverterKingakuRound}"/></td>
+  	<td class="#{ruijitenReferenceDto.miseRuijiPLData.eigaiHiyoClass}" style="background-color:#b0ff9f;text-align:right;"><span m:value="#{ruijitenReferenceDto.miseRuijiPLData.eigaiHiyo}" m:converter="#{uriageKosehiRuijitenConverter}"/></td>
+
+  	<div m:rendered="#{(ruijitenReferenceDto.misePLData.eigaiHiyo - ruijitenReferenceDto.miseRuijiPLData.eigaiHiyo) >= 0}">
+  		<td class="normal_field" style="text-align:right;"><span m:value="#{ruijitenReferenceDto.misePLData.eigaiHiyo}_#{ruijitenReferenceDto.miseRuijiPLData.eigaiHiyo}" m:converter="#{ruijitenKingakuSaConverter}"/></td>
+  	</div>
+  	<div m:rendered="#{(ruijitenReferenceDto.misePLData.eigaiHiyo - ruijitenReferenceDto.miseRuijiPLData.eigaiHiyo) < 0}">
+  		<td class="minus_field" style="text-align:right;"><span m:value="#{ruijitenReferenceDto.misePLData.eigaiHiyo}_#{ruijitenReferenceDto.miseRuijiPLData.eigaiHiyo}" m:converter="#{ruijitenKingakuSaConverter}"/></td>
+  	</div>
+  </tr>
+  <tr>
+  	<th>共通費配賦</th>
+  	<td class="#{ruijitenReferenceDto.misePLData.honshahiHaiClass}" style="text-align:right;"><span m:value="#{ruijitenReferenceDto.misePLData.honshahiHai}" m:converter="#{numericConverterKingakuRound}"/></td>
+  	<td class="#{ruijitenReferenceDto.misePLData.honshahiHaiClass}" style="background-color:#b0ff9f;text-align:right;"><span m:value="#{ruijitenReferenceDto.misePLData.honshahiHai}" m:converter="#{uriageKosehiConverter}"/></td>
+  	<td class="#{ruijitenReferenceDto.miseRuijiPLData.honshahiHaiClass}" style="text-align:right;"><span m:value="#{ruijitenReferenceDto.miseRuijiPLData.honshahiHai}" m:converter="#{numericConverterKingakuRound}"/></td>
+  	<td class="#{ruijitenReferenceDto.miseRuijiPLData.honshahiHaiClass}" style="background-color:#b0ff9f;text-align:right;"><span m:value="#{ruijitenReferenceDto.miseRuijiPLData.honshahiHai}" m:converter="#{uriageKosehiRuijitenConverter}"/></td>
+
+  	<div m:rendered="#{(ruijitenReferenceDto.misePLData.honshahiHai - ruijitenReferenceDto.miseRuijiPLData.honshahiHai) >= 0}">
+  	  <td class="normal_field" style="text-align:right;"><span m:value="#{ruijitenReferenceDto.misePLData.honshahiHai}_#{ruijitenReferenceDto.miseRuijiPLData.honshahiHai}" m:converter="#{ruijitenKingakuSaConverter}"/></td>
+  	</div>
+  	<div m:rendered="#{(ruijitenReferenceDto.misePLData.honshahiHai - ruijitenReferenceDto.miseRuijiPLData.honshahiHai) < 0}">
+  	  <td class="minus_field" style="text-align:right;"><span m:value="#{ruijitenReferenceDto.misePLData.honshahiHai}_#{ruijitenReferenceDto.miseRuijiPLData.honshahiHai}" m:converter="#{ruijitenKingakuSaConverter}"/></td>
+  	</div>
+  </tr>
+  <tr>
+  	<th style="color:blue;">税引前利益</th>
+  	<td class="#{ruijitenReferenceDto.misePLData.riekiClass}" style="text-align:right;"><span m:value="#{ruijitenReferenceDto.misePLData.rieki}" m:converter="#{numericConverterKingakuRound}"/></td>
+  	<td class="#{ruijitenReferenceDto.misePLData.riekiClass}" style="background-color:#b0ff9f;text-align:right;"><span m:value="#{ruijitenReferenceDto.misePLData.rieki}" m:converter="#{uriageKosehiConverter}"/></td>
+  	<td class="#{ruijitenReferenceDto.miseRuijiPLData.riekiClass}" style="text-align:right;"><span m:value="#{ruijitenReferenceDto.miseRuijiPLData.rieki}" m:converter="#{numericConverterKingakuRound}"/></td>
+  	<td class="#{ruijitenReferenceDto.miseRuijiPLData.riekiClass}" style="background-color:#b0ff9f;text-align:right;"><span m:value="#{ruijitenReferenceDto.miseRuijiPLData.rieki}" m:converter="#{uriageKosehiRuijitenConverter}"/></td>
+
+  	<div m:rendered="#{(ruijitenReferenceDto.misePLData.rieki - ruijitenReferenceDto.miseRuijiPLData.rieki) >= 0}">
+  	  <td class="normal_field" style="text-align:right;"><span m:value="#{ruijitenReferenceDto.misePLData.rieki}_#{ruijitenReferenceDto.miseRuijiPLData.rieki}" m:converter="#{ruijitenKingakuSaConverter}"/></td>
+  	</div>
+  	<div m:rendered="#{(ruijitenReferenceDto.misePLData.rieki - ruijitenReferenceDto.miseRuijiPLData.rieki) < 0}">
+  	  <td class="minus_field" style="text-align:right;"><span m:value="#{ruijitenReferenceDto.misePLData.rieki}_#{ruijitenReferenceDto.miseRuijiPLData.rieki}" m:converter="#{ruijitenKingakuSaConverter}"/></td>
+  	</div>
+  </tr>
+
+</table>
+</div>
+</div>
+</div>
+
+<script type="text/javascript">
+<!--
+	load();
+//-->
+</script>
+
+
+<div m:rendered="#{ruijitenCommonDto.userTypeCd == '02'}" m:inject="s:forEach" m:items="#{ruijitenCommonDto.mstOnerHoyuMiseList}" m:var="e" m:varindex="i">
+	<input type="hidden" m:id="infoMise" m:value="#{e.miseCd}"/>
+	<input type="hidden" m:id="infoUriage" m:value="#{e.uriagedaka}" m:converter="#{NumericConverter}"/>
+	<input type="hidden" m:id="infoOpenDt" m:value="#{e.openDt}" m:converter="#{dateConverter}"/>
+</div>
+	<input type="text" m:id="dummyEnter" style="display:none"/>
+</form>
+</span>
+</body>
+</html>

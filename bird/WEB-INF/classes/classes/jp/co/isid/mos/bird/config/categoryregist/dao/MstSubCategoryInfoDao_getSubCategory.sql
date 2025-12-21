@@ -1,0 +1,22 @@
+select
+    BM17.INFO_SHU,
+    BM17.CATE_ID,
+    BM17.SUB_CATE_ID,
+    rtrim(BM17.SUB_CATE_NAME) as SUB_CATE_NAME,
+    rtrim(BM17.SUB_CATE_NAME) as OLD_SUB_CATE_NAME,
+    BM17.SORT_KEY,
+    BM17.SORT_KEY as OLD_SORT_KEY,
+    BM17.FIRST_USER,
+    BM17.FIRST_PGM,
+    BM17.FIRST_TMSP,
+    BM17.LAST_USER,
+    BM17.LAST_PGM,
+    BM17.LAST_TMSP
+from
+    BM17SBCT as BM17
+where
+    BM17.INFO_SHU = /*infoShu*/'03' and
+    BM17.CATE_ID = /*cateId*/'01'
+order by
+    BM17.CATE_ID,
+    BM17.SORT_KEY

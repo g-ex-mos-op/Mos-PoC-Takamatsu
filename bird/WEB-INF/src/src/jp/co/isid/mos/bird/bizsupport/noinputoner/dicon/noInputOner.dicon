@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="Shift_JIS"?>
+<!DOCTYPE components PUBLIC
+    "-//SEASAR//DTD S2Container 2.3//EN"
+    "http://www.seasar.org/dtd/components23.dtd">
+<components namespace="bizsupportnoinputoner">
+	<include path="dao.dicon"/>
+	<include path="jp/co/isid/mos/bird/common/dicon/birdCommon.dicon"/>
+	<include path="jp/co/isid/mos/bird/framework/dicon/birdInterceptor.dicon"/>
+	
+	<!-- インターセプターを自動登録 -->
+	<component class="org.seasar.framework.container.autoregister.AspectAutoRegister">
+	    <property name="interceptor">birdInterceptor.actionInterceptorChain</property>
+	    <initMethod name="addClassPattern">
+	        <arg>"jp.co.isid.mos.bird"</arg>
+	        <arg>".*ActionImpl"</arg>
+	    </initMethod>
+	    <initMethod name="registerAll"/>
+	</component> 
+	<component class="org.seasar.framework.container.autoregister.AspectAutoRegister">
+	    <property name="interceptor">birdInterceptor.logicInterceptorChain</property>
+	    <initMethod name="addClassPattern">
+	        <arg>"jp.co.isid.mos.bird"</arg>
+	        <arg>".*LogicImpl"</arg>
+	    </initMethod>
+	    <initMethod name="registerAll"/>  
+	</component>
+
+	<!-- DAO -->
+	<component name="mstSibuCategoryInfoDao" class="jp.co.isid.mos.bird.bizsupport.noinputoner.dao.MSTSibuCategoryInfoDao">
+		<aspect>dao.interceptor</aspect>
+	</component>
+	<component name="uiPlDataStateInfoDao" class="jp.co.isid.mos.bird.bizsupport.noinputoner.dao.UIPLDataStateInfoDao">
+		<aspect>dao.interceptor</aspect>
+	</component>
+	<component name="uiTenpoInfoDao" class="jp.co.isid.mos.bird.bizsupport.noinputoner.dao.UITenpoInfoDao">
+		<aspect>dao.interceptor</aspect>
+	</component>
+	<component name="trnPLMiseInfoDao" class="jp.co.isid.mos.bird.bizsupport.noinputoner.dao.TrnPLMiseInfoDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="trnUriageInfoDao" class="jp.co.isid.mos.bird.bizsupport.noinputoner.dao.TrnUriageInfoDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="trnZenPLInfoDao" class="jp.co.isid.mos.bird.bizsupport.noinputoner.dao.TrnZenPLInfoDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	
+	<component name="trnPLLimitDao" class="jp.co.isid.mos.bird.bizsupport.lumptakein.dao.TrnPLLimitDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="trnPLInfoDao" class="jp.co.isid.mos.bird.bizsupport.lumptakein.dao.TrnPLInfoDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="ctlPLLimitDao" class="jp.co.isid.mos.bird.bizsupport.common.dao.CtlPLLimitDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+
+	<!-- DTO -->
+	<component name="noInputOnerDto" class="jp.co.isid.mos.bird.bizsupport.noinputoner.dto.NoInputOnerDto" instance="session"/>
+	<component name="noInputOnerAllStoreDto" class="jp.co.isid.mos.bird.bizsupport.noinputoner.dto.NoInputOnerAllStoreDto" instance="session"/>
+	
+	<!-- LOGIC -->
+	<component name="getPLDataStateLogic" class="jp.co.isid.mos.bird.bizsupport.noinputoner.logic.impl.GetPLDataStateLogicImpl"/>
+	<component name="kotenJohoLogic" class="jp.co.isid.mos.bird.bizsupport.noinputoner.logic.impl.GetSibuCategoryLogicImpl"/>
+	<component name="noInputOnerCsvLogic" class="jp.co.isid.mos.bird.bizsupport.noinputoner.logic.impl.NoInputOnerCsvLogicImpl"/>
+	<component name="noInputOnerCsvAllStoreLogic" class="jp.co.isid.mos.bird.bizsupport.noinputoner.logic.impl.DownloadPLInfoListLogicImpl">
+		<property name="ctlPLLimitDao">ctlPLLimitDao</property>
+		<property name="checkPLDataNoInputLogic">checkPLDataNoInputLogic</property>
+	</component>
+	<component name="checkPLDataNoInputLogic" class="jp.co.isid.mos.bird.bizsupport.noinputoner.logic.impl.CheckPLDataNoInputLogicImpl"/>
+
+	<!-- アクション -->
+	<component name="noInputOnerAction" class="jp.co.isid.mos.bird.bizsupport.noinputoner.action.impl.NoInputOnerActionImpl" instance="request">
+		<property name="noInputOnerDto">noInputOnerDto</property>
+	</component>
+	<component name="noInputOnerCsvOutputAction" class="jp.co.isid.mos.bird.framework.action.impl.CsvOutputActionImpl" instance="request">
+		<property name="csvOutputDto">noInputOnerDto</property>
+		<property name="csvOutputLogic">noInputOnerCsvLogic</property>
+	</component>
+	<component name="noInputOnerCsvOutputAllStoreAction" class="jp.co.isid.mos.bird.framework.action.impl.CsvOutputActionImpl" instance="request">
+		<property name="csvOutputDto">noInputOnerDto</property>
+		<property name="csvOutputLogic">noInputOnerCsvAllStoreLogic</property>
+	</component>
+
+	<!-- Formatter -->
+	<component name="lumpTakeInMiseCdFormatter" class="jp.co.isid.mos.bird.framework.util.formatter.CodeFormatter">
+		<arg>5</arg>
+		<property name="formatPattern">"00000"</property>
+	</component>
+
+	<!-- Verifier -->
+	<component name="lumpTakeInPlYmVerifier" class="jp.co.isid.mos.bird.framework.util.verifier.DateVerifier">
+		<arg>@jp.co.isid.mos.bird.framework.util.verifier.DateVerifier@DATE_TYPE_YM</arg>
+		<initMethod name="setNullable">
+			<arg>false</arg>
+		</initMethod>
+	</component>
+	<component name="lumpTakeInCodeVerifier" class="jp.co.isid.mos.bird.framework.util.verifier.CodeVerifier">
+		<arg>5</arg>
+		<arg>true</arg>
+		<initMethod name="setNullable">
+			<arg>false</arg>
+		</initMethod>
+	</component>
+	<component name="lumpTakeInAuthDtVerifier" class="jp.co.isid.mos.bird.framework.util.verifier.DateVerifier">
+		<arg>@jp.co.isid.mos.bird.framework.util.verifier.DateVerifier@DATE_TYPE_YMD</arg>
+		<initMethod name="setNullable">
+			<arg>false</arg>
+		</initMethod>
+	</component>
+	<component name="lumpTakeInPhoneVerifier" class="jp.co.isid.mos.bird.framework.util.verifier.PhoneVerifier">
+		<arg>15</arg>
+		<arg>true</arg>
+		<initMethod name="setNullable">
+			<arg>false</arg>
+		</initMethod>
+	</component>
+	<component name="lumpTakeInJapaneseVerifier" class="jp.co.isid.mos.bird.framework.util.verifier.DefaultJapaneseVerifier"/>
+	<component name="codeVerifier" class="jp.co.isid.mos.bird.framework.util.verifier.CodeVerifier"/>
+
+	<!-- PLInfoList -->
+	<component name="trnPLInfoListDao" class="jp.co.isid.mos.bird.bizsupport.noinputoner.dao.TrnPLInfoListDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="downloadPLInfoListLogic" class="jp.co.isid.mos.bird.bizsupport.noinputoner.logic.impl.DownloadPLInfoListLogicImpl"/>
+
+	<!-- CONVERTER -->
+	<component name="dateConverter" class="jp.co.isid.mos.bird.framework.text.converter.DateConverter" instance="request">
+		<arg>@jp.co.isid.mos.bird.framework.util.formatter.DateFormatter@DATE_TYPE_YMD</arg>
+		<arg>@jp.co.isid.mos.bird.framework.util.formatter.DateFormatter@PATTERN_SLASH</arg>
+	</component>
+	<component name="dateConverterYMKanji" class="jp.co.isid.mos.bird.framework.text.converter.DateConverter" instance="request">
+		<arg>@jp.co.isid.mos.bird.framework.util.formatter.DateFormatter@DATE_TYPE_YM</arg>
+		<arg>@jp.co.isid.mos.bird.framework.util.formatter.DateFormatter@PATTERN_MONTH_KANJI_YM</arg>
+	</component>
+	<component name="dateConverterYM" class="jp.co.isid.mos.bird.framework.text.converter.DateConverter" instance="request">
+		<arg>@jp.co.isid.mos.bird.framework.util.formatter.DateFormatter@DATE_TYPE_YM</arg>
+		<arg>@jp.co.isid.mos.bird.framework.util.formatter.DateFormatter@PATTERN_MONTH_SLASH</arg>
+	</component>
+	<component name="inputKbnConverter" class="jp.co.isid.mos.bird.bizsupport.noinputoner.text.converter.InputKbnConverter" instance="request"/>
+	<component name="codeConverter5" class="jp.co.isid.mos.bird.framework.text.converter.CodeConverter" instance="request">
+		<property name="formatPattern">"00000"</property>
+	</component>
+</components>

@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="Shift_JIS"?>
+<!DOCTYPE components PUBLIC "-//SEASAR//DTD S2Container 2.3//EN"
+    "http://www.seasar.org/dtd/components23.dtd">
+<components namespace="orderTimeRequired">
+    <include path="dao.dicon"/>
+	<include path="jp/co/isid/mos/bird/framework/dicon/birdInterceptor.dicon"/>
+    <include path="jp/co/isid/mos/bird/common/dicon/birdPortal.dicon"/>
+	<include path="jp/co/isid/mos/bird/common/dicon/birdCommon.dicon"/>
+
+	<component
+	  class="org.seasar.framework.container.autoregister.AspectAutoRegister">
+	    <property name="interceptor">birdInterceptor.actionInterceptorChain</property>
+	    <initMethod name="addClassPattern">
+	        <arg>"jp.co.isid.mos.bird"</arg>
+	        <arg>".*ActionImpl"</arg>
+	    </initMethod>
+	    <initMethod name="registerAll"/>
+	</component> 
+	<component
+	  class="org.seasar.framework.container.autoregister.AspectAutoRegister">
+	    <property name="interceptor">birdInterceptor.logicInterceptorChain</property>
+	    <initMethod name="addClassPattern">
+	        <arg>"jp.co.isid.mos.bird"</arg>
+	        <arg>".*LogicImpl"</arg>
+	    </initMethod>
+	    <initMethod name="registerAll"/>
+	</component>
+
+	<!-- DAO -->
+	<component name="orderTimeRequiredDao" class="jp.co.isid.mos.bird.bizsupport.ordertimerequired.dao.UIOrderTimeRequiredDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	
+	<!-- DTO -->
+	<component name="miseSearchDto" class="jp.co.isid.mos.bird.commonform.misesearch.dto.MiseSearchDto" instance="session">
+		<property name="RCompanyCdList">null</property>
+	</component>
+	<component name="pullDownMenuDto" class="jp.co.isid.mos.bird.framework.dto.PullDownMenuDto" autoBinding="none" instance="session"/>
+	<component name="orderTimeRequiredSesDto" class="jp.co.isid.mos.bird.bizsupport.ordertimerequired.dto.SessionDto" instance="session">
+		<property name="maxSize">5</property>
+		<property name="listMise">null</property>
+		<property name="listKikan">null</property>
+	</component>
+	<component name="orderTimeRequiredReqDto" class="jp.co.isid.mos.bird.bizsupport.ordertimerequired.dto.RequestDto" instance="request">
+		<property name="listMise">null</property>
+		<property name="listKikan">null</property>
+		<property name="listOutputData">null</property>
+	</component>
+	<!-- Logic -->
+	<component name="orderTimeRequiredConditionLogic" class="jp.co.isid.mos.bird.bizsupport.ordertimerequired.logic.impl.ConditionLogicImpl">
+		<property name="getHyojiTaishoLogic">getHyojiTaishoLogic</property>
+	</component>
+	<component name="orderTimeRequiredOutputLogic" class="jp.co.isid.mos.bird.bizsupport.ordertimerequired.logic.impl.CsvOutputLogicImpl"/>
+
+	<!-- Action -->
+	<component name="orderTimeRequiredAction" class="jp.co.isid.mos.bird.bizsupport.ordertimerequired.action.impl.CsvActionImpl" instance="request">
+		<property name="csvOutputLogic">orderTimeRequiredOutputLogic</property>
+		<property name="csvOutputDto">orderTimeRequiredReqDto</property>
+	</component>
+
+	<!-- Converter -->
+</components>
+

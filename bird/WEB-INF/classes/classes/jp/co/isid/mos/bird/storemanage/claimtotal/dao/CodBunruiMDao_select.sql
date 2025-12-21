@@ -1,0 +1,9 @@
+SELECT
+  BNR_M,
+  rtrim(BNR_M_NAME) as BNR_M_NAME
+FROM 
+  BC30CBRM
+WHERE
+  BNR_M LIKE /*typeCd*/
+ORDER BY 
+  BNR_M

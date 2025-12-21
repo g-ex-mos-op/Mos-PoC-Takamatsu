@@ -1,0 +1,129 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns:m="http://www.seasar.org/maya" m:action="#{portalTopAllianceInfoAction.initialize}">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Windows-31j" />
+<meta http-equiv="Content-Style-Type" content="text/css">
+	<link rel="stylesheet" type="text/css" href="#{request.contextPath}/css/#{birdUserInfo.browserType}/main.css?#{headerDto.loginTime}"/>
+	<link rel="stylesheet" type="text/css" href="#{request.contextPath}/css/#{birdUserInfo.browserType}/header.css?#{headerDto.loginTime}"/>
+	<link rel="stylesheet" type="text/css" href="#{request.contextPath}/css/#{birdUserInfo.browserType}/header_#{birdUserInfo.emosslesAppId}.css?#{headerDto.loginTime}"/>
+	<link rel="stylesheet" type="text/css" href="#{request.contextPath}/css/#{birdUserInfo.browserType}/body.css?#{headerDto.loginTime}"/>
+	<link rel="stylesheet" type="text/css" href="#{request.contextPath}/css/#{birdUserInfo.browserType}/body_#{birdUserInfo.emosslesAppId}.css?#{headerDto.loginTime}"/>
+	<link rel="stylesheet" type="text/css" href="#{request.contextPath}/css/#{birdUserInfo.browserType}/print.css?#{headerDto.loginTime}" media="print"/>
+	<script type="text/javascript" src="#{request.contextPath}/js/bird.js?#{headerDto.loginTime}"></script>
+	<script type="text/javascript" src="#{request.contextPath}/js/kumu.js"></script>
+	<script type="text/javascript" src="#{request.contextPath}/js/ajax.js"></script>
+<title>動画サイト選択</title>
+<style type="text/css">
+</style>
+<script type="text/javascript">
+<!--
+function linkUp() {
+	  var html="";
+	  var radios=document.getElementsByName("dougaCd");
+	  var radios2=document.getElementsByName("linkId");
+	  var rowIndex2 = radios2[0].value;
+	  for(var i=0;i<radios.length;i++){
+          if(radios[i].checked==true){
+             var rowIndex = radios[i].value;
+          }
+      }
+	  	Kumu.Ajax.ASYNC = false;
+		Kumu.Ajax.executeTeedaAjax(portalSessionKeyAction_ajaxGetSessionKey, [], Kumu.Ajax.RESPONSE_TYPE_TEXT);
+		function portalSessionKeyAction_ajaxGetSessionKey(res){
+			if (res=='has') {
+				if(lBrowser.isIE){
+					document.AllianceForm.elements['AllianceForm:dougaCd'].value=rowIndex;
+					document.AllianceForm.elements['AllianceForm:linkId'].value=rowIndex2;
+					document.AllianceForm.elements['AllianceForm:__link_clicked__'].value='AllianceForm:linkUp';
+					document.AllianceForm.target="_blank";
+					document.AllianceForm.submit();
+					window.close();
+					return false;
+				}else{
+					window.opener.document.linkForm.elements['linkForm:dougaCd'].value=rowIndex;
+					window.opener.document.linkForm.elements['linkForm:linkId'].value=rowIndex2;
+					window.opener.document.linkForm.elements['linkForm:__link_clicked__'].value='linkForm:linkUp';
+					window.opener.document.linkForm.target="_blank";
+					window.opener.document.linkForm.submit();
+					window.close();
+					return false;
+				}
+			}else{
+				document.getElementById("AllianceForm:linkout").style.display="none";
+				document.getElementById("AllianceForm:error").style.display="inline";
+			}
+		}
+
+	}
+
+	function load(){
+		document.getElementById("AllianceForm:error").style.display="none";
+		var radios=document.getElementsByName("dougaCd");
+		radios[0].checked = true;
+		var theEvent = window.event || arguments.callee.caller.arguments[0];
+		var isMsie = (document.all) ? true : false;
+		var count = 0;
+		if(isMsie){
+			if(navigator.userAgent.indexOf("MSIE 7.0")>0)  {
+				count = radios.length+3;
+		    }else{
+		    	count = radios.length+2;
+		    }
+			var height = 35;
+		}else{
+			if(radios.length<=3){
+				count = radios.length+3;
+			}else{
+				count = radios.length+2;
+			}
+			var height = 38;
+		}
+		totalheight = count * height;
+		window.resizeTo("380", totalheight);
+	}
+ //-->
+</script>
+</head>
+<BODY id="body" bgcolor="#FFFFFF" text="#000000" link="#0000C0" vlink="#0000C0" alink="#0000C0" onLoad = "load()">
+<div style="line-height:10px;"><br/></div>
+	<form id="AllianceForm">
+	<a id="linkUp" m:action="#{portalTopLinkAction.linkUp}"/>
+	<input type="hidden" m:id="linkId" m:value="#{commonOutLinkDto.linkId}"/>
+	<input type="hidden" m:id="dougaCd" m:value="#{commonOutLinkDto.dougaCd}"/>
+<SCRIPT LANGUAGE="javascript">
+<!--
+-->
+</SCRIPT>
+	<div>
+		<table class="link_out" id="linkout" style="#{portalTopLinkAction.linkType=='out'?'':'display:none;' };margin:0 auto;">
+		    <span m:inject="s:forEach" m:items="#{portalTopDto.listOutLink}" m:var="e" m:varindex="i">
+		  		<input type="hidden"  name="linkId" value="#{e.linkId}"  m:passthrough="true"/>
+		  		<tr>
+		  			<td>
+		  				<input type="radio"  name="dougaCd" value="#{e.dougaCd}"  m:passthrough="true"/>
+		  			</td>
+		 			<td>
+		 				<span m:value="#{e.dougaName}"></span>
+		 			</td>
+		  		</tr>
+		  		<tr style="height:5px"><td/></tr>
+		    </span>
+		    <tr>
+		    		<td colspan ="2" style = "text-align:center; ">
+		    			<input type="button" value="動画サイトへ" onClick="linkUp();" onDblClick="return false;">
+						<input type="button" value="キャンセル" onClick="javascript:window.close();" onDblClick="return false;">
+		    		</td>
+		    </tr>
+		</table>
+	</div>
+	<div  m:id ="error" style="text-align:center;display:inline">
+	<br>
+		<div style="line-height:18px;text-align:center">
+  			<font style="font-weight:bold;color:red;">ログインしていないか、前回アクセスから時間が経っています。再度ログインして下さい。</font>
+  			<h4>ブラウザを閉じてください。</h4>
+		</div>
+	</div>
+	</form>
+</BODY>
+</html>
+

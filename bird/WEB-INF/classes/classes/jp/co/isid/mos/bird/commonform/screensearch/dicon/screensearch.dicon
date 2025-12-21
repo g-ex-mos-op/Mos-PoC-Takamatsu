@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="Shift_JIS"?>
+<!DOCTYPE components PUBLIC "-//SEASAR//DTD S2Container 2.3//EN"
+    "http://www.seasar.org/dtd/components23.dtd">
+<components namespace="screenSearch">
+    <include path="dao.dicon"/>
+	<include path="jp/co/isid/mos/bird/framework/dicon/birdInterceptor.dicon"/>
+    <include path="jp/co/isid/mos/bird/common/dicon/birdPortal.dicon"/>
+
+	<component
+	  class="org.seasar.framework.container.autoregister.AspectAutoRegister">
+	    <property name="interceptor">birdInterceptor.actionInterceptorChain</property>
+	    <initMethod name="addClassPattern">
+	        <arg>"jp.co.isid.mos.bird"</arg>
+	        <arg>".*ActionImpl"</arg>
+	    </initMethod>
+	    <initMethod name="registerAll"/>
+	</component> 
+	<component
+	  class="org.seasar.framework.container.autoregister.AspectAutoRegister">
+	    <property name="interceptor">birdInterceptor.logicInterceptorChain</property>
+	    <initMethod name="addClassPattern">
+	        <arg>"jp.co.isid.mos.bird"</arg>
+	        <arg>".*LogicImpl"</arg>
+	    </initMethod>
+	    <initMethod name="registerAll"/>
+	</component>
+
+	<!-- DAO -->
+	<component name="trnOutSystemLogDao" class="jp.co.isid.mos.bird.framework.dao.TrnOutSystemLogDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="commonUIOutLinkDao" class="jp.co.isid.mos.bird.common.dao.UIOutLinkDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="screenSearchUIInfoDao" class="jp.co.isid.mos.bird.commonform.screensearch.dao.UISearchInfoDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	
+	<!-- Logic -->
+	<component name="regOutputLogLogic" class="jp.co.isid.mos.bird.framework.logic.impl.RegOutputLogLogicImpl"/>
+	<component name="commonGetOutLinkLogic" class="jp.co.isid.mos.bird.common.logic.impl.GetOutLinkLogicImpl"/>
+	<component name="screenSearchLogic" class="jp.co.isid.mos.bird.commonform.screensearch.logic.impl.SearchLogicImpl">
+		<property name="screenSearchUIInfoDao">screenSearchUIInfoDao</property>
+	</component>
+
+	<!-- DTO -->
+	<component name="portalSearchInfoDto" class="jp.co.isid.mos.bird.common.dto.PortalSearchInfoDto" instance="request"/>
+	<component name="screenSearchSesDto" class="jp.co.isid.mos.bird.commonform.screensearch.dto.SessionDto" instance="session">
+		<property name="maxSize">5</property>
+	</component>
+	<component name="screenSearchReqDto" class="jp.co.isid.mos.bird.commonform.screensearch.dto.RequestDto" instance="request">
+		<property name="screenSearchSesDto">screenSearchSesDto</property>
+		<property name="listSearchData">null</property>
+	</component>
+
+	<!-- Action -->
+	<component name="screenSearchAction" class="jp.co.isid.mos.bird.commonform.screensearch.action.impl.SearchActionImpl" instance="request">
+		<property name="regOutputLogLogic">regOutputLogLogic</property>
+		<property name="commonGetOutLinkLogic">commonGetOutLinkLogic</property>
+	</component>
+
+	<!-- Converter -->
+</components>
+

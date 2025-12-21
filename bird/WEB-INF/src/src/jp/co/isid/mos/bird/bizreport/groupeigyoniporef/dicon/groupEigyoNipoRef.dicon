@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="Shift_JIS"?>
+<!DOCTYPE components PUBLIC "-//SEASAR//DTD S2Container 2.3//EN"
+    "http://www.seasar.org/dtd/components23.dtd">
+<components namespace="groupEigyoNipoRef">
+    <include path="dao.dicon"/>
+	<include path="jp/co/isid/mos/bird/framework/dicon/birdInterceptor.dicon"/>
+	<include path="jp/co/isid/mos/bird/common/dicon/birdCommon.dicon"/>
+	<include path="jp/co/isid/mos/bird/storeinfo/miseref/dicon/miseRef.dicon"/>
+	<include path="jp/co/isid/mos/bird/bizreport/common/dicon/bizreportCommon.dicon" />
+	
+	<component
+	  class="org.seasar.framework.container.autoregister.AspectAutoRegister">
+	    <property name="interceptor">birdInterceptor.actionInterceptorChain</property>
+	    <initMethod name="addClassPattern">
+	        <arg>"jp.co.isid.mos.bird"</arg>
+	        <arg>".*ActionImpl"</arg>
+	    </initMethod>
+	    <initMethod name="registerAll"/>
+	</component> 
+	
+	<component
+	  class="org.seasar.framework.container.autoregister.AspectAutoRegister">
+	    <property name="interceptor">birdInterceptor.logicInterceptorChain</property>
+	    <initMethod name="addClassPattern">
+	        <arg>"jp.co.isid.mos.bird"</arg>
+	        <arg>".*LogicImpl"</arg>
+	    </initMethod>
+	    <initMethod name="registerAll"/>
+	</component>
+
+	<component class="jp.co.isid.mos.bird.framework.control.BirdUserInfo" instance="session"/>
+	<component class="jp.co.isid.mos.bird.framework.control.BirdDateInfo" instance="session"/>
+
+	<!-- DAO -->
+	<component name="mstSibuInfoDao" class="jp.co.isid.mos.bird.bizreport.groupeigyoniporef.dao.MstSibuInfoDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="trnUriageInfoDao" class="jp.co.isid.mos.bird.bizreport.groupeigyoniporef.dao.TrnUriageInfoDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="trnUriageSegInfoDao" class="jp.co.isid.mos.bird.bizreport.groupeigyoniporef.dao.TrnUriageSegInfoDao">
+        <aspect>dao.interceptor</aspect>
+	</component>	
+	<component name="trnYosanInfoDao" class="jp.co.isid.mos.bird.bizreport.groupeigyoniporef.dao.TrnYosanInfoDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="trnYosanSegInfoDao" class="jp.co.isid.mos.bird.bizreport.groupeigyoniporef.dao.TrnYosanSegInfoDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="trnUriageNipoInfoDao" class="jp.co.isid.mos.bird.bizreport.groupeigyoniporef.dao.TrnUriageNipoInfoDao">
+        <aspect>dao.interceptor</aspect>
+	</component>	
+	<component name="trnUriageGepoInfoDao" class="jp.co.isid.mos.bird.bizreport.groupeigyoniporef.dao.TrnUriageGepoInfoDao">
+        <aspect>dao.interceptor</aspect>
+	</component>	
+	<component name="mstSegmentInfoDao" class="jp.co.isid.mos.bird.bizreport.groupeigyoniporef.dao.MstSegmentInfoDao">
+        <aspect>dao.interceptor</aspect>
+	</component>	
+    <component name="groupEigyoNipoUIOnerGepoCSVDao" class="jp.co.isid.mos.bird.bizreport.groupeigyoniporef.dao.UIOnerGepoCSVDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="groupEigyoNipoUIOnerGepoAvgCSVDao" class="jp.co.isid.mos.bird.bizreport.groupeigyoniporef.dao.UIOnerGepoAvgCSVDao">
+        <aspect>dao.interceptor</aspect>
+	</component>	
+
+
+	<!-- Logic -->
+	<component name="viewSibuInfoLogic" class="jp.co.isid.mos.bird.bizreport.groupeigyoniporef.logic.impl.ViewSibuInfoLogicImpl"/>
+	<component name="uriageInfoLogic" class="jp.co.isid.mos.bird.bizreport.groupeigyoniporef.logic.impl.UriageInfoLogicImpl"/>
+	<component name="yosanInfoLogic" class="jp.co.isid.mos.bird.bizreport.groupeigyoniporef.logic.impl.YosanInfoLogicImpl"/>
+	<component name="viewUriYosanLogic" class="jp.co.isid.mos.bird.bizreport.groupeigyoniporef.logic.impl.ViewUriYosanLogicImpl"/>
+	<component name="uriageNipoInfoLogic" class="jp.co.isid.mos.bird.bizreport.groupeigyoniporef.logic.impl.UriageNipoInfoLogicImpl">
+		<property name="mstSibuDao">birdCommon.mstSibuDao</property>
+	</component>
+	<component name="targetSibuInfoLogic" class="jp.co.isid.mos.bird.bizreport.groupeigyoniporef.logic.impl.TargetSibuInfoLogicImpl"/>
+	<component name="groupEigyoNipoSearchLogic" class="jp.co.isid.mos.bird.bizreport.groupeigyoniporef.logic.impl.GroupEigyoNipoSearchLogicImpl">
+		<property name="ctlBirdUserDao">birdCommon.ctlBirdUserDao</property>
+	</component>
+	<component name="groupEigyoNipoSibuCsvOutputLogic" class="jp.co.isid.mos.bird.bizreport.groupeigyoniporef.logic.impl.GroupEigyoNipoSibuCsvOutputLogicImpl"/>
+	<component name="groupEigyoNipoMiseCsvOutputLogic" class="jp.co.isid.mos.bird.bizreport.groupeigyoniporef.logic.impl.GroupEigyoNipoMiseCsvOutputLogicImpl"/>
+	<component name="groupEigyoNipoOnerCsvOutputLogic" class="jp.co.isid.mos.bird.bizreport.groupeigyoniporef.logic.impl.GroupEigyoNipoOnerCsvOutputLogicImpl"/>
+	<component name="groupEigyoNipoOnerGepoCsvOutputLogic" class="jp.co.isid.mos.bird.bizreport.groupeigyoniporef.logic.impl.OnerGepoCsvOutputLogicImpl"/>
+	
+	<!-- DTO -->
+	<component name="newSvSearchDto" class="jp.co.isid.mos.bird.commonform.svsearchnew.dto.SvSearchDto" instance="session">
+		<property name="RCompanyCdList">new java.util.ArrayList(0)</property>
+		<property name="sibuCd">null</property>
+	</component>
+	<component name="groupEigyoNipoRefMapResultDto" class="jp.co.isid.mos.bird.bizreport.common.dto.NipoRefResultMapDto" instance="session"/>
+	<component name="groupEigyoNipoRefResultDto" class="jp.co.isid.mos.bird.bizreport.groupeigyoniporef.dto.ResultDto" instance="request">
+		<property name="uriageList">new java.util.ArrayList(0)</property>
+		<property name="kyakusuList">new java.util.ArrayList(0)</property>
+		<property name="uriAvgList">new java.util.ArrayList(0)</property>
+		<property name="kyakuAvgList">new java.util.ArrayList(0)</property>
+	</component>
+	
+	<!-- Action -->
+	<component name="groupEigyoNipoRefConditionAction" class="jp.co.isid.mos.bird.bizreport.groupeigyoniporef.action.impl.GroupEigyoNipoRefConditionActionImpl" instance="request">
+		<property name="conditionLogic">bizreportCommon.conditionLogic</property>
+		<property name="nipoRefConditionDto">bizreportCommon.nipoRefConditionDto</property>
+		<property name="nipoRefSearchParameterDto">bizreportCommon.nipoRefSearchParameterDto</property>
+		<property name="nipoRefResultParameterDto">bizreportCommon.nipoRefResultParameterDto</property>
+		<property name="csvOutputLogic">groupEigyoNipoOnerGepoCsvOutputLogic</property>
+		<property name="csvOutputDto">bizreportCommon.nipoRefSearchParameterDto</property>
+	</component>
+	<component name="groupEigyoNipoRefSibuConfirmAction" class="jp.co.isid.mos.bird.bizreport.groupeigyoniporef.action.impl.GroupEigyoNipoRefSibuConfirmActionImpl" instance="request">
+		<property name="mstSibuInfoLogic">bizreportCommon.mstSibuInfoLogic</property>
+		<property name="nipoRefConditionDto">bizreportCommon.nipoRefConditionDto</property>
+		<property name="nipoRefSearchParameterDto">bizreportCommon.nipoRefSearchParameterDto</property>
+		<property name="nipoRefResultParameterDto">bizreportCommon.nipoRefResultParameterDto</property>
+		<property name="groupEigyoNipoSibuCsvOutputLogic">groupEigyoNipoSibuCsvOutputLogic</property>
+		<property name="groupEigyoNipoMiseCsvOutputLogic">groupEigyoNipoMiseCsvOutputLogic</property>
+		<property name="csvOutputLogic">null</property>
+		<property name="csvOutputDto">null</property>
+	</component>
+	<component name="groupEigyoNipoRefMiseConfirmAction" class="jp.co.isid.mos.bird.bizreport.groupeigyoniporef.action.impl.GroupEigyoNipoRefMiseConfirmActionImpl" instance="request">
+		<property name="mstSibuInfoLogic">bizreportCommon.mstSibuInfoLogic</property>
+		<property name="nipoRefConditionDto">bizreportCommon.nipoRefConditionDto</property>
+		<property name="nipoRefSearchParameterDto">bizreportCommon.nipoRefSearchParameterDto</property>
+		<property name="nipoRefResultParameterDto">bizreportCommon.nipoRefResultParameterDto</property>
+		<property name="csvOutputLogic">groupEigyoNipoMiseCsvOutputLogic</property>
+		<property name="csvOutputDto">null</property>
+	</component>
+	<component name="groupEigyoNipoRefOnerConfirmAction" class="jp.co.isid.mos.bird.bizreport.groupeigyoniporef.action.impl.GroupEigyoNipoRefOnerConfirmActionImpl" instance="request">
+		<property name="nipoRefConditionDto">bizreportCommon.nipoRefConditionDto</property>
+		<property name="nipoRefSearchParameterDto">bizreportCommon.nipoRefSearchParameterDto</property>
+		<property name="nipoRefResultParameterDto">bizreportCommon.nipoRefResultParameterDto</property>
+		<property name="groupEigyoNipoOnerCsvOutputLogic">groupEigyoNipoOnerCsvOutputLogic</property>
+		<property name="groupEigyoNipoOnerGepoCsvOutputLogic">groupEigyoNipoOnerGepoCsvOutputLogic</property>
+		<property name="csvOutputLogic">null</property>
+		<property name="csvOutputDto">null</property>
+	</component>
+
+	<!-- CONVERTER -->	
+	<component name="groupEigyoNipoNumericCnvt" class="jp.co.isid.mos.bird.framework.text.converter.NumericConverter" instance="request">
+		<arg>"#,##0"</arg><arg>true</arg>
+	</component>
+	<component name="groupEigyoNipoRateCnvt" class="jp.co.isid.mos.bird.framework.text.converter.NumericConverter" instance="request">
+		<arg>"#,##0.00"</arg><arg>true</arg>
+	</component>
+	<component name="numericConverter" class="jp.co.isid.mos.bird.framework.text.converter.NumericConverter" instance="request"/>
+</components>

@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="Shift_JIS"?>
+<!DOCTYPE components PUBLIC "-//SEASAR//DTD S2Container 2.3//EN"
+    "http://www.seasar.org/dtd/components23.dtd">
+<components namespace="detailBillDownload">
+    <include path="dao.dicon"/>
+	<include path="jp/co/isid/mos/bird/framework/dicon/birdInterceptor.dicon"/>
+
+	<component
+	  class="org.seasar.framework.container.autoregister.AspectAutoRegister">
+	    <property name="interceptor">birdInterceptor.actionInterceptorChain</property>
+	    <initMethod name="addClassPattern">
+	        <arg>"jp.co.isid.mos.bird"</arg>
+	        <arg>".*ActionImpl"</arg>
+	    </initMethod>
+	    <initMethod name="registerAll"/>
+	</component> 
+	<component
+	  class="org.seasar.framework.container.autoregister.AspectAutoRegister">
+	    <property name="interceptor">birdInterceptor.logicInterceptorChain</property>
+	    <initMethod name="addClassPattern">
+	        <arg>"jp.co.isid.mos.bird"</arg>
+	        <arg>".*LogicImpl"</arg>
+	    </initMethod>
+	    <initMethod name="registerAll"/>
+	</component>
+
+	<component class="jp.co.isid.mos.bird.framework.control.BirdUserInfo" instance="session"/>
+	<component class="jp.co.isid.mos.bird.framework.control.BirdDateInfo" instance="session"/>
+
+
+	<!-- Action -->
+	<component name="detailBillDownloadListAction" class="jp.co.isid.mos.bird.bill.detailbilldownload.action.impl.DetailBillDownloadListActionImpl" instance="request"/>
+	<component name="detailBillDownloadCsvOutputAction" class="jp.co.isid.mos.bird.framework.action.impl.CsvOutputActionImpl" instance="request">
+		<property name="csvOutputLogic">getSeikyuMeisaiLogic</property>
+		<property name="csvOutputDto">detailBillDownloadListDto</property>
+	</component>
+
+	<!-- DTO -->
+	<component name="detailBillDownloadListDto" class="jp.co.isid.mos.bird.bill.detailbilldownload.dto.DetailBillDownloadListDto" autoBinding="none" instance="session"/>
+	<component name="pullDownMenuDto" class="jp.co.isid.mos.bird.framework.dto.PullDownMenuDto" autoBinding="none" instance="session"/>
+	<component name="ownerSearchDto" class="jp.co.isid.mos.bird.commonform.ownersearch.dto.OwnerSearchDto" instance="session"/>
+
+	<!-- Logic -->
+	<component name="getUrikakeListLogic" class="jp.co.isid.mos.bird.bill.detailbilldownload.logic.impl.GetUrikakeListLogicImpl"/>
+	<component name="getSeikyuListLogic" class="jp.co.isid.mos.bird.bill.detailbilldownload.logic.impl.GetSeikyuListLogicImpl"/>
+	<component name="getSeikyuMeisaiLogic" class="jp.co.isid.mos.bird.bill.detailbilldownload.logic.impl.GetSeikyuMeisaiLogicImpl">
+		<property name="uiSeikyuMeisaiDao">uiSeikyuMeisaiDao</property>
+	</component>
+
+
+	<!-- DAO -->
+	<component name="uiUrikakeListDao" class="jp.co.isid.mos.bird.bill.detailbilldownload.dao.UIUrikakeListDao">
+		<aspect>dao.interceptor</aspect>
+	</component>
+	<component name="uiBillListDao" class="jp.co.isid.mos.bird.bill.detailbilldownload.dao.UIBillListDao">
+		<aspect>dao.interceptor</aspect>
+	</component>
+	<component name="uiSeikyuMeisaiDao" class="jp.co.isid.mos.bird.bill.detailbilldownload.dao.UISeikyuMeisaiDao">
+		<aspect>dao.interceptor</aspect>
+	</component>
+
+	<!-- CONVERTER -->	
+	<component name="numericConverter" class="jp.co.isid.mos.bird.framework.text.converter.NumericConverter" instance="request"/>
+	<component name="dateConverterYMKanji" class="jp.co.isid.mos.bird.framework.text.converter.DateConverter" instance="request">
+		<arg>@jp.co.isid.mos.bird.framework.util.formatter.DateFormatter@DATE_TYPE_YM</arg>
+		<arg>@jp.co.isid.mos.bird.framework.util.formatter.DateFormatter@PATTERN_MONTH_KANJI_YM</arg>
+	</component>
+
+
+</components>

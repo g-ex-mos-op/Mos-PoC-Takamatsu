@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="Shift_JIS"?>
+<!DOCTYPE components PUBLIC "-//SEASAR//DTD S2Container 2.3//EN" "http://www.seasar.org/dtd/components23.dtd">
+<components namespace="mlCompletionregist">
+	<include path="dao.dicon"/>
+	<include path="jp/co/isid/mos/bird/common/dicon/birdCommon.dicon"/>
+	<include path="jp/co/isid/mos/bird/framework/dicon/birdInterceptor.dicon"/>
+	
+	<!-- インターセプターを自動登録 -->
+	<component class="org.seasar.framework.container.autoregister.AspectAutoRegister">
+	    <property name="interceptor">birdInterceptor.actionInterceptorChain</property>
+	    <initMethod name="addClassPattern">
+	        <arg>"jp.co.isid.mos.bird"</arg>
+	        <arg>".*ActionImpl"</arg>
+	    </initMethod>
+	    <initMethod name="registerAll"/>
+	</component> 
+	<component class="org.seasar.framework.container.autoregister.AspectAutoRegister">
+	    <property name="interceptor">birdInterceptor.logicInterceptorChain</property>
+	    <initMethod name="addClassPattern">
+	        <arg>"jp.co.isid.mos.bird"</arg>
+	        <arg>".*LogicImpl"</arg>
+	    </initMethod>
+	    <initMethod name="registerAll"/>  
+	</component>
+
+	<!-- DAO -->
+	<component name="uiMLStaffDao" class="jp.co.isid.mos.bird.storemanage.mlcompletionregist.dao.UIMLStaffDao">
+		<aspect>dao.interceptor</aspect>
+	</component>
+	<component name="uiRenewalStaffDao" class="jp.co.isid.mos.bird.storemanage.mlcompletionregist.dao.UIRenewalStaffDao">
+		<aspect>dao.interceptor</aspect>
+	</component>
+	<component name="uiKenshuInfoDao" class="jp.co.isid.mos.bird.storemanage.mlcompletionregist.dao.UIKenshuInfoDao">
+		<aspect>dao.interceptor</aspect>
+	</component>
+	<component name="codCompanyDao" class="jp.co.isid.mos.bird.storemanage.mlcompletionregist.dao.CodCompanyDao">
+		<aspect>dao.interceptor</aspect>
+	</component>
+	<component name="codSibuDao" class="jp.co.isid.mos.bird.storemanage.mlcompletionregist.dao.CodSibuDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="codCourseDao" class="jp.co.isid.mos.bird.storemanage.mlcompletionregist.dao.CodCourseDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="trnMlResultDao" class="jp.co.isid.mos.bird.storemanage.mlcompletionregist.dao.TrnMlResultDao">
+		<aspect>dao.interceptor</aspect>
+	</component>
+	<component name="trnMlLicenseeDao" class="jp.co.isid.mos.bird.storemanage.mlcompletionregist.dao.TrnMlLicenseeDao">
+		<aspect>dao.interceptor</aspect>
+	</component>
+
+	<!-- DTO -->
+	<component name="mlCompletionregistDto" class="jp.co.isid.mos.bird.storemanage.mlcompletionregist.dto.MlCompletionregistDto" instance="session" />
+	<component name="pullDownMenuDto" class="jp.co.isid.mos.bird.framework.dto.PullDownMenuDto" autoBinding="none" instance="session"/>
+
+	<!-- LOGIC -->
+	<component name="gamenRoleLogic" class="jp.co.isid.mos.bird.framework.logic.impl.GetGamenRoleLogicImpl"/>
+	<component name="conditionLogic" class="jp.co.isid.mos.bird.storemanage.mlcompletionregist.logic.impl.ConditionLogicImpl"/>
+	<component name="sibuListLogic" class="jp.co.isid.mos.bird.storemanage.mlcompletionregist.logic.impl.SibuListLogicImpl"/>
+	<component name="csvDownLoadLogic" class="jp.co.isid.mos.bird.storemanage.mlcompletionregist.logic.impl.CsvOutputLogicImpl"/>
+	<component name="checkContentsLogic" class="jp.co.isid.mos.bird.storemanage.mlcompletionregist.logic.impl.CheckContentsLogicImpl"/>
+	<component name="editLogic" class="jp.co.isid.mos.bird.storemanage.mlcompletionregist.logic.impl.EditLogicImpl"/>
+	<component name="registLogic" class="jp.co.isid.mos.bird.storemanage.mlcompletionregist.logic.impl.RegistLogicImpl">
+		<aspect>j2ee.requiresNewTx</aspect>
+	</component>
+	<component name="mlCompletionregistAllClearLogic" class="jp.co.isid.mos.bird.storemanage.mlcompletionregist.logic.impl.AllClearLogicImpl">
+		<aspect>j2ee.requiresNewTx</aspect>
+	</component>
+
+	<!-- ACTION -->
+	<component name="mlCompletionregistCondAction" class="jp.co.isid.mos.bird.storemanage.mlcompletionregist.action.impl.MlCompletionregistCondActionImpl" instance="request">
+		<property name="mlCompletionregistDto">mlCompletionregistDto</property>
+	</component>
+	<component name="mlCompletionregistEditAction" class="jp.co.isid.mos.bird.storemanage.mlcompletionregist.action.impl.MlCompletionregistEditActionImpl" instance="request">
+		<property name="mlCompletionregistDto">mlCompletionregistDto</property>
+	</component>
+	<component name="mlCompletionregistConfirmAction" class="jp.co.isid.mos.bird.storemanage.mlcompletionregist.action.impl.MlCompletionregistConfirmActionImpl" instance="request">
+		<property name="mlCompletionregistDto">mlCompletionregistDto</property>
+	</component>
+	<component name="csvDownloadAction" class="jp.co.isid.mos.bird.framework.action.impl.CsvOutputActionImpl" instance="request">
+		<property name="csvOutputDto">mlCompletionregistDto</property>
+		<property name="csvOutputLogic">csvDownLoadLogic</property>
+	</component>
+
+	<!-- CONVERTER -->
+	<component name="dateConverterYM" class="jp.co.isid.mos.bird.framework.text.converter.DateConverter" instance="request">
+		<arg>@jp.co.isid.mos.bird.framework.util.formatter.DateFormatter@DATE_TYPE_YM</arg>
+		<arg>@jp.co.isid.mos.bird.framework.util.formatter.DateFormatter@PATTERN_MONTH_SLASH</arg>
+	</component>
+</components>

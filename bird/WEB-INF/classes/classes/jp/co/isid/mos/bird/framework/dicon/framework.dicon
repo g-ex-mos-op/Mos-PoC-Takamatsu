@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="Shift_JIS"?>
+<!DOCTYPE components PUBLIC "-//SEASAR2.1//DTD S2Container//EN"
+	"http://www.seasar.org/dtd/components21.dtd">
+<components>
+	<include path="jp/co/isid/mos/bird/framework/dicon/loginInfo.dicon"/>
+	<include path="jp/co/isid/mos/bird/framework/dicon/pullDownMenu.dicon"/>
+	<include path="jp/co/isid/mos/bird/framework/dicon/commonLogic.dicon"/>
+	<include path="jp/co/isid/mos/bird/framework/dicon/commonDao.dicon"/>
+	<include path="jp/co/isid/mos/bird/framework/dicon/commonDto.dicon"/>
+</components>

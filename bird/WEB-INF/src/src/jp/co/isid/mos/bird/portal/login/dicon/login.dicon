@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="Shift_JIS"?>
+<!DOCTYPE components PUBLIC "-//SEASAR2.1//DTD S2Container//EN"
+	"http://www.seasar.org/dtd/components21.dtd">
+<components namespace='login'>
+	<include path="dao.dicon"/>
+	<include path="jp/co/isid/mos/bird/framework/dicon/birdInterceptor.dicon"/>
+	<include path="jp/co/isid/mos/bird/common/dicon/birdCommon.dicon"/>
+
+	<component class="org.seasar.framework.container.autoregister.AspectAutoRegister">
+	    <property name="interceptor">birdInterceptor.logicInterceptorChain</property>
+	    <initMethod name="addClassPattern">
+	        <arg>"jp.co.isid.mos.bird"</arg>
+	        <arg>".*LogicImpl"</arg>
+	    </initMethod>
+	    <initMethod name="registerAll"/>  
+	</component>
+
+	<component name="loginActionInterceptorChain" class="org.seasar.framework.aop.interceptors.InterceptorChain" >    
+		<initMethod name="add"><arg>traceInterceptor</arg></initMethod> 
+		<initMethod name="add"><arg>actionThrowsInterceptor</arg></initMethod>
+		<initMethod name="add"><arg>logInterceptor</arg></initMethod>
+		<initMethod name="add"><arg>errorLogInterceptor</arg></initMethod>
+		<initMethod name="add"><arg>leaveOutMenuInterceptor</arg></initMethod>
+	</component>
+
+	<component class="jp.co.isid.mos.bird.framework.dao.LoginDao">
+		<aspect>dao.interceptor</aspect>
+	</component>
+	<component name="userCompDao" class="jp.co.isid.mos.bird.framework.dao.CtlUserCompanyDao">
+		<aspect>dao.interceptor</aspect>
+	</component>
+	<component name="userRoleDao" class="jp.co.isid.mos.bird.framework.dao.CtlUserRoleDao">
+		<aspect>dao.interceptor</aspect>
+	</component>
+	<component name="userMiseDao" class="jp.co.isid.mos.bird.framework.dao.UIUserMiseDao">
+		<aspect>dao.interceptor</aspect>
+	</component>
+	<component name="userOnerDao" class="jp.co.isid.mos.bird.framework.dao.UIUserOnerDao">
+		<aspect>dao.interceptor</aspect>
+	</component>
+	<component name="mstUserDao" class="jp.co.isid.mos.bird.framework.dao.MstUserDao">
+		<aspect>dao.interceptor</aspect>
+	</component>
+	<component name="ctlDateDao" class="jp.co.isid.mos.bird.framework.dao.CtlDateDao">
+		<aspect>dao.interceptor</aspect>
+	</component>
+	<component name="uiUserMatrixInfoDao" class="jp.co.isid.mos.bird.portal.login.dao.UIUserMatrixInfoDao">
+		<aspect>dao.interceptor</aspect>
+	</component>
+	<component name="uiBirdUserDao" class="jp.co.isid.mos.bird.portal.login.dao.UIBirdUserDao">
+		<aspect>dao.interceptor</aspect>
+	</component>
+	<component name="ctlUserLoginDao" class="jp.co.isid.mos.bird.framework.dao.CtlUserLoginDao">
+		<aspect>dao.interceptor</aspect>
+	</component>
+	<component name="uiUserEmosslesAppIdDao" class="jp.co.isid.mos.bird.framework.dao.UIUserEmosslesAppIdDao">
+		<aspect>dao.interceptor</aspect>
+	</component>
+	<component name="mstOnerDao" class="jp.co.isid.mos.bird.framework.dao.MstOnerDao">
+		<aspect>dao.interceptor</aspect>
+	</component>
+	<component name="loginCtlMatrixRirekiDao" class="jp.co.isid.mos.bird.portal.login.dao.CtlMatrixRirekiDao">
+		<aspect>dao.interceptor</aspect>
+	</component>
+	<component name="ctlLoginFailKaisuDao" class="jp.co.isid.mos.bird.framework.dao.CtlLoginFailKaisuDao">
+		<aspect>dao.interceptor</aspect>
+	</component>
+	<component name="ctlLeaveOutMenuDao" class="jp.co.isid.mos.bird.framework.dao.CtlLeaveOutMenuDao">
+		<aspect>dao.interceptor</aspect>
+	</component>
+	<component name="myMenuDao" class="jp.co.isid.mos.bird.framework.dao.MyMenuDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="trnMyMenuDao" class="jp.co.isid.mos.bird.framework.dao.TrnMyMenuDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="ctlUserLogDao" class="jp.co.isid.mos.bird.framework.dao.CtlUserLogDao">
+		<aspect>dao.interceptor</aspect>
+	</component>
+
+	<component name="loginDto" class="jp.co.isid.mos.bird.framework.dto.LoginDto" instance="session"/>
+	<component name="matrixDto" class="jp.co.isid.mos.bird.portal.login.dto.MatrixDto" instance="session">
+		<property name="matrixList">null</property>
+	</component>
+	<component name="matrixRegistDto" class="jp.co.isid.mos.bird.portal.login.dto.MatrixRegistDto" instance="session"/>
+	
+	<component name="makeMatrixLogic" class="jp.co.isid.mos.bird.portal.login.logic.impl.MakeMatrixLogicImpl"/>
+	<component name="loginLogic" class="jp.co.isid.mos.bird.framework.logic.impl.LoginLogicImpl"/>
+	<component name="userInfoSetupLogic" class="jp.co.isid.mos.bird.framework.logic.impl.UserInfoSetupLogicImpl"/>
+	<component name="dateInfoSetupLogic" class="jp.co.isid.mos.bird.framework.logic.impl.DateInfoSetupLogicImpl"/>
+	<component name="getMatrixInfoLogicImpl" class="jp.co.isid.mos.bird.portal.login.logic.impl.GetMatrixInfoLogicImpl"/>
+	<component name="checkMatrixInfoLogicImpl" class="jp.co.isid.mos.bird.portal.login.logic.impl.CheckInputMatrixInfoLogicImpl"/>
+	<component name="loginUpdatePasswordLogicImpl" class="jp.co.isid.mos.bird.portal.login.logic.impl.UpdatePasswordLogicImpl">
+		<aspect>j2ee.requiresNewTx</aspect>
+		<aspect>logicInterceptorChain</aspect>
+	</component>
+	<component name="updateMatrixInfoLogicImpl" class="jp.co.isid.mos.bird.portal.login.logic.impl.UpdateMatrixInfoLogicImpl">
+		<aspect>j2ee.requiresNewTx</aspect>
+		<aspect>logicInterceptorChain</aspect>
+	</component>
+	<component name="passwordLockLogic" class="jp.co.isid.mos.bird.framework.logic.impl.PasswordLockLogicImpl"/>
+	<component name="loginCheckRemoteLoginCheckLogic" class="jp.co.isid.mos.bird.portal.login.logic.impl.CheckRemoteLoginCheckLogicImpl"/>
+	<component name="loginCheckRemoteSessionTimeExtendLimitCheckLogic" class="jp.co.isid.mos.bird.portal.login.logic.impl.CheckRemoteSessionTimeExtendLimitCheckLogicImpl"/>
+
+	<component name="loginAction" class="jp.co.isid.mos.bird.portal.login.action.impl.LoginActionImpl" instance="request">
+		<aspect>loginActionInterceptorChain</aspect>
+		<property name="loginDto">loginDto</property>
+	</component>
+	
+	<component name="matrixAction" class="jp.co.isid.mos.bird.portal.login.action.impl.MatrixActionImpl" instance="request">
+		<aspect>birdInterceptor.actionInterceptorChain</aspect>
+		<property name="matrixDto">matrixDto</property>
+	</component>
+
+	<component name="matrixRegistAction" class="jp.co.isid.mos.bird.portal.login.action.impl.MatrixRegistActionImpl" instance="request">
+		<aspect>birdInterceptor.actionInterceptorChain</aspect>
+		<property name="matrixRegistDto">matrixRegistDto</property>
+	</component>
+
+	<component name="chgPasswordAction" class="jp.co.isid.mos.bird.portal.login.action.impl.PasswordChangeActionImpl" instance="request">
+		<aspect>birdInterceptor.simpleActionInterceptorChain</aspect>
+		<property name="loginDto">loginDto</property>
+	</component>
+
+	<component name="numericValidator" class="jp.co.isid.mos.bird.framework.text.validator.NumericValidator"  instance="request">
+		<arg>false</arg>
+		<arg>1</arg>
+	</component>
+	<component name="hankakuEisujiValidator" class="jp.co.isid.mos.bird.framework.text.validator.HankakuEisujiValidator"  instance="request"/>
+	
+	<component class="jp.co.isid.mos.bird.framework.control.BirdUserInfo" instance="session"/>
+	
+	<component name="headerDto" class="jp.co.isid.mos.bird.framework.dto.HeaderDto" instance="session"/>
+	<component name="updateLoginTimestampImpl" class="jp.co.isid.mos.bird.framework.logic.impl.UpdateLoginTimestampImpl"/>
+	
+</components>

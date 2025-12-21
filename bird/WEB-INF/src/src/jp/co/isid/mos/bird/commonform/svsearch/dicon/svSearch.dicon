@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="Shift_JIS"?>
+<!DOCTYPE components PUBLIC "-//SEASAR2.1//DTD S2Container//EN"
+	"http://www.seasar.org/dtd/components21.dtd">
+<components namespace="svSearch">
+    <include path="dao.dicon"/>
+    <include path="jp/co/isid/mos/bird/common/dicon/birdCommon.dicon"/>
+    <include path="jp/co/isid/mos/bird/framework/dicon/birdInterceptor.dicon"/>
+
+	<component class="org.seasar.framework.container.autoregister.AspectAutoRegister">
+	    <property name="interceptor">birdInterceptor.actionInterceptorChain</property>
+	    <initMethod name="addClassPattern">
+	        <arg>"jp.co.isid.mos.bird"</arg>
+	        <arg>".*ActionImpl"</arg>
+	    </initMethod>
+	    <initMethod name="registerAll"/>
+	</component> 
+	<component class="org.seasar.framework.container.autoregister.AspectAutoRegister">
+	    <property name="interceptor">birdInterceptor.logicInterceptorChain</property>
+	    <initMethod name="addClassPattern">
+	        <arg>"jp.co.isid.mos.bird"</arg>
+	        <arg>".*LogicImpl"</arg>
+	    </initMethod>
+	    <initMethod name="registerAll"/>  
+	</component>
+
+	<!-- DAO -->
+	<component name="uISvDao" class="jp.co.isid.mos.bird.commonform.svsearch.dao.UISvDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="codCompanyDao" class="jp.co.isid.mos.bird.commonform.svsearch.dao.CodCompanyDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="codSibuDao" class="jp.co.isid.mos.bird.commonform.common.dao.CodSibuDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+
+	<!-- LOGIC -->
+	<component name="searchLogic" class="jp.co.isid.mos.bird.commonform.svsearch.logic.impl.SearchLogicImpl"/>
+	<component name="getCompanyLogic" class="jp.co.isid.mos.bird.commonform.svsearch.logic.impl.GetCompanyLogicImpl"/>
+	<component name="getCompanyNameLogic" class="jp.co.isid.mos.bird.commonform.svsearch.logic.impl.GetCompanyNameLogicImpl"/>
+	<component name="getSibuLogic" class="jp.co.isid.mos.bird.commonform.common.logic.impl.GetSibuLogicImpl"/>
+
+	<!-- DTO -->
+	<component name="svSearchConditionDto" class="jp.co.isid.mos.bird.commonform.svsearch.dto.SvSearchConditionDto" autoBinding="none" instance="session"/>
+	<component name="svSearchDto" class="jp.co.isid.mos.bird.commonform.svsearch.dto.SvSearchDto" instance="session"/>
+
+	<!-- ACTION -->
+	<component name="svSearchAction" class="jp.co.isid.mos.bird.commonform.svsearch.action.impl.SvSearchActionImpl" instance="request"/>
+
+	<!-- ENTITY -->
+	<!-- OTHER -->
+	<component class="jp.co.isid.mos.bird.framework.control.BirdUserInfo" instance="session"/>
+
+	<!-- CONVERTER -->
+	<component name="codeConverterOwner" class="jp.co.isid.mos.bird.framework.text.converter.CodeConverter" instance="request">
+		<property name="formatPattern">"00000"</property>
+	</component>
+	<component name="codeConverterMise" class="jp.co.isid.mos.bird.framework.text.converter.CodeConverter" instance="request">
+		<property name="formatPattern">"00000"</property>
+	</component>
+		<component name="documentsearchDateConverter" class="jp.co.isid.mos.bird.framework.text.converter.DateConverter" instance="request">
+		<arg>@jp.co.isid.mos.bird.framework.util.formatter.DateFormatter@DATE_TYPE_YMD</arg>
+		<arg>@jp.co.isid.mos.bird.framework.util.formatter.DateFormatter@PATTERN_SLASH</arg>
+	</component>
+	
+</components>

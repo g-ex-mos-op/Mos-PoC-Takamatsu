@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE components PUBLIC "-//SEASAR//DTD S2Container 2.3//EN"
+	"http://www.seasar.org/dtd/components23.dtd">
+<components namespace="projectplanmstregist">
+	<include path="dao.dicon"/>
+	<include path="jp/co/isid/mos/bird/common/dicon/birdCommon.dicon"/>
+	<include path="jp/co/isid/mos/bird/framework/dicon/birdInterceptor.dicon"/>
+	
+	<!-- インターセプターを自動登録 -->
+	<component class="org.seasar.framework.container.autoregister.AspectAutoRegister">
+	    <property name="interceptor">birdInterceptor.actionInterceptorChain</property>
+	    <initMethod name="addClassPattern">
+	        <arg>"jp.co.isid.mos.bird"</arg>
+	        <arg>".*ActionImpl"</arg>
+	    </initMethod>
+	    <initMethod name="registerAll"/>
+	</component> 
+	<component class="org.seasar.framework.container.autoregister.AspectAutoRegister">
+	    <property name="interceptor">birdInterceptor.logicInterceptorChain</property>
+	    <initMethod name="addClassPattern">
+	        <arg>"jp.co.isid.mos.bird"</arg>
+	        <arg>".*LogicImpl"</arg>
+	    </initMethod>
+	    <initMethod name="registerAll"/>  
+	</component>
+	<!-- DTO -->
+	<component name="pullDownMenuDto" class="jp.co.isid.mos.bird.framework.dto.PullDownMenuDto" autoBinding="none" instance="session"/>
+	<component name="projectPlanMstRegistDto" class="jp.co.isid.mos.bird.entry.projectplanmstregist.dto.ProjectPlanMstRegistDto" instance="session" />
+
+	<!-- DAO -->
+	<component name="projectPlanMstRegistUICourseInfoDao" class="jp.co.isid.mos.bird.entry.projectplanmstregist.dao.UICourseInfoDao">
+		<aspect>dao.interceptor</aspect>
+	</component>
+	<component name="projectPlanMstRegistMstKanriDao" class="jp.co.isid.mos.bird.entry.projectplanmstregist.dao.MstKanriDao">
+		<aspect>dao.interceptor</aspect>
+	</component>
+	<component name="projectPlanMstRegistMstKanriDateDao" class="jp.co.isid.mos.bird.entry.projectplanmstregist.dao.MstKanriDateDao">
+		<aspect>dao.interceptor</aspect>
+	</component>
+	<component name="projectPlanMstRegistMstKanriNoticeDao" class="jp.co.isid.mos.bird.entry.projectplanmstregist.dao.MstKanriNoticeDao">
+		<aspect>dao.interceptor</aspect>
+	</component>
+	<!-- LOGIC -->
+	<component name="projectPlanMstRegistConditionLogic" class="jp.co.isid.mos.bird.entry.projectplanmstregist.logic.impl.ConditionLogicImpl"/>
+	<component name="projectPlanMstRegistSearchLogic" class="jp.co.isid.mos.bird.entry.projectplanmstregist.logic.impl.SearchLogicImpl"/>
+	<component name="projectPlanMstRegistCheckInputDataLogic" class="jp.co.isid.mos.bird.entry.projectplanmstregist.logic.impl.CheckInputDataLogicImpl"/>
+	<component name="projectPlanMstRegistCheckDeleteDataLogic" class="jp.co.isid.mos.bird.entry.projectplanmstregist.logic.impl.CheckDeleteDataLogicImpl"/>
+	<component name="projectPlanMstRegistRegistLogic" class="jp.co.isid.mos.bird.entry.projectplanmstregist.logic.impl.RegistLogicImpl">
+		<aspect>j2ee.requiresNewTx</aspect>
+	</component>
+
+	<!-- ACTION -->
+	<component name="projectPlanMstRegistConditionAction" class="jp.co.isid.mos.bird.entry.projectplanmstregist.action.impl.ConditionActionImpl" instance="request" />
+	<component name="projectPlanMstRegistEditAction" class="jp.co.isid.mos.bird.entry.projectplanmstregist.action.impl.EditActionImpl" instance="request" />
+	<component name="projectPlanMstRegistConfirmAction" class="jp.co.isid.mos.bird.entry.projectplanmstregist.action.impl.ConfirmActionImpl" instance="request" />
+	<!-- CONVERTER -->
+	<component name="projectPlanMstRegistDateConverter" class="jp.co.isid.mos.bird.framework.text.converter.DateConverter" instance="request">
+		<arg>@jp.co.isid.mos.bird.framework.util.formatter.DateFormatter@DATE_TYPE_YMD</arg>
+		<arg>@jp.co.isid.mos.bird.framework.util.formatter.DateFormatter@PATTERN_SLASH</arg>
+	</component>
+	<component name="projectPlanMstRegistDateConverter2" class="jp.co.isid.mos.bird.framework.text.converter.DateConverter" instance="request">
+		<arg>@jp.co.isid.mos.bird.framework.util.formatter.DateFormatter@DATE_TYPE_YMD</arg>
+		<arg>@jp.co.isid.mos.bird.framework.util.formatter.DateFormatter@PATTERN_DAY_OF_WEEK</arg>
+	</component>
+</components>

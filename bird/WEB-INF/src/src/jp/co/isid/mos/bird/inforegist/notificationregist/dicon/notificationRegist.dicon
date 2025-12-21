@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="Shift_JIS"?>
+<!DOCTYPE components PUBLIC "-//SEASAR2.1//DTD S2Container//EN"
+	"http://www.seasar.org/dtd/components21.dtd">
+<components namespace='notificationregist'>
+	<include path="dao.dicon"/>
+	<include path="jp/co/isid/mos/bird/common/dicon/birdCommon.dicon"/>
+	<include path="jp/co/isid/mos/bird/framework/dicon/birdInterceptor.dicon"/>
+	<!-- インターセプターを自動登録 -->
+	<component class="org.seasar.framework.container.autoregister.AspectAutoRegister">
+	    <property name="interceptor">birdInterceptor.actionInterceptorChain</property>
+	    <initMethod name="addClassPattern">
+	        <arg>"jp.co.isid.mos.bird"</arg>
+	        <arg>".*ActionImpl"</arg>
+	    </initMethod>
+	    <initMethod name="registerAll"/>
+	</component> 
+	<component class="org.seasar.framework.container.autoregister.AspectAutoRegister">
+	    <property name="interceptor">birdInterceptor.logicInterceptorChain</property>
+	    <initMethod name="addClassPattern">
+	        <arg>"jp.co.isid.mos.bird"</arg>
+	        <arg>".*LogicImpl"</arg>
+	    </initMethod>
+	    <initMethod name="registerAll"/>  
+	</component>
+
+	<!-- DAO -->
+	<component name="mstUserDao" class="jp.co.isid.mos.bird.framework.dao.MstUserDao">
+		<aspect>dao.interceptor</aspect>
+	</component>
+	<component name="mstCategoryInfoDao" class="jp.co.isid.mos.bird.common.dao.MstCategoryInfoDao">
+		<aspect>dao.interceptor</aspect>
+	</component>
+	<component name="uiTutatuInfoDao" class="jp.co.isid.mos.bird.inforegist.notificationregist.dao.UITutatuInfoDao">
+		<aspect>dao.interceptor</aspect>
+	</component>
+	<component name="uiHoldOpenTargetInfoDao" class="jp.co.isid.mos.bird.inforegist.notificationregist.dao.UIHoldOpenTargetInfoDao">
+		<aspect>dao.interceptor</aspect>
+	</component>
+	<component name="notificationRegistUIKanrenBunsho" class="jp.co.isid.mos.bird.inforegist.notificationregist.dao.UIKanrenBunshoDao">
+		<aspect>dao.interceptor</aspect>
+	</component>
+	<component name="notificationRegistUIShozokuDao" class="jp.co.isid.mos.bird.inforegist.notificationregist.dao.UIShozokuDao">
+		<aspect>dao.interceptor</aspect>
+	</component>
+	<component name="notificationRegistTrnOpenSibuDao" class="jp.co.isid.mos.bird.inforegist.notificationregist.dao.TrnOpenSibuDao">
+		<aspect>dao.interceptor</aspect>
+	</component>
+
+	<!-- DTO -->
+	<component name="notificationRegistConditionDto" class="jp.co.isid.mos.bird.inforegist.notificationregist.dto.ConditionDto" instance="session">
+		<property name="listKanrenBunsho">null</property>
+		<property name="listCategory">null</property>
+		<property name="listNengetu">null</property>
+		<property name="listTutatu">null</property>
+	</component>
+	<component name="notificationRegistFormDto" class="jp.co.isid.mos.bird.inforegist.notificationregist.dto.RegistFormDto" instance="session">
+		<property name="listCategory">null</property>
+		<property name="listKanrenBunsho">null</property>
+		<property name="listKanrenSaki">null</property>
+		<property name="listKokaiKaisi">null</property>
+		<property name="uploadedAttachFile">null</property>
+		<property name="uploadedFile">null</property>
+		<property name="uploadedMainFile">null</property>
+	</component>
+	<component name="publicTargetDto" class="jp.co.isid.mos.bird.common.dto.PublicTargetDto" instance="session">
+		<property name="listTrnControlCompany">null</property>
+		<property name="listTrnControlGyotai">null</property>
+		<property name="listTrnControlGyotaiKobetu">null</property>
+		<property name="listTrnControlGyotaiTenpo">null</property>
+		<property name="listTrnControlShozoku">null</property>
+	</component>
+	<component name="publicTargetSearchDto" class="jp.co.isid.mos.bird.commonform.publictargetsearch.dto.PublicTargetSearchDto" instance="session">
+		<property name="listTrnControlCompany">null</property>
+		<property name="listTrnControlGyotai">null</property>
+		<property name="listTrnControlGyotaiKobetu">null</property>
+		<property name="listTrnControlGyotaiTenpo">null</property>
+		<property name="listTrnControlShozoku">null</property>
+	</component>
+	<component name="documentSearchDto" class="jp.co.isid.mos.bird.commonform.documentsearch.dto.DocumentSearchDto" instance="session">
+		<property name="documentList">null</property>
+	</component>
+	<component name="pullDownMenuDto" class="jp.co.isid.mos.bird.framework.dto.PullDownMenuDto" instance="session">
+		<property name="menu1st">null</property>
+		<property name="menu2nd">null</property>
+		<property name="registMenu1st">null</property>
+		<property name="registMenu2nd">null</property>
+	</component>
+	<component name="notificationRegistCsvDownloadDto" class="jp.co.isid.mos.bird.inforegist.notificationregist.dto.CsvDownloadDto" instance="session"/>
+	<!-- LOGIC -->
+	<!-- カテゴリの取得（共通） -->
+	<component name="getCategoryLogic" class="jp.co.isid.mos.bird.common.logic.impl.GetCategoryLogicImpl"/>
+	<!-- 通達情報一覧の取得     BIF002L01 -->
+	<component name="getTutatuLogic" class="jp.co.isid.mos.bird.inforegist.notificationregist.logic.impl.GetTutatuLogicImpl"/>
+	<!-- 総ページ数の取得       BIF002L02 -->
+	<component name="getTotalCountLogic" class="jp.co.isid.mos.bird.inforegist.notificationregist.logic.impl.GetTotalCountLogicImpl"/>
+	<!-- 登録内容のチェック     BIF002L03 -->
+	<component name="checkTutatuLogicImpl" class="jp.co.isid.mos.bird.inforegist.notificationregist.logic.impl.CheckTutatuLogicImpl"/>
+	<!-- 関連文書の重複チェック BIF002L04 -->
+	<component name="checkKanrenLogicImpl" class="jp.co.isid.mos.bird.inforegist.notificationregist.logic.impl.CheckKanrenLogicImpl"/>
+	<!-- 通達情報の登録 BIF002L05 -->
+	<component name="regBunshoLogic" class="jp.co.isid.mos.bird.inforegist.notificationregist.logic.impl.RegTutatuLogicImpl">
+		<aspect>j2ee.requiresNewTx</aspect>
+		<property name="deleteKanrenSakiBunshoLogic">deleteKanrenSakiBunshoLogic</property>
+		<property name="regKanrenBunshoLogic">regKanrenBunshoLogic</property>
+		<property name="regKoukaiTaishoLogic">regKoukaiTaishoLogic</property>
+	</component>
+	<!-- ファイルダウンロードロジック BIF002L0 -->
+	<component name="notificationRegistDownloadLogic" class="jp.co.isid.mos.bird.inforegist.notificationregist.logic.impl.NotificationRegistDownloadLogicImpl"/>
+	<!-- 添付ファイルダウンロードロジック BIF002L0 -->
+	<component name="notificationRegistDownloadLogicTenpu" class="jp.co.isid.mos.bird.inforegist.notificationregist.logic.impl.NotificationRegistDownloadTenpuLogicImpl"/>
+	<!-- 関連文書ダウンロードロジック BIF002L0 -->
+	<component name="notificationRegistDownloadKanrenLogic" class="jp.co.isid.mos.bird.inforegist.notificationregist.logic.impl.NotificationRegistDownloadKanrenLogicImpl"/>
+	<!-- ファイルアップロードロジック BIF002L0 -->
+	<component name="notificationRegistUploadLogic" class="jp.co.isid.mos.bird.inforegist.notificationregist.logic.impl.UploadLogicImpl"/>
+	<!-- ファイルアップロードロジック BIF002L0 -->
+	<component name="notificationRegistCsvTodayDataListLogic" class="jp.co.isid.mos.bird.inforegist.notificationregist.logic.impl.CsvTodayInsertListLogicImpl"/>
+
+	<!-- ENTITY -->
+	<component name="uiTutatuInfo" class="jp.co.isid.mos.bird.inforegist.notificationregist.entity.UITutatuInfo" instance="session"/>
+	
+	<!-- アクション -->
+	<component name="notificationRegistConditionAction" class="jp.co.isid.mos.bird.inforegist.notificationregist.action.impl.ConditionActionImpl" instance="request">
+		<aspect pointcut="init">initActionInterceptorChain</aspect>
+		<aspect>actionInterceptorChain</aspect>
+		<property name="getKanrenBunshoInfoLogic">getKanrenBunshoInfoLogic</property>
+		<property name="getKoukaiTaishoLogic">getKoukaiTaishoLogic</property>
+	</component>
+	<component name="notificationRegistAction" class="jp.co.isid.mos.bird.inforegist.notificationregist.action.impl.RegistActionImpl" instance="request">
+		<aspect pointcut="init">initActionInterceptorChain</aspect>
+		<aspect>actionInterceptorChain</aspect>
+	</component>
+	<component name="notificationRegistConfirmAction" class="jp.co.isid.mos.bird.inforegist.notificationregist.action.impl.ConfirmActionImpl" instance="request">
+		<property name="getKanrenSakiBunshoInfoLogic">getKanrenSakiBunshoInfoLogic</property>
+		<property name="getKanrenBunshoInfoLogic">getKanrenBunshoInfoLogic</property>
+		<property name="getKoukaiTaishoLogic">getKoukaiTaishoLogic</property>
+	</component>
+	<component name="notificationRegistDownloadAction" class="jp.co.isid.mos.bird.framework.action.impl.FileDownloadActionImpl" instance="request">
+		<property name="downloadDto">notificationRegistConditionDto</property>
+		<property name="downloadLogic">notificationRegistDownloadLogic</property>
+	</component>
+	<component name="notificationRegistDownloadKanrenAction" class="jp.co.isid.mos.bird.framework.action.impl.FileDownloadActionImpl" instance="request">
+		<property name="downloadDto">notificationRegistFormDto</property>
+		<property name="downloadLogic">notificationRegistDownloadKanrenLogic</property>
+	</component>
+	<component name="notificationRegistDownloadActionTenpu" class="jp.co.isid.mos.bird.framework.action.impl.FileDownloadActionImpl" instance="request">
+		<property name="downloadDto">notificationRegistConditionDto</property>
+		<property name="downloadLogic">notificationRegistDownloadLogicTenpu</property>
+	</component>
+	<component name="notificationRegistCsvAction" class="jp.co.isid.mos.bird.framework.action.impl.CsvDownloadActionImpl" instance="request">
+		<property name="csvOutputDto">publicTargetDto</property>
+		<property name="csvOutputLogic">publicTargetMiseCsvOutputLogic</property>
+		<property name="initLogic">null</property>
+		<property name="finalLogic">null</property>
+	</component>
+	<component name="notificationRegistCommonUploadAction" class="jp.co.isid.mos.bird.framework.action.impl.FileUploadActionImpl" instance="request"/>
+	<component name="notificationRegistCsvTodayInsertDataAction" class="jp.co.isid.mos.bird.framework.action.impl.CsvOutput2ActionImpl" instance="request">
+		<property name="csvOutputDto">notificationRegistCsvDownloadDto</property>
+		<property name="csvOutputLogic">notificationRegistCsvTodayDataListLogic</property>
+	</component>
+
+
+	<!-- バリデーター -->
+	<component name="numericValidator" class="jp.co.isid.mos.bird.framework.text.validator.NumericValidator"  instance="request">
+		<arg>false</arg>
+		<arg>1</arg>
+	</component>
+
+	<!-- コンバーター -->
+	<component name="notificationRegistDateConverter" class="jp.co.isid.mos.bird.framework.text.converter.DateConverter" instance="request">
+		<arg>@jp.co.isid.mos.bird.framework.util.formatter.DateFormatter@DATE_TYPE_YMD</arg>
+		<arg>@jp.co.isid.mos.bird.framework.util.formatter.DateFormatter@PATTERN_SLASH</arg>
+	</component>
+</components>

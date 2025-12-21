@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="Shift_JIS"?>
+<!DOCTYPE components PUBLIC
+    "-//SEASAR//DTD S2Container 2.3//EN"
+    "http://www.seasar.org/dtd/components23.dtd">
+<components namespace="miseRef">
+	<include path="dao.dicon"/>
+	<include path="jp/co/isid/mos/bird/common/dicon/birdCommon.dicon"/>
+	<include path="jp/co/isid/mos/bird/framework/dicon/birdInterceptor.dicon"/>
+	
+	<!-- インターセプターを自動登録 -->
+	<component class="org.seasar.framework.container.autoregister.AspectAutoRegister">
+	    <property name="interceptor">birdInterceptor.actionInterceptorChain</property>
+	    <initMethod name="addClassPattern">
+	        <arg>"jp.co.isid.mos.bird"</arg>
+	        <arg>".*ActionImpl"</arg>
+	    </initMethod>
+	    <initMethod name="registerAll"/>
+	</component> 
+	<component class="org.seasar.framework.container.autoregister.AspectAutoRegister">
+	    <property name="interceptor">birdInterceptor.logicInterceptorChain</property>
+	    <initMethod name="addClassPattern">
+	        <arg>"jp.co.isid.mos.bird"</arg>
+	        <arg>".*LogicImpl"</arg>
+	    </initMethod>
+	    <initMethod name="registerAll"/>  
+	</component>
+
+	<!-- DAO -->
+	<component name="codCompanyJohoDao" class="jp.co.isid.mos.bird.storeinfo.miseref.dao.CodCompanyJohoDao">
+		<aspect>dao.interceptor</aspect>
+	</component>
+	<component name="mstMiseDao" class="jp.co.isid.mos.bird.storeinfo.miseref.dao.MstMiseDao">
+		<aspect>dao.interceptor</aspect>
+	</component>
+	<component name="mstMiseKaisoDao" class="jp.co.isid.mos.bird.storeinfo.miseref.dao.MstMiseKaisoDao">
+		<aspect>dao.interceptor</aspect>
+	</component>
+	<component name="mstTODao" class="jp.co.isid.mos.bird.storeinfo.miseref.dao.MstTODao">
+		<aspect>dao.interceptor</aspect>
+	</component>
+	<component name="mstSBDao" class="jp.co.isid.mos.bird.storeinfo.miseref.dao.MstSBDao">
+		<aspect>dao.interceptor</aspect>
+	</component>
+	<component name="mstChintaiDao" class="jp.co.isid.mos.bird.storeinfo.miseref.dao.MstChintaiDao">
+		<aspect>dao.interceptor</aspect>
+	</component>
+	<component name="mstEventStatusDao" class="jp.co.isid.mos.bird.storeinfo.miseref.dao.MstEventStatusDao">
+		<aspect>dao.interceptor</aspect>
+	</component>
+	<component name="mstMiseYobiDao" class="jp.co.isid.mos.bird.storeinfo.miseref.dao.MstMiseYobiDao">
+		<aspect>dao.interceptor</aspect>
+	</component>
+	<component name="mstBukkenDao" class="jp.co.isid.mos.bird.storeinfo.miseref.dao.MstBukkenDao">
+		<aspect>dao.interceptor</aspect>
+	</component>
+	<component name="mstGyotaiDao" class="jp.co.isid.mos.bird.storeinfo.miseref.dao.MstGyotaiDao">
+		<aspect>dao.interceptor</aspect>
+	</component>
+	<component name="mstInsentiveDao" class="jp.co.isid.mos.bird.storeinfo.miseref.dao.MstInsentiveDao">
+		<aspect>dao.interceptor</aspect>
+	</component>
+	<component name="mstHDCDao" class="jp.co.isid.mos.bird.storeinfo.miseref.dao.MstHDCDao">
+		<aspect>dao.interceptor</aspect>
+	</component>
+	<component name="codInsentiveCdDao" class="jp.co.isid.mos.bird.storeinfo.miseref.dao.CodInsentiveCdDao">
+		<aspect>dao.interceptor</aspect>
+	</component>
+	<component name="trnURLDao" class="jp.co.isid.mos.bird.storeinfo.miseref.dao.TrnURLDao">
+		<aspect>dao.interceptor</aspect>
+	</component>
+	<component name="codKotenLinkJohoDao" class="jp.co.isid.mos.bird.storeinfo.miseref.dao.CodKotenLinkJohoDao">
+		<aspect>dao.interceptor</aspect>
+	</component>
+	<component name="mstTODlJyohoDao" class="jp.co.isid.mos.bird.storeinfo.miseref.dao.MstTODlJyohoDao">
+	    <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="MstStaffDao" class="jp.co.isid.mos.bird.storeinfo.miseref.dao.MstStaffDao">
+		<aspect>dao.interceptor</aspect>
+	</component>
+
+	<!-- DTO -->
+	<component name="miseRefDto" class="jp.co.isid.mos.bird.storeinfo.miseref.dto.MiseRefDto" instance="session"/>
+	<component name="miseSearchDto" class="jp.co.isid.mos.bird.commonform.misesearch.dto.MiseSearchDto" instance="session"/>
+	<component name="pullDownMenuDto" class="jp.co.isid.mos.bird.framework.dto.PullDownMenuDto" instance="session"/>
+<component name="historyDto" class="jp.co.isid.mos.bird.storeinfo.miseref.dto.TOHistoryCsvOutputDto" instance="session"/>
+	
+	<!-- LOGIC -->
+	<component name="companyJohoLogicImpl" class="jp.co.isid.mos.bird.storeinfo.miseref.logic.impl.CompanyJohoLogicImpl"/>
+	<component name="kotenJohoLogicImpl" class="jp.co.isid.mos.bird.storeinfo.miseref.logic.impl.KotenJohoLogicImpl"/>
+	<component name="kotenLinkJohoLogicImpl" class="jp.co.isid.mos.bird.storeinfo.miseref.logic.impl.KotenLinkJohoLogicImpl"/>
+    <component name="schMiseListLogicImpl" class="jp.co.isid.mos.bird.storeinfo.miseref.logic.impl.SchMiseListLogicImpl"/>
+<component name="DlMiseTOJyohoLogicImpl" class="jp.co.isid.mos.bird.storeinfo.miseref.logic.impl.DlMiseTOJyohoLogicImpl" />
+	<!-- アクション -->
+	<component name="miseRefAction" class="jp.co.isid.mos.bird.storeinfo.miseref.action.impl.MiseRefActionImpl" instance="request">
+		<property name="miseRefDto">miseRefDto</property>
+	</component>
+	<component name="miseRefCondAction" class="jp.co.isid.mos.bird.storeinfo.miseref.action.impl.MiseRefCondActionImpl" instance="request">
+		<property name="miseRefDto">miseRefDto</property>
+	</component>
+	<!--DELETE 2016/10/10 セッションタイムアウトに
+　		なった際に、ログイン画面に遷移せず以下となる。
+　		「HTTPステータス 500 - サーブレットの実行により例外を投げましたことを対応。
+	<component name="menuAction" class="jp.co.isid.mos.bird.framework.action.impl.MenuActionImpl" instance="session" >
+		<property name="pullDownMenuDto">pullDownMenuDto</property>
+		<aspect>menuActionIntercepter</aspect>
+	</component>
+	 DELETE-->
+<component name="miseRefHistorydAction" class="jp.co.isid.mos.bird.storeinfo.miseref.action.impl.MiseRefHistoryActionImpl" instance="request">
+	    <property name="historyDto">historyDto</property>
+	    <property name="csvOutputLogic">DlMiseTOJyohoLogicImpl</property>
+	</component>
+
+	<!-- CONVERTER -->
+	<component name="dateConverter" class="jp.co.isid.mos.bird.framework.text.converter.DateConverter" instance="request">
+		<arg>@jp.co.isid.mos.bird.framework.util.formatter.DateFormatter@DATE_TYPE_YMD</arg>
+		<arg>@jp.co.isid.mos.bird.framework.util.formatter.DateFormatter@PATTERN_SLASH</arg>
+	</component>
+	<component name="dateConverterYM" class="jp.co.isid.mos.bird.framework.text.converter.DateConverter" instance="request">
+		<arg>@jp.co.isid.mos.bird.framework.util.formatter.DateFormatter@DATE_TYPE_YM</arg>
+		<arg>@jp.co.isid.mos.bird.framework.util.formatter.DateFormatter@PATTERN_MONTH_SLASH</arg>
+	</component>
+	<component name="numericConverter" class="jp.co.isid.mos.bird.framework.text.converter.NumericConverter" instance="request">
+		<arg>2</arg>
+	</component>
+	<component name="numericConverterKingaku" class="jp.co.isid.mos.bird.framework.text.converter.NumericConverter" instance="request"/>
+	<component name="codeConverter5" class="jp.co.isid.mos.bird.framework.text.converter.CodeConverter" instance="request">
+		<property name="formatPattern">"00000"</property>
+	</component>
+	<component name="characterEncodingConverter" class="jp.co.isid.mos.bird.framework.text.converter.CharacterEncodingConverter" instance="request"/>
+	<component name="timeConverter" class="jp.co.isid.mos.bird.framework.text.converter.TimeConverter" instance="request">
+		<arg>@jp.co.isid.mos.bird.framework.util.formatter.TimeFormatter@TIME_TYPE_HM</arg>
+	</component>
+	<component name="maskConverterPostCd" class="jp.co.isid.mos.bird.framework.text.converter.MaskConverter" instance="request">
+		<arg>"###-####"</arg>
+	</component>
+</components>

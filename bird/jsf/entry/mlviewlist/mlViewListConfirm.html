@@ -1,0 +1,134 @@
+<html xmlns:m="http://www.seasar.org/maya" m:action="#{mlViewListConfirmAction.initialize}" m:extends="/jsf/layout/layoutNoNavi.html">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Windows-31j" />
+<title>マスターライセンス研修申込状況照会</title>
+</head>
+<body>
+<span m:inject="f:param" m:name="layoutTitle" m:value="マスターライセンス申込状況照会"/>
+  <span m:inject="f:param" m:name="onLoadName" m:value="load()"/>
+<span m:inject="f:param" m:name="onLoadName" m:value="init();"/>
+<span m:inject="s:insert" m:name="bodyTitleName">■マスターライセンス申込状況照会</span>
+<span m:inject="f:param" m:name="viewIdValue" m:value="BEN009V02"/>
+<span m:converter="#{characterEncodingConverter}" m:inject="f:param" m:name="isHonbu" m:value="#{mlViewListCommonDto.userTypeCd == 01}"/>
+<span m:inject="s:insert" m:name="body">
+<script type="text/javascript">
+<!--
+function load(){
+
+loadScroll("mlViewscroll",345);
+
+}
+function init(){
+}
+//-->
+</script>
+
+<form m:id="mlViewList">
+	<input type="hidden" m:id="viewId" m:value="#{viewIdValue}"/>
+	<input type="hidden" m:id="initMenuId" m:value="#{menuAction.initMenuId}"/>
+	<input type="hidden" m:id="initSubMenuId" m:value="#{menuAction.initSubMenuId}"/>
+	<input type="hidden" m:id="searchSelectFlg" m:value="#{mlViewListCommonDto.searchSelectFlg}"/>
+	<input type="submit" value="戻る" m:action="#{mlViewListConfirmAction.cancel}"/>&nbsp;&nbsp;
+	<input type="button" class="operation_button" value="ダウンロード"
+	        m:id="btnDownload"
+	        m:action="#{mlViewListConfirmAction.downloadCsv}"/>
+	<span m:rendered="#{mlViewListCommonDto.executableSaiban}">
+	<input type="button" class="operation_button" value="受験番号採番"
+	        m:action="#{mlViewListConfirmAction.executeSaiban}"/>
+	</span>
+<!-- Master License Infomation -->
+<table class="body_table2" style="width:900px;margin-top:4px;">
+	  <tr m:rendered="#{isHonbu==true}">
+	    <th width="150px" style="text-align:center;">開催日</th>
+	    <th width="*" style="text-align:center;">タイトル</th>
+	    <th width="150px" style="text-align:center;">本部&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;：申込開始</th>
+	    <th width="150px" style="text-align:center;">本部&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;：申込終了</th>
+	  </tr>
+	  <tr m:rendered="#{isHonbu==true}">
+	    <th colspan="2" style="text-align:center;">備考</th>
+	    <th style="text-align:center;">オーナー：申込開始</th>
+	    <th style="text-align:center;">オーナー：申込終了</th>
+	  </tr>
+	  <tr m:rendered="#{isHonbu==true}">
+	    <td><span m:value="#{mlViewListCommonDto.mlFromDt}" m:converter="#{mlDateConverter3}"/>～<span m:value="#{mlViewListCommonDto.mlToDt}" m:converter="#{mlDateConverter3}"/></td>
+	    <td><span m:value="#{mlViewListCommonDto.mlEntryTitle}" m:converter="#{characterEncodingConverter}"/></td>
+	    <td><span m:value="#{mlViewListCommonDto.mlHonbuInputDtFrom}" m:converter="#{mlDateConverter}"/></td>
+	    <td><span m:value="#{mlViewListCommonDto.mlHonbuInputDtTo}" m:converter="#{mlDateConverter}"/></td>
+	  </tr>
+	  <tr m:rendered="#{isHonbu==true}">
+		<td colspan="2"><span m:value="#{mlViewListCommonDto.note}" m:converter="#{characterEncodingConverter}"/>&nbsp;</td>
+		<td><span m:value="#{mlViewListCommonDto.mlOnerInputDtFrom}" m:converter="#{mlDateConverter}"/></td>
+		<td><span m:value="#{mlViewListCommonDto.mlOnerInputDtTo}" m:converter="#{mlDateConverter}"/></td>
+	  </tr>
+
+	  <tr m:rendered="#{isHonbu==false}">
+	    <th width="150px" style="text-align:center;">開催日</th>
+	    <th width="350px" style="text-align:center;">タイトル</th>
+	    <th width="150px" rowspan="2" style="text-align:center;">申込開始</th>
+	    <th width="150px" rowspan="2" style="text-align:center;">申込終了</th>
+	  </tr>
+	  <tr m:rendered="#{isHonbu==false}">
+	    <th colspan="2" style="text-align:center;">備考</th>
+	  </tr>
+	  <tr m:rendered="#{isHonbu==false}">
+	    <td><span m:value="#{mlViewListCommonDto.mlFromDt}" m:converter="#{mlDateConverter3}"/>～<span m:value="#{mlViewListCommonDto.mlToDt}" m:converter="#{mlDateConverter3}"/></td>
+	    <td><span m:value="#{mlViewListCommonDto.mlEntryTitle}" m:converter="#{characterEncodingConverter}"/></td>
+		<td rowspan="2"><span m:value="#{mlViewListCommonDto.mlOnerInputDtFrom}" m:converter="#{mlDateConverter}"/></td>
+		<td rowspan="2"><span m:value="#{mlViewListCommonDto.mlOnerInputDtTo}" m:converter="#{mlDateConverter}"/></td>
+	  </tr>
+	  <tr m:rendered="#{isHonbu==false}">
+		<td colspan="2"><span m:value="#{mlViewListCommonDto.note}" m:converter="#{characterEncodingConverter}"/>&nbsp;</td>
+	  </tr>
+</table>
+<!-- Entry List Data -->
+<div class="scroll_padding_head">
+<div class="scroll_hidden margin_bottom_5">
+<table class="body_table2" width="98%" style=" margin-top:4px;">
+  <tr class="non_top_border">
+    <th width="210px" style="text-align:center;">オーナー</th>
+    <th width="*" style="text-align:center;">店舗</th>
+    <th width="80px" style="text-align:center;">受験番号</th>
+    <th width="120px" style="text-align:center;">受験希望地</th>
+    <th width="120px" style="text-align:center;">受験者氏名</th>
+    <th width="50px" style="text-align:center;">能力</th>
+    <th width="50px" style="text-align:center;">筆記</th>
+    <th width="50px" style="text-align:center;">面接</th>
+    <th width="80px" style="text-align:center;">研修状況</th>
+  </tr>
+</table>
+</div>
+</div>
+<div class="scroll_padding_data">
+<div id="mlViewscroll" class="scroll_hidden">
+<table class="body_table2" width="98%" style="border-top-width:0px;">
+
+
+<div m:inject="s:forEach" m:items="#{mlViewListCommonDto.entryList}" m:var="e" m:varindex="i">
+    <tr  class="non_top_border">
+      <td  width="210px"><span m:converter="#{characterEncodingConverter}" m:value="#{e.onerNameKj}"/></td>
+      <td width="*"><span m:converter="#{characterEncodingConverter}" m:value="#{e.miseNameKj}"/></td>
+      <td  width="80px"><span m:value="#{e.examNo}" m:converter="#{codeConverter5}"/></td>
+      <td  width="120px"><span m:converter="#{characterEncodingConverter}" m:value="#{e.entryPlaceName}"/></td>
+      <td  width="120px"><span m:converter="#{characterEncodingConverter}" m:value="#{e.staffNameKj}"/></td>
+      <td  width="50px" style="text-align:center;" ><input type="checkbox" m:value="#{e.abilityFlg}" disabled="disabled"/></td>
+      <td  width="50px" style="text-align:center;" ><input type="checkbox" m:value="#{e.examFlg}" disabled="disabled"/></td>
+      <td  width="50px" style="text-align:center;" ><input type="checkbox" m:value="#{e.interviewFlg}" disabled="disabled"/></td>
+      <td width="80px" ><span m:converter="#{characterEncodingConverter}" m:value="#{e.courseStatusName}"/></td>
+    </tr>
+</div>
+</table>
+</div>
+</div>
+
+<input type="text" m:id="dummyEnter" style="display:none"/>
+</form>
+<script type="text/javascript">
+<!--
+	focusElement("mlRegistSelect");
+-->
+</script>
+
+
+</span>
+</body>
+</html>

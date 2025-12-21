@@ -1,0 +1,64 @@
+<html xmlns:m="http://www.seasar.org/maya"
+      m:action="#{sentakuAction.initialize}"
+      m:extends="/jsf/layout/layoutNoNavi.html">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Windows-31j"/>
+<meta http-equiv="Content-Style-Type" content="text/css"/>
+<meta http-equiv="Content-Script-Type" content="text/javascript"/>
+<title>メニュー</title>
+</head>
+<body>
+<span m:inject="f:param" m:name="layoutTitle" m:value="メニュー"/>
+<span m:inject="s:insert" m:name="bodyTitleName">■メニュー</span>
+<span m:inject="f:param" m:name="viewIdValue" m:value="BPO004V01"/>
+<div m:inject="s:insert" m:name="body">
+<style type="text/css">
+<!--
+-->
+</style>
+<script language="javascript">
+
+function searchByCate(toViewId) {
+
+    //メッセージを表示
+    document.getElementById("linkForm:pane_waitmsg").style.display = "inline";
+	document.linkForm.elements['linkForm:toViewId'].value=toViewId;
+  	document.linkForm.elements['linkForm:__link_clicked__'].value='linkForm:execute';
+  	document.linkForm.submit();
+}
+
+
+</script>
+<form m:id="linkForm">
+<input type="hidden" m:id="viewId" m:value="#{viewIdValue}"/>
+<input type="hidden" m:id="toViewId" m:value="#{sentakuDto.toViewId}"/>
+<a id="execute" m:action="#{sentakuAction.execute}"/>
+
+
+<div>
+	<table class="link">
+		<tr>
+		<td class="link_base">
+		<table cellspacing="0" cellpadding="0">
+		<span m:inject="s:forEach" m:items="#{sentakuDto.listInfoLink}" m:var="e" m:varindex="i">
+			<tr>
+		    <td>
+			<a class="link2_base" href="#" onClick="searchByCate('#{e.linkViewId}');return false;" onDblClick="return false;"><br/>
+	          <span m:converter="#{characterEncodingConverter}" m:value="#{e.linkViewName}"/>
+	        </td>
+			</tr>
+		</span>
+		</span>
+		</table>
+		</td>
+		</tr>
+	</table>
+</div>
+<div m:id="pane_waitmsg" style="display:none">
+<p/>
+<span style="font-weight:bold;">接続中です。<br>しばらくお待ち下さい・・・</span>
+</div>
+</form>
+
+</body>
+</html>

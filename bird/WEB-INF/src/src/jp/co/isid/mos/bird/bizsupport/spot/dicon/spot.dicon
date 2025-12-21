@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="Shift_JIS"?>
+<!DOCTYPE components PUBLIC "-//SEASAR//DTD S2Container 2.3//EN"
+    "http://www.seasar.org/dtd/components23.dtd">
+<components namespace="spot">
+    <include path="dao.dicon"/>
+	<include path="jp/co/isid/mos/bird/framework/dicon/birdInterceptor.dicon"/>
+	<include path="jp/co/isid/mos/bird/bizreport/common/dicon/bizreportCommon.dicon" />
+	<include path="jp/co/isid/mos/bird/common/dicon/birdCommon.dicon"/>
+
+	<component
+	  class="org.seasar.framework.container.autoregister.AspectAutoRegister">
+	    <property name="interceptor">birdInterceptor.actionInterceptorChain</property>
+	    <initMethod name="addClassPattern">
+	        <arg>"jp.co.isid.mos.bird"</arg>
+	        <arg>".*ActionImpl"</arg>
+	    </initMethod>
+	    <initMethod name="registerAll"/>
+	</component> 
+
+	<component
+	  class="org.seasar.framework.container.autoregister.AspectAutoRegister">
+	    <property name="interceptor">birdInterceptor.logicInterceptorChain</property>
+	    <initMethod name="addClassPattern">
+	        <arg>"jp.co.isid.mos.bird"</arg>
+	        <arg>".*LogicImpl"</arg>
+	    </initMethod>
+	    <initMethod name="registerAll"/>
+	</component>
+
+	<component class="jp.co.isid.mos.bird.framework.control.BirdUserInfo" instance="session"/>
+	<component class="jp.co.isid.mos.bird.framework.control.BirdDateInfo" instance="session"/>
+
+    
+    <!--  DAO  -->
+	<component name="campOrderMngDao" class="jp.co.isid.mos.bird.bizsupport.spot.dao.CampOrderManageDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+    <component name="cmpResultDataDao" class="jp.co.isid.mos.bird.bizsupport.spot.dao.CampResultDataDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="cmpResultTableDao" class="jp.co.isid.mos.bird.bizsupport.spot.dao.CampResultTableDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+
+
+    <!--  DTO  -->
+	<component name="spotSelectDataDto" class="jp.co.isid.mos.bird.bizsupport.spot.dto.SpotSelectDataDto" instance="request"/>
+	<component name="pullDownMenuDto" class="jp.co.isid.mos.bird.framework.dto.PullDownMenuDto" autoBinding="none" instance="session"/>
+	<component name="spotResultDataDto" class="jp.co.isid.mos.bird.bizsupport.spot.dto.SpotResultDataDto" instance="request"/>
+		 
+	
+	<!--  Logic  -->
+	<component name="cmpListLogic" class="jp.co.isid.mos.bird.bizsupport.spot.logic.impl.CampListLogicImpl">
+			<property name="campOrderMngDao">campOrderMngDao</property>
+	</component>
+	<component name="cmpResultDataLogic" class="jp.co.isid.mos.bird.bizsupport.spot.logic.impl.CampResultDataLogicImpl">
+			<property name="cmpResultDataDao">cmpResultDataDao</property>
+	</component>
+	<component name="tenpoDataLogic" class="jp.co.isid.mos.bird.bizsupport.spot.logic.impl.TenpoDataLogicImpl">
+			<property name="cmpResultTableDao">cmpResultTableDao</property>
+	</component>
+
+
+	<!--  Action  -->
+	<component name="campNotOrderAction" class="jp.co.isid.mos.bird.bizsupport.spot.action.impl.CampNotOrderShopActionImpl" instance="request">
+	       <property name="spotSelectDataDto">spotSelectDataDto</property>         
+	</component>
+
+
+ <!-- CONVERTER -->	
+	<component name="dateConverter" class="jp.co.isid.mos.bird.framework.text.converter.DateConverter" instance="request">
+		<arg>@jp.co.isid.mos.bird.framework.util.formatter.DateFormatter@DATE_TYPE_YMD</arg>
+		<arg>@jp.co.isid.mos.bird.framework.util.formatter.DateFormatter@PATTERN_SLASH</arg>
+	</component>
+
+	
+</components>

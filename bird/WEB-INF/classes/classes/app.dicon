@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="Shift_JIS"?>
+<!DOCTYPE components PUBLIC "-//SEASAR2.1//DTD S2Container//EN"
+	"http://www.seasar.org/dtd/components21.dtd">
+<components>
+	<include path="jsf.dicon"/>
+	<include path="teeda.dicon"/>
+	<include path="jp/co/isid/mos/bird/framework/dicon/property.dicon"/>
+	<include path="jp/co/isid/mos/bird/framework/dicon/framework.dicon"/>
+	<include path="jp/co/isid/mos/bird/common/dicon/birdCategoryRoot.dicon"/>
+</components>

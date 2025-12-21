@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="Shift_JIS"?>
+<!DOCTYPE components PUBLIC "-//SEASAR//DTD S2Container 2.3//EN"
+    "http://www.seasar.org/dtd/components23.dtd">
+<components namespace="miseInformationExtract">
+    <include path="dao.dicon"/>
+	<include path="jp/co/isid/mos/bird/framework/dicon/birdInterceptor.dicon"/>
+	<include path="jp/co/isid/mos/bird/common/dicon/birdCommon.dicon"/>
+	<include path="jp/co/isid/mos/bird/storeinfo/miseref/dicon/miseRef.dicon"/>
+	<include path="jp/co/isid/mos/bird/bizreport/common/dicon/bizreportCommon.dicon" />
+
+	<component
+	  class="org.seasar.framework.container.autoregister.AspectAutoRegister">
+	    <property name="interceptor">birdInterceptor.actionInterceptorChain</property>
+	    <initMethod name="addClassPattern">
+	        <arg>"jp.co.isid.mos.bird"</arg>
+	        <arg>".*ActionImpl"</arg>
+	    </initMethod>
+	    <initMethod name="registerAll"/>
+	</component>
+
+	<component
+	  class="org.seasar.framework.container.autoregister.AspectAutoRegister">
+	    <property name="interceptor">birdInterceptor.logicInterceptorChain</property>
+	    <initMethod name="addClassPattern">
+	        <arg>"jp.co.isid.mos.bird"</arg>
+	        <arg>".*LogicImpl"</arg>
+	    </initMethod>
+	    <initMethod name="registerAll"/>
+	</component>
+
+	<component class="jp.co.isid.mos.bird.framework.control.BirdUserInfo" instance="session"/>
+	<component class="jp.co.isid.mos.bird.framework.control.BirdDateInfo" instance="session"/>
+
+	<!-- DAO -->
+	<component name="mstChintaiDao" class="jp.co.isid.mos.bird.storeinfo.miseinformationextract.dao.MstChintaiDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="mstMiSeJohoDao" class="jp.co.isid.mos.bird.storeinfo.miseinformationextract.dao.MstMiSeJohoDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="siBuJohoDao" class="jp.co.isid.mos.bird.storeinfo.miseinformationextract.dao.SiBuJohoDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="tintaTenpoSyuBetuJohoDao" class="jp.co.isid.mos.bird.storeinfo.miseinformationextract.dao.TintaTenpoSyuBetuJohoDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="svInfoDao" class="jp.co.isid.mos.bird.storeinfo.miseinformationextract.dao.SvInfoDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+
+	<!-- Logic -->
+	<component name="miseInfoMationExtractCsvLogicImpl" class="jp.co.isid.mos.bird.storeinfo.miseinformationextract.logic.impl.MiseInfoMationExtractCsvLogicImpl"/>
+	<component name="excelOutputLogic" class="jp.co.isid.mos.bird.storeinfo.miseinformationextract.logic.impl.MiseInfoMationExtractExcelLogicImpl"/>
+	<component name="targetSiBuSearchLogicImpl" class="jp.co.isid.mos.bird.storeinfo.miseinformationextract.logic.impl.TargetSiBuSearchLogicImpl"/>
+
+	<!-- DTO -->
+	<component name="miseInfoExtractDto" class="jp.co.isid.mos.bird.storeinfo.miseinformationextract.dto.MiseInfoExtractDto" instance="session">
+		<property name="sibuCd">null</property>
+	</component>
+		<component name="newSvSearchDto" class="jp.co.isid.mos.bird.commonform.svsearchnew.dto.SvSearchDto" instance="session">
+		<property name="RCompanyCdList">new java.util.ArrayList(0)</property>
+		<property name="sibuCd">null</property>
+	</component>
+
+	<!-- Action -->
+	<component name="miseInfoExtractAction" class="jp.co.isid.mos.bird.storeinfo.miseinformationextract.action.impl.MiseInfoExtractActionImpl" instance="request">
+		<property name="miseInfoExtractDto">miseInfoExtractDto</property>
+		<property name="excelOutputLogic">excelOutputLogic</property>
+	</component>
+
+	<!-- CONVERTER -->
+	<component name="numericConverter" class="jp.co.isid.mos.bird.framework.text.converter.NumericConverter" instance="request"/>
+</components>

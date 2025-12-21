@@ -1,0 +1,12 @@
+SELECT
+    R_COMPANY_CD,
+    BUMON_CD,
+    BUMON_CD || 'ÅF' || rtrim(BUMON_NAME) as BUMON_NAME
+FROM
+    BC08CBMN
+GROUP BY
+    R_COMPANY_CD,
+    BUMON_CD,
+    BUMON_NAME
+ORDER BY
+    BUMON_CD       

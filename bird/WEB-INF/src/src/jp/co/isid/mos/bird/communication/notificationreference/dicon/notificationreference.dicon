@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="Shift_JIS"?>
+<!DOCTYPE components PUBLIC
+    "-//SEASAR//DTD S2Container 2.3//EN"
+    "http://www.seasar.org/dtd/components23.dtd">
+<components namespace="notificationreference">
+    <include path="dao.dicon"/>
+    <include path="jp/co/isid/mos/bird/common/dicon/birdCommon.dicon"/>
+	<include path="jp/co/isid/mos/bird/framework/dicon/birdInterceptor.dicon"/>
+	<!-- インターセプターを自動登録 -->
+	<component class="org.seasar.framework.container.autoregister.AspectAutoRegister">
+	    <property name="interceptor">birdInterceptor.actionInterceptorChain</property>
+	    <initMethod name="addClassPattern">
+	        <arg>"jp.co.isid.mos.bird"</arg>
+	        <arg>".*ActionImpl"</arg>
+	    </initMethod>
+	    <initMethod name="registerAll"/>
+	</component>
+	<component class="org.seasar.framework.container.autoregister.AspectAutoRegister">
+	    <property name="interceptor">birdInterceptor.logicInterceptorChain</property>
+	    <initMethod name="addClassPattern">
+	        <arg>"jp.co.isid.mos.bird"</arg>
+	        <arg>".*LogicImpl"</arg>
+	    </initMethod>
+	    <initMethod name="registerAll"/>
+	</component>
+
+<!-- DAO -->
+	<component name="mstUserGyotaiDao" class="jp.co.isid.mos.bird.communication.notificationreference.dao.MstUserGyotaiDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="mstCategoryInfoDao" class="jp.co.isid.mos.bird.communication.notificationreference.dao.MstCategoryInfoDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="uiViewTutatuDao" class="jp.co.isid.mos.bird.communication.notificationreference.dao.UIViewTutatuDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+
+<!-- DTO -->
+	<component name="notificationReferenceDto" class="jp.co.isid.mos.bird.communication.notificationreference.dto.NotificationReferenceDto" instance="session"/>
+	<component name="pullDownMenuDto" class="jp.co.isid.mos.bird.framework.dto.PullDownMenuDto" instance="session"/>
+	<component name="fullTextSearchTutatuDto" class="jp.co.isid.mos.bird.communication.notificationreference.dto.FullTextSearchTutatuDto" instance="session"/>
+<!-- LOGIC -->
+	<component name="getNotificationGyoutaiLogic" class="jp.co.isid.mos.bird.communication.notificationreference.logic.impl.GetGyoutaiLogicImpl"/>
+	<component name="notificationReferenceDownloadLogic" class="jp.co.isid.mos.bird.communication.notificationreference.logic.impl.NotificationReferenceDownloadLogicImpl"/>
+	<component name="notificationReferenceDownloadTenpuLogic" class="jp.co.isid.mos.bird.communication.notificationreference.logic.impl.NotificationReferenceDownloadTenpuLogicImpl"/>
+	<component name="fullTextSearchLogic" class="jp.co.isid.mos.bird.framework.logic.impl.FullTextSearchLogicImpl"/>
+	<component name="notificationReferenceSearchLogic" class="jp.co.isid.mos.bird.communication.notificationreference.logic.impl.SearchLogicImpl"/>
+
+<!-- ACTION -->
+	<component name="notificationReferenceAction" class="jp.co.isid.mos.bird.communication.notificationreference.action.impl.NotificationReferenceActionImpl" instance="request">
+		<property name="notificationReferenceDto">notificationReferenceDto</property>
+		<property name="fullTextSearchTutatuDto">fullTextSearchTutatuDto</property>
+		<property name="fullTextSearchLogic">fullTextSearchLogic</property>
+		<property name="downloadLogic">notificationReferenceDownloadLogic</property>
+	</component>
+
+<!-- 	<component name="notificationReferenceDownloadAction" class="jp.co.isid.mos.bird.communication.notificationreference.action.impl.DownloadActionImpl" instance="request">
+		<property name="downloadDto">notificationReferenceDto</property>
+		<property name="downloadLogic">notificationReferenceDownloadLogic</property>
+	</component> -->
+	<component name="notificationReferenceDownloadTenpuAction" class="jp.co.isid.mos.bird.framework.action.impl.FileDownloadActionImpl" instance="request">
+		<property name="downloadDto">notificationReferenceDto</property>
+		<property name="downloadLogic">notificationReferenceDownloadTenpuLogic</property>
+	</component>
+
+
+
+<!-- CONVERTER -->
+	<component name="notificationReferenceDateConverter" class="jp.co.isid.mos.bird.framework.text.converter.DateConverter">
+		<arg>@jp.co.isid.mos.bird.framework.util.formatter.DateFormatter@DATE_TYPE_YMD</arg>
+		<arg>@jp.co.isid.mos.bird.framework.util.formatter.DateFormatter@PATTERN_SLASH</arg>
+	</component>
+</components>

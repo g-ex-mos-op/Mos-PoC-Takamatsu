@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="Shift_JIS"?>
+<!DOCTYPE components PUBLIC "-//SEASAR//DTD S2Container 2.3//EN"
+    "http://www.seasar.org/dtd/components23.dtd">
+<components namespace="tempstorereplace">
+    <include path="dao.dicon"/>
+	<include path="jp/co/isid/mos/bird/framework/dicon/birdInterceptor.dicon"/>
+    <include path="jp/co/isid/mos/bird/common/dicon/birdCommon.dicon"/>
+    
+	<component
+	  class="org.seasar.framework.container.autoregister.AspectAutoRegister">
+	    <property name="interceptor">birdInterceptor.actionInterceptorChain</property>
+	    <initMethod name="addClassPattern">
+	        <arg>"jp.co.isid.mos.bird"</arg>
+	        <arg>".*ActionImpl"</arg>
+	    </initMethod>
+	    <initMethod name="registerAll"/>
+	</component>
+	<component
+	  class="org.seasar.framework.container.autoregister.AspectAutoRegister">
+	    <property name="interceptor">birdInterceptor.logicInterceptorChain</property>
+	    <initMethod name="addClassPattern">
+	        <arg>"jp.co.isid.mos.bird"</arg>
+	        <arg>".*LogicImpl"</arg>
+	    </initMethod>
+	    <initMethod name="registerAll"/>
+	</component>
+
+	<component class="jp.co.isid.mos.bird.framework.control.BirdUserInfo" instance="session"/>
+	<component class="jp.co.isid.mos.bird.framework.control.BirdDateInfo" instance="session"/>
+
+	<!-- DAO -->
+	<component name="codCompanyInfoDao" class="jp.co.isid.mos.bird.bizsupport.common.dao.CodCompanyDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="uiTempStoreReplaceNendoDao" class="jp.co.isid.mos.bird.bizsupport.tempstorereplace.dao.UINendoDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="uiTempStoreReplaceJigyoDao" class="jp.co.isid.mos.bird.bizsupport.tempstorereplace.dao.UIJigyoDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="uiTempStoreReplaceSibuDao" class="jp.co.isid.mos.bird.bizsupport.tempstorereplace.dao.UISibuDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="trnTempStoreStateDao" class="jp.co.isid.mos.bird.bizsupport.tempstorereplace.dao.TrnTempStoreStateDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="trnTempStoreDao" class="jp.co.isid.mos.bird.bizsupport.tempstorereplace.dao.TrnTempStoreDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="mstStoreDao" class="jp.co.isid.mos.bird.bizsupport.tempstorereplace.dao.MstStoreDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+
+
+	<!-- Logic -->
+	<component name="getUserCompanyLogic" class="jp.co.isid.mos.bird.bizsupport.common.logic.impl.GetUserCompanyLogicImpl"/>
+	<component name="listNendoLogic" class="jp.co.isid.mos.bird.bizsupport.tempstorereplace.logic.impl.ListNendoLogicImpl"/>
+	<component name="listTargetSearchLogic" class="jp.co.isid.mos.bird.bizsupport.tempstorereplace.logic.impl.ListTargetSearchLogicImpl"/>
+	<component name="listJigyoLogic" class="jp.co.isid.mos.bird.bizsupport.tempstorereplace.logic.impl.ListJigyoLogicImpl"/>
+	<component name="listSibuLogic" class="jp.co.isid.mos.bird.bizsupport.tempstorereplace.logic.impl.ListSibuLogicImpl"/>
+	<component name="stateListCreateLogic" class="jp.co.isid.mos.bird.bizsupport.tempstorereplace.logic.impl.StateListCreateLogicImpl"/>
+	<component name="stateListCsvOutputLogic" class="jp.co.isid.mos.bird.bizsupport.tempstorereplace.logic.impl.StateListCsvOutputLogicImpl"/>
+	<component name="stateListCheckLogic" class="jp.co.isid.mos.bird.bizsupport.tempstorereplace.logic.impl.StateListCheckLogicImpl"/>
+	<component name="stateListRegistLogic" class="jp.co.isid.mos.bird.bizsupport.tempstorereplace.logic.impl.StateListRegistLogicImpl">
+		<aspect>j2ee.requiresNewTx</aspect>
+	</component>
+	
+	<!-- DTO -->
+	<component name="tempStoreReplaceDto" class="jp.co.isid.mos.bird.bizsupport.tempstorereplace.dto.TempStoreReplaceDto" autoBinding="none" instance="session"/>
+	<component name="tempStoreReplaceRequestDto" class="jp.co.isid.mos.bird.bizsupport.tempstorereplace.dto.TempStoreReplaceDto" autoBinding="none" instance="request">
+		<property name="selectIndex">-1</property>
+	</component>
+	<component name="pullDownMenuDto" class="jp.co.isid.mos.bird.framework.dto.PullDownMenuDto" autoBinding="none" instance="session"/>
+	<component name="miseSearchDto" class="jp.co.isid.mos.bird.commonform.misesearch.dto.MiseSearchDto" autoBinding="none" instance="session"/>
+
+	<!-- Action -->
+	<component name="tempStoreReplaceConditionAction" class="jp.co.isid.mos.bird.bizsupport.tempstorereplace.action.impl.TempStoreReplaceConditionActionImpl" instance="request">
+		<property name="tempStroeStateCsvOutputAction">tempStroeStateCsvOutputAction</property>
+	</component>
+	<component name="tempStoreReplaceEditAction" class="jp.co.isid.mos.bird.bizsupport.tempstorereplace.action.impl.TempStoreReplaceEditActionImpl" instance="request"/>
+	<component name="tempStoreReplaceConfirmAction" class="jp.co.isid.mos.bird.bizsupport.tempstorereplace.action.impl.TempStoreReplaceConfirmActionImpl" instance="request"/>
+	<component name="tempStroeStateCsvOutputAction" class="jp.co.isid.mos.bird.framework.action.impl.CsvOutputActionImpl" instance="request">
+		<property name="csvOutputLogic">stateListCsvOutputLogic</property>
+		<property name="csvOutputDto">tempStoreReplaceDto</property>
+	</component>
+
+
+
+	<!-- Converter -->
+	<component name="dateConverterYosanDt" class="jp.co.isid.mos.bird.framework.text.converter.DateConverter">
+		<arg>@jp.co.isid.mos.bird.framework.util.formatter.DateFormatter@DATE_TYPE_YM</arg>
+		<arg>@jp.co.isid.mos.bird.framework.util.formatter.DateFormatter@PATTERN_MONTH_SLASH</arg>
+	</component>
+	<component name="dateConverterOpenDt" class="jp.co.isid.mos.bird.framework.text.converter.DateConverter">
+		<arg>@jp.co.isid.mos.bird.framework.util.formatter.DateFormatter@DATE_TYPE_YMD</arg>
+		<arg>@jp.co.isid.mos.bird.framework.util.formatter.DateFormatter@PATTERN_SLASH</arg>
+	</component>
+	<component name="dateConverterKakuteiDt" class="jp.co.isid.mos.bird.framework.text.converter.DateConverter">
+		<arg>@jp.co.isid.mos.bird.framework.util.formatter.DateFormatter@DATE_TYPE_YMD</arg>
+		<arg>@jp.co.isid.mos.bird.framework.util.formatter.DateFormatter@PATTERN_SLASH</arg>
+	    <initMethod name="setMaxDateNoDisp">
+	        <arg>false</arg>
+	    </initMethod>
+	</component>
+	
+	<component name="buyingDateConverterYM" class="jp.co.isid.mos.bird.framework.text.converter.DateConverter">
+		<arg>@jp.co.isid.mos.bird.framework.util.formatter.DateFormatter@DATE_TYPE_YMD</arg>
+		<arg>@jp.co.isid.mos.bird.framework.util.formatter.DateFormatter@PATTERN_SLASH</arg>
+	</component>
+
+
+
+	<!-- Verifier -->
+    <component name="sibuCdVerifier" class="jp.co.isid.mos.bird.framework.util.verifier.CodeVerifier">
+		<arg>3</arg>
+		<arg>false</arg>
+	</component>
+    <component name="areaDaiVerifier" class="jp.co.isid.mos.bird.framework.util.verifier.CodeVerifier">
+		<arg>3</arg>
+		<arg>false</arg>
+	</component>
+    <component name="miseCdVerifier" class="jp.co.isid.mos.bird.framework.util.verifier.CodeVerifier">
+		<arg>5</arg>
+		<arg>false</arg>
+	</component>
+    <component name="miseKariCdVerifier" class="jp.co.isid.mos.bird.framework.util.verifier.CodeVerifier">
+		<arg>4</arg>
+		<arg>false</arg>
+	</component>
+
+</components>

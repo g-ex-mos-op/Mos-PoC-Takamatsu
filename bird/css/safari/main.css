@@ -1,0 +1,117 @@
+/* 基本設定情報 */
+html, body {
+  width					: 100%;
+  font-size				: medium;
+  color					: #000000;
+  background-color		: #FFFFFF;
+  margin                : 0px;
+  padding               : 0px;
+  font-family           : ＭＳ Ｐゴシック;
+  line-height			: 14.5pt;
+}
+iframe{
+ hspace:0px;
+ vhspace:0px;
+ margin:0px;
+ width:100%;
+ border: 0px;
+}
+
+form {
+	display:inline;
+}
+A{
+  color                 : blue;
+}
+A:link{
+}
+A:visited{
+}
+A:active{
+}
+A:hover{
+}
+select {
+	height:19px;
+}
+/* 実行ボタンの設定 */
+input.submit{
+}
+/* リセットボタンの設定 */
+input.reset{
+}
+/* キャンセルボタンの設定 */
+input.cancel{
+}
+
+/* inputタグ IMEオン・日本語入力モードの設定 */
+input.imeon {
+  ime-mode    : active;
+}
+
+/* inputタグ IMEオフ・英数字入力モードの設定 */
+input.imeoff {
+  ime-mode    : inactive;
+}
+
+/* inputタグ IME使用不可・英数字入力モードの設定 */
+input.imenotuse {
+  ime-mode    : disabled;
+}
+/* inputタグ IME使用不可・英数字入力モードの設定 */
+input.height_11 {
+  height:11px;
+}
+/* テキストエリア IMEオン・日本語入力モードの設定 */
+textarea.imeon {
+  ime-mode    : active;
+}
+/* テキストエリア IMEオフ・英数字入力モードの設定 */
+textarea.imeoff {
+  ime-mode    : inactive;
+}
+
+/* レイアウトの設定 */
+table.layout {
+  width					: 100%;
+  height				: 100%;
+  padding				: 0px;
+  border-spacing		: 0px;
+  border-width			: 0px;
+}
+
+/* レイアウト ナビエリア */
+td.naviarea{
+  height				: 100%;
+  width					: 170px;
+  vertical-align		: top;
+}
+
+/* ナビエリア スクロール設定 */
+div.naviarea_scroll{
+  overflow              : auto;
+  height                : 490px;
+}
+
+/* レイアウト ボディ */
+td.bodyarea {
+  width					: *;
+  vertical-align		: top;
+}
+
+/* ボディの設定 */
+table.body_base_layout{
+  width					: 99%;
+}
+/* レイアウト リンクエリア */
+td.linkarea{
+  width					: 200px;
+  text-align			: center;
+  vertical-align		: top;
+}
+/* レイアウト リンクエリア */
+td.linkTogoarea{
+  width					: 160px;
+  height				: 100%;
+  vertical-align		: top;
+}

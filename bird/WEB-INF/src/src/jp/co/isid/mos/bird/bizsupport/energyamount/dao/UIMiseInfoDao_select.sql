@@ -1,0 +1,11 @@
+SELECT BM01.COMPANY_CD
+,      BM01.MISE_CD
+,      BM01.MISE_NAME_KJ
+
+from BM01TENM BM01
+WHERE BM01.COMPANY_CD = /*companyCd*/'00'
+/*IF miseCd != null */
+AND   BM01.MISE_CD = /*miseCd*/'02001'
+/*END*/
+order by BM01.COMPANY_CD
+,        BM01.MISE_CD

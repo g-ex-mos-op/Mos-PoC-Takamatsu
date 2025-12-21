@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE components PUBLIC "-//SEASAR2.1//DTD S2Container//EN"
+	"http://www.seasar.org/dtd/components21.dtd">
+
+<components namespace="posErrorRef">
+	<include path="dao.dicon"/>
+    <include path="jp/co/isid/mos/bird/common/dicon/birdCommon.dicon"/>	
+	<include path="jp/co/isid/mos/bird/framework/dicon/birdInterceptor.dicon"/>
+	
+	<component class="org.seasar.framework.container.autoregister.AspectAutoRegister">
+	    <property name="interceptor">birdInterceptor.actionInterceptorChain</property>
+	    <initMethod name="addClassPattern">
+	        <arg>"jp.co.isid.mos.bird"</arg>
+	        <arg>".*ActionImpl"</arg>
+	    </initMethod>
+	    <initMethod name="registerAll"/>
+	</component> 
+	<component class="org.seasar.framework.container.autoregister.AspectAutoRegister">
+	    <property name="interceptor">birdInterceptor.logicInterceptorChain</property>
+	    <initMethod name="addClassPattern">
+	        <arg>"jp.co.isid.mos.bird"</arg>
+	        <arg>".*LogicImpl"</arg>
+	    </initMethod>
+	    <initMethod name="registerAll"/>  
+	</component>
+
+	<component class="jp.co.isid.mos.bird.framework.control.BirdUserInfo" instance="session"/>
+	<component class="jp.co.isid.mos.bird.framework.control.BirdDateInfo" instance="session"/>
+	
+    <!-- Converter 	-->
+	<component name="posErrorRefDateConverter" class="jp.co.isid.mos.bird.framework.text.converter.DateConverter">
+		<arg>@jp.co.isid.mos.bird.framework.util.formatter.DateFormatter@DATE_TYPE_YMD</arg>
+		<arg>@jp.co.isid.mos.bird.framework.util.formatter.DateFormatter@PATTERN_SLASH</arg>
+	</component>
+	<component name="posErrorRefCdConverter" class="jp.co.isid.mos.bird.framework.text.converter.CodeConverter">
+		<property name="formatPattern">"00000"</property>
+	</component>
+	
+    <!-- Action -->
+	<component name="posErrorRefAction" class="jp.co.isid.mos.bird.storemanage.poserrorref.action.impl.PosErrorRefActionImpl" instance="request">
+		<property name="posErrorRefCsvDownloadAction">posErrorRefCsvDownloadAction</property>		
+	</component>
+	<component name="posErrorRefCsvDownloadAction" class="jp.co.isid.mos.bird.framework.action.impl.CsvDownloadActionImpl" instance="request">
+		<property name="initLogic">null</property>
+		<property name="csvOutputLogic">posErrorRefCsvOutPutLogic</property>
+		<property name="csvOutputDto">posErrorRefReqDto</property>
+		<property name="finalLogic">null</property>
+	</component>
+	
+    <!-- Dao -->
+	<component name="TrnShushinErrorDao" class="jp.co.isid.mos.bird.storemanage.poserrorref.dao.TrnShushinErrorDao" >
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="TrnSalesAdjustInfoDao" class="jp.co.isid.mos.bird.storemanage.poserrorref.dao.TrnSalesAdjustInfoDao" >
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="TrnMiseHolidayInfoDao" class="jp.co.isid.mos.bird.storemanage.poserrorref.dao.TrnMiseHolidayInfoDao" >
+        <aspect>dao.interceptor</aspect>
+	</component>
+	
+    <!-- Dto -->
+	<component name="posErrorRefDto" class="jp.co.isid.mos.bird.storemanage.poserrorref.dto.PosErrorRefDto" instance="session" >
+		<property name="maxSize">5</property>
+	</component>
+	<component name="posErrorRefReqDto" class="jp.co.isid.mos.bird.storemanage.poserrorref.dto.PosErrorRefReqDto" instance="request" />
+	<component name="pullDownMenuDto" class="jp.co.isid.mos.bird.framework.dto.PullDownMenuDto" autoBinding="none" instance="session"/>
+	
+    <!-- Logic 	-->
+	<component name="getShuDtListLogic" class="jp.co.isid.mos.bird.storemanage.poserrorref.logic.impl.GetShuDtListLogicImpl"/>
+	<component name="getPosErrorInfoLogic" class="jp.co.isid.mos.bird.storemanage.poserrorref.logic.impl.GetPosErrorInfoLogicImpl"/>
+	<component name="posErrorRefCsvOutPutLogic" class="jp.co.isid.mos.bird.storemanage.poserrorref.logic.impl.PosErrorRefCsvOutPutLogicImpl"/>	
+</components>

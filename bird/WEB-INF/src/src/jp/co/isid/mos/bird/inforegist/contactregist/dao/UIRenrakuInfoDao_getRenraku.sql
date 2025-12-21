@@ -1,0 +1,45 @@
+select
+    BT.REG_DATE,
+    BT.SEQ,
+    BT.CATE_ID,
+    rtrim(BT.TITLE) as TITLE,
+    BT.PUB_DATE,
+    BT.PUB_USER,
+    rtrim(BR01.USER_NAME_KJ) as USER_NAME_KJ,
+    BT.R_COMPANY_CD,
+    BT.PUB_ORG,
+    rtrim(BT.PUB_ORG_NAME) as PUB_ORG_NAME,
+    BT.MESSAGE,
+    rtrim(BT.ATTACH_NAME1) as ATTACH_NAME1,
+    rtrim(BT.ATTACH_NAME2) as ATTACH_NAME2,
+    rtrim(BT.ATTACH_NAME3) as ATTACH_NAME3,
+    rtrim(BT.ATTACH_FL1) as ATTACH_FL1,
+    rtrim(BT.ATTACH_FL2) as ATTACH_FL2,
+    rtrim(BT.ATTACH_FL3) as ATTACH_FL3,
+    BT.SAKUJO_FLG,
+    BT.FIRST_USER,
+    BT.FIRST_PGM,
+    BT.FIRST_TMSP,
+    BT.LAST_USER,
+    BT.LAST_PGM,
+    BT.LAST_TMSP
+FROM BT01INFM BT 
+     left join BR01USER BR01 on BR01.USER_ID = BT.PUB_USER 
+WHERE BT.REG_DATE like /*pubDate*/'200601%'
+AND   BT.CATE_ID = /*cateId*/'001' 
+AND   BT.PUB_ORG = (
+		SELECT BUMON_CD
+		FROM BR01USER
+		WHERE USER_ID=/*userId*/'99990001'
+	)
+AND   BT.R_COMPANY_CD = (
+		SELECT r_company_cd
+		FROM BM03USCP
+		WHERE user_id = /*userId*/'99990001'
+		AND  ZOKUSEI_KBN = '1'
+		
+		)
+AND   BT.SAKUJO_FLG <> '1'
+order by
+    BT.REG_DATE desc,
+    BT.SEQ desc

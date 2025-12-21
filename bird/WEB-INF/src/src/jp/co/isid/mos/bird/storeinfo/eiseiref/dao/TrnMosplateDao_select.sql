@@ -1,0 +1,45 @@
+SELECT BT85.BNFC_YEAR
+,      BT85.STATUS_CD
+,      BT85.COMPANY_CD
+,      BT85.MAKE_BUSYO_CD
+,      BT85.MISE_CD
+,      BT85.MNG_SEQ
+,      BT85.AREA_CD
+,      BT85.AREA_NM
+,      BT85.SHIBU_CD
+,      BT85.SHIBU_NM
+,      BT85.MAKE_CMPNY_NM
+,      BT85.MAKE_DITL_NM
+,      BT85.SUCCESS_CD
+,      BT85.SUCCESS_NM
+,      BT85.EX_DATE
+,      BT85.ARTC_CD
+,      BT85.ARTC_NM
+,      BT85.BUY_DATE
+,      BT85.BUY_TIME
+,      BT85.BUY_MAN
+,      BT85.EX_NOTE
+,      BT85.SPC_JG
+,      BT85.SPC_RSLT
+,      BT85.CLN_JG
+,      BT85.CLN_RSLT
+,      BT85.KAKU_DATE
+,      BT85.TENSO_DATE
+
+FROM BT85KTFP as BT85
+
+WHERE BT85.BNFC_YEAR  = /*nendo*/'2013'
+AND   BT85.COMPANY_CD = /*companyCd*/'00'
+AND   BT85.MISE_CD    = /*miseCd*/'00018'
+/*IF limitFlg && "01".equals(userTypeCd) */
+AND   EXISTS(SELECT BM01.SIBU_CD, BM01.MISE_CD
+             FROM BM01TENM BM01
+             ,    BM51SVSB BM51
+             WHERE BM51.SV_CD      = /*userId*/'99990003'
+             AND   BM01.COMPANY_CD = BM51.COMPANY_CD 
+             AND   BT85.COMPANY_CD = BM01.COMPANY_CD 
+             AND   BM01.SIBU_CD    = BM51.SIBU_CD
+             AND   BT85.MISE_CD    = BM01.MISE_CD)
+/*END*/
+ORDER BY BT85.BUY_DATE desc
+,        BT85.BUY_TIME desc

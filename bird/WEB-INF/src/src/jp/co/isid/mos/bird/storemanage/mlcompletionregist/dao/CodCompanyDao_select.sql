@@ -1,0 +1,7 @@
+select
+	rtrim(BC05.COMPANY_CD) as COMPANY_CD,
+	rtrim(BC05.COMPANY_NAME) as COMPANY_NAME
+from
+	BC05KCOM BC05
+where
+	BC05.COMPANY_CD = '00'

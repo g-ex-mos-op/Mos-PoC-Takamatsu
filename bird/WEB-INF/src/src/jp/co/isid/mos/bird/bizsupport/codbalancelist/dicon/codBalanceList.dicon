@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE components PUBLIC "-//SEASAR//DTD S2Container 2.3//EN"
+	"http://www.seasar.org/dtd/components23.dtd">
+<components namespace="codBalanceList">
+    <include path="dao.dicon"/>
+    <include path="jp/co/isid/mos/bird/common/dicon/birdCommon.dicon"/>
+	<include path="jp/co/isid/mos/bird/framework/dicon/birdInterceptor.dicon"/>
+	
+	<!-- インターセプターを自動登録 -->
+	<component class="org.seasar.framework.container.autoregister.AspectAutoRegister">
+	    <property name="interceptor">birdInterceptor.actionInterceptorChain</property>
+		    <initMethod name="addClassPattern">
+		        <arg>"jp.co.isid.mos.bird"</arg>
+		        <arg>".*ActionImpl"</arg>
+		    </initMethod>
+	    <initMethod name="registerAll"/>
+	</component> 
+	<component class="org.seasar.framework.container.autoregister.AspectAutoRegister">
+	    <property name="interceptor">birdInterceptor.logicInterceptorChain</property>
+		    <initMethod name="addClassPattern">
+		        <arg>"jp.co.isid.mos.bird"</arg>
+		        <arg>".*LogicImpl"</arg>
+		    </initMethod>
+	    <initMethod name="registerAll"/>  
+	</component>
+	
+	<!-- DAO -->
+	<component name="codBalanceListUICodBalanceListDao" class="jp.co.isid.mos.bird.bizsupport.codbalancelist.dao.UICodBalanceListDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+
+	<!-- LOGIC -->
+	<component name="codBalanceListConditionLogic" class="jp.co.isid.mos.bird.bizsupport.codbalancelist.logic.impl.ConditionLogicImpl"/>
+	<component name="codBalanceListDataLogic" class="jp.co.isid.mos.bird.bizsupport.codbalancelist.logic.impl.CodBalanceListDataLogicImpl"/>
+	<component name="codBalanceListCsvOutputLogic" class="jp.co.isid.mos.bird.bizsupport.codbalancelist.logic.impl.CsvOutputLogicImpl"/>
+	<component name="codBalanceListDownloadFinalLogic" class="jp.co.isid.mos.bird.bizsupport.codbalancelist.logic.impl.DownloadFinalLogicImpl"/>
+	
+	<!-- 外部のDTO -->
+	<component name="pullDownMenuDto" class="jp.co.isid.mos.bird.framework.dto.PullDownMenuDto" autoBinding="none" instance="session"/>
+	<!-- DTO -->
+	<component name="codBalanceListReqDto" class="jp.co.isid.mos.bird.bizsupport.codbalancelist.dto.RequestDto" instance="request">
+		<property name="listDatas">null</property>
+	</component>
+
+	<!-- ACTION -->
+	<component name="codBalanceListConfirmAction" class="jp.co.isid.mos.bird.bizsupport.codbalancelist.action.impl.ConfirmActionImpl" instance="request"/>
+	<component name="codBalanceListCsvAction" class="jp.co.isid.mos.bird.framework.action.impl.CsvDownloadActionImpl" instance="request">
+		<property name="csvOutputDto">codBalanceListReqDto</property>
+		<property name="csvOutputLogic">codBalanceListCsvOutputLogic</property>
+		<property name="initLogic">null</property>
+		<property name="finalLogic">codBalanceListDownloadFinalLogic</property>
+		<property name="exceptionThrowFlg">false</property>
+	</component>
+	
+	<!-- CONVERTER -->
+	<component name="codBalanceListNumConv" class="jp.co.isid.mos.bird.framework.text.converter.NumericConverter" instance="request"/>
+</components>

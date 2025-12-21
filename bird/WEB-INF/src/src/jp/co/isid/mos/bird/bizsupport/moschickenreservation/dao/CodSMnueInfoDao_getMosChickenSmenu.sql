@@ -1,0 +1,16 @@
+SELECT rtrim(BM38.MENU_NAME_KJ) as MENU_NAME_KJ
+   ,   PC10.MENU_CD as MENU_CD
+FROM   PC10SMNU PC10
+INNER JOIN (SELECT MENU_CD
+			   ,   SOTO_TANKA
+			   ,   MENU_NAME_KJ
+             FROM  BM38MMNU
+             WHERE BM38MMNU.COMPANY_CD = /*companyCd*/'00'
+             AND   BM38MMNU.MISE_CD    = /*miseCD*/'02001'
+             AND   BM38MMNU.SHIYO_FLG  = '1'
+            )BM38
+       ON(PC10.MENU_CD = BM38.MENU_CD)
+WHERE  BM38.MENU_NAME_KJ LIKE /*menuNameKj*/'%ホットチキン%' 
+AND    BM38.SOTO_TANKA <> 0
+AND    PC10.MENU_END_DT > /*sysDt*/'20060926'
+ORDER BY BM38.MENU_CD

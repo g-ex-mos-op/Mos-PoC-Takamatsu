@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="Shift_JIS"?>
+<!DOCTYPE components PUBLIC "-//SEASAR//DTD S2Container 2.3//EN"
+    "http://www.seasar.org/dtd/components23.dtd">
+<components namespace="config">
+	<include path="jp/co/isid/mos/bird/config/categoryregist/dicon/categoryRegist.dicon"/>
+	<include path="jp/co/isid/mos/bird/config/pllimitregist/dicon/plLimitRegist.dicon"/>
+	<include path="jp/co/isid/mos/bird/config/campaignmasterregist/dicon/campaignmasterregist.dicon"/>
+	<include path="jp/co/isid/mos/bird/config/urisokuregist/dicon/urisokuregist.dicon"/>
+	<include path="jp/co/isid/mos/bird/config/zenurikakuteiregist/dicon/zenurikakuteiregist.dicon"/>
+	<include path="jp/co/isid/mos/bird/config/summenuregist/dicon/summenuregist.dicon"/>
+	<include path="jp/co/isid/mos/bird/config/scheduleregist/dicon/scheduleregist.dicon"/>
+</components>

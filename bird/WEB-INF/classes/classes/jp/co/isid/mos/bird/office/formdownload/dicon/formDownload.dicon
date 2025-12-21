@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="Shift_JIS"?>
+<!DOCTYPE components PUBLIC
+    "-//SEASAR//DTD S2Container 2.3//EN"
+    "http://www.seasar.org/dtd/components23.dtd">
+<components namespace='formdownload'>
+	<include path="dao.dicon"/>
+	<include path="jp/co/isid/mos/bird/common/dicon/birdCommon.dicon"/>
+	<include path="jp/co/isid/mos/bird/framework/dicon/birdInterceptor.dicon"/>
+	<!-- インターセプターを自動登録 -->
+	<component class="org.seasar.framework.container.autoregister.AspectAutoRegister">
+	    <property name="interceptor">birdInterceptor.actionInterceptorChain</property>
+	    <initMethod name="addClassPattern">
+	        <arg>"jp.co.isid.mos.bird"</arg>
+	        <arg>".*ActionImpl"</arg>
+	    </initMethod>
+	    <initMethod name="registerAll"/>
+	</component> 
+	<component class="org.seasar.framework.container.autoregister.AspectAutoRegister">
+	    <property name="interceptor">birdInterceptor.logicInterceptorChain</property>
+	    <initMethod name="addClassPattern">
+	        <arg>"jp.co.isid.mos.bird"</arg>
+	        <arg>".*LogicImpl"</arg>
+	    </initMethod>
+	    <initMethod name="registerAll"/>  
+	</component>
+	<!-- DAO -->
+	<component name="mstUserDao" class="jp.co.isid.mos.bird.framework.dao.MstUserDao">
+		<aspect>dao.interceptor</aspect>
+	</component>
+	<component name="uIFormDownLoadDao" class="jp.co.isid.mos.bird.office.formdownload.dao.UIFormDownLoadDao">
+		<aspect>dao.interceptor</aspect>
+	</component>
+	<component name="uiViewShozokuInfoDao" class="jp.co.isid.mos.bird.office.formdownload.dao.UIViewShozokuInfoDao">
+		<aspect>dao.interceptor</aspect>
+	</component>
+	<component name="formDownLoadDao" class="jp.co.isid.mos.bird.office.formdownload.dao.FormDownLoadDao">
+		<aspect>dao.interceptor</aspect>
+	</component>
+	<component name="formdownloadCategoryListDao" class="jp.co.isid.mos.bird.office.formdownload.dao.UICategoryListDao">
+		<aspect>dao.interceptor</aspect>
+	</component>
+
+	<!-- DTO -->
+	<component name="formDownloadDto" class="jp.co.isid.mos.bird.office.formdownload.dto.FormDownloadDto" instance="session"/>
+	<component name="pullDownMenuDto" class="jp.co.isid.mos.bird.framework.dto.PullDownMenuDto" instance="session"/>
+	<!-- LOGIC -->
+	<component name="getFormInfoLogic" class="jp.co.isid.mos.bird.office.formdownload.logic.impl.GetFormInfoLogicImpl"/>
+	<component name="formDownloadLogic" class="jp.co.isid.mos.bird.office.formdownload.logic.impl.FormDownloadLogicImpl"/>
+	<component name="getUserFormCategoryLogicImpl" class="jp.co.isid.mos.bird.office.formdownload.logic.impl.GetUserFormCategoryLogicImpl"/>
+	<component name="getFormShozokuLogic" class="jp.co.isid.mos.bird.office.formdownload.logic.impl.GetFormShozokuLogicImpl"/>	
+	
+	<!-- ENTITY -->
+	<!-- アクション -->
+	<component name="formDownloadAction" class="jp.co.isid.mos.bird.office.formdownload.action.impl.FormDownloadActionImpl" instance="request">
+		<property name="formDownloadDto">formDownloadDto</property>
+		<property name="infoShu">"04"</property>
+	</component>
+	<!-- アクション -->
+	<component name="formDownloadFileDownlodAction" class="jp.co.isid.mos.bird.framework.action.impl.FileDownloadActionImpl" instance="request">
+		 <property name="downloadDto">formDownloadDto</property>
+		 <property name="downloadLogic">formDownloadLogic</property>
+	</component>
+	<component name="viewFormDownloadFileDownlodAction" class="jp.co.isid.mos.bird.framework.action.impl.FileDownloadActionImpl" instance="request">
+		 <property name="downloadDto">formDownloadDto</property>
+		 <property name="downloadLogic">formDownloadLogic</property>
+	</component>
+
+	<!-- コンバーター -->
+	<component name="formDownloadDateConverter" class="jp.co.isid.mos.bird.framework.text.converter.DateConverter" instance="request">
+		<arg>@jp.co.isid.mos.bird.framework.util.formatter.DateFormatter@DATE_TYPE_YMD</arg>
+		<arg>@jp.co.isid.mos.bird.framework.util.formatter.DateFormatter@PATTERN_SLASH</arg>
+	</component>
+	<component name="formDownloadChangeLineConverter" class="jp.co.isid.mos.bird.framework.text.converter.ChangeLineRefConverter" instance="request">
+	</component>
+	
+	
+</components>

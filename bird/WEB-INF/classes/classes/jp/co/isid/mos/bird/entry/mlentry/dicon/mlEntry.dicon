@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="Shift_JIS"?>
+<!DOCTYPE components PUBLIC
+    "-//SEASAR//DTD S2Container 2.3//EN"
+    "http://www.seasar.org/dtd/components23.dtd">
+<components namespace="entryMlEntry">
+    <include path="dao.dicon"/>
+    <include path="jp/co/isid/mos/bird/common/dicon/birdCommon.dicon"/>
+	<include path="jp/co/isid/mos/bird/framework/dicon/birdInterceptor.dicon"/>
+	
+	<component class="org.seasar.framework.container.autoregister.AspectAutoRegister">
+	    <property name="interceptor">birdInterceptor.actionInterceptorChain</property>
+	    <initMethod name="addClassPattern">
+	        <arg>"jp.co.isid.mos.bird"</arg>
+	        <arg>".*ActionImpl"</arg>
+	    </initMethod>
+	    <initMethod name="registerAll"/>
+	</component> 
+	<component 
+	  class="org.seasar.framework.container.autoregister.AspectAutoRegister">
+	    <property name="interceptor">birdInterceptor.logicInterceptorChain</property>
+	    <initMethod name="addClassPattern">
+	        <arg>"jp.co.isid.mos.bird"</arg>
+	        <arg>".*LogicImpl"</arg>
+	    </initMethod>
+	    <initMethod name="registerAll"/>  
+	</component>
+	
+	<!-- DAO -->
+	<component name="codCompanyJohoMlEntryDao" class="jp.co.isid.mos.bird.entry.mlentry.dao.CodCompanyJohoDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="mstMiseMlEntryDao" class="jp.co.isid.mos.bird.entry.mlentry.dao.MstMiseDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="mstOnerMlEntryDao" class="jp.co.isid.mos.bird.entry.mlentry.dao.MstOnerDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="mstPlaceMlEntryDao" class="jp.co.isid.mos.bird.entry.mlentry.dao.MstPlaceDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="uIEntryDateMlEntryDao" class="jp.co.isid.mos.bird.entry.mlentry.dao.UIEntryDateDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="uIEntryMstMlEntryDao" class="jp.co.isid.mos.bird.entry.mlentry.dao.UIEntryMstDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="uIEntryOnerMlEntryDao" class="jp.co.isid.mos.bird.entry.mlentry.dao.UIEntryOnerDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="uIEntryOnerStatusMlEntryDao" class="jp.co.isid.mos.bird.entry.mlentry.dao.UIEntryOnerStatusDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="uIEntryStateMlEntryDao" class="jp.co.isid.mos.bird.entry.mlentry.dao.UIEntryStateDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="uIStaffMlEntryDao" class="jp.co.isid.mos.bird.entry.mlentry.dao.UIStaffDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="uIEntryDao" class="jp.co.isid.mos.bird.entry.mlentry.dao.UIEntryDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="uIResultStateDao" class="jp.co.isid.mos.bird.entry.mlentry.dao.UIResultStateDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="uIStaffLicenseDao" class="jp.co.isid.mos.bird.entry.mlentry.dao.UIStaffLicenseDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+
+	<!-- Common -->
+	<component name="mlEntryCommon" class="jp.co.isid.mos.bird.entry.mlentry.common.MlEntryCommon"/>	
+
+	<!-- LOGIC -->
+	<component name="mlEntryCheckEntryLogic" class="jp.co.isid.mos.bird.entry.mlentry.logic.impl.CheckEntryLogicImpl"/>
+	<component name="mlEntryCompanyJohoLogic" class="jp.co.isid.mos.bird.entry.mlentry.logic.impl.CompanyJohoLogicImpl"/>
+	<component name="mlEntryGetMlListLogic" class="jp.co.isid.mos.bird.entry.mlentry.logic.impl.GetMlListLogicImpl"/>
+	<component name="mlSearchEntryLogic" class="jp.co.isid.mos.bird.entry.mlentry.logic.impl.SearchEntryLogicImpl"/>
+	<component name="mlSearchOnerLogic" class="jp.co.isid.mos.bird.entry.mlentry.logic.impl.SearchOnerLogicImpl"/>
+	<component name="mlEntryUtilLogic" class="jp.co.isid.mos.bird.entry.mlentry.logic.impl.MlEntryUtilLogicImpl"/>
+	<component name="mlEntryUpdateEntryInfoLogic" class="jp.co.isid.mos.bird.entry.mlentry.logic.impl.UpdateEntryInfoLogicImpl">
+		<aspect>j2ee.requiresNewTx</aspect>
+	</component>
+	<component name="getEntryInfoLogic" class="jp.co.isid.mos.bird.entry.mlentry.logic.impl.GetEntryInfoLogicImpl"/>
+	<component name="getStaffInfoLogic" class="jp.co.isid.mos.bird.entry.mlentry.logic.impl.GetStaffInfoLogicImpl"/>
+	<component name="getPlaceNameLogic" class="jp.co.isid.mos.bird.entry.mlentry.logic.impl.GetPlaceNameLogicImpl"/>
+	<component name="getPlaceListLogic" class="jp.co.isid.mos.bird.entry.mlentry.logic.impl.GetPlaceListLogicImpl"/>
+
+	<!-- DTO -->
+	<component name="pullDownMenuDto" class="jp.co.isid.mos.bird.framework.dto.PullDownMenuDto" instance="session"/>
+	<component name="mlEntryDto" class="jp.co.isid.mos.bird.entry.mlentry.dto.MlEntryDto" instance="session"/>
+	<component name="mlEntrySessionKeyDto" class="jp.co.isid.mos.bird.entry.mlentry.dto.SessionKeyDto" instance="session"/>
+	<component name="miseSearchDto" class="jp.co.isid.mos.bird.commonform.misesearch.dto.MiseSearchDto" instance="session"/>
+	<component name="staffRegistIFDto" class="jp.co.isid.mos.bird.storemanage.staffregist.dto.StaffRegistIFDto" instance="session"/>
+	<component name="entryStaffSearchDto" class="jp.co.isid.mos.bird.entry.commonform.entrystaffsearch.dto.EntryStaffSearchDto" autoBinding="none" instance="session"/>
+
+	<!-- ACTION -->
+	<component name="mlEntrySelectAction" class="jp.co.isid.mos.bird.entry.mlentry.action.impl.MlEntrySelectActionImpl" instance="request"/>
+	<component name="mlEntryEditAction" class="jp.co.isid.mos.bird.entry.mlentry.action.impl.MlEntryEditActionImpl" instance="request"/>
+	<component name="mlEntryConfirmAction" class="jp.co.isid.mos.bird.entry.mlentry.action.impl.MlEntryConfirmActionImpl" instance="request"/>
+	
+	<!-- CONVERTER -->
+	<component name="mlEntryDateConverter1" class="jp.co.isid.mos.bird.framework.text.converter.DateConverter" instance="request">
+		<arg>@jp.co.isid.mos.bird.framework.util.formatter.DateFormatter@DATE_TYPE_YM</arg>
+		<arg>@jp.co.isid.mos.bird.framework.util.formatter.DateFormatter@PATTERN_MONTH_SLASH</arg>
+	</component>
+	<component name="mlEntryDateConverter2" class="jp.co.isid.mos.bird.framework.text.converter.DateConverter" instance="request">
+		<arg>@jp.co.isid.mos.bird.framework.util.formatter.DateFormatter@DATE_TYPE_YMD</arg>
+		<arg>@jp.co.isid.mos.bird.framework.util.formatter.DateFormatter@PATTERN_SLASH</arg>
+	</component>
+	<component name="mlEntryNumericConverter" class="jp.co.isid.mos.bird.framework.text.converter.NumericConverter" instance="request"/>
+	<component name="mlEntryCharacterEncodingConverter" class="jp.co.isid.mos.bird.framework.text.converter.CharacterEncodingConverter" instance="request"/>
+	<component name="mlEntryZipConverter" class="jp.co.isid.mos.bird.framework.text.converter.MaskConverter" instance="request">
+		<arg>"###-####"</arg>
+	</component>
+</components>

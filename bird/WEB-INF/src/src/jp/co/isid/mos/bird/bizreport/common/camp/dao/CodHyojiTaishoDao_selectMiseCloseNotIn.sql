@@ -1,0 +1,45 @@
+SELECT DISTINCT 
+       BM01.COMPANY_CD
+,      BM01.MISE_CD AS HYOJITAISHO_CD
+,      RTRIM(CHAR(REPLACE(BM01.MISE_NAME_KJ , '  ', '  '), 40)) AS HYOJITAISHO_NAME
+,      BM01.SIBU_CD
+,      BM01.GYOTAI_KBN
+,      BM01.OPEN_DT
+,      BM01.CLOSE_DT
+,      '0' AS MISE_OPEN_FLG
+
+FROM BM01TENM as BM01
+,    BM65CPMS BM65
+/*IF userTypeCd == "02" */
+,    BM06UONR BM06
+/*END*/
+/*IF userTypeCd == "03" */
+,    BM07UTEN BM07
+/*END*/
+WHERE BM01.COMPANY_CD = /*companyCd*/'00'
+AND   BM01.CLOSE_DT   > /*sysDate*/'20060823'
+/*IF userTypeCd == "01" && limitFlg */
+AND   BM01.SIBU_CD IN
+        (SELECT BM51.SIBU_CD
+         FROM BM51SVSB BM51
+         WHERE
+           BM51.COMPANY_CD = /*companyCd*/'00' AND
+           BM51.SV_CD = /*userId*/'99990005'
+        )
+/*END*/
+/*IF userTypeCd == "02" */
+AND   BM06.USER_ID    = /*userId*/'99990003'
+AND   BM06.COMPANY_CD = BM01.COMPANY_CD
+AND   BM06.ONER_CD    = BM01.ONER_CD
+/*END*/
+/*IF userTypeCd == "03" */
+AND   BM07.USER_ID    = /*userId*/'99990003'
+AND   BM07.COMPANY_CD = BM01.COMPANY_CD
+AND   BM07.MISE_CD    = BM01.MISE_CD
+/*END*/
+AND   BM01.COMPANY_CD = BM65.COMPANY_CD
+AND   BM01.MISE_CD = BM65.MISE_CD
+AND   BM65.CAMP_ID = /*campId*/'200806'
+
+ORDER BY MISE_CD
+

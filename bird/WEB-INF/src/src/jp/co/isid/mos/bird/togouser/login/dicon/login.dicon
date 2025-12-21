@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="Shift_JIS"?>
+<!DOCTYPE components PUBLIC "-//SEASAR2.1//DTD S2Container//EN"
+	"http://www.seasar.org/dtd/components21.dtd">
+<components namespace='togologin'>
+	<include path="dao.dicon"/>
+	<include path="jp/co/isid/mos/bird/framework/dicon/birdInterceptor.dicon"/>
+
+	<component class="org.seasar.framework.container.autoregister.AspectAutoRegister">
+	    <property name="interceptor">birdInterceptor.logicInterceptorChain</property>
+	    <initMethod name="addClassPattern">
+	        <arg>"jp.co.isid.mos.bird"</arg>
+	        <arg>".*LogicImpl"</arg>
+	    </initMethod>
+	    <initMethod name="registerAll"/>  
+	</component>
+
+    <!-- DAOのnew -->
+    <!--
+	<component class="jp.co.isid.mos.bird.togouser.login.dao.LoginDao">
+		<aspect>dao.interceptor</aspect>
+	</component>
+	-->
+	<component name="ctlDateDao" class="jp.co.isid.mos.bird.framework.dao.CtlDateDao">
+		<aspect>dao.interceptor</aspect>
+	</component>
+	<component name="UITogoUserDao" class="jp.co.isid.mos.bird.togouser.login.dao.UITogoUserDao">
+		<aspect>dao.interceptor</aspect>
+	</component>
+	<component name="ctlLoginFailKaisuDao" class="jp.co.isid.mos.bird.framework.dao.CtlLoginFailKaisuDao">
+		<aspect>dao.interceptor</aspect>
+	</component>
+	<component name="UITogoMenuUserDao" class="jp.co.isid.mos.bird.togouser.common.dao.UITogoUserMenuDao">
+		<aspect>dao.interceptor</aspect>
+	</component>
+	<!-- DTOのnew -->
+	<component name="togoUserLoginDto" class="jp.co.isid.mos.bird.togouser.login.dto.TogoUserLoginDto" instance="session"/>
+	<component name="uiTogoUserDto" class="jp.co.isid.mos.bird.togouser.userregist.dto.UITogoUserDto" instance="session"/>
+    <component name="togoUserInfoDto" class="jp.co.isid.mos.bird.togouser.filterregist.dto.TogoUserInfoDto" instance="session" />
+	<component name="togoUserMenuDto" class="jp.co.isid.mos.bird.togouser.common.dto.TogoUserMenuDto" instance="session" />	
+	<!-- Logicのnew -->
+	<component name="togologinLogic" class="jp.co.isid.mos.bird.togouser.login.logic.impl.TogoLoginLogicImpl"/>
+	<component name="userInfoSetupLogic" class="jp.co.isid.mos.bird.togouser.login.logic.impl.UserInfoSetupLogicImpl"/>
+	<component name="mstInfoSetupLogic" class="jp.co.isid.mos.bird.togouser.login.logic.impl.MstInfoSetupLogicImpl"/>
+	<component name="getGetTogoUserMenuLogic" class="jp.co.isid.mos.bird.togouser.common.logic.impl.GetTogoUserMenuLogicImpl"/>
+    <!-- Actionのnew -->
+	<component name="togologinAction" class="jp.co.isid.mos.bird.togouser.login.action.impl.TogoLoginActionImpl" instance="request">
+		<aspect>birdInterceptor.simpleActionInterceptorChain</aspect>
+		<property name="togoUserLoginDto">togoUserLoginDto</property>
+	</component>
+
+	<component name="numericValidator" class="jp.co.isid.mos.bird.framework.text.validator.NumericValidator"  instance="request">
+		<arg>false</arg>
+		<arg>1</arg>
+	</component>
+	<component name="hankakuEisujiValidator" class="jp.co.isid.mos.bird.framework.text.validator.HankakuEisujiValidator"  instance="request"/>
+	
+	<!-- ============================================================================================ -->
+	<!-- ENTITY -->
+	<component class="jp.co.isid.mos.bird.framework.control.BirdDateInfo" instance="session"/>
+	<!-- <component class="jp.co.isid.mos.bird.framework.control.BirdUserInfo" instance="session"/> 
+	
+	<component name="headerDto" class="jp.co.isid.mos.bird.framework.dto.HeaderDto" instance="session"/>
+	<component name="updateLoginTimestampImpl" class="jp.co.isid.mos.bird.framework.logic.impl.UpdateLoginTimestampImpl"/>
+	-->
+	
+</components>

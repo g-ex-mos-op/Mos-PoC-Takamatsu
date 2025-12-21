@@ -1,0 +1,87 @@
+<html xmlns:m="http://www.seasar.org/maya" m:action="#{categoryRegistConditionAction.initialize}" m:extends="/jsf/layout/layoutNoNavi.html">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Windows-31j"/>
+<meta http-equiv="Content-Style-Type" content="text/css"/>
+<meta http-equiv="Content-Script-Type" content="text/javascript"/>
+<title>カテゴリ登録</title>
+</head>
+<body>
+<span m:inject="f:param" m:name="layoutTitle" m:value="カテゴリ登録"/>
+<span m:inject="s:insert" m:name="bodyTitleName">■カテゴリ登録</span>
+<span m:inject="f:param" m:name="viewIdValue" m:value="BCF004V01"/>
+<div m:inject="s:insert" m:name="body">
+<style type="text/css">
+<!--
+-->
+</style>
+
+<script type="text/javascript">
+<!--
+function loadCategoryList(){
+	document.forms['categoryRegistCondition'].elements['categoryRegistCondition:__link_clicked__'].value='categoryRegistCondition:loadCategoryList';
+	document.forms['categoryRegistCondition'].submit();
+	return false;
+}
+-->
+</script>
+
+<form m:id="categoryRegistCondition">
+
+<input type="hidden" m:id="viewId" m:value="#{viewIdValue}" />
+<input type="hidden" m:id="initMenuId" m:value="#{menuAction.initMenuId}"/>
+<input type="hidden" m:id="initSubMenuId" m:value="#{menuAction.initSubMenuId}"/>
+<a id="loadCategoryList" m:action="#{categoryRegistConditionAction.selectType}"/>
+
+
+<input type="submit" value="実行" m:action="#{categoryRegistConditionAction.search}"/>
+
+<table class="body_table" style="margin-top:4px;">
+    <tr>
+        <th>タイプ選択</th>
+        <td>
+        	<div class="hideArea">
+	            <select m:value="#{categoryRegistDto.infoShu}"
+	                    m:items="#{categoryRegistDto.infoShuList}"
+	                    m:onchange="loadCategoryList()">
+	                <option value="01">連絡</option>
+	                <option value="02">お知らせ</option>
+	                <option value="03">文書</option>
+	                <option value="04">フォーム</option>
+	            </select>
+            </div>
+        </td>
+    </tr>
+    <tr>
+        <th>対象選択</th>
+        <td>
+        	<span m:converter="#{characterEncodingConverter}" m:inject="s:selectOneRadio2" m:value="#{categoryRegistDto.target}">
+        		<input type="radio" name="target" value="1" checked="checked"/>カテゴリー
+        		<input type="radio" name="target" value="2"/>サブカテゴリー&nbsp;
+        	</span>
+        </td>
+    </tr>
+    <tr>
+        <th>カテゴリー選択</th>
+        <td>
+        	<div class="hideArea">
+	            <select m:value="#{categoryRegistDto.cateId}"
+	                    m:items="#{categoryRegistDto.categoryList}"
+	                    m:itemValue="cateId"
+	                    m:itemLabel="oldCateName">
+	                <option value="">情報システムG</option>
+	                <option value="">人事グループ</option>
+	                <option value="">モス・ヒューマン・アカデミー</option>
+	                <option value="">オフィス・ヒューマン・アカデミー</option>
+	                <option value="">店舗システム</option>
+	                <option value="">経理グループ</option>
+	            </select>
+            </div>
+        </td>
+    </tr>
+</table>
+
+</form>
+
+</div>
+</body>
+</html>

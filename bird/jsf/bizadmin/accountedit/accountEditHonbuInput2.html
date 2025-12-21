@@ -1,0 +1,88 @@
+<html xmlns:m="http://www.seasar.org/maya" m:extends="/jsf/layout/layoutNoNavi.html">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Windows-31j" />
+<title>アカウント情報変更(本部) ユーザ管理者</title>
+</head>
+<body>
+<span m:inject="f:param" m:name="layoutTitle" m:value="アカウント情報変更（編集画面）"/>
+<span m:inject="s:insert" m:name="bodyTitleName">■アカウント情報変更（編集画面）</span>
+<span m:inject="f:param" m:name="viewIdValue" m:value="BBA001V03"/>
+<span m:inject="s:insert" m:name="body">
+<STYLE type="text/css">
+ <!--
+	/* inputタグ IME使用不可・英数字入力モードの設定 */
+	input.imenotuse {
+	  height:15px;
+	}
+-->
+</STYLE>
+<SCRIPT LANGUAGE="javascript">
+<!--
+function load() {
+	focusElement("accountInput");
+}
+//-->
+</SCRIPT>
+
+<form m:id="accountInput" onKeyDown="return setDefaultSubmitButton('accountInput','executeBt')";>
+	<input type="hidden" m:id="viewId" m:value="#{viewIdValue}"/>
+	<input type="hidden" m:id="initMenuId" m:value="#{menuAction.initMenuId}"/>
+	<input type="hidden" m:id="initSubMenuId" m:value="#{menuAction.initSubMenuId}"/>
+	<input type="hidden" m:id="windowId" m:value="#{accounteditReqDto.windowId}"/>
+	<input type="hidden" m:id="sessionKey" m:value="#{accounteditReqDto.sessionKey}"/>
+	<input type="button" value="戻る" m:action="#{accounteditCheckAction.back}"/>&nbsp;&nbsp;
+	<input type="button" value="確認" m:id="executeBt" class="operation_button" m:action="#{accounteditCheckAction.update_check}" />
+	<div style="clear:both;line-height:4px;"><br/></div>
+	<table class="body_table2" style="width:980px;">
+		<col style="width:180px;"/>
+		<col style="width:310px;"/>
+		<col style="width:155px;"/>
+		<col style="width:310px;"/>
+		<tr>
+			<th>ユーザータイプ </th>
+			<td colspan="3">本部</td>
+		</tr>
+		<tr>
+			<th>ユーザーID (アカウント)</th> 
+			<td colspan="3"><span m:inject="h:outputText" m:value="#{accounteditDto.uIUser.userId}" /></td>
+		</tr>
+		<tr> 
+			<th>ユーザー名 </th>
+			<td><span m:converter="#{characterEncodingConverter}" m:inject="h:outputText" m:value="#{accounteditDto.uIUser.userNameKj}"/></td>
+			<th>ユーザー名(カナ) </th>
+			<td><span m:converter="#{characterEncodingConverter}" m:inject="h:outputText" m:value="#{accounteditDto.uIUser.userNameKana}"/></td>
+		</tr>
+		<tr>
+			<th>会社</th>
+			<td><span m:converter="#{characterEncodingConverter}" m:inject="h:outputText" m:value="#{accounteditDto.userCompany.rCompanyName}" /></td>
+			<th>部門</th>
+			<td><span m:converter="#{characterEncodingConverter}" m:inject="h:outputText" m:value="#{accounteditDto.uIUser.bumonName}" /></td>	
+		</tr>
+		<tr>
+			<th>業態　</th>
+			<td>
+		  		<div m:inject="s:forEach" m:items="#{accounteditDto.userGyotaiList}" m:var="e" m:varindex="i">
+	        	<span m:converter="#{characterEncodingConverter}" m:value="#{e.gyotaiName}"/><br>
+		  		</div>
+			</td>
+			<th> オーナーコード </th>
+			<td><span m:converter="#{characterEncodingConverter}" m:inject="h:outputText" m:value="#{accounteditDto.userOner.onerCd}" />&nbsp;<span m:converter="#{characterEncodingConverter}" m:inject="h:outputText" m:value="#{accounteditDto.userOner.onerNameKj}" /></td>	
+		</tr>
+		<tr>
+			<th>リモート制限</th>
+			<td><span m:converter="#{characterEncodingConverter}" m:inject="h:outputText" m:value="#{accounteditDto.labelLimitKbn}" /></td>
+			<th>使用停止</th>
+			<td>使用停止<span m:inject="h:outputText" m:value="#{accounteditDto.labelStopFlg}" /></td>
+		</tr>
+	    <tr>
+			<th>メールアドレス </th>
+			<td colspan="3"><input m:id="mailAdd" class="imenotuse" type="text" m:maxlength="60" size="58" m:value="#{accounteditDto.uIUser.mailAdd}" /></td>
+		</tr>
+			
+	</table>
+	<input type="text" m:id="dummyEnter" style="display:none"/>
+</form>
+</span>
+
+</body>
+</html>

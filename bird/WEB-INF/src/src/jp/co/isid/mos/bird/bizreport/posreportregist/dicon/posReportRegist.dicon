@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="Shift_JIS"?>
+<!DOCTYPE components PUBLIC "-//SEASAR//DTD S2Container 2.3//EN"
+    "http://www.seasar.org/dtd/components23.dtd">
+<components namespace="posReportRegist">
+    <include path="dao.dicon"/>
+	<include path="jp/co/isid/mos/bird/framework/dicon/birdInterceptor.dicon"/>
+	<include path="jp/co/isid/mos/bird/bizreport/common/dicon/bizreportCommon.dicon" />
+	<include path="jp/co/isid/mos/bird/storeinfo/miseref/dicon/miseRef.dicon"/>
+	<include path="jp/co/isid/mos/bird/common/dicon/birdCommon.dicon"/>
+
+	<component
+	  class="org.seasar.framework.container.autoregister.AspectAutoRegister">
+	    <property name="interceptor">birdInterceptor.actionInterceptorChain</property>
+	    <initMethod name="addClassPattern">
+	        <arg>"jp.co.isid.mos.bird"</arg>
+	        <arg>".*ActionImpl"</arg>
+	    </initMethod>
+	    <initMethod name="registerAll"/>
+	</component> 
+	
+	<component
+	  class="org.seasar.framework.container.autoregister.AspectAutoRegister">
+	    <property name="interceptor">birdInterceptor.logicInterceptorChain</property>
+	    <initMethod name="addClassPattern">
+	        <arg>"jp.co.isid.mos.bird"</arg>
+	        <arg>".*LogicImpl"</arg>
+	    </initMethod>
+	    <initMethod name="registerAll"/>
+	</component>
+
+	<component class="jp.co.isid.mos.bird.framework.control.BirdUserInfo" instance="session"/>
+	<component class="jp.co.isid.mos.bird.framework.control.BirdDateInfo" instance="session"/>
+	
+	<!-- DAO -->
+	<component name="uIPosReportMiseInfoDao" class="jp.co.isid.mos.bird.bizreport.posreportregist.dao.UIPosReportMiseInfoDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="posReportRegistUIMiseChkInfoDao" class="jp.co.isid.mos.bird.bizreport.posreportregist.dao.UIMiseChkInfoDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="uIRealtimePosInfoDao" class="jp.co.isid.mos.bird.bizreport.posreportregist.dao.UIRealtimePosInfoDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="uIRealtimeStInfoDao" class="jp.co.isid.mos.bird.bizreport.posreportregist.dao.UIRealtimeStInfoDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="posReportRegistMstRealTimeScheduleDao" class="jp.co.isid.mos.bird.bizreport.posreportregist.dao.MstRealTimeScheduleDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	
+	<!-- DTO -->
+	<component name="posReportRegistDto" class="jp.co.isid.mos.bird.bizreport.posreportregist.dto.PosReportRegistDto" instance="session"/>
+	
+	<!-- Action -->
+	<component name="posReportRegistAction" class="jp.co.isid.mos.bird.bizreport.posreportregist.action.impl.PosReportRegistActionImpl" instance="request"/>
+	<component name="posReportRegistConfirmAction" class="jp.co.isid.mos.bird.bizreport.posreportregist.action.impl.PosReportRegistConfirmActionImpl" instance="request"/>
+	
+	<!-- Logic -->
+	<component name="getMiseLogic" class="jp.co.isid.mos.bird.common.logic.impl.GetMiseLogicImpl"/>
+	<component name="checkDblPosReportMiseListLogic" class="jp.co.isid.mos.bird.bizreport.posreportregist.logic.impl.CheckDblPosReportMiseListLogicImpl"/>
+	<component name="registPosReportLogic" class="jp.co.isid.mos.bird.bizreport.posreportregist.logic.impl.RegistPosReportLogicImpl">
+			<aspect>j2ee.requiresNewTx</aspect>
+	</component>
+	<component name="posReportRegistSetUpInitDataLogic" class="jp.co.isid.mos.bird.bizreport.posreportregist.logic.impl.SetUpInitDataLogicImpl"/>
+	<component name="posReportRegistCheckInputParamLogic" class="jp.co.isid.mos.bird.bizreport.posreportregist.logic.impl.CheckInputParamLogicImpl"/>
+	<component name="posReportRegistLogic" class="jp.co.isid.mos.bird.bizreport.posreportregist.logic.impl.RegistLogicImpl">
+			<aspect>j2ee.requiresNewTx</aspect>
+			<property name="posReportRegistMstRealTimeScheduleDao">posReportRegistMstRealTimeScheduleDao</property>
+	</component>
+	
+	<!-- Converter -->
+	<component name="posReportRegistCdConverter" class="jp.co.isid.mos.bird.framework.text.converter.CodeConverter">
+		<property name="formatPattern">"00000"</property>
+	</component>
+		
+</components>
+

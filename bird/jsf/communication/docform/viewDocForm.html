@@ -1,0 +1,366 @@
+<html xmlns:m="http://www.seasar.org/maya" m:action="#{docformAction.initialize}" m:extends="/jsf/layout/layout.html">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Windows-31j" />
+</head>
+<body>
+<span m:inject="f:param" m:name="layoutTitle" m:value="情報共有（文書・フォーム）#{docformDto.viewCateName}"/>
+<span m:inject="f:param" m:name="onLoadName" m:value="load()"/>
+<span m:inject="s:insert" m:name="naviarea" m:src="/jsf/communication/docform/cateNavi.html"/>
+<span m:converter="#{characterEncodingConverter}" m:inject="s:insert" m:name="bodyTitleName" m:value="#{layoutTitle}"/>
+<span m:inject="f:param" m:name="viewIdValue" m:value="BCM004V01"/>
+<span m:inject="s:insert" m:name="body">
+<STYLE type="text/css">
+    <!--
+table.header_table{
+  width				: 97.5%;
+}
+table.body_table2{
+  width				: 97.5%;
+}
+.scroll_area_row1 {
+	height				: 217px;
+}
+.scroll_area_row2 {
+	height				: 194px;
+}
+.scroll_area_row3 {
+	height				: 170px;
+}
+.scroll_area_row4 {
+	height				: 147px;
+}
+/** 発信元幅 */
+.col_puborgname {
+	width				: 170px;
+}
+
+//-->
+</STYLE>
+<script type="text/javascript">
+<!--
+function load(){
+	focusElement("docForm");
+    loadScroll("viewDocFormScroll");
+    loadScroll("searchScroll");
+    loadScroll("viewDocFormScroll_detail",133);
+}
+function setViewIndex(index) {
+    document.docForm.elements["docForm:indexEntityViewDetail"].value=index;
+}
+function downloadMode(index) {
+    document.docForm.elements["docForm:downloadMode"].value=index;
+}
+function downloadMainFile(index) {
+    downloadMode(1);
+    document.docForm.elements["docForm:downloadFileIndex"].value = index;
+}
+function changePage(targetPage) {
+    document.docForm.elements["docForm:currentPageNumber"].value = targetPage;
+    //カテゴリ検索エリアの条件項目を設定します。
+    settingCateAreaParam();
+}
+function changeCateTab(targetTab) {
+    document.docForm.elements["docForm:targetTab"].value = targetTab;
+    //カテゴリ検索エリアの条件項目を設定します。
+    settingCateAreaParam();
+    document.docForm.elements['docForm:__link_clicked__'].value='docForm:changeTab';
+    document.docForm.submit();
+}
+function changeBtTab(targetTab) {
+    document.docForm.elements["searchBtn"].disabled = true;
+    document.getElementById("docForm:pane_result").style.display = "none";
+    document.getElementById("docForm:pane_waitmsg").style.display = "inline";
+    document.docForm.elements["docForm:targetTab"].value = targetTab;
+    //カテゴリ検索エリアの条件項目を設定します。
+    settingCateAreaParam();
+    document.docForm.elements['docForm:__link_clicked__'].value='docForm:changeTab';
+    document.docForm.submit();
+}
+function searchByButton(elemSearchButton) {
+    elemSearchButton.disabled = true;
+    document.getElementById("docForm:pane_result").style.display = "none";
+    document.getElementById("docForm:pane_waitmsg").style.display = "inline";
+    document.docForm.elements['docForm:__link_clicked__'].value='docForm:searchByButton';
+    //カテゴリ検索エリアの条件項目を設定します。
+    settingCateAreaParam();
+    document.docForm.submit();
+}
+/**
+ * カテゴリ検索エリアの条件項目を設定します。
+ */
+function settingCateAreaParam() {
+	document.docForm.elements['docForm:cateSearchField'].value=document.naviForm.elements['naviForm:cateSearchField'].value;
+}
+
+//-->
+</script>
+<form m:id="docForm">
+	<input type="hidden" m:id="viewId" m:value="#{viewIdValue}"/>
+	<input type="hidden" m:id="initMenuId" m:value="#{menuAction.initMenuId}"/>
+	<input type="hidden" m:id="initSubMenuId" m:value="#{menuAction.initSubMenuId}"/>
+	<input type="hidden" m:id="indexEntityViewDetail" m:value="#{docformDto.indexEntityViewDetail}"/>
+	<input type="hidden" m:id="downloadMode" m:value="#{docformDto.downloadMode}"/>
+	<input type="hidden" m:id="downloadFileIndex" m:value="#{docformDto.downloadFileIndex}"/>
+	<input type="hidden" m:id="targetTab" m:value="#{docformReqDto.targetTab}"/>
+	<input type="hidden" m:id="currentPageNumber" m:value="#{docformReqDto.currentPageNumber}"/>
+	<input type="hidden" m:id="cateSearchField" m:value="#{docformReqDto.cateSearchField}"/>
+	<input type="hidden" name="pmossFlg" m:value="#{birdUserInfo.pmossles?'true':'false'}" m:passthrough="true"/>
+    <input type="hidden" name="Flg" m:value="#{docformDto.subCateRowCnt}" m:passthrough="true"/>
+
+	<a m:id="searchByButton"  m:action="#{docformAction.searchByButton}"/>
+	<a id="changeTab" m:action="#{docformAction.changeTab}"/>
+	<!-- 検索条件 -->
+	<span m:rendered="#{birdUserInfo.pmossles==false}">
+	<table width="98%" cellpadding="0" cellspacing="0">
+		<tr valign="top" class="search_condition">
+			<td>
+				<table class="body_table">
+				    <tr>
+				        <th>対象</th>
+				        <td><div class="hideArea">
+				            <select m:id="buttonSearchField"
+				                m:value="#{docformReqDto.buttonSearchField}"
+								m:items="#{docformReqDto.listSearchField}"
+								m:itemValue="code"
+								m:itemLabel="name"
+								/>
+				            </div>
+				        </td>
+				        <th>全文検索</th>
+				        <td><input class="width_150" type="text" id="searchWord" m:value="#{docformReqDto.searchWord}" m:size="30"/></td>
+				        <th>タイトル</th>
+				        <td>
+				            <input class="imeon width_170" type="text" id="searchTitle" m:value="#{docformReqDto.searchTitle}" m:maxlength="80" m:size="30"/>
+				            <input type="submit" value="検索" class="operation_button" name="searchBtn" onClick="searchByButton(this);" onDblClick="return false;"/>
+				        </td>
+				    </tr>
+				</table>
+			</td>
+		</tr>
+	</table>
+	</span>
+
+	<div m:id="pane_waitmsg" style="display:none;font-weight:bold;">
+	<p/>検索しています。しばらくお待ち下さい・・・</div>
+	<div m:id="pane_result" class="font_size_15">
+		<div style="width:98%;text-align:right;margin-top:5px;margin-bottom:5px;">
+            <input type="submit" value="最初へ" m:action="#{docformAction.changePage}" onClick="changePage(#{docformDto.firstPageNumber});" m:disabled="#{docformDto.firstPage}"/>
+            <input type="submit" value="前へ" m:action="#{docformAction.changePage}" onClick="changePage(#{docformDto.previousPageNumber});" m:disabled="#{!docformDto.existPreviousPage}"/>
+            <input type="submit" value="次へ" m:action="#{docformAction.changePage}" onClick="changePage(#{docformDto.nextPageNumber});" m:disabled="#{!docformDto.existNextPage}"/>
+            <input type="submit" value="最後へ" m:action="#{docformAction.changePage}" onClick="changePage(#{docformDto.lastPageNumber});" m:disabled="#{docformDto.lastPage}"/>
+            &nbsp;
+            <span m:value="#{docformDto.currentPageNumber}"/> / <span m:value="#{docformDto.lastPageNumber}"/>&nbsp;ページ
+		</div>
+		<div m:rendered="#{docformDto.viewListFlg}">
+			<!--カテゴリー検索の場合-->
+			<div m:rendered="#{docformDto.searchMode == 1}">
+			<div class="scroll_padding_head">
+				<div class="scroll_hidden margin_bottom_hidden">
+				<table cellpadding="0" cellspacing="0" width="95%">
+			    <div m:inject="s:forEach" m:items="#{docformDto.listTabSubCate}" m:var="listSubCate" m:varindex="i">
+					<tr>
+				    <div m:inject="s:forEach" m:items="#{listSubCate}" m:var="e" m:varindex="i">
+				    	<td m:rendered="#{e!=null && e.subCateId==docformDto.targetTab}"
+				    	    class="element_print" style="width:25%">
+				    		【<span m:converter="#{characterEncodingConverter}" m:value="#{e.subCateName}"/>】</td>
+				        <td m:rendered="#{e!=null}" style="width:25%"
+						    m:class="body_#{e.subCateId!=docformDto.targetTab?'non_':''}active_cell element_browser"
+				            onClick="#{e.subCateId!=docformDto.targetTab?'changeCateTab(\'':''}#{e.subCateId!=docformDto.targetTab?e.subCateId:''}#{e.subCateId!=docformDto.targetTab?'\')':''}"
+				            onMouseOver="this.style.cursor='pointer';">
+				 	         <span m:converter="#{characterEncodingConverter}" m:value="#{e.subCateName}"/></td>
+				 	    <td m:rendered="#{e==null}"  style="width:25%"></td>
+					</div>
+					</tr>
+				</div>
+				</table>
+				<!--タブ帯-->
+			    <table class="body_table2">
+			    	<caption class="body_caption" style="line-height:3px;">&nbsp;</caption>
+				    <tr class="header_row font_size_14">
+				        <th width="*">登録タイトル一覧</th>
+				        <th width="40px">関連</th>
+				        <th width="200px">発信元</th>
+				        <th width="40px">詳細</th>
+				    </tr>
+			    </table>
+			    </div>
+			    </div>
+			    <div class="scroll_padding_data">
+			    <div class="scroll_standby scroll_area_row#{docformDto.subCateRowCnt}" id="viewDocFormScroll">
+                  <table class="body_table2" style="border-top-width:0px">
+			            <div m:inject="s:forEach" m:items="#{docformDto.listDocForm}" m:var="e" m:varindex="i">
+			                <tr class="non_top_border font_size_14">
+			                    <td width="*">
+			                        <a m:action="#{docformFileDownlodAction.download}" title="#{e.fileName}" m:onclick="downloadMainFile(#{i});">
+			                            <span m:converter="#{characterEncodingConverter}" m:value="#{e.title}"/>
+			                        </a>
+			                    </td>
+			                    <td width="40px" align="center">
+			                    	<span m:value="#{(e.listDownloadFileSize != 0) == true ? '有' : '無'}"/>
+			                    </td>
+			                    <td width="200px">
+			                    	<span m:converter="#{characterEncodingConverter}" m:value="#{e.pubOrgName}"/>
+			                    </td>
+			                    <td width="40px" align="center">
+			                        <a m:action="#{docformAction.viewDetail}" m:onClick="setViewIndex(#{i})">
+			                            詳細
+			                        </a>
+			                    </td>
+			                </tr>
+			            </div>
+			        </table>
+			    </div>
+			    </div>
+
+			</div>
+			<!--タイトル検索の場合 -->
+			<div m:rendered="#{docformDto.searchMode == 2}">
+			<div class="scroll_padding_head">
+				<div class="scroll_hidden margin_bottom_hidden">
+			<!--情報種別タブ-->
+			    <div m:rendered="#{docformDto.existBunshoData && docformDto.existFormData}"
+			        style="float:left; width:120px;white-space:nowrap"
+			        class="body_#{docformDto.targetTab == '1'?'':'non_'}active_cell element_browser"
+			    	onClick="#{docformDto.targetTab == '1'?'':'changeBtTab(\'1\');'}"
+			        onMouseOver="this.style.cursor='pointer';">全て</div>
+			    <div m:rendered="#{docformDto.existBunshoData}"
+			        style="float:left; width:120px;white-space:nowrap"
+			                class="body_#{docformDto.targetTab == '03'?'':'non_'}active_cell element_browser"
+			            	onClick="#{docformDto.targetTab == '03'?'':'changeBtTab(\'03\');'}"
+			                onMouseOver="this.style.cursor='pointer';">
+			            	文書</div>
+			    <div m:rendered="#{docformDto.existFormData}"
+			        style="float:left; width:120px;white-space:nowrap"
+			        class="body_#{docformDto.targetTab == '04'?'':'non_'}active_cell element_browser"
+			    	onClick="#{docformDto.targetTab == '04'?'':'changeBtTab(\'04\');'}"
+			        onMouseOver="this.style.cursor='pointer';">フォーム</div>
+			    <div class="element_print">
+			    	【  <span m:value="#{docformDto.targetTab == '1'?'全て':(docformDto.targetTab == '03'?'文書':(docformDto.targetTab == '04'?'フォーム':''))}"/>  】
+			    </div>
+				<!--タブ帯-->
+				<div style="clear:both;width:97.5%;line-height:5px;margin-bottom:-2px;" class="body_caption">&nbsp;</div>
+			<!-- 文書一覧 -->
+			    <table class="body_table2">
+				    <tr class="header_row font_size_14">
+				        <th width="110px">カテゴリー</th>
+				        <th width="110px">サブカテゴリー</th>
+				        <th width="*">登録タイトル一覧</th>
+				        <th width="40px">関連</th>
+				        <th class="col_puborgname">発信元</th>
+				        <th width="40px">詳細</th>
+				    </tr>
+			    </table>
+			    </div>
+			    </div>
+			    <div class="scroll_padding_data">
+			    <div class="scroll_standby scroll_area_row1" id="searchScroll">
+			        <table class="body_table2" style="border-top-width:0px">
+			            <div m:inject="s:forEach" m:items="#{docformDto.listDocForm}" m:var="e" m:varindex="i">
+			                <tr class="non_top_border font_size_14">
+			                    <td width="110px">
+			                        <span m:converter="#{characterEncodingConverter}" m:value="#{e.cateName}"/>
+			                    </td>
+			                    <td width="110">
+			                        <span m:converter="#{characterEncodingConverter}" m:value="#{e.subCateName}"/>
+			                    </td>
+			                    <td width="*">
+			                        <a m:action="#{docformFileDownlodAction.download}" title="#{e.fileName}" m:onclick="downloadMainFile(#{i});">
+			                            <span m:converter="#{characterEncodingConverter}" m:value="#{e.title}"/>
+			                        </a>
+			                    </td>
+			                    <td width="40px" align="center">
+			                    	<span m:value="#{(e.listDownloadFileSize != 0) == true ? '有' : '無'}"/>
+			                    </td>
+			                    <td class="col_puborgname">
+			                    	<span m:converter="#{characterEncodingConverter}" m:value="#{e.pubOrgName}"/>
+			                    </td>
+			                    <td width="40px" align="center">
+			                        <a m:action="#{docformAction.viewDetail}" m:onClick="setViewIndex(#{i})">
+			                            詳細
+			                        </a>
+			                    </td>
+			                </tr>
+			            </div>
+			        </table>
+			    </div>
+			    </div>
+			</div>
+		<div class="scroll_padding_head">
+		<div class="scroll_hidden" >
+		    <table m:rendered="#{docformDto.entityViewDetail != null}" class="header_table" cellspacing="0" style="margin-top:5px;">
+		        <tr>
+		            <td class="body_caption" colspan=2>
+		              <span m:rendered="#{docformDto.entityViewDetail.infoShu == '03'}">文書内容</span>
+		              <span m:rendered="#{docformDto.entityViewDetail.infoShu == '04'}">フォーム内容</span>
+		            </td>
+		        </tr>
+		    </table>
+	    </div>
+	    </div>
+			<div class="scroll_padding_data">
+			<div m:rendered="#{docformDto.entityViewDetail != null}" class="scroll_standby" id="viewDocFormScroll_detail">
+			    <table class="body_table2 font_size_14">
+			        <tr>
+			            <th width="155px">
+			              <span m:rendered="#{docformDto.entityViewDetail.infoShu == '03'}">選択文書タイトル</span>
+			              <span m:rendered="#{docformDto.entityViewDetail.infoShu == '04'}">選択フォームタイトル</span>
+			            </th>
+			            <td width="*">
+			                <span m:converter="#{characterEncodingConverter}" m:value="#{docformDto.entityViewDetail.title}"/>
+			            </td>
+			        </tr>
+			        <tr>
+			            <th>公開対象</th>
+			            <td><span m:converter="#{characterEncodingConverter}" m:value="#{docformDto.viewShozoku}"/></td>
+			        </tr>
+
+			        <tr style="line-height:24px;">
+			        	<th style="padding:0px 1px;">関連ファイル</th>
+			        	<td style="padding:0px 1px;">
+							<table m:rendered="#{docformDto.entityViewDetail.listDownloadFileSize != 0}" cellpadding="0" cellspacing="0">
+								<tr>
+									<td style="border-style:none;">
+							<div class="hideArea">
+			                    <select class="condition_field"
+			                            m:value="#{docformDto.viewSelectedAttachFileIndex}"
+			                            m:items="#{docformDto.entityViewDetail.listDownloadFile}"
+			                            m:itemValue="value"
+			                            m:itemLabel="label"
+			                            m:nullLabel="">
+			                    </select>
+		                   </div>
+									</td>
+									<td style="border-style:none;">
+		        	                    <input type="button" value="ダウンロード"
+                                               m:action="#{docformFileDownlodAction.download}"
+                                               m:onclick="downloadMode(3)"/>
+									</td>
+								</tr>
+							</table>
+			        	</td>
+			        </tr>
+			        <tr>
+			            <th>発信元</th>
+			            <td><span m:converter="#{characterEncodingConverter}" m:value="#{docformDto.entityViewDetail.pubOrgName}"/></td>
+			        </tr>
+			        <tr>
+			            <th>掲載期間</th>
+			            <td><span m:value="#{docformDto.entityViewDetail.pubDateFrom}" m:converter="#{dateConverter}"/>～
+			                <span m:value="#{docformDto.entityViewDetail.pubDateTo}" m:converter="#{dateConverter}"/>
+			            </td>
+			        </tr>
+			        <tr>
+			            <th>説明</th>
+			            <td><span m:value="#{docformDto.entityViewDetail.discription}" m:converter="#{changeLineRefConverter}" m:escape="false"/></td>
+			        </tr>
+			    </table>
+			</div>
+			</div>
+		</div>
+	</div>
+	<input type="text" m:id="dummyEnter" style="display:none"/>
+</form>
+
+</span>
+</body>
+</html>

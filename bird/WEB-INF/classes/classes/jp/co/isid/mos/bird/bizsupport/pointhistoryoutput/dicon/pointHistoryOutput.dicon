@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="Shift_JIS"?>
+<!DOCTYPE components PUBLIC "-//SEASAR2.1//DTD S2Container//EN"
+	"http://www.seasar.org/dtd/components21.dtd">
+<components namespace="pointHistoryOutput">
+    <include path="dao.dicon"/>
+    <include path="jp/co/isid/mos/bird/common/dicon/birdCommon.dicon"/>
+	<include path="jp/co/isid/mos/bird/framework/dicon/birdInterceptor.dicon"/>
+
+    <!-- インターセプターを自動登録 -->
+	<component class="org.seasar.framework.container.autoregister.AspectAutoRegister">
+	    <property name="interceptor">birdInterceptor.actionInterceptorChain</property>
+	    <initMethod name="addClassPattern">
+	        <arg>"jp.co.isid.mos.bird"</arg>
+	        <arg>".*ActionImpl"</arg>
+	    </initMethod>
+	    <initMethod name="registerAll"/>
+	</component>
+	<component class="org.seasar.framework.container.autoregister.AspectAutoRegister">
+	    <property name="interceptor">birdInterceptor.logicInterceptorChain</property>
+	    <initMethod name="addClassPattern">
+	        <arg>"jp.co.isid.mos.bird"</arg>
+	        <arg>".*LogicImpl"</arg>
+	    </initMethod>
+	    <initMethod name="registerAll"/>
+	</component>
+
+  	<!-- DAO -->
+    <component name="codKbCompanyJohoDao" class="jp.co.isid.mos.bird.bizsupport.pointhistoryoutput.dao.CodKbCompanyJohoDao">
+  	  	<aspect>dao.interceptor</aspect>
+	</component>
+  	<component name="uiHuyoPointRirekiDao" class="jp.co.isid.mos.bird.bizsupport.pointhistoryoutput.dao.UIHuyoPointRirekiDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+  	<component name="uiPointRuikeiDao" class="jp.co.isid.mos.bird.bizsupport.pointhistoryoutput.dao.UIPointRuikeiDao">
+  	    <aspect>dao.interceptor</aspect>
+	</component>
+    <component name="uiTaishokuSeisanDao" class="jp.co.isid.mos.bird.bizsupport.pointhistoryoutput.dao.UITaishokuSeisanDao">
+  	    <aspect>dao.interceptor</aspect>
+	</component>
+    <component name="uiYakuinPointRirekiDao" class="jp.co.isid.mos.bird.bizsupport.pointhistoryoutput.dao.UIYakuinPointRirekiDao">
+  	  	<aspect>dao.interceptor</aspect>
+	</component>
+
+    <!-- LOGIC -->
+	<component name="kbCompanyJohoLogic"
+	          class="jp.co.isid.mos.bird.bizsupport.pointhistoryoutput.logic.impl.KbCompanyJohoLogicImpl"/>
+    <component name="pointHistoryOutputLogic"
+	          class="jp.co.isid.mos.bird.bizsupport.pointhistoryoutput.logic.impl.PointHistoryOutputLogicImpl">
+		<property name="selectMaxCount">10000</property>
+    </component>
+	<component name="pointHistoryOutputCsvLogic"
+	    class="jp.co.isid.mos.bird.bizsupport.pointhistoryoutput.logic.impl.PointHistoryOutputCsvLogicImpl"/>
+
+
+	<!-- DTO -->
+	<component name="pullDownMenuDto"
+	    class="jp.co.isid.mos.bird.framework.dto.PullDownMenuDto" autoBinding="none" instance="session"/>
+	<component name="pointHistoryOutputDto"
+	    class="jp.co.isid.mos.bird.bizsupport.pointhistoryoutput.dto.PointHistoryOutputDto" instance="session"/>
+
+	<!-- OTHER -->
+	<component class="jp.co.isid.mos.bird.framework.control.BirdUserInfo" instance="session"/>
+	<component class="jp.co.isid.mos.bird.framework.control.BirdDateInfo" instance="session"/>
+
+	<!-- ACTION -->
+	<component name="pointHistoryOutputAction" class="jp.co.isid.mos.bird.bizsupport.pointhistoryoutput.action.impl.PointHistoryOutputActionImpl" instance="request">
+		<property name="pointHistoryOutputDto">pointHistoryOutputDto</property>
+		<property name="kbCompanyJohoLogic">kbCompanyJohoLogic</property>
+	</component>
+	<component name="pointHistoryOutputCsvOutputAction" class="jp.co.isid.mos.bird.framework.action.impl.CsvOutputActionImpl" instance="request">
+		<property name="csvOutputDto">pointHistoryOutputDto</property>
+		<property name="csvOutputLogic">pointHistoryOutputCsvLogic</property>
+	</component>
+
+	<!-- Converter -->
+	<component name="dateConverterPointHistoryOutputOutDt" class="jp.co.isid.mos.bird.framework.text.converter.DateConverter" instance="request">
+		<arg>@jp.co.isid.mos.bird.framework.util.formatter.DateFormatter@DATE_TYPE_YMD</arg>
+		<arg>@jp.co.isid.mos.bird.framework.util.formatter.DateFormatter@PATTERN_SLASH</arg>
+	</component>
+
+</components>

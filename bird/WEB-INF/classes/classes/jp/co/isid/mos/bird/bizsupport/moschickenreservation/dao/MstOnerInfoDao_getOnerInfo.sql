@@ -1,0 +1,4 @@
+SELECT RTRIM(ONER_CD) as ONER_CD
+FROM   BM11ONER
+WHERE  COMPANY_CD = /*companyCd*/'00' 
+AND    ONER_CD = /*onerCd*/'36478'

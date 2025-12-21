@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="Shift_JIS"?>
+<!DOCTYPE components PUBLIC "-//SEASAR2.1//DTD S2Container//EN"
+	"http://www.seasar.org/dtd/components21.dtd">
+<components namespace="togoUserRegist">
+    <include path="dao.dicon"/>
+    <include path="jp/co/isid/mos/bird/common/dicon/birdCommon.dicon"/>
+	<include path="jp/co/isid/mos/bird/framework/dicon/birdInterceptor.dicon"/>
+
+    <!-- システムエラー時に画面表示させる用 -->
+	<component
+	  class="org.seasar.framework.container.autoregister.AspectAutoRegister">
+	    <property name="interceptor">birdInterceptor.actionInterceptorTogoChain</property>
+	    <initMethod name="addClassPattern">
+	        <arg>"jp.co.isid.mos.bird"</arg>
+	        <arg>".*ActionImpl"</arg>
+	    </initMethod>
+	    <initMethod name="registerAll"/>
+	</component> 
+    <!-- バッチ排他チェック用 -->	
+	<component
+	  class="org.seasar.framework.container.autoregister.AspectAutoRegister">
+	    <property name="interceptor">birdInterceptor.logicInterceptorChain</property>
+	    <initMethod name="addClassPattern">
+	        <arg>"jp.co.isid.mos.bird"</arg>
+	        <arg>".*LogicImpl"</arg>
+	    </initMethod>
+	    <initMethod name="registerAll"/>
+	</component>
+
+
+	<!-- ============================================================================================ -->
+	<!-- DAO -->
+	<component name="uiTogoUserRirekiDao" class="jp.co.isid.mos.bird.togouser.userregist.dao.UITogoUserRirekiDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="uiBirdUserDao" class="jp.co.isid.mos.bird.togouser.userregist.dao.UIBirdUserDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="codBumonDao" class="jp.co.isid.mos.bird.togouser.userregist.dao.CodBumonDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="codBumonCompanyDao" class="jp.co.isid.mos.bird.togouser.userregist.dao.CodBumonCompanyDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="codCompanyDao" class="jp.co.isid.mos.bird.togouser.userregist.dao.CodCompanyDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="uiUserCompanyDao" class="jp.co.isid.mos.bird.togouser.userregist.dao.UIUserCompanyDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="uiUserShozokuDao" class="jp.co.isid.mos.bird.togouser.userregist.dao.UIUserShozokuDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="codBumonNameDao" class="jp.co.isid.mos.bird.togouser.userregist.dao.CodBumonNameDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="RankCodeDao" class="jp.co.isid.mos.bird.togouser.userregist.dao.RankCodeDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	
+	<!-- ============================================================================================ -->
+	<!-- DTO -->
+	<component name="codBumonDto" class="jp.co.isid.mos.bird.togouser.userregist.dto.CodBumonDto" instance="session" />
+	<component name="codCompanyDto" class="jp.co.isid.mos.bird.togouser.userregist.dto.CodCompanyDto" instance="session" />
+	<component name="uiTogoUserDto" class="jp.co.isid.mos.bird.togouser.userregist.dto.UITogoUserDto" instance="session" />
+	<component name="userCompanyDto" class="jp.co.isid.mos.bird.togouser.userregist.dto.UserCompanyDto" instance="session" />
+	<component name="togoUserListDto" class="jp.co.isid.mos.bird.togouser.userregist.dto.TogoUserListDto" instance="session" />
+	<!-- ============================================================================================ -->
+	<!-- ACTION -->
+	<component name="getTogoUserAction" class="jp.co.isid.mos.bird.togouser.userregist.action.impl.GetTogoUserActionImpl" instance="request"/>
+	<component name="togouserRegistEditAction" class="jp.co.isid.mos.bird.togouser.userregist.action.impl.TogoUserRegistEditActionImpl" instance="request"/>
+	<component name="togouserRegistConfirmAction" class="jp.co.isid.mos.bird.togouser.userregist.action.impl.TogoUserRegistConfirmActionImpl" instance="request"/>
+
+    <!-- ============================================================================================ -->
+	<!-- LOGIC -->
+	<component name="checkUserInfoLogic" class="jp.co.isid.mos.bird.togouser.userregist.logic.impl.CheckUserInfoLogicImpl"/>
+	<component name="getBumonCompanyLogic" class="jp.co.isid.mos.bird.togouser.userregist.logic.impl.GetBumonCompanyLogicImpl"/>
+	<component name="getBumonLogic" class="jp.co.isid.mos.bird.togouser.userregist.logic.impl.GetBumonLogicImpl"/>
+	<component name="getBumonNameLogic" class="jp.co.isid.mos.bird.togouser.userregist.logic.impl.GetBumonNameLogicImpl"/>
+	<component name="getCompanyInfoLogic" class="jp.co.isid.mos.bird.togouser.userregist.logic.impl.GetCompanyInfoLogicImpl"/>
+	<component name="getUserLogic" class="jp.co.isid.mos.bird.togouser.userregist.logic.impl.GetUserLogicImpl"/>
+	<component name="GetRankCodeLogic" class="jp.co.isid.mos.bird.togouser.userregist.logic.impl.GetRankCodeLogicImpl"/>
+	<component name="validatePasswordLogic" class="jp.co.isid.mos.bird.common.logic.impl.ValidatePasswordLogicImpl"/>
+	<component name="updateUserLogic" class="jp.co.isid.mos.bird.togouser.userregist.logic.impl.UpdateUserLogicImpl">
+			<aspect>j2ee.requiresNewTx</aspect> <!-- 排他(ロールバック可能にする) -->
+	</component>
+	<component name="updatePasswordLogic" class="jp.co.isid.mos.bird.common.logic.impl.UpdatePasswordLogicImpl">
+		<aspect>j2ee.requiredTx</aspect>
+	</component>
+	<component name="checkNewUserIdLogic" class="jp.co.isid.mos.bird.togouser.userregist.logic.impl.CheckNewUserIdLogicImpl"/>
+	<component name="getUserListLogic" class="jp.co.isid.mos.bird.togouser.userregist.logic.impl.GetUserListLogicImpl"/>
+	
+	<!-- ============================================================================================ -->
+	<!-- CONVERTER -->
+	<component name="taishokuDateConverter" class="jp.co.isid.mos.bird.framework.text.converter.DateConverter" instance="request">
+		<arg>@jp.co.isid.mos.bird.framework.util.formatter.DateFormatter@DATE_TYPE_YMD</arg>
+		<arg>@jp.co.isid.mos.bird.framework.util.formatter.DateFormatter@PATTERN_SLASH</arg>
+	</component>
+	
+</components>

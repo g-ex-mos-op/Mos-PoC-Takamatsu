@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="Shift_JIS"?>
+<!DOCTYPE components PUBLIC "-//SEASAR2.1//DTD S2Container//EN"
+	"http://www.seasar.org/dtd/components21.dtd">
+<components namespace="togoFilterRegist">
+    <include path="dao.dicon"/>
+    <include path="jp/co/isid/mos/bird/common/dicon/birdCommon.dicon"/>
+	<include path="jp/co/isid/mos/bird/framework/dicon/birdInterceptor.dicon"/>
+
+    <!-- システムエラー時に画面表示させる用 -->
+	<component
+	  class="org.seasar.framework.container.autoregister.AspectAutoRegister">
+	    <property name="interceptor">birdInterceptor.actionInterceptorTogoChain</property>
+	    <initMethod name="addClassPattern">
+	        <arg>"jp.co.isid.mos.bird"</arg>
+	        <arg>".*ActionImpl"</arg>
+	    </initMethod>
+	    <initMethod name="registerAll"/>
+	</component> 
+    <!-- バッチ排他チェック用 -->	
+	<component
+	  class="org.seasar.framework.container.autoregister.AspectAutoRegister">
+	    <property name="interceptor">birdInterceptor.logicInterceptorChain</property>
+	    <initMethod name="addClassPattern">
+	        <arg>"jp.co.isid.mos.bird"</arg>
+	        <arg>".*LogicImpl"</arg>
+	    </initMethod>
+	    <initMethod name="registerAll"/>
+	</component>
+
+
+	<!-- ============================================================================================ -->
+	<!-- DAO -->
+	<component name="userSaisinDao" class="jp.co.isid.mos.bird.togouser.filterregist.dao.UserSaisinDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="bumonFilterDao" class="jp.co.isid.mos.bird.togouser.filterregist.dao.BumonFilterDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="codBumonDao" class="jp.co.isid.mos.bird.togouser.filterregist.dao.CodBumonDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="uiUserFilterDao" class="jp.co.isid.mos.bird.togouser.filterregist.dao.UIUserFilterDao">
+        <aspect>dao.interceptor</aspect>
+	</component>				
+	<!-- ============================================================================================ -->
+	<!-- DTO -->
+	<component name="togoUserInfoDto" class="jp.co.isid.mos.bird.togouser.filterregist.dto.TogoUserInfoDto" instance="session" />	
+	<component name="bumonFilterDto" class="jp.co.isid.mos.bird.togouser.filterregist.dto.BumonFilterDto" instance="session" />		
+	<!-- ============================================================================================ -->
+	<!-- ACTION -->
+	<component name="getTogoFilterAction" class="jp.co.isid.mos.bird.togouser.filterregist.action.impl.GetTogoFilterActionImpl" instance="request"/>
+
+    <!-- ============================================================================================ -->
+	<!-- LOGIC -->
+	<component name="getTogoUserLogic" class="jp.co.isid.mos.bird.togouser.filterregist.logic.impl.GetTogoUserLogicImpl"/>
+	<component name="getTogoFilterInfoLogic" class="jp.co.isid.mos.bird.togouser.filterregist.logic.impl.GetTogoFilterInfoLogicImpl"/>
+	<component name="getCodBumonLogic" class="jp.co.isid.mos.bird.togouser.filterregist.logic.impl.GetCodBumonLogicImpl"/>					
+	<component name="updateUserFilterLogic" class="jp.co.isid.mos.bird.togouser.filterregist.logic.impl.UpdateUserFilterLogicImpl"/>						
+	<!-- ============================================================================================ -->
+	<!-- CONVERTER -->
+	<component name="taishokuDateConverter" class="jp.co.isid.mos.bird.framework.text.converter.DateConverter" instance="request">
+		<arg>@jp.co.isid.mos.bird.framework.util.formatter.DateFormatter@DATE_TYPE_YMD</arg>
+		<arg>@jp.co.isid.mos.bird.framework.util.formatter.DateFormatter@PATTERN_SLASH</arg>
+	</component>
+	
+</components>

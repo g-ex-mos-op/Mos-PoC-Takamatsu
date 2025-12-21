@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="Shift_JIS"?>
+<!DOCTYPE components PUBLIC "-//SEASAR//DTD S2Container 2.3//EN"
+    "http://www.seasar.org/dtd/components23.dtd">
+<components namespace="miseSearch">
+    <include path="dao.dicon"/>
+	<include path="jp/co/isid/mos/bird/framework/dicon/birdInterceptor.dicon"/>
+
+	<component
+	  class="org.seasar.framework.container.autoregister.AspectAutoRegister">
+	    <property name="interceptor">birdInterceptor.actionInterceptorChain</property>
+	    <initMethod name="addClassPattern">
+	        <arg>"jp.co.isid.mos.bird"</arg>
+	        <arg>".*ActionImpl"</arg>
+	    </initMethod>
+	    <initMethod name="registerAll"/>
+	</component> 
+	<component
+	  class="org.seasar.framework.container.autoregister.AspectAutoRegister">
+	    <property name="interceptor">birdInterceptor.logicInterceptorChain</property>
+	    <initMethod name="addClassPattern">
+	        <arg>"jp.co.isid.mos.bird"</arg>
+	        <arg>".*LogicImpl"</arg>
+	    </initMethod>
+	    <initMethod name="registerAll"/>
+	</component>
+
+	<component class="jp.co.isid.mos.bird.framework.control.BirdUserInfo" instance="session"/>
+
+	<!-- DAO -->
+	<component name="uiGroupTogoMiseDao" class="jp.co.isid.mos.bird.commonform.misesearch.dao.UIGroupTogoMiseDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="codCompanyDao" class="jp.co.isid.mos.bird.commonform.misesearch.dao.CodCompanyDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="codSibuDao" class="jp.co.isid.mos.bird.commonform.common.dao.CodSibuDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+
+	<!-- Logic -->
+	<component name="searchMiseLogic" class="jp.co.isid.mos.bird.commonform.misesearch.logic.impl.SearchMiseLogicImpl"/>
+	<component name="getCompanyLogic" class="jp.co.isid.mos.bird.commonform.misesearch.logic.impl.GetCompanyLogicImpl"/>
+	<component name="getCompanyNameLogic" class="jp.co.isid.mos.bird.commonform.misesearch.logic.impl.GetCompanyNameLogicImpl"/>
+	<component name="getSibuLogic" class="jp.co.isid.mos.bird.commonform.common.logic.impl.GetSibuLogicImpl"/>
+
+	<!-- DTO -->
+	<component name="miseSearchDto" class="jp.co.isid.mos.bird.commonform.misesearch.dto.MiseSearchDto" instance="session">
+		<property name="RCompanyCdList">null</property>
+	</component>
+	<component name="miseSearchConditionDto" class="jp.co.isid.mos.bird.commonform.misesearch.dto.MiseSearchConditionDto" autoBinding="none" instance="session">
+		<property name="maxSize">5</property>
+	</component>
+	<component name="recentConditionMiseDto" class="jp.co.isid.mos.bird.commonform.misesearch.dto.MiseSearchConditionDto" autoBinding="none" instance="session"/>
+
+	<!-- Action -->
+	<component name="miseSearchAction" class="jp.co.isid.mos.bird.commonform.misesearch.action.impl.MiseSearchActionImpl" instance="request"/>
+
+	<!-- Converter -->
+	<component name="codeConverterOwner" class="jp.co.isid.mos.bird.framework.text.converter.CodeConverter">
+		<property name="formatPattern">"00000"</property>
+	</component>
+	<component name="codeConverterMise" class="jp.co.isid.mos.bird.framework.text.converter.CodeConverter">
+		<property name="formatPattern">"00000"</property>
+	</component>
+	<component name="documentsearchDateConverter" class="jp.co.isid.mos.bird.framework.text.converter.DateConverter" instance="request">
+		<arg>@jp.co.isid.mos.bird.framework.util.formatter.DateFormatter@DATE_TYPE_YMD</arg>
+		<arg>@jp.co.isid.mos.bird.framework.util.formatter.DateFormatter@PATTERN_SLASH</arg>
+	</component>
+</components>
+

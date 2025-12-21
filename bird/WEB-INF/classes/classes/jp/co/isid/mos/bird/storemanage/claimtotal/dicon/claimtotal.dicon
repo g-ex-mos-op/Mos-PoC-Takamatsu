@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="Shift_JIS"?>
+<!DOCTYPE components PUBLIC "-//SEASAR//DTD S2Container 2.3//EN"
+    "http://www.seasar.org/dtd/components23.dtd">
+<components namespace="claimtotal">
+    <include path="dao.dicon"/>
+    <include path="jp/co/isid/mos/bird/common/dicon/birdCommon.dicon"/>
+	<include path="jp/co/isid/mos/bird/framework/dicon/birdInterceptor.dicon"/>
+
+	<component
+	  class="org.seasar.framework.container.autoregister.AspectAutoRegister">
+	    <property name="interceptor">birdInterceptor.actionInterceptorChain</property>
+	    <initMethod name="addClassPattern">
+	        <arg>"jp.co.isid.mos.bird"</arg>
+	        <arg>".*ActionImpl"</arg>
+	    </initMethod>
+	    <initMethod name="registerAll"/>
+	</component> 
+	<component
+	  class="org.seasar.framework.container.autoregister.AspectAutoRegister">
+	    <property name="interceptor">birdInterceptor.logicInterceptorChain</property>
+	    <initMethod name="addClassPattern">
+	        <arg>"jp.co.isid.mos.bird"</arg>
+	        <arg>".*LogicImpl"</arg>
+	    </initMethod>
+	    <initMethod name="registerAll"/>
+	</component>
+
+	<!-- DAO -->
+	<component name="claimtotalDataDao" class="jp.co.isid.mos.bird.storemanage.claimtotal.dao.ClaimTotalDataDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="claimtotalCodBunruiMDao" class="jp.co.isid.mos.bird.storemanage.claimtotal.dao.CodBunruiMDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<!-- LOGIC -->
+	<component name="claimtotalConditionInfoLogic" class="jp.co.isid.mos.bird.storemanage.claimtotal.logic.impl.ConditionInfoLogicImpl"/>
+	<component name="claimtotalSearchLogic" class="jp.co.isid.mos.bird.storemanage.claimtotal.logic.impl.SearchLogicImpl"/>
+	<!-- DTO -->
+	<component name="claimtotalRequestDto" class="jp.co.isid.mos.bird.storemanage.claimtotal.dto.ClaimTotalRequestDto" autoBinding="none" instance="request">
+		<property name="companyCd">'00'</property>
+	</component>
+	<component name="claimtotalRequestViewDto" class="jp.co.isid.mos.bird.storemanage.claimtotal.dto.ClaimTotalRequestDto" autoBinding="none" instance="request"/>
+	<component name="claimtotalSessionDto" class="jp.co.isid.mos.bird.storemanage.claimtotal.dto.ClaimTotalSessionDto" autoBinding="none" instance="session"/>
+	<component name="miseSearchDto" class="jp.co.isid.mos.bird.commonform.misesearch.dto.MiseSearchDto" instance="session">
+		<property name="RCompanyCdList">null</property>
+	</component>
+	<component name="ownerSearchDto" class="jp.co.isid.mos.bird.commonform.ownersearch.dto.OwnerSearchDto" instance="session">
+		<property name="RCompanyCdList">null</property>
+	</component>
+
+	<!-- ACTION -->
+	<component name="claimtotalAction" class="jp.co.isid.mos.bird.storemanage.claimtotal.action.impl.ClaimTotalActionImpl" instance="request"/>
+	
+	<!-- Formatter -->
+
+	<!-- Converter -->
+	<component name="claimtotalCodeConverter" class="jp.co.isid.mos.bird.framework.text.converter.CodeConverter" instance="request">
+		<property name="formatPattern">"00000"</property>
+	</component>
+	<component name="claimtotalNumberConverter" class="jp.co.isid.mos.bird.framework.text.converter.NumericConverter" instance="request">
+		<arg>0</arg>
+	</component>
+	
+</components>

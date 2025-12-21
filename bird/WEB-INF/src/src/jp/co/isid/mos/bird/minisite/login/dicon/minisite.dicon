@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="Shift_JIS"?>
+<!DOCTYPE components PUBLIC "-//SEASAR2.1//DTD S2Container//EN"
+	"http://www.seasar.org/dtd/components21.dtd">
+<components namespace="minisite">
+	<include path="dao.dicon"/>
+	<include path="jp/co/isid/mos/bird/framework/dicon/birdInterceptor.dicon"/>
+	<include path="jp/co/isid/mos/bird/common/dicon/birdPasswordPolicy.dicon"/>
+    <include path="jp/co/isid/mos/bird/common/dicon/birdPortal.dicon"/>
+    <include path="jp/co/isid/mos/bird/minisite/login/dicon/minisiteViewList.dicon"/>
+	<!--minisite用アクションインターセプター -->
+	<component name="initializeInterceptor" class="jp.co.isid.mos.bird.minisite.login.interceptors.InitializeActionInterceptor" />
+	<component name="minisiteLogInterceptor" class="jp.co.isid.mos.bird.minisite.login.interceptors.LogInterceptor" />
+	<component name="minisiteErorLogInterceptor" class="jp.co.isid.mos.bird.minisite.login.interceptors.ErrorLogInterceptor" />
+	<!--アクションインターセプター連結 -->
+	<component name="initializeInterceptorChain" class="org.seasar.framework.aop.interceptors.InterceptorChain" >
+		<initMethod name="add"><arg>initializeInterceptor</arg></initMethod>
+		<initMethod name="add"><arg>birdInterceptor.traceInterceptor</arg></initMethod>
+		<initMethod name="add"><arg>birdInterceptor.actionThrowsInterceptor</arg></initMethod>
+		<initMethod name="add"><arg>birdInterceptor.logInterceptor</arg></initMethod>
+		<initMethod name="add"><arg>minisiteErorLogInterceptor</arg></initMethod>
+		<initMethod name="add"><arg>birdInterceptor.errorLogInterceptor</arg></initMethod>
+		<initMethod name="add"><arg>birdInterceptor.leaveOutMenuInterceptor</arg></initMethod>
+	</component>
+	<component class="org.seasar.framework.container.autoregister.AspectAutoRegister">
+	    <property name="interceptor">birdInterceptor.logicInterceptorChain</property>
+	    <initMethod name="addClassPattern">
+	        <arg>"jp.co.isid.mos.bird"</arg>
+	        <arg>".*LogicImpl"</arg>
+	    </initMethod>
+	    <initMethod name="registerAll"/>
+	</component>
+
+	<component class="jp.co.isid.mos.bird.framework.dao.LoginDao">
+		<aspect>dao.interceptor</aspect>
+	</component>
+	<component name="userCompDao" class="jp.co.isid.mos.bird.framework.dao.CtlUserCompanyDao">
+		<aspect>dao.interceptor</aspect>
+	</component>
+	<component name="userRoleDao" class="jp.co.isid.mos.bird.framework.dao.CtlUserRoleDao">
+		<aspect>dao.interceptor</aspect>
+	</component>
+	<component name="userMiseDao" class="jp.co.isid.mos.bird.framework.dao.UIUserMiseDao">
+		<aspect>dao.interceptor</aspect>
+	</component>
+	<component name="userOnerDao" class="jp.co.isid.mos.bird.framework.dao.UIUserOnerDao">
+		<aspect>dao.interceptor</aspect>
+	</component>
+	<component name="mstUserDao" class="jp.co.isid.mos.bird.framework.dao.MstUserDao">
+		<aspect>dao.interceptor</aspect>
+	</component>
+	<component name="ctlDateDao" class="jp.co.isid.mos.bird.framework.dao.CtlDateDao">
+		<aspect>dao.interceptor</aspect>
+	</component>
+	<component name="ctlUserLoginDao" class="jp.co.isid.mos.bird.framework.dao.CtlUserLoginDao">
+		<aspect>dao.interceptor</aspect>
+	</component>
+	<component name="mstOnerDao" class="jp.co.isid.mos.bird.framework.dao.MstOnerDao">
+		<aspect>dao.interceptor</aspect>
+	</component>
+	<component name="ctlLoginFailKaisuDao" class="jp.co.isid.mos.bird.framework.dao.CtlLoginFailKaisuDao">
+		<aspect>dao.interceptor</aspect>
+	</component>
+	<component name="ctlLeaveOutMenuDao" class="jp.co.isid.mos.bird.framework.dao.CtlLeaveOutMenuDao">
+		<aspect>dao.interceptor</aspect>
+	</component>
+	<component name="myMenuDao" class="jp.co.isid.mos.bird.framework.dao.MyMenuDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="trnMyMenuDao" class="jp.co.isid.mos.bird.framework.dao.TrnMyMenuDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="ctlUserLogDao" class="jp.co.isid.mos.bird.framework.dao.CtlUserLogDao">
+		<aspect>dao.interceptor</aspect>
+	</component>
+	<component name="uiUserEmosslesAppIdDao" class="jp.co.isid.mos.bird.framework.dao.UIUserEmosslesAppIdDao">
+		<aspect>dao.interceptor</aspect>
+	</component>
+	<component name="trnOutSystemLogDao" class="jp.co.isid.mos.bird.framework.dao.TrnOutSystemLogDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="mstUserShozokuDao" class="jp.co.isid.mos.bird.common.dao.MstUserShozokuDao">
+		<aspect>dao.interceptor</aspect>
+	</component>
+	<component name="mstMiseDao" class="jp.co.isid.mos.bird.common.dao.MstMiseDao">
+		<aspect>dao.interceptor</aspect>
+	</component>
+	<component name="minisiteLoginUIUserDao" class="jp.co.isid.mos.bird.minisite.login.dao.UIUserDao">
+		<aspect>dao.interceptor</aspect>
+	</component>
+	<component name="headerDto" class="jp.co.isid.mos.bird.framework.dto.HeaderDto" instance="session"/>
+	<component name="loginDto" class="jp.co.isid.mos.bird.framework.dto.LoginDto" instance="session"/>
+	<component name="minisiteLoginLogic" class="jp.co.isid.mos.bird.minisite.login.logic.impl.LoginLogicImpl">
+		<property name="birdPasswordPolicy">birdPasswordPolicy</property>
+		<property name="minisiteViewList">minisiteViewList.minisiteViewId</property>
+	</component>
+	<component name="userInfoSetupLogic" class="jp.co.isid.mos.bird.framework.logic.impl.UserInfoSetupLogicImpl"/>
+	<component name="dateInfoSetupLogic" class="jp.co.isid.mos.bird.framework.logic.impl.DateInfoSetupLogicImpl"/>
+	<component name="passwordLockLogic" class="jp.co.isid.mos.bird.framework.logic.impl.PasswordLockLogicImpl"/>
+	<component class="jp.co.isid.mos.bird.framework.control.BirdUserInfo" instance="session"/>
+	<component name="updateLoginTimestampImpl" class="jp.co.isid.mos.bird.framework.logic.impl.UpdateLoginTimestampImpl"/>
+	<component name="regOutputLogLogic" class="jp.co.isid.mos.bird.framework.logic.impl.RegOutputLogLogicImpl"/>
+	<!-- ACTION -->
+	<component name="menuActionInterceptor" class="jp.co.isid.mos.bird.framework.interceptor.MenuActionIntercepter"/>
+	<component name="menuAction" class="jp.co.isid.mos.bird.framework.action.impl.MenuActionImpl" instance="session" >
+		<property name="pullDownMenuDto">birdPortal.pullDownMenuDto</property>
+		<aspect>menuActionInterceptor</aspect>
+	</component>
+	<component name="minisiteLoginAction" class="jp.co.isid.mos.bird.minisite.login.action.impl.LoginActionImpl" instance="request">
+		<aspect>initializeInterceptorChain</aspect>
+	</component>
+</components>

@@ -1,0 +1,10 @@
+select
+    BM05.GYOTAI_KBN,
+    BC09.GYOTAI_KBN_NAME
+from
+    BM05USGT as BM05
+    inner join BC09GTAI as BC09 on BM05.GYOTAI_KBN = BC09.GYOTAI_KBN
+where
+    BM05.USER_ID = /*userId*/'99990003'
+order by
+    BM05.GYOTAI_KBN

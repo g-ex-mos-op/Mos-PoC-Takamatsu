@@ -1,0 +1,162 @@
+<html xmlns:m="http://www.seasar.org/maya" m:action="#{hanyoViewListSelectAction.initialize}" m:extends="/jsf/layout/layoutNoNavi.html">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Windows-31j" />
+<title>研修申込状況照会</title>
+</head>
+<body>
+<span m:inject="f:param" m:name="layoutTitle" m:value="研修申込状況照会"/>
+<span m:inject="f:param" m:name="onLoadName" m:value="init();"/>
+<span m:inject="s:insert" m:name="bodyTitleName">■研修申込状況照会</span>
+<span m:inject="f:param" m:name="viewIdValue" m:value="BEN006V01"/>
+<span m:inject="s:insert" m:name="body">
+<style type="text/css">
+<!--
+.scroll_area {
+	height				: 415px;
+	width				: 950px;
+
+-->
+</style>
+
+
+<script type="text/javascript">
+<!--
+
+function init(){
+}
+
+function doAction() {
+	var f=document.forms['hanyoViewList'];
+	f.target='';
+	f.elements['hanyoViewList:__link_clicked__'].value='hanyoViewList:dummyAction';
+	f.submit();
+	return false;
+}
+
+//-->
+</script>
+
+<form m:id="hanyoViewList">
+<input type="hidden" m:id="viewId" m:value="#{viewIdValue}"/>
+<input type="hidden" m:id="initMenuId" m:value="#{menuAction.initMenuId}"/>
+<input type="hidden" m:id="initSubMenuId" m:value="#{menuAction.initSubMenuId}"/>
+<a m:id="dummyAction" m:action="#{hanyoViewListSelectAction.changePullDown}"/>
+
+
+<table cellspacing="0" cellpadding="0">
+  <tr>
+    <td>
+      <input type="submit" value="実行" m:action="#{hanyoViewListSelectAction.execute}" m:disabled="#{hanyoViewListCommonDto.hanyoListDataSize != 0 ? false : true}"/>&nbsp;&nbsp;
+    </td>
+    <td>
+      <table class="body_table">
+        <tr>
+	      <th>対象研修&nbsp;</th>
+          <td>
+            <div class="hideArea">
+            <select m:id="entryCd" m:value="#{hanyoViewListCommonDto.entryCd}"
+                    m:items="#{entryViewList}"
+                    m:itemValue="key"
+                    m:itemLabel="name"
+                    m:onchange="doAction();">
+              <option value="">全て</option>
+              <option value="05">出張ベーシック研修</option>
+              <option value="30">マスターライセンス更新研修</option>
+            </select>
+            </div>
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+  <tr style="height:4px;">
+    <td align="right"></td>
+  </tr>
+</table>
+
+
+<div m:rendered="#{hanyoViewListCommonDto.hanyoListDataSize != 0}">
+
+  <table class="body_table2">
+
+	<tr>
+	  <th width="30px" rowspan="2" style="text-align:center;">対<br>象</th>
+	  <th width="60px" rowspan="2" style="text-align:center;">研修名</th>
+	  <th width="180px" style="text-align:center;">開催日</th>
+	  <th width="230px" style="text-align:center;">開催名</th>
+	  <th width="150px" style="text-align:center;">本部&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;：申込開始</th>
+	  <th width="150px" style="text-align:center;">本部&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;：申込終了</th>
+	  <th width="45px" rowspan="2" style="text-align:center;">定員</th>
+	  <th width="60px" rowspan="2" style="text-align:center;">総申込<br>人数</th>
+	</tr>
+	<tr>
+	  <th colspan="2" style="text-align:center;">開催場所</th>
+	  <th style="text-align:center;">オーナー：申込開始</th>
+	  <th style="text-align:center;">オーナー：申込終了</th>
+	</tr>
+
+  </table>
+
+  <span m:inject="s:selectOneRadio2" m:value="#{hanyoViewListCommonDto.indexFlg}">
+  <div class="scroll_area">
+
+  <table style="border-top-width:0px" class="body_table2 font_size_14">
+    <div m:inject="s:forEach" m:items="#{hanyoViewListCommonDto.hanyoListData}" m:var="e" m:varIndex="i">
+
+	<tr class="non_top_border" m:rendered="#{e.maninKbn != '満'}">
+	  <td width="30px" rowspan="2" style="text-align:center;">
+	  <input type="radio" m:value="#{i}"/>
+	  </td>
+	  <td width="60px" rowspan="2" style="text-align:center;"><span m:converter="#{characterEncodingConverter}" m:value="#{e.entryNameRyaku}"/></td>
+	  <td width="180px"><span m:value="#{e.fromDt}" m:converter="#{hanyoDateConverter2}"/>～<span m:value="#{e.toDt}" m:converter="#{hanyoDateConverter2}"/></td>
+	  <td width="230px"><span m:value="#{e.entryTitle}" m:converter="#{characterEncodingConverter}"/></td>
+	  <td width="150px"><span m:value="#{e.honbuInputDtFrom}" m:converter="#{hanyoDateConverter}"/></td>
+	  <td width="150px"><span m:value="#{e.honbuInputDtTo}" m:converter="#{hanyoDateConverter}"/></td>
+	  <td width="45px" rowspan="2" align="right"><span m:value="#{e.numberLimit}" m:converter="#{NumericConverter}"/></td>
+	  <td width="60px" rowspan="2" align="right"><span m:value="#{e.entryNum}" m:converter="#{NumericConverter}"/></td>
+	</tr>
+
+	<tr m:rendered="#{e.maninKbn == '満'}">
+	  <td width="30px" rowspan="2" style="text-align:center;">
+	  <input type="radio" m:value="#{i}"/>
+	  </td>
+	  <td width="60px" rowspan="2" style="text-align:center;"><span m:converter="#{characterEncodingConverter}" m:value="#{e.entryNameRyaku}"/></td>
+	  <td width="180px"><span m:value="#{e.fromDt}" m:converter="#{hanyoDateConverter2}"/>～<span m:value="#{e.toDt}" m:converter="#{hanyoDateConverter2}"/></td>
+	  <td width="230px"><span m:value="#{e.entryTitle}" m:converter="#{characterEncodingConverter}"/></td>
+	  <td width="150px"><span m:value="#{e.honbuInputDtFrom}" m:converter="#{hanyoDateConverter}"/></td>
+	  <td width="150px"><span m:value="#{e.honbuInputDtTo}" m:converter="#{hanyoDateConverter}"/></td>
+	  <td width="45px" rowspan="2" align="right"><span m:value="#{e.numberLimit}" m:converter="#{NumericConverter}"/></td>
+	  <td width="60px" rowspan="2" align="right">満</td>
+	</tr>
+
+	<tr>
+	  <td colspan="2"><span m:value="#{e.entryPlace}" m:converter="#{characterEncodingConverter}"/></td>
+	  <td><span m:value="#{e.onerInputDtFrom}" m:converter="#{hanyoDateConverter}"/></td>
+	  <td><span m:value="#{e.onerInputDtTo}" m:converter="#{hanyoDateConverter}"/></td>
+	</tr>
+
+    </div>
+  </table>
+
+
+  </div>
+  </span>
+
+
+
+
+</div>
+
+
+<input type="text" m:id="dummyEnter" style="display:none"/>
+</form>
+<script type="text/javascript">
+<!--
+	focusElement("hanyoViewListSelect");
+-->
+</script>
+
+
+</span>
+</body>
+</html>

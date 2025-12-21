@@ -1,0 +1,297 @@
+<html xmlns:m="http://www.seasar.org/maya" m:action="#{mosChickenSaleStateViewResultAction.initialize}" m:extends="/jsf/layout/layoutNoNavi.html">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=Windows-31j" />
+	<meta http-equiv="Content-Style-Type" content="text/css"/>
+	<link href="./css/main.css" rel="stylesheet" type="text/css"/>
+	<link href="./css/header.css" rel="stylesheet" type="text/css"/>
+	<link href="./css/navi.css" rel="stylesheet" type="text/css"/>
+	<link href="./css/body.css" rel="stylesheet" type="text/css"/>
+	<script type="text/javascript" src="./js/bird.js"></script>
+	<title>ﾋﾟｰｽ・ﾏﾈｰｼﾞｬｰ販売状況一覧</title>
+</head>
+<body>
+<span m:inject="f:param" m:name="layoutTitle" m:value="ﾋﾟｰｽ・ﾏﾈｰｼﾞｬｰ販売状況一覧"/>
+<span m:inject="f:param" m:name="onLoadName" m:value="load()"/>
+<span m:inject="s:insert" m:name="bodyTitleName">■ﾋﾟｰｽ・ﾏﾈｰｼﾞｬｰ販売状況一覧</span>
+<span m:inject="f:param" m:name="viewIdValue" m:value="BBS017V02"/>
+<span m:inject="s:insert" m:name="body">
+<script type="text/javascript">
+  <!--
+  	function load(){
+  	loadScroll("moschickenscroll",358);
+    }
+
+	function changeTitleCd(){
+		var f=document.forms['mosChickenSaleStateView'];
+		f.elements['mosChickenSaleStateView:__link_clicked__'].value='mosChickenSaleStateView:changeAction';
+		f.submit();
+		return false;
+	}
+	function resultSearch(){
+	  	document.forms['mosChickenSaleStateView'].elements['mosChickenSaleStateView:__link_clicked__'].value='mosChickenSaleStateView:reSearch';
+	    document.forms['mosChickenSaleStateView'].submit();
+    }
+    function changePage(pf, pk){
+        var f=document.forms['mosChickenSaleStateView'];
+		f.elements['mosChickenSaleStateView:pageDt'].value = pf;
+		f.elements['mosChickenSaleStateView:pageKbn'].value = pk;
+	  	f.elements['mosChickenSaleStateView:__link_clicked__'].value='mosChickenSaleStateView:changePage';
+	    f.submit();
+    }
+
+
+  //-->
+  </script>
+<STYLE type="text/css">
+<!--
+table.body_table2 tr td{
+  text-align            : right;
+  color                 : black;
+}
+/** 上段ＣＳＳ border-bottom-style:dotted;
+   **/
+table.body_table2 tr th.cell_topline{
+  border-bottom-color:#c0c0c0;
+}
+table.body_table2 tr td.cell_topline{
+  border-bottom-color:#c0c0c0;
+  border-bottom-width:1px;
+}
+/** 下段ＣＳＳ **/
+table.body_table2 tr th.cell_bottomline, table.body_table2 tr td.cell_bottomline{
+  border-top-width   :0px;
+}
+/** 予約行ＣＳＳ **/
+table.body_table2 tr td.yoyaku{
+  background-color   : #D7FEC9;
+}
+table.body_table2 tr td.bggn{
+  color              : black;
+
+}
+table.body_table2 tr td.bggb{
+  color              : blue;
+}
+
+.non_top_border td {
+  border-top-width:0px;
+}
+.line_gokei td {
+  font-weight          : bold;
+}
+.line_gokei td.body_sum5 {
+}
+-->
+</style>
+<form m:id="mosChickenSaleStateView" onKeyDown="return setDefaultSubmitButton('mosChickenSaleStateView','btnExecute');">
+<!-- 複数window対応 -->
+<input type="hidden" m:id="windowId" m:value="#{mosChickenSaleStateViewDto.windowId}"/>
+<a m:id="changeAction" m:action="#{mosChickenSaleStateViewResultAction.onchangeTitle}"/>
+<a m:id="changePage" m:action="#{mosChickenSaleStateViewResultAction.changePage}"/>
+<a m:id="backMove" m:action="#{mosChickenSaleStateViewResultAction.backMove}"/>
+<input type="hidden" m:id="pageDt" m:value="#{mosChickenSaleStateViewDto.pageDt}"/>
+<input type="hidden" m:id="pageKbn" m:value="#{mosChickenSaleStateViewDto.pageKbn}"/>
+<input type="hidden" m:id="viewId" m:value="#{viewIdValue}"/>
+<input type="hidden" m:id="initMenuId" m:value="#{menuAction.initMenuId}"/>
+<input type="hidden" m:id="initSubMenuId" m:value="#{menuAction.initSubMenuId}"/>
+<table class="hiddenBody" width="98%">
+  <tr>
+    <td m:rendered="#{mosChickenSaleStateViewDto.userTypeCd == '01'}" width="100px">
+        <input type="button" value="戻る" class="operation_button" m:action="#{mosChickenSaleStateViewResultAction.backMove}" m:dispaly="#{mosChickenSaleStateViewDto.userTypeCd == '01' ? 'true':'false'}"/>
+    </td>
+	<td width="*" align="right">
+		<div m:rendered="#{mosChickenSaleStateViewDto.resultDetailListSize > 0}" class="scroll_hidden">
+			<input type="button" value="＜＜"  m:onclick="changePage('#{mosChickenSaleStateViewDto.pageFirstDt}','1')" m:disabled="#{mosChickenSaleStateViewDto.pageBtControl[0]}"/>
+			<input type="button" value=" ＜ "  m:onclick="changePage('#{mosChickenSaleStateViewDto.pageFirstDt}','2')" m:disabled="#{mosChickenSaleStateViewDto.pageBtControl[0]}"/>
+			<input type="button" value="今日"  m:onclick="changePage('#{mosChickenSaleStateViewDto.pageFirstDt}','3')"  m:disabled="#{mosChickenSaleStateViewDto.pageBtControl[1]}"/>
+			<input type="button" value=" ＞ "  m:onclick="changePage('#{mosChickenSaleStateViewDto.pageFirstDt}','4')"  m:disabled="#{mosChickenSaleStateViewDto.pageBtControl[2]}"/>
+			<input type="button" value="＞＞"  m:onclick="changePage('#{mosChickenSaleStateViewDto.pageFirstDt}','5')"  m:disabled="#{mosChickenSaleStateViewDto.pageBtControl[2]}"/>
+		</div>
+    </td>
+  </tr>
+</table>
+
+	<table class="body_table" style="float:left;margin-top:4px">
+		<tr>
+			<th style="text-align:left;">
+				タイトル
+			</th>
+			<td style="text-align:left;">
+			    <div class="hideArea">
+			        <select m:id="condTitleCd"
+		                  m:value="#{mosChickenSaleStateViewDto.condTitleCd}"
+		                  m:items="#{mosChickenSaleStateViewDto.condListTitle}"
+		                  m:itemValue="ckanriNo"
+		                  m:itemlabel="title"
+		                  m:onchange="changeTitleCd()">
+		            </select>
+				</div>
+			</td>
+			<th style="text-align:left;">
+				対象期間
+			</th>
+			<td style="text-align:left;">
+                <div class="hideArea">
+			        <select m:id="condTaishoKikanCdFr"
+		                  m:value="#{mosChickenSaleStateViewDto.condTaishoKikanCdFr}"
+		                  m:items="#{mosChickenSaleStateViewDto.condListTaishoKikan}"
+		                  m:itemValue="value"
+		                  m:itemlabel="label">
+		            </select>
+                    &nbsp;～&nbsp;
+                    <select m:id="condTaishoKikanCdTo"
+		                  m:value="#{mosChickenSaleStateViewDto.condTaishoKikanCdTo}"
+		                  m:items="#{mosChickenSaleStateViewDto.condListTaishoKikan}"
+		                  m:itemValue="value"
+		                  m:itemlabel="label">
+		            </select>
+                </div>
+			</td>
+		</tr>
+		<tr>
+            <th style="text-align:left;">
+				対象店舗
+			</th>
+			<td style="text-align:left;">
+			  <div m:rendered="#{mosChickenSaleStateViewDto.tenpoListSize > 1}">
+			    <div class="hideArea">
+                    <select m:id="condTenpoCd"
+		                  m:value="#{mosChickenSaleStateViewDto.condTenpoCd}"
+		                  m:items="#{mosChickenSaleStateViewDto.condListTenpo}"
+		                  m:itemValue="miseCd"
+		                  m:itemlabel="miseNameKj">
+		            </select>
+			    </div>
+			  </div>
+			  <div m:rendered="#{mosChickenSaleStateViewDto.tenpoListSize == 1}">
+				  <div m:inject="s:forEach" m:items="#{mosChickenSaleStateViewDto.condListTenpo}" m:var="e" m:varindex="i">
+                    <span m:converter="#{characterEncodingConverter}" m:value="#{e.miseNameKj}"/>
+                  </div>
+			  </div>
+			</td>
+			<th style="text-align:left;">
+				商品グループ
+			</th>
+			<td style="text-align:left;">
+                <div class="hideArea">
+                <select m:id="condShohinGroupCd"
+	                  m:value="#{mosChickenSaleStateViewDto.condShohinGroupCd}"
+	                  m:items="#{mosChickenSaleStateViewDto.condListShohinGroup}"
+	                  m:itemValue="menuGroup"
+	                  m:itemlabel="menuGroupNm">
+	            </select>
+                </div>
+			</td>
+		</tr>
+	</table>
+	&nbsp;<input type="button" style="margin-top:28px;" value="再検索"
+	       m:id="btnExecute"
+	       m:action="#{mosChickenSaleStateViewResultAction.reSearchExecute}"/><span style="clear:both;"/>
+<!--</form>-->
+
+<div m:rendered="#{mosChickenSaleStateViewDto.resultDetailListSize > 0}">
+  <div class="scroll_padding_head">
+  <div class="scroll_hidden margin_bottom_hidden clear_float ">
+    <table class="body_table2" width="98%" style="margin-top:4px;">
+        <tr class="header_row">
+          <div m:inject="s:forEach" m:items="#{mosChickenSaleStateViewDto.resultTitleList}" m:var="e" m:varindex="i">
+        	<div m:rendered="#{i == 0}">
+            <th rowspan="2" width="20%">
+                メニュー</th>
+            <th rowspan="2" width="6%">
+                種別</th>
+            <th rowspan="2" width="6%">
+                期間<BR/>合計</th>
+            </div>
+            <!-- loop start-->
+            <th m:rendered="#{i > 0}" class="cell_topline" width="8%">
+                <span m:value="#{e.evyDate}"/></th>
+            </div>
+       </tr>
+       <tr class="header_row">
+        <div m:inject="s:forEach" m:items="#{mosChickenSaleStateViewDto.resultTitleList}" m:var="e" m:varindex="i">
+            <!-- loop start-->
+            <th m:rendered="#{i > 0}" class="cell_bottomline" width="8%"><span m:converter="#{characterEncodingConverter}" m:value="#{e.dayKnj}"/></th>
+        </div>
+        </tr>
+    </table>
+    </div>
+    </div>
+     <div class="scroll_padding_data">
+     <div id="moschickenscroll" class="scroll_standby">
+        <table class="body_table2" style="border-top-width:0px" width="98%">
+            <!-- start　合計ライン -->
+            <tr class="non_top_border line_gokei">
+              <div m:inject="s:forEach" m:items="#{mosChickenSaleStateViewDto.resultTitleList}" m:var="e" m:varindex="i">
+                <div m:rendered="#{i == 0}">
+                    <td class="border_topandbottom_width" rowspan="2" width="20%" valign="top" style="text-align:left;background-color : #FFC0A0;">
+                    	<span m:converter="#{characterEncodingConverter}" m:value="#{e.menuNm}"/></td>
+                    <td width="6%" class="cell_topline border_topandbottom_width" style="text-align:center;">販売数</td>
+
+                </div>
+                <td class="cell_topline border_topandbottom_width" width="#{i == 0?'6':'8'}%">
+                    &nbsp;<span m:rendered="#{i == 0 || !e.futureKbn}"
+                    				m:value="#{e.kazuKeiSum <= 0?0:e.kazuKeiSum}"
+                    				m:converter="#{numericConverter}"/></td>
+              </div>
+            </tr>
+            <tr class="line_gokei cell_bottomline">
+                <div m:inject="s:forEach" m:items="#{mosChickenSaleStateViewDto.resultTitleList}" m:var="e" m:varindex="i">
+                    <td m:rendered="#{i == 0}" style="text-align:center;" class="cell_bottomline yoyaku border_topandbottom_width">予約数</td>
+                    <td class="#{e.futureKbn?'bggb':'bggn'} cell_bottomline yoyaku border_topandbottom_width ">
+                        <span m:value="#{e.reserveSum > 0?e.reserveSum:'-'}" m:converter="#{numericConverter}"/>
+                    </td>
+                </div>
+            </tr>
+            <!-- end　合計ライン -->
+            <!-- start　予約以外ライン -->
+            <tr class="body_sum5 line_gokei">
+  		        <div m:inject="s:forEach" m:items="#{mosChickenSaleStateViewDto.resultSumList}" m:var="e" m:varindex="i">
+                    <div m:rendered="#{i == 0}">
+                        <td valign="top" style="text-align:left;" class = "border_topandbottom_width">
+                            <span m:converter="#{characterEncodingConverter}" m:value="#{e.menuNm}"/></td>
+                        <td class = "border_topandbottom_width">&nbsp;<!--空白--></td>
+                    </div>
+                    <td class="num border_topandbottom_width">
+                        &nbsp;<span m:rendered="#{!e.futureKbn}"
+                        		m:value="#{e.kazuKeiSum <= 0?0:e.kazuKeiSum}"
+                        		m:converter="#{numericConverter}"/>
+                    </td>
+                </div>
+            </tr>
+          <!-- end　予約以外ライン -->
+          <!-- start　詳細ライン -->
+          <div m:inject="s:forEach" m:items="#{mosChickenSaleStateViewDto.resultDetailList}" m:var="e" m:varindex="i">
+            <tr>
+                <div m:inject="s:forEach" m:items="#{e}" m:var="j" m:varindex="k">
+                    <div m:rendered="#{k == 0}">
+                        <td rowspan="2" valign="top" style="text-align:left;font-weight:bold;" class = "border_topandbottom_width">
+                            <span m:converter="#{characterEncodingConverter}" m:value="#{j.menuNm}"/></td>
+                        <td class="cell_topline border_topandbottom_width" style="text-align:center;">販売数</td>
+                    </div>
+                    <td class="cell_topline border_topandbottom_width" >
+                    	&nbsp;<span m:rendered="#{!j.futureKbn}"
+                                    m:value="#{j.kazuKeiSum <= 0?0:j.kazuKeiSum}"
+                                    m:converter="#{numericConverter}"/></td>
+                </div>
+
+            </tr>
+            <tr>
+               <div m:inject="s:forEach" m:items="#{e}" m:var="j" m:varindex="k">
+                <td m:rendered="#{k == 0}" class="cell_bottomline yoyaku border_topandbottom_width" style="text-align:center;">予約数</td>
+                <td class="#{j.futureKbn?'bggb':'bggn'} cell_bottomline yoyaku border_topandbottom_width">
+                    <span m:value="#{k == 0 || j.reserveSum > 0?j.reserveSum:'-'}" m:converter="#{numericConverter}"/>
+                </td>
+               </div>
+            </tr>
+          </div>
+          <!-- end　詳細ライン -->
+        </table>
+    </div>
+    </div>
+</div>
+<input type="text" m:id="dummyEnter" style="display:none"/>
+</form>
+</span>
+</body>
+</html>

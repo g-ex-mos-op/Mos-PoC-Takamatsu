@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="Shift_JIS"?>
+<!DOCTYPE components PUBLIC
+    "-//SEASAR//DTD S2Container 2.3//EN"
+    "http://www.seasar.org/dtd/components23.dtd">
+<components namespace="mlholderlist">
+	<include path="dao.dicon"/>
+	<include path="jp/co/isid/mos/bird/common/dicon/birdCommon.dicon"/>
+	<include path="jp/co/isid/mos/bird/framework/dicon/birdInterceptor.dicon"/>
+	
+	<!-- インターセプターを自動登録 -->
+	<component class="org.seasar.framework.container.autoregister.AspectAutoRegister">
+	    <property name="interceptor">birdInterceptor.actionInterceptorChain</property>
+	    <initMethod name="addClassPattern">
+	        <arg>"jp.co.isid.mos.bird"</arg>
+	        <arg>".*ActionImpl"</arg>
+	    </initMethod>
+	    <initMethod name="registerAll"/>
+	</component> 
+	<component class="org.seasar.framework.container.autoregister.AspectAutoRegister">
+	    <property name="interceptor">birdInterceptor.logicInterceptorChain</property>
+	    <initMethod name="addClassPattern">
+	        <arg>"jp.co.isid.mos.bird"</arg>
+	        <arg>".*LogicImpl"</arg>
+	    </initMethod>
+	    <initMethod name="registerAll"/>  
+	</component>
+	<component class="jp.co.isid.mos.bird.framework.control.BirdUserInfo" instance="session"/>
+	<!-- DAO -->
+	<component name="uIMLHolderDao" class="jp.co.isid.mos.bird.storemanage.mlholderlist.dao.UIMLHolderDao">
+		<aspect>dao.interceptor</aspect>
+	</component>
+	<component name="uIMLHolderSibuDao" class="jp.co.isid.mos.bird.common.dao.MstSibuDao">
+		<aspect>dao.interceptor</aspect>
+	</component>
+	<!-- Action -->
+	<component name="mlHolderListAction" class="jp.co.isid.mos.bird.storemanage.mlholderlist.action.impl.MlHolderListActionImpl" instance="request">
+		<aspect>birdInterceptor.actionInterceptorChain</aspect>
+		<property name="csvOutputDto">mlHolderListDto</property>
+		<property name="csvOutputLogic">mlHolderCsvOutputLogic</property>
+	</component>
+	<!-- DTO -->
+	<component name="mlHolderListDto" class="jp.co.isid.mos.bird.storemanage.mlholderlist.dto.MlHolderListDto" instance="session"/>
+	<component name="pullDownMenuDto" class="jp.co.isid.mos.bird.framework.dto.PullDownMenuDto" autoBinding="none" instance="session"/>
+	
+	<component name="miseSearchDto" class="jp.co.isid.mos.bird.commonform.misesearch.dto.MiseSearchDto" instance="session"/>
+	<component name="ownerSearchDto" class="jp.co.isid.mos.bird.commonform.ownersearch.dto.OwnerSearchDto" autoBinding="none" instance="session"/>
+	<!-- Logic -->
+	<component name="gamenRoleLogic" class="jp.co.isid.mos.bird.framework.logic.impl.GetGamenRoleLogicImpl"/>
+	<component name="getSibuLogic" class="jp.co.isid.mos.bird.common.logic.impl.GetSibuLogicImpl">
+		<aspect>birdInterceptor.logicInterceptorChain</aspect>
+	</component>
+	<component name="mlHolderListLogic" class="jp.co.isid.mos.bird.storemanage.mlholderlist.logic.impl.MlHolderListLogicImpl">
+		<aspect>birdInterceptor.logicInterceptorChain</aspect>
+	</component>
+	<component name="mlHolderCsvOutputLogic" class="jp.co.isid.mos.bird.storemanage.mlholderlist.logic.impl.MlHolderCsvOutputLogicImpl">
+		<aspect>birdInterceptor.logicInterceptorChain</aspect>
+	</component>	
+</components>

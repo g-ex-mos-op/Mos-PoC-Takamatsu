@@ -1,0 +1,13 @@
+SELECT MENU_ID
+,      MENU_NAME
+,      SUB_MENU_ID
+,      SUB_MENU_NAME
+,      SORT_SEQ
+,      CASE WHEN MENU_ID = '99' THEN ''
+            WHEN MENU_ID >= '50' THEN 'ìoò^ån'
+            ELSE 'è∆âÔån' END AS TYPE_NAME
+FROM BR02BMNU
+WHERE MENU_ID != '00'
+/*IF SUB_MENU_ID != null */AND MENU_ID = /*SUB_MENU_ID*/'01'/*END*/
+/*IF SUB_MENU_NAME != null */AND SUB_MENU_NAME like /*SUB_MENU_NAME*/'01'/*END*/
+ORDER BY MENU_ID, SORT_SEQ

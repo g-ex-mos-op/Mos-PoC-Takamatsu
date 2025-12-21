@@ -1,0 +1,13 @@
+SELECT TAISHO_CD
+,      COMPANY_CD
+,      SCDL_DATE
+,      SCDL_ID
+,      TITLE
+FROM BR70SCDL
+WHERE (company_cd IN /*companyCdList*/('00') OR TAISHO_CD ='01')
+AND   SCDL_DATE BETWEEN /*fromDate*/'20081208' AND /*toDate*/'20081214'
+AND   SAKUJO_FLG <> '1'
+ORDER BY SCDL_DATE
+,      TAISHO_CD
+,      COMPANY_CD
+,      SCDL_ID

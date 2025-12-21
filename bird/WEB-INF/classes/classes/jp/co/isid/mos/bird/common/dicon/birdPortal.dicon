@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="Shift_JIS"?>
+<!DOCTYPE components PUBLIC "-//SEASAR//DTD S2Container 2.3//EN"
+    "http://www.seasar.org/dtd/components23.dtd">
+<components namespace="birdPortal">
+	<include path="jp/co/isid/mos/bird/framework/dicon/pullDownMenu.dicon"/>
+	<!-- DTO -->
+	<component name="commonCodeDto" class="jp.co.isid.mos.bird.framework.dto.CommonCodeDto" instance="session"/>
+	<component name="commonDateDto" class="jp.co.isid.mos.bird.framework.dto.CommonDateDto" instance="session"/>
+	<component name="portalSearchInfoDto" class="jp.co.isid.mos.bird.common.dto.PortalSearchInfoDto" instance="request">
+		<property name="pullDownMenuDto">pullDownMenuDto</property>
+	</component>
+	
+	<!-- ACTION -->
+	<component name="headerAction" class="jp.co.isid.mos.bird.common.action.impl.HeaderActionImpl" instance="request" >
+		<property name="pullDownMenuDto">pullDownMenuDto</property>
+		<property name="portalSearchInfoDto">portalSearchInfoDto</property>
+	</component>
+	<!--ログアウトメッセージ-->
+	<component name="logoutMsg" class="java.lang.String">"ログアウト処理を行います。\n他のウィンドウを開いている場合は、閉じて下さい。"</component>
+
+</components>

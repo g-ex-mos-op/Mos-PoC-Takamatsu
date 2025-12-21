@@ -1,0 +1,10 @@
+SELECT  USER_ID 
+   ,    USER_NAME_KJ 
+   ,    USER_NAME_KANA 
+   ,    USERTYPE_CD  
+   ,    BUMON_CD  
+FROM    BR01USER 
+WHERE   STOP_FLG<>'1' 
+AND     USER_ID <> /*userId*/'99990001' 
+AND     BUMON_CD = /*bumonCd*/'00000'
+ORDER BY  USERTYPE_CD, BUMON_CD, USER_NAME_KJ       

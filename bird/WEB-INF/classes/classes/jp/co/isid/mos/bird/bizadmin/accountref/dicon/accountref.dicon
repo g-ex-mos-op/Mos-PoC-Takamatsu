@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE components PUBLIC "-//SEASAR2.1//DTD S2Container//EN"
+	"http://www.seasar.org/dtd/components21.dtd">
+<components namespace="accountref">
+	<include path="dao.dicon"/>
+    <include path="jp/co/isid/mos/bird/common/dicon/birdCommon.dicon"/>	
+	<include path="jp/co/isid/mos/bird/framework/dicon/birdInterceptor.dicon"/>
+	
+	<component class="jp.co.isid.mos.bird.framework.control.BirdUserInfo" instance="session"/>
+	
+	<!-- Dao -->
+	<component name="bizadminUIUserDao" class="jp.co.isid.mos.bird.bizadmin.common.dao.UIUserDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="bizadminUIUserCompanyDao" class="jp.co.isid.mos.bird.bizadmin.common.dao.UIUserCompanyDao" >
+	    <aspect>dao.interceptor</aspect>
+	</component>	 
+	<component name="bizadminUIUserGyotaiDao" class="jp.co.isid.mos.bird.bizadmin.common.dao.UIUserGyotaiDao">
+	    <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="bizadminUIUserOnerDao" class="jp.co.isid.mos.bird.bizadmin.common.dao.UIUserOnerDao">
+	    <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="bizadminUIUserMiseDao" class="jp.co.isid.mos.bird.bizadmin.common.dao.UIUserMiseDao">
+	    <aspect>dao.interceptor</aspect>
+	</component>
+	<!-- Logic -->
+	<component name="accountRefGetAccountLogic" class="jp.co.isid.mos.bird.bizadmin.accountref.logic.impl.GetAccountLogicImpl">
+		<aspect>birdInterceptor.logicInterceptorChain</aspect>
+	</component>
+	<component name="getBirdUserSelfLogic" class="jp.co.isid.mos.bird.bizadmin.common.logic.impl.GetBirdUserSelfLogicImpl">
+		<aspect>birdInterceptor.logicInterceptorChain</aspect>
+	</component>
+	<!-- Action -->
+	<component name="accountRefAction" class="jp.co.isid.mos.bird.bizadmin.accountref.action.impl.AccountRefActionImpl" instance="request">
+		<aspect>birdInterceptor.actionInterceptorChain</aspect>
+	</component>	
+	<!-- Dto -->
+	<component name="accountRefSesDto" class="jp.co.isid.mos.bird.bizadmin.accountref.dto.RequestDto" instance="session"/>  
+	<component name="accountRefDto" class="jp.co.isid.mos.bird.bizadmin.accountref.dto.AccountRefDto" instance="request">
+		<property name="listUserGyotai">null</property>      
+		<property name="listUserOner">null</property>
+	</component>  
+	<component name="userSearchDto" class="jp.co.isid.mos.bird.commonform.usersearch.dto.UserSearchDto" autoBinding="none" instance="session"/>
+	<!--外部Dto-->
+	<component name="gamenRoleDto" class="jp.co.isid.mos.bird.framework.dto.GamenRoleDto" instance="session"/>    
+	<component name="birdUserListDto" class="jp.co.isid.mos.bird.framework.dto.BirdUserListDto" instance="session">
+		<property name="userList">null</property>
+	</component>
+</components>

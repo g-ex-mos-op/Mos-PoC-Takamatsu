@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="Shift_JIS"?>
+<!DOCTYPE components PUBLIC
+    "-//SEASAR//DTD S2Container 2.3//EN"
+    "http://www.seasar.org/dtd/components23.dtd">
+<components namespace="entryHanyoViewProperty">
+	<component name="entryViewList" class="java.util.ArrayList">
+		<initMethod name="add" >
+			<arg>
+				<component class="jp.co.isid.mos.bird.entry.hanyoviewlist.dto.EntryDto" >
+					<property name="key">"ZZ"</property>
+					<property name="name">"全て"</property>
+					<property name="nameRyak">"全て"</property>
+				</component>
+			</arg>
+		</initMethod>
+		<initMethod name="add" >
+			<arg>
+				<component class="jp.co.isid.mos.bird.entry.hanyoviewlist.dto.EntryDto" >
+					<property name="key">"05"</property>
+					<property name="name">"出張ベーシック研修"</property>
+					<property name="nameRyak">"出張"</property>
+				</component>
+			</arg>
+		</initMethod>
+		<initMethod name="add" >
+			<arg>
+				<component class="jp.co.isid.mos.bird.entry.hanyoviewlist.dto.EntryDto" >
+					<property name="key">"30"</property>
+					<property name="name">"マスターライセンス更新研修"</property>
+					<property name="nameRyak">"更新"</property>
+				</component>
+			</arg>
+		</initMethod>
+	</component>
+</components>

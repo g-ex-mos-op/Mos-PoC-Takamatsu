@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="Shift_JIS"?>
+<!DOCTYPE components PUBLIC "-//SEASAR//DTD S2Container 2.3//EN"
+    "http://www.seasar.org/dtd/components23.dtd">
+<components namespace="camprank">
+    <include path="dao.dicon"/>
+    <include path="jp/co/isid/mos/bird/common/dicon/birdCommon.dicon"/>
+	<include path="jp/co/isid/mos/bird/framework/dicon/birdInterceptor.dicon"/>
+
+	<component
+	  class="org.seasar.framework.container.autoregister.AspectAutoRegister">
+	    <property name="interceptor">birdInterceptor.actionInterceptorChain</property>
+	    <initMethod name="addClassPattern">
+	        <arg>"jp.co.isid.mos.bird"</arg>
+	        <arg>".*ActionImpl"</arg>
+	    </initMethod>
+	    <initMethod name="registerAll"/>
+	</component> 
+	<component
+	  class="org.seasar.framework.container.autoregister.AspectAutoRegister">
+	    <property name="interceptor">birdInterceptor.logicInterceptorChain</property>
+	    <initMethod name="addClassPattern">
+	        <arg>"jp.co.isid.mos.bird"</arg>
+	        <arg>".*LogicImpl"</arg>
+	    </initMethod>
+	    <initMethod name="registerAll"/>
+	</component>
+
+	<component class="jp.co.isid.mos.bird.framework.control.BirdUserInfo" instance="session"/>
+	<component class="jp.co.isid.mos.bird.framework.control.BirdDateInfo" instance="session"/>
+
+
+	<!-- DAO -->
+	<component name="camprankUICampRankDataDao" class="jp.co.isid.mos.bird.bizreport.camprank.dao.UICampRankDataDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="camprankMstCampDateDao" class="jp.co.isid.mos.bird.bizreport.common.camp.dao.MstCampDateDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="camprankCampRankTenpoCountDao" class="jp.co.isid.mos.bird.bizreport.camprank.dao.CampRankTenpoCountDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+
+	<!-- LOGIC -->
+	<component name="camprankCampRankInfoLogic" class="jp.co.isid.mos.bird.bizreport.camprank.logic.impl.CampRankInfoLogicImpl"/>
+	<component name="camprankConditionLogic" class="jp.co.isid.mos.bird.bizreport.camprank.logic.impl.ConditionLogicImpl"/>
+	<component name="camprankCsvLogic" class="jp.co.isid.mos.bird.bizreport.camprank.logic.impl.CsvLogicImpl"/>
+	<!-- DTO -->
+	<component name="camprankCampRankCondDto" class="jp.co.isid.mos.bird.bizreport.camprank.dto.CampRankCondDto" autoBinding="none" instance="request"/>
+	<component name="camprankCampRankDto" class="jp.co.isid.mos.bird.bizreport.camprank.dto.CampRankDto" autoBinding="none" instance="session">
+		<property name="maxSize">5</property>
+	</component>
+	<component name="pullDownMenuDto" class="jp.co.isid.mos.bird.framework.dto.PullDownMenuDto" autoBinding="none" instance="session"/>
+
+	<!-- ACTION -->
+	<component name="camprankCampRankAction" class="jp.co.isid.mos.bird.bizreport.camprank.action.impl.CampRankActionImpl" instance="request"/>
+	<component name="camprankCsvAction" class="jp.co.isid.mos.bird.bizreport.camprank.action.impl.CsvActionImpl" instance="request">
+		<property name="csvOutputLogic">camprankCsvLogic</property>
+		<property name="csvOutputDto">camprankCampRankCondDto</property>
+	</component>
+	
+	<!-- Formatter -->
+
+	<!-- Converter -->
+	<component name="camprankDateConverter" class="jp.co.isid.mos.bird.framework.text.converter.DateConverter" instance="request">
+		<arg>@jp.co.isid.mos.bird.framework.util.formatter.DateFormatter@DATE_TYPE_YMD</arg>
+		<arg>@jp.co.isid.mos.bird.framework.util.formatter.DateFormatter@PATTERN_SLASH</arg>
+	</component>
+	<component name="camprankDigit0Converter" class="jp.co.isid.mos.bird.framework.text.converter.NumericConverter" instance="request">
+		<arg>"#,##0"</arg><arg>true</arg>
+	</component>
+	<component name="camprankDigit2Converter" class="jp.co.isid.mos.bird.framework.text.converter.NumericConverter" instance="request">
+		<arg>2</arg>
+	</component>
+	
+</components>

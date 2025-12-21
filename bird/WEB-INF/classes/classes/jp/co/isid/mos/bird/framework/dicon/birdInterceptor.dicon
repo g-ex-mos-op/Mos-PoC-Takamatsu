@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="Shift_JIS"?>
+<!DOCTYPE components PUBLIC "-//SEASAR2.1//DTD S2Container//EN"
+	"http://www.seasar.org/dtd/components21.dtd">
+<components namespace="birdInterceptor" >
+    <include path="dao.dicon"/>
+    
+	<!--アクションクラスの全メソッドに設定する。各画面用 -->
+	<component name="actionInterceptorChain" class="org.seasar.framework.aop.interceptors.InterceptorChain" >    
+		<initMethod name="add"><arg>traceInterceptor</arg></initMethod> 
+		<initMethod name="add"><arg>commonInitActionInterceptor</arg></initMethod> 
+		<initMethod name="add"><arg>accessCtlCheckInterceptor</arg></initMethod>
+		<initMethod name="add"><arg>actionThrowsInterceptor</arg></initMethod>
+		<initMethod name="add"><arg>logInterceptor</arg></initMethod>
+		<initMethod name="add"><arg>errorLogInterceptor</arg></initMethod>
+		<initMethod name="add"><arg>leaveOutMenuInterceptor</arg></initMethod>
+	</component>
+	<!--
+	　　アクションクラスの全メソッドに設定する。
+	　　セッションタイムアウト時にログイン画面には遷移せずセッションエラー画面を表示する画面用
+	-->
+	<component name="insideactionInterceptorChain" class="org.seasar.framework.aop.interceptors.InterceptorChain" >    
+		<initMethod name="add"><arg>traceInterceptor</arg></initMethod> 
+		<initMethod name="add"><arg>insideactionInterceptor</arg></initMethod> 
+		<initMethod name="add"><arg>accessCtlCheckInterceptor</arg></initMethod>
+		<initMethod name="add"><arg>actionThrowsInterceptor</arg></initMethod>
+		<initMethod name="add"><arg>logInterceptor</arg></initMethod>
+		<initMethod name="add"><arg>errorLogInterceptor</arg></initMethod>
+	</component>
+
+	<!-- エラーハンドリング、ログ出力のみを行う。ログインなど用-->	
+	<component name="simpleActionInterceptorChain" class="org.seasar.framework.aop.interceptors.InterceptorChain" >    
+		<initMethod name="add"><arg>traceInterceptor</arg></initMethod> 
+		<initMethod name="add"><arg>actionThrowsInterceptor</arg></initMethod>
+		<initMethod name="add"><arg>logInterceptor</arg></initMethod>
+		<initMethod name="add"><arg>errorLogInterceptor</arg></initMethod>
+	</component>
+	
+	<!--アクセス権限チェックなし -->
+	<component name="actionInterceptorChainNotAccessCheck" class="org.seasar.framework.aop.interceptors.InterceptorChain" >    
+		<initMethod name="add"><arg>traceInterceptor</arg></initMethod> 
+		<initMethod name="add"><arg>commonInitActionInterceptor</arg></initMethod> 
+		<initMethod name="add"><arg>actionThrowsInterceptor</arg></initMethod>
+		<initMethod name="add"><arg>logInterceptor</arg></initMethod>
+		<initMethod name="add"><arg>errorLogInterceptor</arg></initMethod>
+	</component>
+	<!--統合ユーザー用の全メソッドに設定する。各画面用 -->
+	<component name="actionInterceptorTogoChain" class="org.seasar.framework.aop.interceptors.InterceptorChain" >
+		<initMethod name="add"><arg>commonInitTogoActionInterceptor</arg></initMethod>    
+		<initMethod name="add"><arg>traceInterceptor</arg></initMethod> 
+		<initMethod name="add"><arg>actionThrowsInterceptor</arg></initMethod>
+		<initMethod name="add"><arg>logInterceptor</arg></initMethod>
+		<initMethod name="add"><arg>errorLogInterceptor</arg></initMethod>
+	</component>
+
+	
+	<component name="actionThrowsInterceptor" class="jp.co.isid.mos.bird.framework.interceptor.ActionThrowsInterceptor" />
+	<component name="traceInterceptor" class="org.seasar.framework.aop.interceptors.TraceInterceptor"/>
+	<component name="logInterceptor" class="jp.co.isid.mos.bird.framework.interceptor.log.LogInterceptor"/>
+	<component name="errorLogInterceptor" class="jp.co.isid.mos.bird.framework.interceptor.log.ErrorLogInterceptor" />
+
+
+	<!--アクションクラスのinit()メソッドに設定する -->
+	<component name="initActionInterceptorChain" class="org.seasar.framework.aop.interceptors.InterceptorChain">    
+		<initMethod name="add"><arg>traceInterceptor</arg></initMethod> 
+<!--		<initMethod name="add"><arg>commonInitActionInterceptor</arg></initMethod> --> 
+<!--		<initMethod name="add"><arg>accessCtlCheckInterceptor</arg></initMethod>  -->
+		<initMethod name="add"><arg>actionThrowsInterceptor</arg></initMethod>
+		<initMethod name="add"><arg>logInterceptor</arg></initMethod>
+		<initMethod name="add"><arg>errorLogInterceptor</arg></initMethod>
+	</component>
+
+	
+	<!--アクションクラスのinit()メソッドに設定する e-mosslesからのリンクを受ける画面用-->
+<!--	<component name="initActionInterceptorChainForEmos" class="org.seasar.framework.aop.interceptors.InterceptorChain" >    
+		<initMethod name="add"><arg>commonInitActionInterceptor</arg></initMethod>
+		<initMethod name="add"><arg>accessCtlCheckInterceptor</arg></initMethod>
+	</component>	
+-->	
+
+ <!-- セッションエラー時、再ログイン後に遷移する画面VIEW_IDの取得 -->
+    
+    <component name="selectViewIdDao" class="jp.co.isid.mos.bird.framework.dao.SelectViewIdDao" >	     
+           <aspect>dao.interceptor</aspect>
+    </component>  
+    <component name="selectViewIdLogic" class="jp.co.isid.mos.bird.framework.logic.impl.SelectViewIdLogicImpl" >	     
+    	<property name="selectViewIdDao">selectViewIdDao</property>
+	</component>
+    <component name="ctlLeaveOutMenuDao" class="jp.co.isid.mos.bird.framework.dao.CtlLeaveOutMenuDao">
+           <aspect>dao.interceptor</aspect>
+    </component>  
+    <component name="getLeaveOutMenuLogic" class="jp.co.isid.mos.bird.framework.logic.impl.GetLeaveOutMenuLogicImpl" >
+    	<property name="ctlLeaveOutMenuDao">ctlLeaveOutMenuDao</property>
+	</component>
+    
+    
+	<component name="commonInitActionInterceptor" class="jp.co.isid.mos.bird.framework.interceptor.CommonInitActionIntercepter" >
+	<property name="selectViewIdLogic">selectViewIdLogic</property>
+	</component>
+	<component name="insideactionInterceptor" class="jp.co.isid.mos.bird.framework.interceptor.InsideActionIntercepter" />
+	<component name="accessCtlCheckInterceptor" class="jp.co.isid.mos.bird.framework.interceptor.AccessCtlCheckInterceptor" />
+	<component name="leaveOutMenuInterceptor" class="jp.co.isid.mos.bird.framework.interceptor.LeaveOutMenuInterceptor" />
+	<component name="commonInitTogoActionInterceptor" class="jp.co.isid.mos.bird.framework.interceptor.CommonInitTogoActionIntercepter" />
+
+
+	<!--ロジッククラスの全メソッドに設定する -->
+	<component name="logicInterceptorChain" class="org.seasar.framework.aop.interceptors.InterceptorChain">    
+		<initMethod name="add"><arg>batchCheckInterceptor</arg></initMethod>
+	</component>
+	<component name="batchCheckInterceptor" class="jp.co.isid.mos.bird.framework.interceptor.BatchCheckInterceptor"/>
+  
+  	<!--バッチ排他チェック-->
+  	<component class="jp.co.isid.mos.bird.framework.dao.CtlOnlineUsedTblDao">
+		<aspect>dao.interceptor</aspect>
+	</component>	
+	<component name="checkBatchExecuteLogic" class="jp.co.isid.mos.bird.framework.logic.impl.CheckBatchExecuteLogicImpl" />	
+  
+    <!--画面アクセス権限チェック -->
+  	<component class="jp.co.isid.mos.bird.framework.dao.CtlUserMenuDao">
+		<aspect>dao.interceptor</aspect>
+	</component>	
+	<component name="accessCtlCheckLogic" class="jp.co.isid.mos.bird.framework.logic.impl.AccessCtlCheckLogicImpl" />	
+
+   
+</components>

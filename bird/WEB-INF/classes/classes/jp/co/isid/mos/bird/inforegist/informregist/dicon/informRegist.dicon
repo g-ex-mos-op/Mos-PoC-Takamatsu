@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="Shift_JIS"?>
+<!DOCTYPE components PUBLIC "-//SEASAR2.1//DTD S2Container//EN"
+	"http://www.seasar.org/dtd/components21.dtd">
+<components namespace="informRegist">
+    <include path="dao.dicon"/>
+    <include path="jp/co/isid/mos/bird/common/dicon/birdCommon.dicon"/>
+	<include path="jp/co/isid/mos/bird/framework/dicon/birdInterceptor.dicon"/>
+
+	<component class="org.seasar.framework.container.autoregister.AspectAutoRegister">
+	    <property name="interceptor">birdInterceptor.actionInterceptorChain</property>
+	    <initMethod name="addClassPattern">
+	        <arg>"jp.co.isid.mos.bird"</arg>
+	        <arg>".*ActionImpl"</arg>
+	    </initMethod>
+	    <initMethod name="registerAll"/>
+	</component> 
+	<component 
+	  class="org.seasar.framework.container.autoregister.AspectAutoRegister">
+	    <property name="interceptor">birdInterceptor.logicInterceptorChain</property>
+	    <initMethod name="addClassPattern">
+	        <arg>"jp.co.isid.mos.bird"</arg>
+	        <arg>".*LogicImpl"</arg>
+	    </initMethod>
+	    <initMethod name="registerAll"/>  
+	</component>
+	
+	<!-- DAO -->
+	<component name="uiNewsDao" class="jp.co.isid.mos.bird.inforegist.informregist.dao.UINewsDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+
+	<!-- LOGIC -->
+	<component name="getNewsLogic"   class="jp.co.isid.mos.bird.inforegist.informregist.logic.impl.GetNewsLogicImpl"/>
+	<component name="checkNewsLogic" class="jp.co.isid.mos.bird.inforegist.informregist.logic.impl.CheckNewsLogicImpl"/>
+	<component name="renewNewsLogic" class="jp.co.isid.mos.bird.inforegist.informregist.logic.impl.RenewNewsLogicImpl"/>
+	<component name="uploadLogicNews" class="jp.co.isid.mos.bird.inforegist.informregist.logic.impl.UploadLogicNewsImpl"/>
+	<component name="newsRegistDownloadKanrenLogic" class="jp.co.isid.mos.bird.inforegist.informregist.logic.impl.NewsRegistDownloadKanrenLogicImpl"/>
+	<component name="newsRegistDownloadTenpuLogic" class="jp.co.isid.mos.bird.inforegist.informregist.logic.impl.NewsRegistDownloadTenpuLogicImpl"/>
+	<component name="getCheckNewsKanrenBunshoLogic" class="jp.co.isid.mos.bird.inforegist.informregist.logic.impl.CheckNewsKanrenBunshoLogicImpl"/>
+	
+
+	<!-- DTO -->
+	<component name="informRegistDto" class="jp.co.isid.mos.bird.inforegist.informregist.dto.InformRegistDto" autoBinding="none" instance="session"/>
+	<component name="publicTargetDto" class="jp.co.isid.mos.bird.common.dto.PublicTargetDto" instance="session"/>
+	<component name="publicTargetSearchDto" class="jp.co.isid.mos.bird.commonform.publictargetsearch.dto.PublicTargetSearchDto" instance="session"/>
+	<component name="documentSearchDto" class="jp.co.isid.mos.bird.commonform.documentsearch.dto.DocumentSearchDto" autoBinding="none" instance="session"/>
+
+	<!-- ENTITY -->
+	<component name="uiNews" class="jp.co.isid.mos.bird.inforegist.informregist.entity.UINews" instance="session"/>
+
+	<!-- OTHER -->
+	<component class="jp.co.isid.mos.bird.framework.control.BirdUserInfo" instance="session"/>
+	<component class="jp.co.isid.mos.bird.framework.control.BirdDateInfo" instance="session"/>
+
+	<!-- ACTION -->
+	<component name="informSearchAction" class="jp.co.isid.mos.bird.inforegist.informregist.action.impl.InformSearchActionImpl" instance="request"/>
+	<component name="informEditAction" class="jp.co.isid.mos.bird.inforegist.informregist.action.impl.InformEditActionImpl" instance="request"/>
+	<component name="informConfirmAction" class="jp.co.isid.mos.bird.inforegist.informregist.action.impl.InformConfirmActionImpl" instance="request"/>
+
+	<component name="informRegistCommonUploadAction" class="jp.co.isid.mos.bird.framework.action.impl.FileUploadActionImpl" instance="request"/>
+	<component name="informRegistDownloadKanrenAction" class="jp.co.isid.mos.bird.framework.action.impl.FileDownloadActionImpl" instance="request">
+		<property name="downloadDto">informRegistDto</property>
+		<property name="downloadLogic">newsRegistDownloadKanrenLogic</property>
+	</component>
+	<component name="informRegistDownloadTenpuAction" class="jp.co.isid.mos.bird.framework.action.impl.FileDownloadActionImpl" instance="request">
+		<property name="downloadDto">informRegistDto</property>
+		<property name="downloadLogic">newsRegistDownloadTenpuLogic</property>
+	</component>
+	<component name="informRegistCsvAction" class="jp.co.isid.mos.bird.framework.action.impl.CsvDownloadActionImpl" instance="request">
+		<property name="csvOutputDto">publicTargetDto</property>
+		<property name="csvOutputLogic">publicTargetMiseCsvOutputLogic</property>
+		<property name="initLogic">null</property>
+		<property name="finalLogic">null</property>
+	</component>
+
+	<!-- CONVERTER -->
+	<component name="dateConverter" class="jp.co.isid.mos.bird.framework.text.converter.DateConverter" instance="request">
+		<arg>@jp.co.isid.mos.bird.framework.util.formatter.DateFormatter@DATE_TYPE_YMD</arg>
+		<arg>@jp.co.isid.mos.bird.framework.util.formatter.DateFormatter@PATTERN_SLASH</arg>
+	</component>
+	<!-- コンバーター -->
+	<component name="changeLineEditConverter" class="jp.co.isid.mos.bird.framework.text.converter.ChangeLineEditConverter" instance="request"/>
+	<component name="changeLineRefConverter" class="jp.co.isid.mos.bird.framework.text.converter.ChangeLineRefConverter" instance="request"/>
+	
+	<component name="characterEncodingConverter" class="jp.co.isid.mos.bird.framework.text.converter.CharacterEncodingConverter" instance="request"/>
+</components>

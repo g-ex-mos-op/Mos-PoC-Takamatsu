@@ -1,0 +1,13 @@
+select
+	BM39.CKANRI_NO,
+	BM39.TITLE,
+	BM39.TARGET_FROM,
+	BM39.TARGET_TO,
+	BM39.DEFAULT_FROM,
+	BM39.DEFAULT_TO
+from
+    BM39CPRD as BM39
+where
+    BM39.TARGET_FROM between /*condFromDt*/'20060401' and  /*condToDt*/'20060331'
+order by
+     BM39.TARGET_FROM desc

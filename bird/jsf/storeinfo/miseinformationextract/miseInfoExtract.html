@@ -1,0 +1,193 @@
+<html xmlns:m="http://www.seasar.org/maya" m:action="#{miseInfoExtractAction.initialize}" m:extends="/jsf/layout/layoutNoNavi.html">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Windows-31j" />
+<title>店マスタ情報一括抽出</title>
+</head>
+<body>
+<span m:inject="f:param" m:name="layoutTitle" m:value="店マスタ情報一括抽出"/>
+<span m:inject="f:param" m:name="onLoadName" m:value="init();"/>
+<span m:inject="s:insert" m:name="bodyTitleName">■店マスタ情報一括抽出</span>
+<span m:inject="f:param" m:name="viewIdValue" m:value="BSI008V01"/>
+<span m:inject="s:insert" m:name="body">
+<SCRIPT LANGUAGE="javascript">
+<!--
+function init(){
+}
+
+window.onload= function(){
+	var katekoriCh1 = document.getElementById("miseInfoExtractCondition:katekoriCh1");
+	katekoriCh1.value = true;
+	katekoriCh1.checked="checked";
+	katekoriCh1.disabled="disabled";
+
+	var shukeiKbnCtrl= document.getElementById("miseInfoExtractCondition:shukeiKbnCd");
+	switchShukeiKbn(shukeiKbnCtrl,shukeiKbnCtrl.value);
+}
+
+//会社プルダウン変更処理
+function reSearchSibuList() {
+	document.miseInfoExtractCondition.target = "_self";
+	document.forms['miseInfoExtractCondition'].elements['miseInfoExtractCondition:__link_clicked__'].value='miseInfoExtractCondition:reSearchSibuList';
+	document.forms['miseInfoExtractCondition'].submit();
+	return;
+}
+
+//集計区分プルダウン変更処理 2008/12/09追加 SV対応
+function switchShukeiKbn(elementShukeiKbn, initShukeiKbn) {
+	var kbnIndex = elementShukeiKbn.selectedIndex;
+	var commonClassName = "taisho_";
+	if(kbnIndex == 2) {
+		dispSwitchElement("div",commonClassName, "sibu", "none");
+		dispSwitchElement("div",commonClassName, "svCd", "");
+	}
+	else if(initShukeiKbn == elementShukeiKbn.options[kbnIndex].value){
+		dispSwitchElement("div",commonClassName, "svCd", "none");
+		dispSwitchElement("div",commonClassName, "sibu", "");
+	}
+	else {
+		reSearchSibuList();
+	}
+}
+
+/**
+ * 対象クラスエレメント表示切り替え処理
+ */
+function dispSwitchElement(targetTag, commonClassName, targetCode, status) {
+	var objsDiv = document.miseInfoExtractCondition.getElementsByTagName(targetTag);
+	for (i = 0; i < objsDiv.length; i++) {
+		var classNm = objsDiv[i].className;
+		if(classNm.indexOf(commonClassName)>=0){
+			if(classNm.indexOf(targetCode)>=0) {
+				objsDiv[i].style.display = status;
+			}
+		}
+	}
+}
+
+// SV検索 20081209追加 SV対応
+function doCallSVForm() {
+    document.miseInfoExtractCondition.target = "_self";
+	document.forms['miseInfoExtractCondition'].elements['miseInfoExtractCondition:__link_clicked__'].value='miseInfoExtractCondition:callSvForm';
+	document.forms['miseInfoExtractCondition'].submit();
+}
+
+// SVコードが8桁未満の場合は前0埋めで処理
+function formatSvCd(){
+	var length=0;
+	var zero ="00000000";
+	var svCdValue;
+	var svCdInput= document.getElementById("miseInfoExtractCondition:svCd");
+	svCdValue = svCdInput.value;
+	if(svCdValue.length<=0){
+		svCdInput.value = "";
+	} else{
+		svCdValue = zero+svCdValue;
+		length = svCdValue.length;
+		svCdValue= svCdValue .substring(length-8);
+		svCdInput.value = svCdValue;
+	}
+}
+//-->
+</SCRIPT>
+
+<form m:id="miseInfoExtractCondition" target="_self" onKeyDown="return setDefaultSubmitButton('miseInfoExtractCondition','btnDownloadCsv');">
+	<input type="hidden" m:id="viewId" m:value="#{viewIdValue}"/>
+	<a m:id="reSearchSibuList" m:action="#{miseInfoExtractAction.reSearchTaishoSibuList}"/>
+	<a m:id="callSvForm" m:action="#{miseInfoExtractAction.callSvForm}"/>
+	<!-- 条件部 -->
+	<table class="body_table" width="570">
+		<div m:inject="s:selectOneRadio2" m:value="#{miseInfoExtractDto.closeFlg}">
+		<tr>
+			<th width="150">ダウンロード対象</th>
+				<td>店マスタ情報一覧</td>
+			<th width="110">クローズ店</th>
+			<td colspan=3 width="150">
+				<input type="radio" name="closeMise" m:value="outClose"/>含まない&nbsp;
+				<input type="radio" name="closeMise" m:value="inClose"/>含む
+			</td>
+		</tr>
+		</div>
+		<tr>
+			<th nowrap=" nowrap">集計区分</th>
+			<td>
+				<div class="hideArea">
+				    <select class="condition_field"
+				    		m:value="#{miseInfoExtractDto.shukeiKbnCd}"
+				    	    m:items="#{miseInfoExtractDto.shukeiKbnList}"
+			    		    m:id="shukeiKbnCd"
+			    		    m:onchange="switchShukeiKbn(this, '#{miseInfoExtractDto.shukeiKbnCd}');"/>
+				</div>
+			</td>
+			<th nowrap=" nowrap">
+				<div class="taisho_sibu" m:style="#{miseInfoExtractDto.svFlg ? 'display:none;' : ''}">対象支部</div>
+				<div class="taisho_svCd" m:style="#{miseInfoExtractDto.svFlg ? '' : 'display:none;'}">
+					SVコード<input type="button" m:id="doSearchSVBtn" value="検索"
+					                     onclick="doCallSVForm();" ondblclick="return false;"
+					                     class="button_in_table height_21"/></div></th>
+		    <td>
+				<div class="taisho_sibu" m:style="#{miseInfoExtractDto.svFlg ? 'display:none;' : ''}">
+				    <div class="hideArea">
+					<select m:id = sibuCd m:value="#{miseInfoExtractDto.sibuCd}"
+						    m:items="#{miseInfoExtractDto.taishoSibuList}"/>
+					</div>
+				</div>
+				<div class="taisho_svCd" m:style="#{miseInfoExtractDto.svFlg ? '' : 'display:none;'}">
+					<input type="text" class="imenotuse height_11"  m:id="svCd"
+							m:value="#{miseInfoExtractDto.svCd}" maxlength="8" size="15" onblur="formatSvCd()" />
+				</div>
+			</td>
+		</tr>
+	</table>
+	<br/>
+	<table class="body_table2">
+	    <tr >
+	        <th style="text-align:center" width="45">選択</th>
+ 	       <th style="text-align:center" width="208">カテゴリ</th>
+ 	       <th style="text-align:center" width="592">説明</th>
+		</tr>
+		<tr class="non_top_border">
+			<td align="center" width="45"><input type="checkbox" m:id="katekoriCh1" /></td>
+			<td width="208">基本情報</td>
+			<td width="592">店コード、店名、支部、オーナー、担当SV、業態、オープン・クローズ日情報</td>
+		</tr>
+		<tr class="non_top_border">
+			<td align="center" width="45"><input m:value="#{miseInfoExtractDto.katekoriCheck2}" type="checkbox" m:id="katekoriCh2"/></td>
+			<td width="208">住所情報</td>
+			<td width="592">【基本情報に追加する場合選択】　県名・住所・郵便番号・電話番号情報</td>
+		</tr>
+		<tr class="non_top_border">
+			<td align="center" width="45"><input m:value="#{miseInfoExtractDto.katekoriCheck3}" type="checkbox" m:id="katekoriCh3"/></td>
+			<td width="208">付属情報</td>
+			<td width="592">【基本情報に追加する場合選択】　店舗タイプ、転貸・賃貸情報</td>
+	    </tr>
+	</table>
+	<br/>
+
+	<table  width="770">
+		<tr>
+			<td>
+				<input type="button" class="operation_button" value="ダウンロード(CSV)"
+						m:id="btnDownloadCsv"
+						m:action="#{miseInfoExtractAction.downloadCsv}"/>
+			</td>
+			<td>
+				<input type="button" class="operation_button" value="ダウンロード(Excel)"
+						m:id="btnDownloadExcel"
+						m:action="#{miseInfoExtractAction.downloadExcel}"/>
+			</td>
+			<td width="30"></td>
+			<td align="left" width="500">※　営業時間、禁煙情報に関してはHPの情報をご参照ください。</td>
+		</tr>
+		<tr>
+			<td width="120"></td>
+			<td width="120"></td>
+			<td width="30"></td>
+			<td align="left" width="500">※　その他情報に関しては、営業サポートにお問合せください。</td>
+		</tr>
+
+	</table>
+</form>
+<script type="text/javascript">
+</script>
+</body>
+</html>

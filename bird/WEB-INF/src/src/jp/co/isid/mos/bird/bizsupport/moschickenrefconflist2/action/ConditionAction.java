@@ -1,0 +1,39 @@
+package jp.co.isid.mos.bird.bizsupport.moschickenrefconflist2.action;
+
+/**
+ * モスチキン予約
+ * 初期画面用アクションインターフェース
+ * 
+ * @author inazawa
+ *
+ */
+public interface ConditionAction {
+    /**
+     * 初期処理 アクション
+     * 
+     * @return null 画面ID
+     */
+    public String initialize() throws Exception;
+    /**
+     * 本部ユーザー用実行ボタン押下時
+     */
+    public String honbuExec() throws Exception;
+
+    /**
+     *オーナー検索
+     */
+    public String onerSearch();
+    /**
+     * 本部ユーザー初期画面に戻る
+     */
+    public String honbuUserBack();
+    /**
+     * 検索画面押下
+     */
+    public String exec();
+    /**
+     * タイトルプルダウン変更
+     */
+    public String changeTitle() throws Exception;
+    public String execAll();
+}

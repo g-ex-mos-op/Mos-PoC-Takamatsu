@@ -1,0 +1,8 @@
+select 
+	LTRIM(RTRIM(ONER_NAME_KJ)) as ONER_NAME_KJ,
+	LTRIM(RTRIM(ONER_TEL)) as ONER_TEL
+from
+	BM11ONER
+where 
+	COMPANY_CD = /*companyCd*/'00' AND
+	ONER_CD = /*onerCd*/'36478'

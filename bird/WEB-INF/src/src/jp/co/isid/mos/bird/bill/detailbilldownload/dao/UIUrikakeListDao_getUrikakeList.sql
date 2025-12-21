@@ -1,0 +1,10 @@
+select 
+    rtrim(BM33.URIKAKE_CD) as URIKAKE_CD,
+    rtrim(BM11.ONER_NAME_KJ) as ONER_NAME_KJ 
+from 
+    BM33ONUR BM33 INNER JOIN BM11ONER BM11 ON BM33.URIKAKE_CD = BM11.ONER_CD
+where 
+	BM33.COMPANY_CD = /*companyCd*/ and 
+	BM33.ONER_CD = /*ownerCd*/
+order by 
+    BM33.URIKAKE_CD

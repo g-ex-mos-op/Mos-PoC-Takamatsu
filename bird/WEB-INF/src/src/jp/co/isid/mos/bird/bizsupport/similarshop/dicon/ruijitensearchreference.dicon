@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="Shift_JIS"?>
+<!DOCTYPE components PUBLIC "-//SEASAR2.1//DTD S2Container//EN"
+	"http://www.seasar.org/dtd/components21.dtd">
+<components namespace="ruijitenSearchReference">
+    <include path="dao.dicon"/>
+    <include path="jp/co/isid/mos/bird/common/dicon/birdCommon.dicon"/>
+	<include path="jp/co/isid/mos/bird/framework/dicon/birdInterceptor.dicon"/>
+
+	<component class="org.seasar.framework.container.autoregister.AspectAutoRegister">
+	    <property name="interceptor">birdInterceptor.actionInterceptorChain</property>
+	    <initMethod name="addClassPattern">
+	        <arg>"jp.co.isid.mos.bird"</arg>
+	        <arg>".*ActionImpl"</arg>
+	    </initMethod>
+	    <initMethod name="registerAll"/>
+	</component> 
+	<component class="org.seasar.framework.container.autoregister.AspectAutoRegister">
+	    <property name="interceptor">birdInterceptor.logicInterceptorChain</property>
+	    <initMethod name="addClassPattern">
+	        <arg>"jp.co.isid.mos.bird"</arg>
+	        <arg>".*LogicImpl"</arg>
+	    </initMethod>
+	    <initMethod name="registerAll"/>  
+	</component>
+    
+  	<!-- DAO -->
+	<component name="uIOnerTenpoDao" class="jp.co.isid.mos.bird.bizsupport.similarshop.dao.UIOnerTenpoDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="uIRuijiPLTenpoDaoInfo" class="jp.co.isid.mos.bird.bizsupport.similarshop.dao.UIRuijiPLTenpoDaoInfo">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="uIUserOnerCdDao" class="jp.co.isid.mos.bird.bizsupport.similarshop.dao.UIUserOnerCdDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+
+    <!-- LOGIC -->
+	<component name="getOnerTenpoInfoLogic" class="jp.co.isid.mos.bird.bizsupport.similarshop.logic.impl.GetOnerTenpoInfoLogicImpl"/>
+	<component name="getPLDataLogic" class="jp.co.isid.mos.bird.bizsupport.similarshop.logic.impl.GetPLDataLogicImpl"/>
+	<component name="getTenpoInfoLogic" class="jp.co.isid.mos.bird.bizsupport.similarshop.logic.impl.GetTenpoInfoLogicImpl"/>
+	<component name="getUserOnerCdLogic" class="jp.co.isid.mos.bird.bizsupport.similarshop.logic.impl.GetUserOnerCdLogicImpl"/>
+	<component name="graphOutputLogic" class="jp.co.isid.mos.bird.bizsupport.similarshop.logic.impl.GetRuijitenGraphLogicImpl"/>
+
+	<!-- DTO -->
+	<component name="pullDownMenuDto" class="jp.co.isid.mos.bird.framework.dto.PullDownMenuDto" autoBinding="none" instance="session"/>
+	<component name="miseSearchDto" class="jp.co.isid.mos.bird.commonform.misesearch.dto.MiseSearchDto" instance="session"/>
+	<component name="ruijitenReferenceDto" class="jp.co.isid.mos.bird.bizsupport.similarshop.dto.RuijitenReferenceDto" instance="request"/>
+	<component name="ruijitenCommonDto" class="jp.co.isid.mos.bird.bizsupport.similarshop.dto.RuijitenReferenceDto" instance="session"/>
+
+	<!-- ENTITY -->
+	<component class="jp.co.isid.mos.bird.bizsupport.similarshop.entity.UIRuijiPLTenpoInfo" instance="session"/>
+	
+	<!-- OTHER -->
+	<component class="jp.co.isid.mos.bird.framework.control.BirdUserInfo" instance="session"/>
+	<component class="jp.co.isid.mos.bird.framework.control.BirdDateInfo" instance="session"/>
+
+	<!-- ACTION -->
+	<component name="ruijitenSearchAction" class="jp.co.isid.mos.bird.bizsupport.similarshop.action.impl.RuijitenSearchActionImpl" instance="request">
+		<property name="ruijitenReferenceDto">ruijitenReferenceDto</property>
+	</component>
+	<component name="graphAction" class="jp.co.isid.mos.bird.framework.action.impl.GraphOutputActionImpl" instance="request">
+		<property name="graphOutputDto">ruijitenReferenceDto</property>
+		<property name="graphOutputLogic">graphOutputLogic</property>
+	</component>
+
+	<!-- CONVERTER -->
+	<component name="numericConverterKingakuRound" class="jp.co.isid.mos.bird.bizsupport.similarshop.text.converter.NumericConverter" instance="request">
+		<arg>0</arg>
+	</component>
+	<component name="uriageKosehiConverter" class="jp.co.isid.mos.bird.bizsupport.similarshop.text.converter.UriageKosehiConverter" instance="request"/>
+	<component name="uriageKosehiRuijitenConverter" class="jp.co.isid.mos.bird.bizsupport.similarshop.text.converter.UriageKosehiRuijitenConverter" instance="request"/>
+	<component name="ruijitenKingakuSaConverter" class="jp.co.isid.mos.bird.bizsupport.similarshop.text.converter.RuijitenKingakuSaConverter" instance="request"/>
+		
+	<component name="dateConverter" class="jp.co.isid.mos.bird.framework.text.converter.DateConverter" instance="request">
+		<arg>@jp.co.isid.mos.bird.framework.util.formatter.DateFormatter@DATE_TYPE_YMD</arg>
+		<arg>@jp.co.isid.mos.bird.framework.util.formatter.DateFormatter@PATTERN_SLASH</arg>
+	</component>
+	<component name="maskConverterPostCd" class="jp.co.isid.mos.bird.framework.text.converter.MaskConverter" instance="request">
+		<arg>"###-####"</arg>
+	</component>
+	<component name="NumericConverter" class="jp.co.isid.mos.bird.framework.text.converter.NumericConverter" instance="request">
+	</component>
+	
+</components>

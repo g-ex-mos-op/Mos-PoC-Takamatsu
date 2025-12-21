@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="Shift_JIS"?>
+<!DOCTYPE components PUBLIC "-//SEASAR2.1//DTD S2Container//EN"
+	"http://www.seasar.org/dtd/components21.dtd">
+
+<components namespace="help">
+    <include path="dao.dicon"/>
+    <include path="jp/co/isid/mos/bird/common/dicon/birdCommon.dicon"/>
+	<include path="jp/co/isid/mos/bird/framework/dicon/birdInterceptor.dicon"/>
+
+	<component class="org.seasar.framework.container.autoregister.AspectAutoRegister">
+	    <property name="interceptor">birdInterceptor.actionInterceptorChain</property>
+	    <initMethod name="addClassPattern">
+	        <arg>"jp.co.isid.mos.bird"</arg>
+	        <arg>".*ActionImpl"</arg>
+	    </initMethod>
+	    <initMethod name="registerAll"/>
+	</component> 
+	<component 
+	  class="org.seasar.framework.container.autoregister.AspectAutoRegister">
+	    <property name="interceptor">birdInterceptor.logicInterceptorChain</property>
+	    <initMethod name="addClassPattern">
+	        <arg>"jp.co.isid.mos.bird"</arg>
+	        <arg>".*LogicImpl"</arg>
+	    </initMethod>
+	    <initMethod name="registerAll"/>  
+	</component>	
+	
+	<component name="uIBirdMenuDao" class="jp.co.isid.mos.bird.sysadmin.help.dao.UIBirdMenuDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="helpVersionDao" class="jp.co.isid.mos.bird.sysadmin.help.dao.HelpVersionDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	
+	<component name="searchMenuLogic" class="jp.co.isid.mos.bird.sysadmin.help.logic.impl.SearchMenuLogicImpl"/>
+	
+	<component class="jp.co.isid.mos.bird.sysadmin.help.entity.UIBirdMenu" instance="session"/>
+	
+	<component name="helpMenuAction" class="jp.co.isid.mos.bird.sysadmin.help.action.impl.HelpMenuActionImpl" instance="request"/>
+	<component name="helpMenuList" class="java.util.ArrayList"/>
+	<component name="userMenuDto" class="jp.co.isid.mos.bird.sysadmin.help.dto.UserMenuDto" instance="session">
+		<property name="userHelpList">helpMenuList</property>
+	</component>
+
+</components>

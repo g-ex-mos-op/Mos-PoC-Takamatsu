@@ -1,0 +1,140 @@
+select
+    ENTY.STATE_FLG,STF.STAFF_ID,
+    ENTY.COMPANY_CD,ENTY.ONER_CD,ENTY.ONER_NAME_KJ,ENTY.MISE_CD_1,ENTY.MISE_NAME_KJ,
+    ENTY.STAFF_NAME_KJ,ENTY.STAFF_NAME_KNA,ENTY.SEX,ENTY.JOB,ENTY.EXAM_NO,ENTY.ENTRY_PLACE_CD,
+    ENTY.NOTE,ENTY.ABILITY_CHK,ENTY.EXAM_CHK,ENTY.INTERVIEW_CHK,
+    ENTY.EMP_EXP_YEAR,ENTY.EMP_EXP_MONTH,ENTY.PA_EXP_YEAR,ENTY.PA_EXP_MONTH,
+    ENTY.REENTRY_FLG,ENTY.ENTRY_COUNT,ENTY.REENTRY_BASE_YEAR,
+    ENTY.TOTAL_LAST_YEAR,ENTY.TOTAL_LAST_KAI,ENTY.TOTAL_RESULT,
+    ENTY.SUB1_RESULT,ENTY.SUB1_LAST_YEAR,ENTY.SUB1_LAST_KAI,
+    ENTY.SUB2_RESULT,ENTY.SUB2_LAST_YEAR,ENTY.SUB2_LAST_KAI,
+    ENTY.SUB3_RESULT,ENTY.SUB3_LAST_YEAR,ENTY.SUB3_LAST_KAI,
+    ENTY.STATE_F_USR,ENTY.STATE_F_PGM,ENTY.STATE_F_TMP,
+    ENTY.STATE_L_USR,ENTY.STATE_L_PGM,ENTY.STATE_L_TMP,
+    ENTY.RESULT_F_USR,ENTY.RESULT_F_PGM,ENTY.RESULT_F_TMP,
+    ENTY.RESULT_L_USR,ENTY.RESULT_L_PGM,ENTY.RESULT_L_TMP,ENTY.BEFORE_FLG
+from 
+    BM12STAF STF
+
+left outer join
+(select
+    BM12.STAFF_ID,BM12.COMPANY_CD,BM12.ONER_CD,BM12.MISE_CD_1,BM01.MISE_NAME_KJ,
+    (rtrim(BM12.STAFF_L_NAME_KJ)||' '||rtrim(BM12.STAFF_F_NAME_KJ)) as STAFF_NAME_KJ,
+    (rtrim(BM12.STAFF_L_NAME_KNA)||' '||rtrim(BM12.STAFF_F_NAME_KNA)) as STAFF_NAME_KNA,
+    rtrim(BT23.NOTE) as NOTE,
+    BM12.SEX,BT23.ENTRY_PLACE_CD,BT23.ABILITY_CHK,BT23.EXAM_CHK,BT23.INTERVIEW_CHK,
+    BT23_EXP.EMP_EXP_YEAR,BT23_EXP.EMP_EXP_MONTH,BT23_EXP.PA_EXP_YEAR,BT23_EXP.PA_EXP_MONTH,BT32.BEFORE_FLG,
+    BT32.REENTRY_FLG,BT32.ENTRY_COUNT,BT32.REENTRY_BASE_YEAR,
+    BT32.TOTAL_LAST_YEAR,BT32.TOTAL_LAST_KAI,BT32.TOTAL_RESULT,
+    BT32.SUB1_RESULT,BT32.SUB1_LAST_YEAR,BT32.SUB1_LAST_KAI,
+    BT32.SUB2_RESULT,BT32.SUB2_LAST_YEAR,BT32.SUB2_LAST_KAI,
+    BT32.SUB3_RESULT,BT32.SUB3_LAST_YEAR,BT32.SUB3_LAST_KAI,
+    BT23.FIRST_USER as STATE_F_USR,BT23.FIRST_PGM as STATE_F_PGM,BT23.FIRST_TMSP as STATE_F_TMP,
+    BT23.LAST_USER as STATE_L_USR,BT23.LAST_PGM as STATE_L_PGM,BT23.LAST_TMSP as STATE_L_TMP,
+    BT32.FIRST_USER as RESULT_F_USR,BT32.FIRST_PGM as RESULT_F_PGM,BT32.FIRST_TMSP as RESULT_F_TMP,
+    BT32.LAST_USER as RESULT_L_USR,BT32.LAST_PGM as RESULT_L_PGM,BT32.LAST_TMSP as RESULT_L_TMP,
+    (case when BT23.JOB = '' or BT23.JOB is NULL
+        then rtrim(BM12.JOB) else rtrim(BT23.JOB) end) as JOB,
+    (case when BT23.EXAM_NO = '' or BT23.EXAM_NO is NULL
+        then BT32.EXAM_NO else BT23.EXAM_NO end) as EXAM_NO,
+    (case when BT23.STAFF_ID = '' or BT23.STAFF_ID is NULL
+        then (case when BT32.STAFF_ID = '' or BT32.STAFF_ID is NULL then '0' else '1' end)
+        else (case when BT32.STAFF_ID = '' or BT32.STAFF_ID is NULL then '2' else '3' end)
+     end) as STATE_FLG,
+     BM11.ONER_NAME_KJ
+from
+    BM11ONER BM11,
+    BM12STAF BM12
+    
+left outer join (
+        select 
+            STAFF_ID,EXAM_NO,ENTRY_PLACE_CD,
+            NOTE,ABILITY_CHK,EXAM_CHK,INTERVIEW_CHK,JOB,
+            FIRST_USER,FIRST_PGM,FIRST_TMSP,LAST_USER,LAST_PGM,LAST_TMSP
+       from BT23MLEJ
+      where ENTRY_CD = /*entryCd*/'10'
+        and ENTRY_YEAR = /*entryYear*/'2005'
+        and ENTRY_KAI = /*entryKai*/'003'
+    ) BT23 on BM12.STAFF_ID = BT23.STAFF_ID
+
+left outer join (
+        select 
+            bt23.STAFF_ID,bt23.EMP_EXP_YEAR,bt23.EMP_EXP_MONTH,bt23.PA_EXP_YEAR,bt23.PA_EXP_MONTH
+       from BT23MLEJ BT23 
+            ,(select STAFF_ID, max(concat(ENTRY_YEAR,ENTRY_KAI)) MAX_YEARKAI 
+              from BT23MLEJ 
+              where ENTRY_CD = /*entryCd*/'10'
+              group by STAFF_ID) BT23_MAX
+      where ENTRY_CD = /*entryCd*/'10'
+        and bt23.STAFF_ID = bt23_max.STAFF_ID
+        and BT23_MAX.MAX_YEARKAI = concat(BT23.ENTRY_YEAR,BT23.ENTRY_KAI)
+    ) BT23_EXP on BM12.STAFF_ID = BT23_EXP.STAFF_ID
+
+left outer join (
+        select 
+            BT32A.STAFF_ID,BT32A.EXAM_NO,BT32A.REENTRY_FLG,BT32A.ENTRY_COUNT,BT32A.REENTRY_BASE_YEAR,
+            BT32A.TOTAL_LAST_YEAR,BT32A.TOTAL_LAST_KAI,BT32A.TOTAL_RESULT,
+            BT32A.SUB1_RESULT,BT32A.SUB1_LAST_YEAR,BT32A.SUB1_LAST_KAI,
+            BT32A.SUB2_RESULT,BT32A.SUB2_LAST_YEAR,BT32A.SUB2_LAST_KAI,
+            BT32A.SUB3_RESULT,BT32A.SUB3_LAST_YEAR,BT32A.SUB3_LAST_KAI,
+            BT32A.FIRST_USER,BT32A.FIRST_PGM,BT32A.FIRST_TMSP,BT32A.LAST_USER,BT32A.LAST_PGM,BT32A.LAST_TMSP,
+            concat(TOTAL_LAST_YEAR ,TOTAL_LAST_KAI) as LAST_DATA,
+            case when exists(
+                select 
+                    BT32BE.STAFF_ID
+                from
+                    BT32MLKR BT32BE
+                where
+                    concat(SUB3_LAST_YEAR ,SUB3_LAST_KAI ) = (
+                        select
+                            max(concat(ENTRY_YEAR, ENTRY_KAI))
+                        from
+                            BR17ENTL
+                        where
+                            ENTRY_CD = /*entryCd*/'10' and
+                            concat(ENTRY_YEAR, ENTRY_KAI) < /*entryYearKai*/'2006003'
+                    ) and
+                    BT32BE.SUB3_RESULT = '0' and
+                    BT32BE.STAFF_ID = BT32A.STAFF_ID
+            )
+            then '1'
+            else '0'
+            end as BEFORE_FLG
+       from BT32MLKR BT32A
+       
+            join (
+                select max(concat(b.TOTAL_LAST_YEAR ,b.TOTAL_LAST_KAI )) as LAST_DATA,b.STAFF_ID
+                  from BT32MLKR b
+                 where cast(integer(REENTRY_BASE_YEAR) + 1 as char(4)) >= /*entryYear*/'2006'
+                   and not (TOTAL_LAST_YEAR = /*entryYear*/'2006' and TOTAL_LAST_KAI = /*entryKai*/'003' )
+                 group by b.STAFF_ID
+            ) BT32MX on (BT32A.STAFF_ID = BT32MX.STAFF_ID 
+            	    and  concat(TOTAL_LAST_YEAR ,TOTAL_LAST_KAI) = BT32MX.LAST_DATA)
+
+      where cast(integer(BT32A.REENTRY_BASE_YEAR) + 1 as char(4)) >= /*entryYear*/'2006'
+        and not (BT32A.TOTAL_LAST_YEAR = /*entryYear*/'2006' and BT32A.TOTAL_LAST_KAI = /*entryKai*/'003' )
+        and (BT32MX.STAFF_ID = BT32A.STAFF_ID and BT32MX.LAST_DATA = LAST_DATA)
+        
+    ) BT32 on BM12.STAFF_ID = BT32.STAFF_ID
+    
+  , BM01TENM BM01
+where
+    BM12.COMPANY_CD = /*companyCd*/'00'
+and BM12.ONER_CD    = /*onerCd*/'36003'
+and BM12.COMPANY_CD = BM11.COMPANY_CD
+and BM12.ONER_CD    = BM11.ONER_CD
+and BM12.COMPANY_CD = BM01.COMPANY_CD
+and BM12.MISE_CD_1  = BM01.MISE_CD
+
+) ENTY on STF.STAFF_ID = ENTY.STAFF_ID
+
+where
+    STF.COMPANY_CD = /*companyCd*/'00'
+and STF.ONER_CD    = /*onerCd*/'36003'
+and STF.COMPANY_CD = ENTY.COMPANY_CD
+and STF.ONER_CD    = ENTY.ONER_CD
+and STF.SITUATION_KBN <> '2'
+
+order by 
+    ENTY.STATE_FLG DESC
+   ,STF.STAFF_ID ASC

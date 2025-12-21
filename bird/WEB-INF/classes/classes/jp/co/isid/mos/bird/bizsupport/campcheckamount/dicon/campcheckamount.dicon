@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="Shift_JIS"?>
+<!DOCTYPE components PUBLIC "-//SEASAR//DTD S2Container 2.3//EN"
+    "http://www.seasar.org/dtd/components23.dtd">
+<components namespace="campcheckamount">
+    <include path="dao.dicon"/>
+    <include path="jp/co/isid/mos/bird/common/dicon/birdCommon.dicon"/>
+	<include path="jp/co/isid/mos/bird/framework/dicon/birdInterceptor.dicon"/>
+
+	<component class="org.seasar.framework.container.autoregister.AspectAutoRegister">
+	    <property name="interceptor">birdInterceptor.actionInterceptorChain</property>
+	    <initMethod name="addClassPattern">
+	        <arg>"jp.co.isid.mos.bird"</arg>
+	        <arg>".*ActionImpl"</arg>
+	    </initMethod>
+	    <initMethod name="registerAll"/>
+	</component>
+	<component
+	  class="org.seasar.framework.container.autoregister.AspectAutoRegister">
+	    <property name="interceptor">birdInterceptor.logicInterceptorChain</property>
+	    <initMethod name="addClassPattern">
+	        <arg>"jp.co.isid.mos.bird"</arg>
+	        <arg>".*LogicImpl"</arg>
+	    </initMethod>
+	    <initMethod name="registerAll"/>
+	</component>
+
+	<!-- OTHER -->
+	<component class="jp.co.isid.mos.bird.framework.control.BirdUserInfo" instance="session"/>
+	<component class="jp.co.isid.mos.bird.framework.control.BirdDateInfo" instance="session"/>
+
+	<!-- DAO -->
+	<component name="uiBlockInfoDao" class="jp.co.isid.mos.bird.bizsupport.campcheckamount.dao.UIBlockInfoDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="uiCampaignInfoDao" class="jp.co.isid.mos.bird.bizsupport.campcheckamount.dao.UICampaignInfoDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="uiSetQuantityInfoDao" class="jp.co.isid.mos.bird.bizsupport.campcheckamount.dao.UISetQuantityInfoDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="uiSpotQuantityInfoDao" class="jp.co.isid.mos.bird.bizsupport.campcheckamount.dao.UISpotQuantityInfoDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="uiGroupTogoOwnerDao" class="jp.co.isid.mos.bird.analysis.common.dao.UIGroupTogoOwnerDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+
+	<!-- LOGIC -->
+	<component name="getBlockInfoLogic" class="jp.co.isid.mos.bird.bizsupport.campcheckamount.logic.impl.GetBlockInfoLogicImpl"/>
+	<component name="getCampaignInfoLogic" class="jp.co.isid.mos.bird.bizsupport.campcheckamount.logic.impl.GetCampaignInfoLogicImpl"/>
+	<component name="getSetQuantityInfoLogic" class="jp.co.isid.mos.bird.bizsupport.campcheckamount.logic.impl.GetSetQuantityInfoLogicImpl"/>
+	<component name="getSpotQuantityInfoLogic" class="jp.co.isid.mos.bird.bizsupport.campcheckamount.logic.impl.GetSpotQuantityInfoLogicImpl"/>
+	<component name="getSpotInfoCsvInfoLogic" class="jp.co.isid.mos.bird.bizsupport.campcheckamount.logic.impl.SpotInfoCsvLogicImpl"/>
+	<component name="getQuantityInfoCsvLogic" class="jp.co.isid.mos.bird.bizsupport.campcheckamount.logic.impl.QuantityInfoCsvLogicImpl"/>
+
+	<!-- DTO -->
+	<component name="pullDownMenuDto" class="jp.co.isid.mos.bird.framework.dto.PullDownMenuDto" autoBinding="none" instance="session"/>
+	<component name="miseSearchDto" class="jp.co.isid.mos.bird.commonform.misesearch.dto.MiseSearchDto" autoBinding="none" instance="session"/>
+	<component name="ownerSearchDto" class="jp.co.isid.mos.bird.commonform.ownersearch.dto.OwnerSearchDto" autoBinding="none" instance="session"/>
+	<component name="campCheckAmountDto" class="jp.co.isid.mos.bird.bizsupport.campcheckamount.dto.CampCheckAmountDto" instance="request"/>
+	<component name="campCheckAmountSaveDto" class="jp.co.isid.mos.bird.bizsupport.campcheckamount.dto.CampCheckAmountSaveDto" instance="session"/>
+
+	<!-- ACTION -->
+	<component name="campCheckAmountAction" class="jp.co.isid.mos.bird.bizsupport.campcheckamount.action.impl.CampCheckAmountActionImpl" instance="request"/>
+	<component name="campCheckAmountCsvOutputAction" class="jp.co.isid.mos.bird.framework.action.impl.CsvOutputActionImpl" instance="request">
+		<property name="csvOutputDto">campCheckAmountSaveDto</property>
+		<property name="csvOutputLogic">getSpotInfoCsvInfoLogic</property>
+	</component>
+	<component name="campCheckAmountCsvQuantityOutputAction" class="jp.co.isid.mos.bird.framework.action.impl.CsvOutputActionImpl" instance="request">
+		<property name="csvOutputLogic">getQuantityInfoCsvLogic</property>
+	</component>
+
+
+	<!-- Converter -->
+	<component name="campCheckAmountNumericConverter" class="jp.co.isid.mos.bird.framework.text.converter.NumericConverter" instance="request">
+		<arg>2</arg>
+		<property name="formatPattern">"#,##0"</property>
+		<property name="defaultText">"0"</property>
+	</component>
+	<component name="numericConverterTanka" class="jp.co.isid.mos.bird.framework.text.converter.NumericConverter" instance="request">
+		<arg>2</arg>
+	</component>
+	<component name="amountNumericConverter" class="jp.co.isid.mos.bird.framework.text.converter.NumericConverter" instance="request">
+		<arg>0</arg>
+		<property name="formatPattern">"#,##0"</property>
+		<property name="defaultText">"0"</property>
+	</component>
+</components>

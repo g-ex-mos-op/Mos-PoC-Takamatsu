@@ -1,0 +1,472 @@
+<html xmlns:m="http://www.seasar.org/maya" m:action="#{plLumpExtractConditionAction.initialize}" m:extends="/jsf/layout/layoutNoNavi.html">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Windows-31j" />
+<title>P/L一括抽出</title>
+</head>
+<body>
+<span m:inject="f:param" m:name="layoutTitle" m:value="P/L一括抽出"/>
+<span m:inject="s:insert" m:name="bodyTitleName">■P/L一括抽出</span>
+<span m:inject="f:param" m:name="onLoadName" m:value="bodyLoad();"/>
+<span m:inject="f:param" m:name="viewIdValue" m:value="BBS007V01"/>
+<span m:inject="s:insert" m:name="body">
+<script type="text/javascript">
+<!--
+
+function bodyLoad(){
+    if ( document.plLumpExtractCondition.elements['plLumpExtractCondition:plType'].value!='03' ) {
+	   	radioFirst();
+	}
+}
+
+function radioFirst() {
+	var checkMonth,checkData,checkKouseihi,monthValue,dataValue;
+	var monthFc,monthRc,dataFc,dataRc;
+
+	monthFc=document.plLumpExtractCondition.elements['plLumpExtractCondition:monthTypeFc'].value;
+	dataFc=document.plLumpExtractCondition.elements['plLumpExtractCondition:dataTypeFc'].value;
+
+	checkMonth=document.plLumpExtractCondition.checkDateFC.length;
+	checkData=document.plLumpExtractCondition.checkData.length;
+
+	for(i=0;i < checkMonth;i++){
+		monthValue=document.plLumpExtractCondition.checkDateFC[i].value;
+		if(monthValue==monthFc) {
+			document.plLumpExtractCondition.checkDateFC[i].checked=true;
+			break;
+		}
+	}
+
+	for(i=0;i < checkData;i++){
+		dataValue=document.plLumpExtractCondition.checkData[i].value;
+		if(dataValue==dataFc) {
+			document.plLumpExtractCondition.checkData[i].checked=true;
+			break;
+		}
+	}
+
+	if ( document.plLumpExtractCondition.elements['plLumpExtractCondition:plType'].value=='01') {
+		monthRc=document.plLumpExtractCondition.elements['plLumpExtractCondition:monthTypeRc'].value;
+		dataRc=document.plLumpExtractCondition.elements['plLumpExtractCondition:dataTypeRc'].value;
+
+		checkMonth=document.plLumpExtractCondition.checkDateRC.length;
+		checkData=document.plLumpExtractCondition.checkKouseihi.length;
+
+		for(i=0;i < checkMonth;i++){
+			monthValue=document.plLumpExtractCondition.checkDateRC[i].value;
+			if(monthValue==monthRc) {
+				document.plLumpExtractCondition.checkDateRC[i].checked=true;
+				break;
+			}
+		}
+
+		for(i=0;i < checkData;i++){
+			dataValue=document.plLumpExtractCondition.checkKouseihi[i].value;
+			if(dataValue==dataRc) {
+				document.plLumpExtractCondition.checkKouseihi[i].checked=true;
+				break;
+			}
+		}
+	}
+}
+
+function plTabChange(tabIndex) {
+	document.plLumpExtractCondition.elements['plLumpExtractCondition:plMode'].value=tabIndex;
+	changeTabArea(tabIndex);
+}
+
+function checkType() {
+
+	var checkMonth,checkData,checkKouseihi,checkOutput,monthFlg,dataFlg,outputFlg;
+	var monthType,dataType,outputType;
+
+	checkMonth=document.plLumpExtractCondition.checkDateFC.length;
+	checkData=document.plLumpExtractCondition.checkData.length;
+
+	for(i=0;i < checkMonth;i++) {
+		monthFlg=document.plLumpExtractCondition.checkDateFC[i].checked;
+		if(monthFlg) {
+			monthType=document.plLumpExtractCondition.checkDateFC[i].value;
+			break;
+		}
+	}
+	for(i=0;i < checkData;i++) {
+		dataFlg=document.plLumpExtractCondition.checkData[i].checked;
+		if(dataFlg) {
+			dataType=document.plLumpExtractCondition.checkData[i].value;
+			break;
+		}
+	}
+	document.plLumpExtractCondition.elements['plLumpExtractCondition:monthTypeFc'].value=monthType;
+	document.plLumpExtractCondition.elements['plLumpExtractCondition:dataTypeFc'].value=dataType;
+
+  	if ( document.plLumpExtractCondition.elements['plLumpExtractCondition:plType'].value=='01') {
+		checkMonth=document.plLumpExtractCondition.checkDateRC.length;
+		checkData=document.plLumpExtractCondition.checkKouseihi.length;
+
+		for(i=0;i < checkMonth;i++) {
+			monthFlg=document.plLumpExtractCondition.checkDateRC[i].checked;
+			if(monthFlg) {
+				monthType=document.plLumpExtractCondition.checkDateRC[i].value;
+				break;
+			}
+		}
+		for(i=0;i < checkData;i++) {
+			dataFlg=document.plLumpExtractCondition.checkKouseihi[i].checked;
+			if(dataFlg) {
+				dataType=document.plLumpExtractCondition.checkKouseihi[i].value;
+				break;
+			}
+		}
+
+		document.plLumpExtractCondition.elements['plLumpExtractCondition:monthTypeRc'].value=monthType;
+		document.plLumpExtractCondition.elements['plLumpExtractCondition:dataTypeRc'].value=dataType;
+    }
+}
+
+function changeRadio(radio) {
+
+	var checkMonth,monthValue;
+
+    if(document.plLumpExtractCondition.elements['plLumpExtractCondition:plMode'].value=='0') {
+		checkMonth=document.plLumpExtractCondition.checkDateFC.length;
+
+		for(i=0;i < checkMonth;i++) {
+			monthValue=document.plLumpExtractCondition.checkDateFC[i].value;
+			if(monthValue==radio) {
+				document.plLumpExtractCondition.checkDateFC[i].checked=true;
+				break;
+			}
+		}
+    }else{
+		checkMonth=document.plLumpExtractCondition.checkDateRC.length;
+
+		for(i=0;i < checkMonth;i++) {
+			monthValue=document.plLumpExtractCondition.checkDateRC[i].value;
+			if(monthValue==radio) {
+				document.plLumpExtractCondition.checkDateRC[i].checked=true;
+				break;
+			}
+		}
+    }
+
+}
+-->
+
+</script>
+
+<form m:id="plLumpExtractCondition" onKeyDown="return setDefaultSubmitButton('plLumpExtractCondition','down');">
+<input type="hidden" m:id="viewId" m:value="#{viewIdValue}" />
+<input type="hidden" m:id="initMenuId" m:value="#{menuAction.initMenuId}"/>
+<input type="hidden" m:id="initSubMenuId" m:value="#{menuAction.initSubMenuId}"/>
+<style type="text/css">
+	<!--
+	.operation_panel {
+		position			: absolute;
+	}
+	.sublist_operation_first {
+		position			: absolute;
+		left				: 330px;
+	}
+	.sublist_operation_previous {
+		position			: absolute;
+		left				: 400px;
+	}
+	.sublist_operation_next {
+		position			: absolute;
+		left				: 505px;
+	}
+	.sublist_operation_last {
+		position			: absolute;
+		left				: 550px;
+	}
+	.sublist_operation_area {
+		margin-top			: 20px;
+	}
+	.sublist_operation_area input {
+		width				: 64px;
+	}
+	-->
+</style>
+
+
+<input type="hidden" m:id="plMode" name="plMode" m:value="#{plLumpExtractConditionDto.plMode}"/>
+<input type="hidden" m:id="plType" name="plType" m:value="#{plLumpExtractConditionDto.userInfoKbn}"/>
+<input type="hidden" m:id="monthTypeFc" m:value="#{plLumpExtractConditionDto.monthTypeFc}"/>
+<input type="hidden" m:id="dataTypeFc" m:value="#{plLumpExtractConditionDto.dataTypeFc}"/>
+<input type="hidden" m:id="outputTypeFc" m:value="#{plLumpExtractConditionDto.outputTypeFc}"/>
+<input type="hidden" m:id="monthTypeRc" m:value="#{plLumpExtractConditionDto.monthTypeRc}"/>
+<input type="hidden" m:id="dataTypeRc" m:value="#{plLumpExtractConditionDto.dataTypeRc}"/>
+<input type="hidden" m:id="outputTypeRc" m:value="#{plLumpExtractConditionDto.outputTypeRc}"/>
+
+	<table>
+		<tr>
+			<td>
+			<!-- タブ -->
+			<!-- 本部モード -->
+			<div m:rendered="#{plLumpExtractConditionDto.userInfoKbn == '01'}">
+				<table width="400px" cellspacing="0" cellpadding="0">
+				  <tr>
+				    <td class="tab_change_area_0 body_#{plLumpExtractConditionDto.plMode=='0'?'':'non_'}active_cell"
+				        width="150px">
+				      <a href="javascript:plTabChange('0');" m:passthrough="true">ＦＣ</a></td>
+				    <td class="tab_change_area_1 body_#{plLumpExtractConditionDto.plMode=='1'?'':'non_'}active_cell"
+				        width="150px">
+				      <a href="javascript:plTabChange('1');"  m:passthrough="true">直営</a></td>
+				    <td width="*">&nbsp;<td/>
+				  </tr>
+				  <tr class="body_caption" style="height:5px;">
+				    <td colspan="3"/></tr>
+				</table>
+				<div class="tab_change_area_0 #{plLumpExtractConditionDto.plMode=='0'?'':'in'}visible_tab">
+					<table class="body_table" width="400px">
+					  <tr>
+					  	<th width="200px">
+					  		<input type="radio" name="checkDateFC" value="closing" m:passthrough="true" checked="checked"/>&nbsp;
+							年度(オーナー決算月)</th>
+					    <td>
+					    	<div class="hideArea">
+								<select m:value="#{plLumpExtractConditionDto.closingMonthStr}"
+							    	m:items="#{plLumpExtractConditionDto.closingMonthList}"
+							    	m:itemValue="closingMonthStr"
+						    		m:itemLabel="closingMonthStr"
+						    		m:onchange="changeRadio('closing')">
+						    	</select>
+							</div>
+					    </td>
+					  </tr>
+					  <tr>
+					  	<th>
+					  		<input type="radio" name="checkDateFC"  m:passthrough="true" value="target"/>&nbsp;
+							対象月
+					  	</th>
+					    <td>
+					    	<div class="hideArea">
+							    <select m:value="#{plLumpExtractConditionDto.targetMonthStr}"
+							    	m:items="#{plLumpExtractConditionDto.targetMonthList}"
+							    	m:itemValue="targetMonthStr"
+						    		m:itemLabel="targetMonthStr"
+						    		m:onchange="changeRadio('target')">
+						    	</select>
+							</div>
+					    </td>
+					  </tr>
+
+					  <tr>
+					  	<th rowspan="2" valign="top">
+					  		<input type="radio" name="checkDateFC"  m:passthrough="true" value="period"/>&nbsp;
+							期間指定
+					  	</th>
+					    <td>
+					    	<div class="hideArea">
+							    <select m:value="#{plLumpExtractConditionDto.periodMonthFromStr}"
+							    	m:items="#{plLumpExtractConditionDto.periodMonthFromList}"
+							    	m:itemValue="periodMonthFromStr"
+						    		m:itemLabel="periodMonthFromStr"
+						    		m:onchange="changeRadio('period')">
+						    	</select>&nbsp;(FROM)
+							</div>
+					    </td>
+					  </tr>
+					  <tr>
+					    <td>
+					    	<div class="hideArea">
+							    <select m:value="#{plLumpExtractConditionDto.periodMonthToStr}"
+							    	m:items="#{plLumpExtractConditionDto.periodMonthToList}"
+							    	m:itemValue="periodMonthToStr"
+						    		m:itemLabel="periodMonthToStr"
+						    		m:onchange="changeRadio('period')">
+						    	</select>&nbsp;(TO)
+							</div>
+					    </td>
+					  </tr>
+					  <tr>
+					  	<th>
+							&nbsp;オーナー&nbsp;<input type="submit" m:action="#{plLumpExtractConditionAction.accessOwner}" m:value="検索"/>
+					  	</th>
+					  	<td>
+							<input type="text" name="ownerCd" m:value="#{plLumpExtractConditionDto.ownerCd}" width="250px"  maxlength="5"/>
+					  	</td>
+					  </tr>
+					  <tr>
+					  	<th>&nbsp;データ</th>
+					  	<td>
+					  		<input type="radio" name="checkData"  m:passthrough="true" value="money" checked="checked"/>
+					  		金額
+							&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+					  		<input type="radio" name="checkData"  m:passthrough="true" value="kousei"/>
+					  		構成比
+					  	</td>
+					  </tr>
+					 </table>
+				</div>
+
+				<!-- RC -->
+				<div class="tab_change_area_1 #{plLumpExtractConditionDto.plMode=='1'?'':'in'}visible_tab">
+					<table class="body_table" width="400px">
+				 	  <tr>
+					  	<th width="200px">
+					  		<input type="radio" name="checkDateRC"  m:passthrough="true" value="target" checked="checked"/>&nbsp;
+							対象月
+					  	</th>
+					    <td>
+					    	<div class="hideArea">
+							    <select m:value="#{plLumpExtractConditionDto.targetMonthStrRc}"
+							    	m:items="#{plLumpExtractConditionDto.targetMonthRcList}"
+							    	m:itemValue="targetMonthStr"
+						    		m:itemLabel="targetMonthStr"
+						    		m:onchange="changeRadio('target')">
+						    	</select>
+							</div>
+					    </td>
+					  </tr>
+
+					  <tr>
+					  	<th rowspan="2" valign="top">
+					  		<input type="radio" name="checkDateRC"  m:passthrough="true" value="period"/>&nbsp;
+							期間指定
+					  	</th>
+					    <td>
+					    	<div class="hideArea">
+							    <select m:value="#{plLumpExtractConditionDto.periodMonthFromStrRc}"
+							    	m:items="#{plLumpExtractConditionDto.periodMonthFromRcList}"
+							    	m:itemValue="periodMonthFromStr"
+						    		m:itemLabel="periodMonthFromStr"
+						    		m:onchange="changeRadio('period')">
+						    	</select>&nbsp;(FROM)
+							</div>
+					    </td>
+					  </tr>
+					  <tr>
+					    <td>
+					    	<div class="hideArea">
+							    <select m:value="#{plLumpExtractConditionDto.periodMonthToStrRc}"
+							    	m:items="#{plLumpExtractConditionDto.periodMonthToRcList}"
+							    	m:itemValue="periodMonthToStr"
+						    		m:itemLabel="periodMonthToStr"
+						    		m:onchange="changeRadio('period')">
+						    	</select>&nbsp;(TO)
+							</div>
+					    </td>
+					  </tr>
+
+				 	  <tr>
+					  	<th>
+							&nbsp;支部
+					  	</th>
+					  	<td>
+					    	<div class="hideArea">
+						  		<span>
+									<select m:value="#{plLumpExtractConditionDto.rcStr}"
+								    	m:items="#{plLumpExtractConditionDto.rcList}"
+								    	m:itemValue="rcStr"
+							    		m:itemLabel="rcStr">
+							    	</select>
+							    </span>
+							</div>
+					  	</td>
+					  </tr>
+					  <tr>
+					  	<th>
+					  		&nbsp;構成比有無
+					  	</th>
+					  	<td>
+					  		<input type="radio" name="checkKouseihi"  m:passthrough="true" value="need" checked="checked"/>
+					  		有り
+							&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+					  		<input type="radio" name="checkKouseihi"  m:passthrough="true" value="needless"/>
+					  		無し
+					  	</td>
+	 				  </tr>
+					</table>
+				</div>
+    		</div>
+			<!-- オーナーモード -->
+				<table m:rendered="#{plLumpExtractConditionDto.userInfoKbn == '02'}"
+				       class="body_table" width="400px">
+				  <tr>
+				  	<th width="200px">
+				  		<input type="radio" name="checkDateFC" value="closing" m:passthrough="true" checked="checked"/>&nbsp;
+						年度(オーナー決算月)
+				  	</th>
+				    <td>
+				    	<div class="hideArea">
+						    <select m:value="#{plLumpExtractConditionDto.closingMonthStr}"
+						    	m:items="#{plLumpExtractConditionDto.closingMonthList}"
+						    	m:itemValue="closingMonthStr"
+					    		m:itemLabel="closingMonthStr"
+					    		m:onchange="changeRadio('closing')">
+					    	</select>
+						</div>
+				    </td>
+				  </tr>
+				  <tr>
+				  	<th>
+				  		<input type="radio" name="checkDateFC"  m:passthrough="true" value="target"/>&nbsp;
+						対象月
+				  	</th>
+				    <td>
+				    	<div class="hideArea">
+					    	<span>
+							    <select m:value="#{plLumpExtractConditionDto.targetMonthStr}"
+							    	m:items="#{plLumpExtractConditionDto.targetMonthList}"
+							    	m:itemValue="targetMonthStr"
+						    		m:itemLabel="targetMonthStr"
+						    		m:onchange="changeRadio('target')">
+						    	</select>
+							</span>
+						</div>
+				    </td>
+				  </tr>
+
+				  <tr>
+				  	<th rowspan="2" valign="top">
+				  		<input type="radio" name="checkDateFC"  m:passthrough="true" value="period"/>&nbsp;
+						期間指定
+				  	</th>
+				    <td>
+				    	<div class="hideArea">
+						    <select m:value="#{plLumpExtractConditionDto.periodMonthFromStr}"
+						    	m:items="#{plLumpExtractConditionDto.periodMonthFromList}"
+						    	m:itemValue="periodMonthFromStr"
+					    		m:itemLabel="periodMonthFromStr"
+					    		m:onchange="changeRadio('period')">
+					    	</select>&nbsp;(FROM)
+						</div>
+				    </td>
+				  </tr>
+				  <tr>
+				    <td>
+				    	<div class="hideArea">
+						    <select m:value="#{plLumpExtractConditionDto.periodMonthToStr}"
+						    	m:items="#{plLumpExtractConditionDto.periodMonthToList}"
+						    	m:itemValue="periodMonthToStr"
+					    		m:itemLabel="periodMonthToStr"
+					    		m:onchange="changeRadio('period')">
+					    	</select>&nbsp;(TO)
+						</div>
+				    </td>
+				  </tr>
+				  <tr>
+				  	<th>&nbsp;データ</th>
+				  	<td>
+				  		<input type="radio" name="checkData"  m:passthrough="true" value="money" checked="checked"/>
+				  		金額
+						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				  		<input type="radio" name="checkData"  m:passthrough="true" value="kousei"/>
+				  		構成比
+				  	</td>
+				  </tr>
+				</table>
+			</td>
+  			<td m:rendered="#{plLumpExtractConditionDto.userInfoKbn != '03'}"
+  			    style="vertical-align:bottom;">
+				<input type="submit" m:id="down" value="ダウンロード"
+				       m:action="#{plLumpExtractCsvOutputAction.downloadCsv}" onclick="checkType();"/>
+			</td>
+		</tr>
+	</table>
+
+</form>
+</span>
+</body>
+</html>

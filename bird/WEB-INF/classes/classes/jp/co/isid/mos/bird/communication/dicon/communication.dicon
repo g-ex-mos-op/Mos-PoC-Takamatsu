@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="Shift_JIS"?>
+<!DOCTYPE components PUBLIC "-//SEASAR//DTD S2Container//EN"
+	"http://www.seasar.org/dtd/components.dtd">
+<components namespace="communication">
+	<include path="jp/co/isid/mos/bird/communication/contactreference/dicon/contactReference.dicon"/>
+	<include path="jp/co/isid/mos/bird/communication/documentdownload/dicon/documentDownload.dicon"/>
+	<include path="jp/co/isid/mos/bird/communication/notificationreference/dicon/notificationreference.dicon"/>
+	<include path="jp/co/isid/mos/bird/communication/docform/dicon/docForm.dicon"/>
+</components>

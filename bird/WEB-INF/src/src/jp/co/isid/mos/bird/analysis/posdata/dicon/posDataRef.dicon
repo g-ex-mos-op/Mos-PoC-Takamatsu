@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="Shift_JIS"?>
+<!DOCTYPE components PUBLIC "-//SEASAR//DTD S2Container 2.3//EN"
+    "http://www.seasar.org/dtd/components23.dtd">
+<components namespace="posData">
+    <include path="dao.dicon"/>
+	<include path="jp/co/isid/mos/bird/framework/dicon/birdInterceptor.dicon"/>
+	<include path="jp/co/isid/mos/bird/storeinfo/miseref/dicon/miseRef.dicon"/>
+	<include path="jp/co/isid/mos/bird/common/dicon/birdCommon.dicon"/>
+
+	<component
+	  class="org.seasar.framework.container.autoregister.AspectAutoRegister">
+	    <property name="interceptor">birdInterceptor.actionInterceptorChain</property>
+	    <initMethod name="addClassPattern">
+	        <arg>"jp.co.isid.mos.bird"</arg>
+	        <arg>".*ActionImpl"</arg>
+	    </initMethod>
+	    <initMethod name="registerAll"/>
+	</component> 
+	
+	<component
+	  class="org.seasar.framework.container.autoregister.AspectAutoRegister">
+	    <property name="interceptor">birdInterceptor.logicInterceptorChain</property>
+	    <initMethod name="addClassPattern">
+	        <arg>"jp.co.isid.mos.bird"</arg>
+	        <arg>".*LogicImpl"</arg>
+	    </initMethod>
+	    <initMethod name="registerAll"/>
+	</component>
+
+	<component class="jp.co.isid.mos.bird.framework.control.BirdUserInfo" instance="session"/>
+	<component class="jp.co.isid.mos.bird.framework.control.BirdDateInfo" instance="session"/>
+	
+	<!-- DAO -->
+	<component name="uIPosDataInfoDao" class="jp.co.isid.mos.bird.analysis.posdata.dao.UIPosDataInfoDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="uiGroupTogoOwnerDao" class="jp.co.isid.mos.bird.analysis.common.dao.UIGroupTogoOwnerDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="posDataUIZipOnerSibuDao" class="jp.co.isid.mos.bird.analysis.posdata.dao.UIZipOnerSibuDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	
+	<!-- DTO -->
+	<component name="posDataFormDto" class="jp.co.isid.mos.bird.analysis.posdata.dto.PosDataFormDto" instance="session">
+			<property name="fileName">"P4_REC.DAT"</property>
+			<property name="pdfFileName">"P6集信ファイルレイアウト.pdf"</property>
+	</component>
+	<component name="ownerSearchDto" class="jp.co.isid.mos.bird.commonform.ownersearch.dto.OwnerSearchDto" instance="session"/>
+		
+	<!-- Action -->	
+	<component name="posDataFormAction" class="jp.co.isid.mos.bird.analysis.posdata.action.impl.PosDataFormActionImpl" instance="request"/>
+	<component name="posDataPdfDownlodAction" class="jp.co.isid.mos.bird.framework.action.impl.FileDownloadActionImpl" instance="request">
+		 <property name="downloadDto">posDataFormDto</property>
+		 <property name="downloadLogic">posDataPdfDownloadLogic</property>
+	</component>
+	
+	<!-- Logic -->
+	<component name="posDataFormLogic" class="jp.co.isid.mos.bird.analysis.posdata.logic.impl.PosDataFormLogicImpl"/>
+	<component name="posDataOutputLogic" class="jp.co.isid.mos.bird.analysis.posdata.logic.impl.PosDataOutputLogicImpl"/>
+	<component name="posDataPdfDownloadLogic" class="jp.co.isid.mos.bird.analysis.posdata.logic.impl.PosDataPdfDownloadLogicImpl"/>
+	<component name="posDataZipOnerCheckLogic" class="jp.co.isid.mos.bird.analysis.posdata.logic.impl.ZipOnerCheckLogicImpl"/>
+	<component name="posDataZipOutputLogic" class="jp.co.isid.mos.bird.analysis.posdata.logic.impl.ZipOutputLogicImpl"/>
+	
+</components>

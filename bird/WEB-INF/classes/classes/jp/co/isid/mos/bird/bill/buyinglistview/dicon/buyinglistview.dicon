@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="Shift_JIS"?>
+<!DOCTYPE components PUBLIC "-//SEASAR//DTD S2Container 2.3//EN"
+    "http://www.seasar.org/dtd/components23.dtd">
+<components namespace="buyinglistview">
+    <include path="dao.dicon"/>
+	<include path="jp/co/isid/mos/bird/framework/dicon/birdInterceptor.dicon"/>
+	<component
+	  class="org.seasar.framework.container.autoregister.AspectAutoRegister">
+	    <property name="interceptor">birdInterceptor.actionInterceptorChain</property>
+	    <initMethod name="addClassPattern">
+	        <arg>"jp.co.isid.mos.bird"</arg>
+	        <arg>".*ActionImpl"</arg>
+	    </initMethod>
+	    <initMethod name="registerAll"/>
+	</component> 
+	<component
+	  class="org.seasar.framework.container.autoregister.AspectAutoRegister">
+	    <property name="interceptor">birdInterceptor.logicInterceptorChain</property>
+	    <initMethod name="addClassPattern">
+	        <arg>"jp.co.isid.mos.bird"</arg>
+	        <arg>".*LogicImpl"</arg>
+	    </initMethod>
+	    <initMethod name="registerAll"/>
+	</component>
+
+	<component class="jp.co.isid.mos.bird.framework.control.BirdUserInfo" instance="session"/>
+	<component class="jp.co.isid.mos.bird.framework.control.BirdDateInfo" instance="session"/>
+
+	<!-- DAO -->
+	<component name="uiOnerCdDao" class="jp.co.isid.mos.bird.bill.buyinglistview.dao.UIOnerCdDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="uiSeikyuPDFDao" class="jp.co.isid.mos.bird.bill.buyinglistview.dao.UISeikyuPDFDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="uiSeikyuMeisaiDao" class="jp.co.isid.mos.bird.bill.buyinglistview.dao.UISeikyuMeisaiDao">
+		<aspect>dao.interceptor</aspect>
+	</component>	
+
+	<!-- Logic -->
+	<component name="getOnerCdLogic" class="jp.co.isid.mos.bird.bill.buyinglistview.logic.impl.GetOnerCdLogicImpl"/>
+	<component name="getPDFListLogic" class="jp.co.isid.mos.bird.bill.buyinglistview.logic.impl.GetPDFListLogicImpl"/>
+	<component name="pdfDownloadSeikyuLogic" class="jp.co.isid.mos.bird.bill.buyinglistview.logic.impl.PDFDownloadSeikyuLogicImpl"/>
+	<component name="pdfDownloadNohinshoLogic" class="jp.co.isid.mos.bird.bill.buyinglistview.logic.impl.PDFDownloadNohinshoLogicImpl"/>
+	<component name="pdfDownloadLogic" class="jp.co.isid.mos.bird.bill.buyinglistview.logic.impl.PDFDownloadLogicImpl"/>
+	<component name="getSeikyuMeisaiLogic" class="jp.co.isid.mos.bird.bill.buyinglistview.logic.impl.GetSeikyuMeisaiLogicImpl">
+		<property name="uiSeikyuMeisaiDao">uiSeikyuMeisaiDao</property>
+	</component>	
+	<component name="getExistDataYearLogic" class="jp.co.isid.mos.bird.bill.buyinglistview.logic.impl.GetExistDataYearLogicImpl"/>
+	<component name="getOnerMiseCntLogic" class="jp.co.isid.mos.bird.bill.buyinglistview.logic.impl.GetOnerMiseCntLogicImpl"/>
+	
+	<!-- DTO -->
+	<component name="buyingListViewDto" class="jp.co.isid.mos.bird.bill.buyinglistview.dto.BuyingListViewDto" autoBinding="none" instance="session">
+		<property name="limitCnt">19</property>
+	</component>
+	<component name="ownerSearchDto" class="jp.co.isid.mos.bird.commonform.ownersearch.dto.OwnerSearchDto" instance="session"/>
+	
+	<!-- Action -->
+	<component name="buyingListViewAction" class="jp.co.isid.mos.bird.bill.buyinglistview.action.impl.BuyingListViewActionImpl" instance="request">
+		<property name="buyingListViewDto">buyingListViewDto</property>
+	</component>
+	<component name="pdfDownlodAction" class="jp.co.isid.mos.bird.framework.action.impl.FileDownloadActionImpl" instance="request">
+		 <property name="downloadDto">buyingListViewDto</property>
+		 <property name="downloadLogic">pdfDownloadLogic</property>
+	</component>
+	<component name="buyingListDownloadCsvOutputAction" class="jp.co.isid.mos.bird.framework.action.impl.CsvOutput2ActionImpl" instance="request">
+		<property name="csvOutputLogic">getSeikyuMeisaiLogic</property>
+		<property name="csvOutputDto">buyingListViewDto</property>
+	</component>
+	<!-- Converter -->
+	<component name="buyingDateConverterYMKANJI" class="jp.co.isid.mos.bird.framework.text.converter.DateConverter">
+		<arg>@jp.co.isid.mos.bird.framework.util.formatter.DateFormatter@DATE_TYPE_YMD</arg>
+		<arg>@jp.co.isid.mos.bird.framework.util.formatter.DateFormatter@PATTERN_MONTH_KANJI_YM</arg>
+	</component>
+	<component name="buyingDateConverterYM" class="jp.co.isid.mos.bird.framework.text.converter.DateConverter">
+		<arg>@jp.co.isid.mos.bird.framework.util.formatter.DateFormatter@DATE_TYPE_YMD</arg>
+		<arg>@jp.co.isid.mos.bird.framework.util.formatter.DateFormatter@PATTERN_SLASH</arg>
+	</component>
+
+	<!-- 納品書順PDF、CSVダウンロード可能基準日 -->
+	<component name="nohinPdfBaseHakkoDate" class="java.lang.String">
+		<arg>"20061002"</arg>
+	</component>
+</components>

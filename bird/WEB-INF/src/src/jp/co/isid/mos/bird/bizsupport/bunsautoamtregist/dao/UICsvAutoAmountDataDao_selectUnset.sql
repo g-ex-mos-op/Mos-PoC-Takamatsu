@@ -1,0 +1,144 @@
+SELECT DISTINCT BM01.COMPANY_CD
+,      BC05.COMPANY_NAME
+,      BM01.SIBU_CD
+,      BM10.SIBU_NAME
+,      BM01.ONER_CD
+,      BM11.ONER_NAME_KJ
+,      BM01.MISE_CD
+,      BM01.MISE_NAME_KJ
+,      BM54.SOKO_CD
+,      TM17.SOKO_NAME_KJ
+,      BM01.OPEN_DT
+
+FROM   BC05KCOM BC05
+,      BM01TENM BM01
+,      BM10GSIB BM10
+,      BM11ONER BM11
+,      (
+        SELECT TM02ALL.COMPANY_CD
+        ,      TM02ALL.MISE_CD
+        ,      TM02ALL.HAI_SHUKKA_KBN
+        ,      TM02ALL.HAI_SOKO_ID
+        ,      TM02ALL.HAI_SOKO_CD 
+        FROM TM02MPTN TM02ALL
+        ,    (SELECT COMPANY_CD
+              ,      MISE_CD
+              ,      HAI_SHUKKA_KBN
+              ,      MIN(HAI_SOKO_ID) AS HAI_SOKO_ID_MIN
+              FROM TM02MPTN 
+              WHERE COMPANY_CD = /*companyCd*/'00' 
+              AND   HAI_SHUKKA_KBN = '008' 
+              GROUP BY COMPANY_CD
+              ,        MISE_CD
+              ,        HAI_SHUKKA_KBN
+        ) TM02MINDATA
+        WHERE TM02ALL.COMPANY_CD      = TM02MINDATA.COMPANY_CD
+        AND   TM02ALL.MISE_CD         = TM02MINDATA.MISE_CD
+        AND   TM02ALL.HAI_SHUKKA_KBN = TM02MINDATA.HAI_SHUKKA_KBN
+        AND   TM02ALL.HAI_SOKO_ID   = TM02MINDATA.HAI_SOKO_ID_MIN
+        GROUP BY TM02ALL.COMPANY_CD
+        ,        TM02ALL.MISE_CD
+        ,        TM02ALL.HAI_SHUKKA_KBN
+        ,        TM02ALL.HAI_SOKO_ID
+        ,        TM02ALL.HAI_SOKO_CD 
+       ) TM02
+,      TM17SOKO TM17
+,      TM22SCHU TM22
+,      BM54BSET BM54
+/*IF limitKbn*/
+,      BM51SVSB as BM51 
+/*END*/
+
+
+WHERE  BM01.COMPANY_CD   = BC05.COMPANY_CD
+AND    BM10.COMPANY_CD   = BM01.COMPANY_CD
+AND    BM11.COMPANY_CD   = BM10.COMPANY_CD
+AND    TM02.COMPANY_CD   = BM11.COMPANY_CD
+/*IF "1" == taishoJoken */
+AND    BM01.ONER_CD = /*onerCd*/'36004'
+/*END*/
+/*IF "2" == taishoJoken */
+AND    BM01.MISE_CD = /*miseCd*/'00171'
+/*END*/
+/*IF limitKbn*/
+AND   BM51.COMPANY_CD = BM10.COMPANY_CD 
+AND   BM51.SIBU_CD    = BM10.SIBU_CD
+AND   BM51.SV_CD = /*userId*/'99990003'
+/*END*/
+
+AND    BM01.SIBU_CD      = BM10.SIBU_CD
+AND    BM01.ONER_CD      = BM11.ONER_CD
+
+AND    TM02.MISE_CD      = BM01.MISE_CD
+AND    BM01.CLOSE_DT > /*sysDate*/'20070220'
+
+AND    BM54.SOKO_CD      = TM17.SOKO_CD
+AND    TM02.HAI_SOKO_CD  = BM54.SOKO_CD
+AND    BM01.MISE_CD NOT IN (
+		SELECT TM28.MISE_CD
+		
+		FROM   BC05KCOM BC05
+		,      BM01TENM BM01
+		,      BM10GSIB BM10
+		,      BM11ONER BM11
+		,      (
+		        SELECT TM02ALL.COMPANY_CD
+		        ,      TM02ALL.MISE_CD
+		        ,      TM02ALL.HAI_SHUKKA_KBN
+		        ,      TM02ALL.HAI_SOKO_ID
+		        ,      TM02ALL.HAI_SOKO_CD 
+		        FROM TM02MPTN TM02ALL
+		        ,    (SELECT COMPANY_CD
+		              ,      MISE_CD
+		              ,      HAI_SHUKKA_KBN
+		              ,      MIN(HAI_SOKO_ID) AS HAI_SOKO_ID_MIN
+		              FROM TM02MPTN 
+		              WHERE COMPANY_CD = /*companyCd*/'00' 
+		              AND   HAI_SHUKKA_KBN = '008' 
+		              GROUP BY COMPANY_CD
+		              ,        MISE_CD
+		              ,        HAI_SHUKKA_KBN
+		        ) TM02MINDATA
+		        WHERE TM02ALL.COMPANY_CD      = TM02MINDATA.COMPANY_CD
+		        AND   TM02ALL.MISE_CD         = TM02MINDATA.MISE_CD
+		        AND   TM02ALL.HAI_SHUKKA_KBN = TM02MINDATA.HAI_SHUKKA_KBN
+		        AND   TM02ALL.HAI_SOKO_ID   = TM02MINDATA.HAI_SOKO_ID_MIN
+		        GROUP BY TM02ALL.COMPANY_CD
+		        ,        TM02ALL.MISE_CD
+		        ,        TM02ALL.HAI_SHUKKA_KBN
+		        ,        TM02ALL.HAI_SOKO_ID
+		        ,        TM02ALL.HAI_SOKO_CD 
+		       ) TM02
+		,      TM17SOKO TM17
+		,      TM22SCHU TM22
+		,      BM54BSET BM54
+		,      TC03NISU TC03
+		,      TM28SAUT TM28
+		
+		WHERE  BC05.COMPANY_CD = /*companyCd*/'00'
+		AND    BM01.COMPANY_CD   = BC05.COMPANY_CD
+		AND    BM10.COMPANY_CD   = BM01.COMPANY_CD
+		AND    BM11.COMPANY_CD   = BM10.COMPANY_CD
+		AND    TM02.COMPANY_CD   = BM11.COMPANY_CD
+		AND    TM28.COMPANY_CD   = TM02.COMPANY_CD
+		
+		AND    BM01.SIBU_CD      = BM10.SIBU_CD
+		AND    BM01.ONER_CD      = BM11.ONER_CD
+		
+		AND    TM02.MISE_CD      = BM01.MISE_CD
+		AND    TM28.MISE_CD      = TM02.MISE_CD
+		AND    BM01.CLOSE_DT > /*sysDate*/'20070220'
+		
+		AND    BM54.SOKO_CD      = TM17.SOKO_CD
+		AND    TM02.HAI_SOKO_CD  = BM54.SOKO_CD
+		AND    TM28.SHO_CD_DAI   = BM54.SHO_CD_DAI
+		AND    TM22.SHO_CD_DAI   = TM28.SHO_CD_DAI
+		AND    TC03.SHO_NISUGATA = BM54.SHO_NISUGATA
+    	AND    (TM28.AMT_WEEK > 0 OR TM28.AMT_SATD > 0 OR TM28.AMT_HOLD > 0)
+)
+ORDER BY COMPANY_CD
+,        SIBU_CD
+,        ONER_CD
+,        MISE_CD
+
+

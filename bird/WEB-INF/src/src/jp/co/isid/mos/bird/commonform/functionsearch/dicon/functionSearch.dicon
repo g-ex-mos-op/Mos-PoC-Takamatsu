@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="Shift_JIS"?>
+<!DOCTYPE components PUBLIC "-//SEASAR2.1//DTD S2Container//EN"
+	"http://www.seasar.org/dtd/components21.dtd">
+<components namespace="functionSearch">
+    <include path="dao.dicon"/>
+    <include path="jp/co/isid/mos/bird/framework/dicon/birdInterceptor.dicon"/>
+
+	<component name="uIFunctionDao" class="jp.co.isid.mos.bird.commonform.functionsearch.dao.UIFunctionDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+
+	<component name="searchFunctionLogic" class="jp.co.isid.mos.bird.commonform.functionsearch.logic.impl.SearchFunctionLogicImpl"/>
+	<component name="searchFunctionCategoryLogic" class="jp.co.isid.mos.bird.commonform.functionsearch.logic.impl.SearchFunctionCategoryLogicImpl"/>
+
+	<component name="functionSearchConditionDto" class="jp.co.isid.mos.bird.commonform.functionsearch.dto.FunctionSearchConditionDto" autoBinding="none" instance="session"/>
+	<component name="functionSearchDto" class="jp.co.isid.mos.bird.commonform.functionsearch.dto.FunctionSearchDto" instance="session"/>
+	<component name="functionList" class="java.util.ArrayList" instance="session"/>
+
+	<component name="functionSearchAction" class="jp.co.isid.mos.bird.commonform.functionsearch.action.impl.FunctionSearchActionImpl" instance="request">
+		<aspect>actionInterceptorChain</aspect>
+	</component>
+</components>

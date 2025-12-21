@@ -1,0 +1,10 @@
+select 
+	BM12.STAFF_ID,
+	BM12.JOB,
+    BM12.LAST_USER,
+    BM12.LAST_TMSP,
+    BM12.LAST_PGM  
+from
+	BM12STAF BM12
+where 
+	BM12.STAFF_ID = /*staffId*/'36478001' 

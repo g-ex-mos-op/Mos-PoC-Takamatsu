@@ -1,0 +1,89 @@
+<html xmlns:m="http://www.seasar.org/maya" m:action="#{togouserRegistConfirmAction.initialize}" m:extends="/jsf/layout/layoutNoNaviTogo.html">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=Windows-31j" />
+		<title>ユーザー登録確認画面</title>
+	</head>
+	<body>
+
+	<span m:inject="f:param" m:name="layoutTitle" m:value="ユーザー登録"/>
+	<span m:inject="f:param" m:name="onLoadName" m:value="load()"/>
+	<span m:inject="s:insert" m:name="bodyTitleName">■本部ユーザー登録(確認画面)</span>
+	<span m:inject="f:param" m:name="viewIdValue" m:value="BUR001V03"/>
+	<span m:inject="s:insert" m:name="naviarea" m:src="/jsf/togouser/common/menuLink.html"/>
+		<span m:inject="s:insert" m:name="body">
+		<SCRIPT LANGUAGE="javascript">
+			<!--
+			function load() {
+			   document.togouserRegistConfirm.elements['togouserRegistConfirm:finish'].focus();
+			}
+
+			// -->
+		</SCRIPT>
+
+		<STYLE type="text/css" media="screen">
+		<!--
+		-->
+		</STYLE>
+
+		<form m:id="togouserRegistConfirm" enctype="multipart/form-data">
+			<input type="hidden" m:id="viewId" m:value="#{viewIdValue}"/>
+				<p/>
+			<input type="button" value="戻る" m:action="#{togouserRegistConfirmAction.cancel}"/>&nbsp;
+			<input type="button" m:id="finish" value="登録・終了" m:action="#{togouserRegistConfirmAction.regist}"/>&nbsp;
+			<p/>
+			<table class="body_table2 font_size_14" width="830">
+			  <!-- ========================================================== -->
+			  <tr>
+			    <th width="80px">変更区分</th>
+			    <td colspan="3">
+			  	  <div m:rendered="#{uiTogoUserDto.henkoKbn == '0'}"> 新規 </div>
+			  	  <div m:rendered="#{uiTogoUserDto.henkoKbn == '1'}"> 変更 </div>
+			  	  <div m:rendered="#{uiTogoUserDto.henkoKbn == '2'}"> 参照 </div>
+			    </td>
+			  </tr>
+			  <!-- ========================================================== -->
+			  <tr>
+			    <th>ユーザーID</th>
+			    <td colspan="3"><span m:value="#{uiTogoUserDto.uiBirdUser.userId}"/></td>
+			  </tr>
+			  <!-- ========================================================== -->
+			  <tr>
+			    <th>ユーザー名</th>
+			    <td width="250px"><span m:converter="#{characterEncodingConverter}" m:value="#{uiTogoUserDto.uiBirdUser.userNameKj}"/></td>
+			    <th width="150px">ユーザー名(ｶﾅ)</th>
+			    <td><span m:converter="#{characterEncodingConverter}" m:value="#{uiTogoUserDto.uiBirdUser.userNameKana}"/></td>
+			  </tr>
+			  <!-- ========================================================== -->
+			  <tr>
+			    <th>会社</th>
+			    <td><span m:converter="#{characterEncodingConverter}" m:value="#{uiTogoUserDto.uiUserCompany.rCompanyName}"/></td>
+			    <th width="100px">部門</th>
+			    <td>
+			  	  	<span m:value="#{uiTogoUserDto.uiBirdUser.bumonCd}"/> ：
+ 				  	    <span m:converter="#{characterEncodingConverter}" m:value="#{uiTogoUserDto.uiBirdUser.bumonName}"/>
+			    </td>
+			  </tr>
+			  <!-- ========================================================== -->
+			  <tr>
+			    <th>メールアドレス</th>
+			    <td colspan="3"><span m:value="#{uiTogoUserDto.inputMailAdd1}"/></td>
+			  </tr>
+			  <!-- ========================================================== -->
+			  <tr m:rendered="#{uiTogoUserDto.henkoKbn == '1' || uiTogoUserDto.henkoKbn == '2'}">
+			    <th>パスワードリセット</th>
+			    <td colspan="3">リセット&nbsp;<span m:value="#{uiTogoUserDto.passWordReset?'する':'しない'}"/></td>
+			  </tr>
+			  <!-- ========================================================== -->
+			  <tr>
+			    <th width="150px">退職日</th>
+			    <td colspan="3">
+			  	    <span m:value="#{uiTogoUserDto.uiBirdUser.taishokuDt}"
+			  	     m:converter="#{taishokuDateConverter}"/>
+			    </td>
+			  </tr>
+
+			</table>
+		</form>
+	</span>
+	</body>
+</html>

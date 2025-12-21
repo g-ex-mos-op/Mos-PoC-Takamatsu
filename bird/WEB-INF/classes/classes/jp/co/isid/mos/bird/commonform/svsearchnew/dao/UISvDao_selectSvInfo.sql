@@ -1,0 +1,9 @@
+SELECT '' as COMPANY_CD
+,      BR01.USER_ID as SV_CD
+,      '' as SIBU_CD
+,      rtrim(BR01.USER_NAME_KJ) as SV_NAME_KJ
+,      rtrim(BR01.USER_NAME_KANA) as SV_NAME_KNA
+FROM
+    BR01USER BR01
+WHERE
+    BR01.USER_ID = /*svCd*/'99990003'

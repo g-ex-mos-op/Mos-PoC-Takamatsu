@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="Shift_JIS"?>
+<!DOCTYPE components PUBLIC
+    "-//SEASAR//DTD S2Container 2.3//EN"
+    "http://www.seasar.org/dtd/components23.dtd">
+<components namespace="bizsupportplinfoview">
+	<include path="dao.dicon"/>
+	<include path="jp/co/isid/mos/bird/common/dicon/birdCommon.dicon"/>
+	<include path="jp/co/isid/mos/bird/framework/dicon/birdInterceptor.dicon"/>
+	
+	<!-- インターセプターを自動登録 -->
+	<component class="org.seasar.framework.container.autoregister.AspectAutoRegister">
+	    <property name="interceptor">birdInterceptor.actionInterceptorChain</property>
+	    <initMethod name="addClassPattern">
+	        <arg>"jp.co.isid.mos.bird"</arg>
+	        <arg>".*ActionImpl"</arg>
+	    </initMethod>
+	    <initMethod name="registerAll"/>
+	</component> 
+	<component class="org.seasar.framework.container.autoregister.AspectAutoRegister">
+	    <property name="interceptor">birdInterceptor.logicInterceptorChain</property>
+	    <initMethod name="addClassPattern">
+	        <arg>"jp.co.isid.mos.bird"</arg>
+	        <arg>".*LogicImpl"</arg>
+	    </initMethod>
+	    <initMethod name="registerAll"/>  
+	</component>
+
+	<!-- DAO -->
+	<component name="uiPlDataInfoDao" class="jp.co.isid.mos.bird.bizsupport.plinfoview.dao.UIPLDataInfoDao">
+		<aspect>dao.interceptor</aspect>
+	</component>
+	<component name="uiPlRCDataInfoDao" class="jp.co.isid.mos.bird.bizsupport.plinfoview.dao.UIPLRCDataInfoDao">
+		<aspect>dao.interceptor</aspect>
+	</component>
+	<component name="mstUserMiseInfoDao" class="jp.co.isid.mos.bird.bizsupport.plinfoview.dao.MSTUserMiseInfoDao">
+		<aspect>dao.interceptor</aspect>
+	</component>
+	<component name="mstUserOnerInfoDao" class="jp.co.isid.mos.bird.bizsupport.plinfoview.dao.MSTUserOnerInfoDao">
+		<aspect>dao.interceptor</aspect>
+	</component>
+	<component name="mstSibuCategoryInfoDao" class="jp.co.isid.mos.bird.bizsupport.plinfoview.dao.MSTSibuCategoryInfoDao">
+		<aspect>dao.interceptor</aspect>
+	</component>
+	<component name="codBlockDao" class="jp.co.isid.mos.bird.bizsupport.plinfoview.dao.CodBlockDao">
+		<aspect>dao.interceptor</aspect>
+	</component>
+	<component name="mstMiseInfoDao" class="jp.co.isid.mos.bird.bizsupport.plinfoview.dao.MstMiseInfoDao">
+		<aspect>dao.interceptor</aspect>
+	</component>
+	<component name="mstOnerInfoDao" class="jp.co.isid.mos.bird.bizsupport.plinfoview.dao.MstOnerInfoDao">
+		<aspect>dao.interceptor</aspect>
+	</component>
+
+	<!-- DTO -->
+	<component name="plInfoViewDto" class="jp.co.isid.mos.bird.bizsupport.plinfoview.dto.PlInfoViewDto" instance="request"/>
+	<component name="plInfoViewCommonDto" class="jp.co.isid.mos.bird.bizsupport.plinfoview.dto.PlInfoViewDto" instance="session"/>
+	<component name="miseSearchDto" class="jp.co.isid.mos.bird.commonform.misesearch.dto.MiseSearchDto" instance="session"/>
+	<component name="ownerSearchDto" class="jp.co.isid.mos.bird.commonform.ownersearch.dto.OwnerSearchDto" instance="session"/>
+	
+	<!-- LOGIC -->
+	<component name="getUserOnerLogic" class="jp.co.isid.mos.bird.bizsupport.plinfoview.logic.impl.GetUserOnerLogicImpl"/>
+	<component name="getSibuCategoryLogic" class="jp.co.isid.mos.bird.bizsupport.plinfoview.logic.impl.GetSibuCategoryLogicImpl"/>
+	<component name="getPLInfoLogic" class="jp.co.isid.mos.bird.bizsupport.plinfoview.logic.impl.GetPLInfoLogicImpl"/>
+	<component name="getMiseInfoLogic" class="jp.co.isid.mos.bird.bizsupport.plinfoview.logic.impl.GetMiseInfoLogicImpl"/>
+	<component name="plInfoViewCsvLogic" class="jp.co.isid.mos.bird.bizsupport.plinfoview.logic.impl.PlInfoViewCsvLogicImpl"/>
+
+	<!-- アクション -->
+	<component name="plInfoViewAction" class="jp.co.isid.mos.bird.bizsupport.plinfoview.action.impl.PlInfoViewActionImpl" instance="request">
+		<property name="plInfoViewDto">plInfoViewDto</property>
+	</component>
+	<component name="plInfoViewResultAction" class="jp.co.isid.mos.bird.bizsupport.plinfoview.action.impl.PlInfoViewResultActionImpl" instance="request">
+		<property name="plInfoViewDto">plInfoViewDto</property>	
+	</component>
+	<component name="plInfoViewCsvOutputAction" class="jp.co.isid.mos.bird.framework.action.impl.CsvOutputActionImpl" instance="request">
+		<property name="csvOutputDto">plInfoViewCommonDto</property>
+		<property name="csvOutputLogic">plInfoViewCsvLogic</property>
+	</component>
+
+	<!-- CONVERTER -->
+	<component name="numericConverterKingakuRound" class="jp.co.isid.mos.bird.bizsupport.plinfoview.text.converter.NumericConverter" instance="request">
+		<arg>0</arg>
+	</component>
+	<component name="numericConverterKingakuColor" class="jp.co.isid.mos.bird.bizsupport.plinfoview.text.converter.NumericConverter" instance="request">
+		<arg>0</arg>
+		<arg>true</arg>
+	</component>
+	<component name="numericConverterRitu" class="jp.co.isid.mos.bird.framework.text.converter.NumericConverter" instance="request">
+		<arg>2</arg>
+	</component>
+	<component name="codeConverter5" class="jp.co.isid.mos.bird.framework.text.converter.CodeConverter" instance="request">
+		<property name="formatPattern">"00000"</property>
+	</component>
+	<component name="tougetuKosehiConverter" class="jp.co.isid.mos.bird.bizsupport.plinfoview.text.converter.TougetuKosehiConverter" instance="request"/>
+	<component name="zennenKosehiConverter" class="jp.co.isid.mos.bird.bizsupport.plinfoview.text.converter.ZennenKosehiConverter" instance="request"/>
+	<component name="tougetuKosehiRCConverter" class="jp.co.isid.mos.bird.bizsupport.plinfoview.text.converter.TougetuKosehiRCConverter" instance="request"/>
+	<component name="zennenKosehiRCConverter" class="jp.co.isid.mos.bird.bizsupport.plinfoview.text.converter.ZennenKosehiRCConverter" instance="request"/>
+	<component name="numericSubtractConverter" class="jp.co.isid.mos.bird.bizsupport.plinfoview.text.converter.NumericSubtractConverter" instance="request">
+		<arg>0</arg>
+	</component>
+	<component name="rcZennenHikakuKoseihiConverter" class="jp.co.isid.mos.bird.bizsupport.plinfoview.text.converter.RcZennenHikakuKoseihiConverter" instance="request"/>
+	<component name="zennenHiConverter" class="jp.co.isid.mos.bird.bizsupport.plinfoview.text.converter.ZennenHiConverter" instance="request"/>
+	<component name="dateConverterYM" class="jp.co.isid.mos.bird.framework.text.converter.DateConverter" instance="request">
+		<arg>@jp.co.isid.mos.bird.framework.util.formatter.DateFormatter@DATE_TYPE_YM</arg>
+		<arg>@jp.co.isid.mos.bird.framework.util.formatter.DateFormatter@PATTERN_MONTH_SLASH</arg>
+	</component>
+	<component name="dateConverterYMKanji" class="jp.co.isid.mos.bird.framework.text.converter.DateConverter" instance="request">
+		<arg>@jp.co.isid.mos.bird.framework.util.formatter.DateFormatter@DATE_TYPE_YM</arg>
+		<arg>@jp.co.isid.mos.bird.framework.util.formatter.DateFormatter@PATTERN_MONTH_KANJI_YM</arg>
+	</component>
+	<component name="dateConverterSlash" class="jp.co.isid.mos.bird.framework.text.converter.DateConverter" instance="request">
+		<arg>@jp.co.isid.mos.bird.framework.util.formatter.DateFormatter@DATE_TYPE_YMD</arg>
+		<arg>@jp.co.isid.mos.bird.framework.util.formatter.DateFormatter@PATTERN_SLASH</arg>
+	</component>
+	<component name="hirituConverter" class="jp.co.isid.mos.bird.bizsupport.plinfoview.text.converter.HirituConverter" instance="request">
+		<arg>2</arg>
+		<arg>true</arg>
+	</component>
+	<component name="kosehiConverter" class="jp.co.isid.mos.bird.bizsupport.plinfoview.text.converter.HirituConverter" instance="request">
+		<arg>2</arg>
+		<arg>false</arg>
+	</component>
+</components>

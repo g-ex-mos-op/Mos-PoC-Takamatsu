@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="Shift_JIS"?>
+<!DOCTYPE components PUBLIC
+    "-//SEASAR//DTD S2Container 2.3//EN"
+    "http://www.seasar.org/dtd/components23.dtd">
+<components namespace="pointInfoTakein">
+    <include path="dao.dicon"/>
+    <include path="jp/co/isid/mos/bird/common/dicon/birdCommon.dicon"/>
+	<include path="jp/co/isid/mos/bird/framework/dicon/birdInterceptor.dicon"/>
+
+	<component class="org.seasar.framework.container.autoregister.AspectAutoRegister">
+	    <property name="interceptor">birdInterceptor.actionInterceptorChain</property>
+	    <initMethod name="addClassPattern">
+	        <arg>"jp.co.isid.mos.bird"</arg>
+	        <arg>".*ActionImpl"</arg>
+	    </initMethod>
+	    <initMethod name="registerAll"/>
+	</component>
+	<component
+	  class="org.seasar.framework.container.autoregister.AspectAutoRegister">
+	    <property name="interceptor">birdInterceptor.logicInterceptorChain</property>
+	    <initMethod name="addClassPattern">
+	        <arg>"jp.co.isid.mos.bird"</arg>
+	        <arg>".*LogicImpl"</arg>
+	    </initMethod>
+	    <initMethod name="registerAll"/>
+	</component>
+
+	<!-- DAO -->
+	<component name="uISeidoPointDao" class="jp.co.isid.mos.bird.bizsupport.common.dao.UISeidoPointDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="staffPointReadHisDao" class="jp.co.isid.mos.bird.bizsupport.pointinfotakein.dao.UIStaffPointReadHisDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="retirePointReadDao" class="jp.co.isid.mos.bird.bizsupport.pointinfotakein.dao.UIRetirePointReadDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="officialPointReadHisDao" class="jp.co.isid.mos.bird.bizsupport.pointinfotakein.dao.UIOfficialPointReadHisDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="staffPointHisDao" class="jp.co.isid.mos.bird.bizsupport.pointinfotakein.dao.UIStaffPointHisDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="retirePointDao" class="jp.co.isid.mos.bird.bizsupport.pointinfotakein.dao.UIRetirePointDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="officialPointHisDao" class="jp.co.isid.mos.bird.bizsupport.pointinfotakein.dao.UIOfficialPointHisDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="pointShuDao" class="jp.co.isid.mos.bird.bizsupport.pointinfotakein.dao.PointShuDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<!-- LOGIC -->
+	<component name="getSeidoPointInfoLogic" class="jp.co.isid.mos.bird.bizsupport.common.logic.impl.GetSeidoPointInfoLogicImpl"/>
+	<component name="pointInfoTakeinUploadLogic" class="jp.co.isid.mos.bird.bizsupport.pointinfotakein.logic.impl.PointInfoTakeinUploadLogicImpl"/>
+	<component name="registPointInfoTakeinLogic" class="jp.co.isid.mos.bird.bizsupport.pointinfotakein.logic.impl.RegistPointInfoTakeinLogicImpl">
+		<aspect>j2ee.requiresNewTx</aspect>
+	</component>
+	<component name="pointInfoUploadErrorCsvLogic" class="jp.co.isid.mos.bird.bizsupport.pointinfotakein.logic.impl.PointInfoUploadErrorCsvLogicImpl"/>
+	<component name="RegistGyosekiPointInfoLogic" class="jp.co.isid.mos.bird.bizsupport.pointinfotakein.logic.impl.RegistGyosekiPointInfoLogicImpl"/>
+
+	<!-- DTO -->
+	<component name="pullDownMenuDto" class="jp.co.isid.mos.bird.framework.dto.PullDownMenuDto" instance="session"/>
+	<component name="pointInfoTakeinDto" class="jp.co.isid.mos.bird.bizsupport.pointinfotakein.dto.PointInfoTakeinDto" instance="session">
+		<property name="listSeido">null</property>
+		<property name="listUploadData">null</property>
+		<property name="listUploadErrorData">null</property>
+		<property name="uploadedFile">null</property>
+	</component>
+
+	<!-- ACTION -->
+	<component name="pointInfoTakeinCondAction" class="jp.co.isid.mos.bird.bizsupport.pointinfotakein.action.impl.PointInfoTakeinCondActionImpl" instance="request">
+		<property name="pointInfoTakeinErrorCsvAction">pointInfoTakeinErrorCsvAction</property>
+	</component>
+	<component name="pointInfoTakeinErrorCsvAction" class="jp.co.isid.mos.bird.framework.action.impl.CsvDownloadActionImpl" instance="request">
+		<property name="csvOutputDto">pointInfoTakeinDto</property>
+		<property name="csvOutputLogic">pointInfoUploadErrorCsvLogic</property>
+		<property name="initLogic">null</property>
+		<property name="finalLogic">null</property>
+	</component>
+
+	<!-- CONVERTER -->
+</components>

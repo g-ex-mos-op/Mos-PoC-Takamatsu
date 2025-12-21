@@ -1,0 +1,11 @@
+SELECT COMPANY_CD
+    ,  EIGYO_DT
+    ,  ZENNEN_DT
+    ,  URIAGE_ZEN
+    ,  LAST_USER
+    ,  LAST_PGM
+    ,  LAST_TMSP
+FROM  BR63YSZS
+WHERE COMPANY_CD = /*companyCd*/'00'
+  AND EIGYO_DT  like /*eigyoDt*/'200703%'
+ORDER BY EIGYO_DT

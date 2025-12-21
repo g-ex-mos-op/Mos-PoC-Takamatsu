@@ -1,0 +1,78 @@
+select 
+	BR17ENTL.ENTRY_CD,
+	BR17ENTL.ENTRY_YEAR,
+	BR17ENTL.ENTRY_KAI,
+	BR17ENTL.ENTRY_TITLE, 
+	KAISAI_INFO.FROM_DT,
+	KAISAI_INFO.TO_DT,
+	TOTAL_ENTRY_NUM.TOTAL_ENTRY_NUM,
+	coalesce(UPDATE_NUM.UPDATE_NUM, 0) as UPDATE_NUM
+from
+	BR17ENTL
+	left join
+      (select 
+         ENTRY_CD,
+         ENTRY_YEAR,
+         ENTRY_KAI,
+         count(BT23MLEJ.STAFF_ID) as TOTAL_ENTRY_NUM 
+       from BT23MLEJ
+       group by
+         ENTRY_CD,
+         ENTRY_YEAR,
+         ENTRY_KAI
+      ) TOTAL_ENTRY_NUM 
+      on (
+        BR17ENTL.ENTRY_CD = TOTAL_ENTRY_NUM.ENTRY_CD and
+        BR17ENTL.ENTRY_YEAR = TOTAL_ENTRY_NUM.ENTRY_YEAR and
+        BR17ENTL.ENTRY_KAI = TOTAL_ENTRY_NUM.ENTRY_KAI 
+      )
+      left join
+      (select 
+         TOTAL_LAST_YEAR,
+         TOTAL_LAST_KAI,
+         count(VBT32MLKR.STAFF_ID) as UPDATE_NUM 
+       from VBT32MLKR
+       where
+         VBT32MLKR.TOTAL_RESULT not in ('', '9')
+       group by
+         TOTAL_LAST_YEAR,
+         TOTAL_LAST_KAI
+      ) UPDATE_NUM
+      on (
+        BR17ENTL.ENTRY_YEAR = TOTAL_LAST_YEAR and
+        BR17ENTL.ENTRY_KAI = TOTAL_LAST_KAI
+      ), 
+	(
+	select distinct
+	   ENTRY_CD,
+	   ENTRY_YEAR,
+	   ENTRY_KAI
+	from 
+	   BR18ENTD
+	where
+	    USERTYPE_CD = '01'
+	and DAY_KBN = '06'
+	and FROM_DT <= /*sysDt*/'20060820'
+	and TO_DT >= /*sysDt*/'20060820'
+	) ENTRY_LIST,
+	(
+	select 
+	   ENTRY_CD,
+	   ENTRY_YEAR,
+	   ENTRY_KAI,
+	   FROM_DT,
+	   TO_DT
+	from 
+	   BR18ENTD
+	where
+	    USERTYPE_CD = '99'
+	and DAY_KBN = '01'
+	) KAISAI_INFO
+where
+	BR17ENTL.ENTRY_CD = ENTRY_LIST.ENTRY_CD
+and BR17ENTL.ENTRY_YEAR = ENTRY_LIST.ENTRY_YEAR
+and BR17ENTL.ENTRY_KAI = ENTRY_LIST.ENTRY_KAI
+and BR17ENTL.ENTRY_CD = KAISAI_INFO.ENTRY_CD
+and BR17ENTL.ENTRY_YEAR = KAISAI_INFO.ENTRY_YEAR
+and BR17ENTL.ENTRY_KAI = KAISAI_INFO.ENTRY_KAI
+and BR17ENTL.ENTRY_CD = '10' 

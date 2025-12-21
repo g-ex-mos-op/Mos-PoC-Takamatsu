@@ -1,0 +1,7 @@
+select
+    BC12.ENTRY_PLACE_CD,
+    rtrim(BC12.ENTRY_PLACE_NAME) as ENTRY_PLACE_NAME
+from
+    BC12DEFP as BC12
+order by
+    BC12.ENTRY_PLACE_CD

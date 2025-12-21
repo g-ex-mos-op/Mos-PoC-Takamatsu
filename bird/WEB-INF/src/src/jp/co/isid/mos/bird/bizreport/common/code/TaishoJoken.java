@@ -1,0 +1,193 @@
+package jp.co.isid.mos.bird.bizreport.common.code;
+
+import java.util.List;
+
+/**
+ * 対象条件コード定数クラス
+ * コードデータのリストの生成、コードデータからの名称取得できる機能を保持しているクラスです。
+ * @author xwatanabe
+ */
+public class TaishoJoken {
+
+    /** 会社コード：モス */
+    public static final String COMPANY_CD_MOS = "00";
+
+    /** パラメータキー：ユーザータイプコード */
+    public static final String PK_USER_TYPE_CD    = "userTypeCd";
+    /** パラメータキー：会社コード */
+    public static final String PK_COMPANY_CD      = "companyCd";
+    
+    /** コード値：全社(全店) */
+    public static final String CODE_ALL           = "ALL";
+    /** コード値：セグメント */
+    public static final String CODE_SEGMENT       = "SEGMENT";
+    /** コード値：事業本部 */
+    public static final String CODE_JIGYOU        = "JIGYOU";
+    /** コード値：営業エリア */
+    public static final String CODE_SLAREA        = "SLAREA";
+    /** コード値：支部 */
+    public static final String CODE_SIBU          = "SIBU";
+    /** コード値：店舗(個店) */
+    public static final String CODE_MISE          = "MISE";
+
+    /** 対象条件配列：本部用：(モス・SVなし) */
+    public static final String[][] CODE_TABLE_HONBU = new String [][]{
+    	{CODE_ALL, "全社"},
+        {CODE_SEGMENT, "セグメント"},
+        {CODE_JIGYOU, "事業本部"},
+    	{CODE_SLAREA, "営業エリア"},
+        {CODE_SIBU, "支部"},
+        {CODE_MISE, "個店"}};
+
+    /** 対象条件配列：本部用：(モス・SV) */
+    public static final String[][] CODE_TABLE_HONBU_SV = new String [][]{
+        {CODE_SLAREA, "営業エリア"},
+        {CODE_SIBU, "支部"},
+        {CODE_MISE, "個店"}};
+
+    /** 対象条件配列：本部用：(モス以外・SVなし) */
+    public static final String[][] CODE_TABLE_HONBU_NOTMOS = new String [][]{
+        {CODE_ALL, "全社"},
+        {CODE_SIBU, "支部"},
+        {CODE_MISE, "個店"}};
+
+    /** 対象条件配列：本部用：(モス以外・SV) */
+    public static final String[][] CODE_TABLE_HONBU_NOTMOS_SV = new String [][]{
+        {CODE_SIBU, "支部"},
+        {CODE_MISE, "個店"}};
+
+    /** 対象条件配列：オーナー用 */
+    public static final String[][] CODE_TABLE_ONER = new String [][]{
+        {CODE_ALL, "全店"},
+        {CODE_MISE, "店舗"}};
+
+    /** 対象条件配列：店舗用 */
+    public static final String[][] CODE_TABLE_MISE = new String [][]{
+        {CODE_MISE, "店舗"}};
+ 
+    /**
+     * 外部からインスタンス化できない
+     */
+    private TaishoJoken() {
+    	super();
+    }  
+
+    /**
+     * 対象条件リストを取得する<br>
+     * @param  String   ユーザタイプ
+     * @param  String   会社コード
+     * @param  limitKbn 制限区分(本部ユーザー時のみ使用)
+     * @return List　   対象条件リスト
+     */
+    public static List getPullDownList(String userTypeCd, String companyCd, boolean limitKbn) {
+
+        //入力チェック
+        if(userTypeCd == null || userTypeCd.length() == 0) {
+            return null;
+        }
+        if(companyCd == null || companyCd.length() == 0) {
+            return null;
+        }
+        
+        //本部ユーザの時
+        if (UserType.HONBU.equals(userTypeCd)) {
+
+            //モス・SVなしの時
+            if (COMPANY_CD_MOS.equals(companyCd) && !limitKbn) {
+                return CodeUtil.getPullDownList(CODE_TABLE_HONBU); 
+            } 
+            //モス・SVの時
+            else if (COMPANY_CD_MOS.equals(companyCd) && limitKbn) {
+                return CodeUtil.getPullDownList(CODE_TABLE_HONBU_SV); 
+            }
+            //モス以外・SVなしの時
+            else if (!COMPANY_CD_MOS.equals(companyCd) && !limitKbn) {
+                return CodeUtil.getPullDownList(CODE_TABLE_HONBU_NOTMOS); 
+            }
+            //モス以外・SVの時
+            else if (!COMPANY_CD_MOS.equals(companyCd) && limitKbn){
+                return CodeUtil.getPullDownList(CODE_TABLE_HONBU_NOTMOS_SV); 
+            }
+        }
+        //オーナーの時
+        else if(UserType.ONER.equals(userTypeCd)) {
+            return CodeUtil.getPullDownList(CODE_TABLE_ONER);  
+        } 
+        
+        //店舗ユーザの時
+        else if(UserType.TENPO.equals(userTypeCd)) {
+            return CodeUtil.getPullDownList(CODE_TABLE_MISE);  
+        }
+        return null;   
+    }
+
+    /**
+     * 対象条件リストを取得する<br>
+     * @param  String  ユーザタイプ
+     * @param  String  会社コード
+     * @return List　  対象条件リスト
+     */
+    public static List getPullDownList(String userTypeCd, String companyCd, String[] codes) {
+ 
+        //入力チェック
+        if(userTypeCd == null || userTypeCd.length() == 0) {
+            return null;
+        }
+        if(codes == null || codes.length == 0) {
+            return null;
+        }
+
+        //本部ユーザの時
+        if (UserType.HONBU.equals(userTypeCd)) {
+            
+            if (companyCd != null && COMPANY_CD_MOS.equals(companyCd)) {
+                return CodeUtil.getPullDownList(CODE_TABLE_HONBU, codes); 
+            } else {
+                return CodeUtil.getPullDownList(CODE_TABLE_HONBU_NOTMOS, codes); 
+            }
+        }
+        //オーナーの時
+        else if(UserType.ONER.equals(userTypeCd)) {
+            return CodeUtil.getPullDownList(CODE_TABLE_ONER, codes);  
+        } 
+        //店舗ユーザの時
+        else if(UserType.TENPO.equals(userTypeCd)) {
+            return CodeUtil.getPullDownList(CODE_TABLE_MISE, codes);  
+        }
+
+        return null;   
+    }
+
+    /**
+     * コードの名称を取得する<br>
+     * @param  String  ユーザタイプコード
+     * @param	String	コード
+     * @return	String 	コード名称
+     */
+    public static String getName(String userTypeCd, String code) {
+        
+        //入力チェック
+        if(userTypeCd == null || userTypeCd.length() == 0) {
+            return null;
+        }
+        if(code == null || code.length() == 0) {
+            return null;
+        }
+
+        
+        //本部ユーザの時
+        if (UserType.HONBU.equals(userTypeCd)) {
+            return CodeUtil.getName(code, CODE_TABLE_HONBU); 
+        } 
+        //オーナーの時
+        else if(UserType.ONER.equals(userTypeCd)) {
+            return CodeUtil.getName(code, CODE_TABLE_ONER);  
+        } 
+        //店舗ユーザの時
+        else if(UserType.TENPO.equals(userTypeCd)) {
+            return CodeUtil.getName(code, CODE_TABLE_MISE);  
+        }
+    	return null;
+    }
+
+}

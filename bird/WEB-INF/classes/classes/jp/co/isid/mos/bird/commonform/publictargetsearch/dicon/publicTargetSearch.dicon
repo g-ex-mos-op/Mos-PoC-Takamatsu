@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="Shift_JIS"?>
+<!DOCTYPE components PUBLIC "-//SEASAR//DTD S2Container 2.3//EN"
+    "http://www.seasar.org/dtd/components23.dtd">
+<components >
+
+    <include path="dao.dicon"/>
+    <include path="jp/co/isid/mos/bird/framework/dicon/birdInterceptor.dicon"/>  
+	
+	<!-- インターセプターを自動登録 -->
+	<component 
+	  class="org.seasar.framework.container.autoregister.AspectAutoRegister">
+	    <property name="interceptor">birdInterceptor.actionInterceptorChain</property>
+	    <initMethod name="addClassPattern">
+	        <arg>"jp.co.isid.mos.bird"</arg>
+	        <arg>".*ActionImpl"</arg>
+	    </initMethod>
+	    <initMethod name="registerAll"/>
+	</component> 
+	<component 
+	  class="org.seasar.framework.container.autoregister.AspectAutoRegister">
+	    <property name="interceptor">birdInterceptor.logicInterceptorChain</property>
+	    <initMethod name="addClassPattern">
+	        <arg>"jp.co.isid.mos.bird"</arg>
+	        <arg>".*LogicImpl"</arg>
+	    </initMethod>
+	    <initMethod name="registerAll"/>
+	</component>
+	
+	
+	<!--Dao-->
+	<component name="codShozokuDao" class="jp.co.isid.mos.bird.commonform.publictargetsearch.dao.CodShozokuDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="ctlCompanyDao" class="jp.co.isid.mos.bird.commonform.publictargetsearch.dao.CtlCompanyDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="ctlUserShozokuDao" class="jp.co.isid.mos.bird.commonform.publictargetsearch.dao.CtlUserShozokuDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="mstGyotiUneiCompanyDao" class="jp.co.isid.mos.bird.commonform.publictargetsearch.dao.MstGyotiUneiCompanyDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="publicTargetCodCompanyDao" class="jp.co.isid.mos.bird.commonform.publictargetsearch.dao.CodCompanyDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="mstCompanySibuTorikomiDao" class="jp.co.isid.mos.bird.commonform.publictargetsearch.dao.MstCompanySibuTorikomiDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="codMiseInfoDao" class="jp.co.isid.mos.bird.commonform.publictargetsearch.dao.CodMiseInfoDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+
+	<component class="jp.co.isid.mos.bird.framework.control.BirdUserInfo"/>
+	
+
+	<!--Dto-->
+	<component name="publicTargetSearchConditionDto" class="jp.co.isid.mos.bird.commonform.publictargetsearch.dto.PublicTargetSearchConditionDto" instance="session" >
+	</component>
+	<component name="publicTargetSearchDto"  class="jp.co.isid.mos.bird.commonform.publictargetsearch.dto.PublicTargetSearchDto" instance="session" >
+	</component>
+
+	<!--ロジック-->
+	<component name="searchKokaiLogic" class="jp.co.isid.mos.bird.commonform.publictargetsearch.logic.impl.SearchKokaiLogicImpl">
+	</component>
+	<component name="searchGyotaiLogic" class="jp.co.isid.mos.bird.commonform.publictargetsearch.logic.impl.SearchGyotaiLogicImpl">
+	</component>
+	<component name="kobetuSetLogic" class="jp.co.isid.mos.bird.commonform.publictargetsearch.logic.impl.KobetuSetLogicImpl">
+	</component>
+	<component name="readCsvFileLogic" class="jp.co.isid.mos.bird.commonform.publictargetsearch.logic.impl.ReadCsvFileLogicImpl">
+	</component>
+	<component name="createKokaiTargetLogic" class="jp.co.isid.mos.bird.commonform.publictargetsearch.logic.impl.CreateKokaiTargetLogicImpl">
+	</component>
+	<component name="getCompanySibuLogic" class="jp.co.isid.mos.bird.commonform.publictargetsearch.logic.impl.GetCompanySibuLogicImpl">
+	</component>
+
+	
+
+	<!--アクション-->
+	<component name="publicTargetSearchAction" class="jp.co.isid.mos.bird.commonform.publictargetsearch.action.impl.PublicTargetSearchActionImpl" instance="request">
+	</component>
+	
+	<component name="publicTargetSearchKobetuAction" class="jp.co.isid.mos.bird.commonform.publictargetsearch.action.impl.PublicTargetSearchKobetuActionImpl" instance="request">
+	</component>
+	
+	<component name="publicTargetSearchKotenAction" class="jp.co.isid.mos.bird.commonform.publictargetsearch.action.impl.PublicTargetSearchKotenActionImpl" instance="request">
+	</component>
+		
+	<component name="publicTargetRendoGroupGyotaiKbnCnt" class="java.lang.Integer">publicTargetListRendoGroupGyotaiKbn.size</component>
+	<component name="publicTargetListRendoGroupGyotaiKbn" class="java.util.ArrayList">
+		<initMethod name="add" >
+			<arg>
+				<component class="java.util.ArrayList">
+					<initMethod name="add" >
+						<arg>"010"</arg>
+					</initMethod>
+					<initMethod name="add" >
+						<arg>"012"</arg>
+					</initMethod>
+					<initMethod name="add" >
+						<arg>"013"</arg>
+					</initMethod>
+				</component>
+			</arg>
+		</initMethod>
+		<initMethod name="add" >
+			<arg>
+				<component class="java.util.ArrayList">
+					<initMethod name="add" >
+						<arg>"020"</arg>
+					</initMethod>
+					<initMethod name="add" >
+						<arg>"021"</arg>
+					</initMethod>
+					<initMethod name="add" >
+						<arg>"029"</arg>
+					</initMethod>
+				</component>
+			</arg>
+		</initMethod>
+	</component>
+						
+</components>

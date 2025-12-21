@@ -1,0 +1,318 @@
+<html xmlns:m="http://www.seasar.org/maya" m:action="#{takuhaiNipoRefConditionAction.initialize}" m:extends="/jsf/layout/layoutNoNavi.html">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Windows-31j"/>
+<title>宅配売上日報</title>
+</head>
+<body>
+<span m:inject="f:param" m:name="layoutTitle" m:value="宅配売上日報"/>
+<span m:inject="s:insert" m:name="bodyTitleName">■宅配売上日報</span>
+<span m:inject="f:param" m:name="onLoadName" m:value="bodyLoad();"/>
+<span m:inject="f:param" m:name="viewIdValue" m:value="BBR003V01"/>
+<div m:inject="s:insert" m:name="body">
+<style type="text/css">
+<!--
+-->
+</style>
+
+<script type="text/javascript">
+<!--
+// 初期設定
+function bodyLoad() {
+}
+// 店舗種別プルダウン変更処理
+function switchDisplayObj() {
+	var taishoTenpo = document.nipoRefCondition.elements['nipoRefCondition:compTaishoTenpo'].selectedIndex;
+	document.getElementById('nipoRefCondition:div_tenpoShuTitle').style.display="none";
+	document.getElementById('nipoRefCondition:div_tenpoShu').style.display="none";
+
+	if(taishoTenpo == 1) {
+		document.getElementById('nipoRefCondition:div_tenpoShu').style.display="inline";
+	}else {
+		document.getElementById('nipoRefCondition:div_tenpoShuTitle').style.display="inline";
+	}
+}
+// 対象期間プルダウン変更処理
+function switchDisplayKikan() {
+	document.getElementById('nipoRefCondition:div_kibetsushiteinipo').style.display="none";
+	document.getElementById('div_tougetsugepo').style.display="none";
+	document.getElementById('nipoRefCondition:div_tsukibetsugepo').style.display="none";
+	document.getElementById('nipoRefCondition:div_kibetsukihou').style.display="none";
+	document.getElementById('nipoRefCondition:div_kikanshitei').style.display="none";
+
+	var taishoKikan = document.nipoRefCondition.elements['nipoRefCondition:kikanTaisho'].selectedIndex;
+	if(taishoKikan == 0) {
+		document.getElementById('nipoRefCondition:div_kibetsushiteinipo').style.display="inline";
+	}else if(taishoKikan == 1) {
+		document.getElementById('div_tougetsugepo').style.display="inline";
+	}else if(taishoKikan == 2) {
+		document.getElementById('nipoRefCondition:div_tsukibetsugepo').style.display="inline";
+	}else if(taishoKikan == 3) {
+		document.getElementById('nipoRefCondition:div_kibetsukihou').style.display="inline";
+	}else if(taishoKikan == 4) {
+		document.getElementById('nipoRefCondition:div_kikanshitei').style.display="inline";
+	}
+}
+// 対象期間プルダウン変更処理(オーナー用)
+function switchDisplayKikanOner() {
+	document.getElementById('div_kibetsushiteinipo_oner').style.display="none";
+	document.getElementById('div_tougetsugepo_oner').style.display="none";
+	document.getElementById('div_tsukibetsugepo_oner').style.display="none";
+	document.getElementById('div_kikanshitei_oner').style.display="none";
+
+	var kikan = document.nipoRefOnerCondition.elements['nipoRefOnerCondition:kikanTaishoOner'].selectedIndex;
+	if( kikan == 0) {
+		document.getElementById('div_kibetsushiteinipo_oner').style.display="inline";
+	}else if(kikan == 1) {
+		document.getElementById('div_tougetsugepo_oner').style.display="inline";
+	}else if(kikan == 2) {
+		document.getElementById('div_tsukibetsugepo_oner').style.display="inline";
+	}else if(kikan == 3) {
+		document.getElementById('div_kikanshitei_oner').style.display="inline";
+	}
+}
+
+// 集計区分プルダウン変更処理 2008/12/09追加 SV対応
+function switchShukeiKbn(elementShukeiKbn) {
+	var taishoTenpo = elementShukeiKbn.selectedIndex;
+
+	var commonClassName = "taisho_";
+	if(taishoTenpo == 2) {
+		dispSwitchElement("th",commonClassName, "tenpo", "none");
+		dispSwitchElement("td",commonClassName, "tenpo", "none");
+		dispSwitchElement("th",commonClassName, "svCd", "inline");
+		dispSwitchElement("td",commonClassName, "svCd", "inline");
+	}else {
+		dispSwitchElement("th",commonClassName, "svCd", "none");
+		dispSwitchElement("td",commonClassName, "svCd", "none");
+		dispSwitchElement("th",commonClassName, "tenpo", "inline");
+		dispSwitchElement("td",commonClassName, "tenpo", "inline");
+	}
+}
+
+// SV検索 2008/12/09追加 SV対応
+function doCallSVForm() {
+    document.nipoRefCondition.target = "_self";
+	document.forms['nipoRefCondition'].elements['nipoRefCondition:__link_clicked__'].value='nipoRefCondition:callSvForm';
+	document.forms['nipoRefCondition'].submit();
+}
+
+
+/**
+ * 対象クラスエレメント表示切り替え処理
+ */
+function dispSwitchElement(targetTag, commonClassName, targetCode, status) {
+	var objsDiv = document.nipoRefCondition.getElementsByTagName(targetTag);
+	for (i = 0; i < objsDiv.length; i++) {
+		var classNm = objsDiv[i].className;
+		if(classNm.indexOf(commonClassName)>=0){
+			if(classNm.indexOf(targetCode)>=0) {
+				objsDiv[i].style.display = status;
+			}
+		}
+	}
+}
+
+-->
+</script>
+
+<!-- 条件部(本部用) -->
+<form m:id="nipoRefCondition" onkeydown="setDefaultSubmitButton('nipoRefCondition', 'btnExecute');">
+	<input type="hidden" m:id="viewId" m:value="#{viewIdValue}" />
+	<input type="hidden" m:id="initMenuId" m:value="#{menuAction.initMenuId}"/>
+	<input type="hidden" m:id="initSubMenuId" m:value="#{menuAction.initSubMenuId}"/>
+	<input type="hidden" m:id="windowId" m:value="#{nipoRefSearchParameterDto.windowId}"/>
+	<input type="hidden" m:id="typeCd" m:value="#{nipoRefSearchParameterDto.birdUserInfo.mstUser.userTypeCd}"/>
+	<a id="callSvForm" m:action="#{takuhaiNipoRefConditionAction.callSvForm}"/>
+	<table m:rendered="#{takuhaiNipoRefDto.birdUserInfo.mstUser.userTypeCd == '01'}"
+	       cellspacing="0" cellpadding="0">
+		<tr>
+		<td>
+			<table class="body_table">
+			<tr>
+				<th>会社</th>
+				<td><div class="hideArea">
+						<select m:value="#{nipoRefSearchParameterDto.companyCd}"
+								m:items="#{nipoRefConditionDto.companyList}"
+								m:itemValue="companyCd"
+								m:itemLabel="companyName"/></div></td>
+				<th>店舗種別</th>
+				<td><div class="hideArea">
+						<select m:value="#{nipoRefSearchParameterDto.tenpoShubetuCd}"
+								m:items="#{nipoRefConditionDto.tenpoShubetuList}"
+								m:id="compTaishoTenpo"
+								m:itemValue="code"
+								m:itemLabel="name"
+								m:onchange="switchDisplayObj();"/></div></td>
+				<th>集計区分</th>
+				<td><div class="hideArea">
+						<select m:value="#{nipoRefSearchParameterDto.shukeiKbnCd}"
+								m:items="#{nipoRefConditionDto.shukeiKbnList}"
+								m:onchange="switchShukeiKbn(this);"/></div></td>
+				<th class="taisho_tenpo" style="#{'SV_CD'!=takuhaiNipoRefDto.shukeiKbnCd ? '' : 'display:none;'}" width="70px">対象店舗</th>
+				<td class="taisho_tenpo" style="#{'SV_CD'!=takuhaiNipoRefDto.shukeiKbnCd ? '' : 'display:none;'}">
+					<div class="hideArea">
+						<select m:id="taishoTenpoCd"
+								m:value="#{nipoRefSearchParameterDto.taishoTenpoCd}"
+								m:items="#{nipoRefConditionDto.taishoTenpoList}"/></div>
+				</td>
+				<th class="taisho_svCd" style="#{'SV_CD'==takuhaiNipoRefDto.shukeiKbnCd ? '' : 'display:none;'}" nowrap=" nowrap">SVコード
+				<input type="button" m:id="doSearchSVBtn" value="検索"
+				       class="button_in_table height_21"
+				       onclick="doCallSVForm();" ondblclick="return false;"/></th>
+				<td class="taisho_svCd" style="#{'SV_CD'==takuhaiNipoRefDto.shukeiKbnCd ? '' : 'display:none;'}">
+					<input type="text" class="imenotuse height_11" m:id="textTakuCondSV" m:value="#{nipoRefSearchParameterDto.svCd}" maxlength="8" size="15" />
+				</td>
+				<td>
+				</td>
+			</tr>
+			<tr>
+				<th>対象期間</th>
+				<td>
+					<div class="hideArea">
+						<select m:value="#{nipoRefSearchParameterDto.taishoKikanCd}"
+								m:items="#{nipoRefConditionDto.taishoKikanList}"
+								m:id="kikanTaisho"
+								m:itemValue="code"
+								m:itemLabel="name"
+								m:onchange="switchDisplayKikan();"/></div>
+				</td>
+				<th>期間指定</th>
+				<td colspan="3">
+					<div class="hideArea">
+						<div id="div_kibetsushiteinipo" class="div_kibetsushiteinipo">
+							<select m:value="#{nipoRefSearchParameterDto.kikanNipo}"
+									m:items="#{nipoRefConditionDto.kikanFromList}"
+									m:itemValue="code"
+									m:itemLabel="name"/></div>
+						<div id="div_tougetsugepo" class="div_tougetsugepo" style="display:none;">
+							<input type="hidden" m:id="tougetsugepo" m:value="#{nipoRefSearchParameterDto.kikanCurrMonth}"/></div>
+						<div id="div_tsukibetsugepo" class="div_tsukibetsugepo" style="display:none;">
+							<select m:value="#{nipoRefSearchParameterDto.kikanYM}"
+									m:items="#{nipoRefConditionDto.kikanYMList}"
+									m:itemValue="code"
+									m:itemLabel="name"/></div>
+						<div id="div_kibetsukihou" class="div_kibetsukihou" style="display:none;">
+								<select m:value="#{nipoRefSearchParameterDto.kikanYear}"
+										m:items="#{nipoRefConditionDto.kikanYearList}"
+										m:itemValue="code"
+										m:itemLabel="name"/>
+							年度<select m:value="#{nipoRefSearchParameterDto.kikanKibetu}"
+										m:items="#{nipoRefConditionDto.kikanKibetuList}"
+										m:itemValue="code"
+										m:itemLabel="name"/></div>
+						<div id="div_kikanshitei" class="div_kikanshitei" style="display:none;">
+							<select m:value="#{nipoRefSearchParameterDto.kikanFrom}"
+										m:items="#{nipoRefConditionDto.kikanFromList}"
+										m:itemValue="code"
+										m:itemLabel="name"/>
+							～<select m:value="#{nipoRefSearchParameterDto.kikanTo}"
+										m:items="#{nipoRefConditionDto.kikanToList}"
+										m:itemValue="code"
+										m:itemLabel="name"/></div></div>
+				</td>
+				<th>前年データ種別</th>
+				<td>
+					<div class="hideArea">
+						<div id="div_tenpoShuTitle" class="div_tenpoShuTitle">
+							<select m:value="#{nipoRefSearchParameterDto.zenDataZennenOthCd}"
+									m:items="#{nipoRefConditionDto.zenDataZennenOthList}"
+									m:itemValue="code"
+									m:itemLabel="name"/></div>
+						<div id="div_tenpoShu" class="div_tenpoShu" style="display:none;">
+							<select m:value="#{nipoRefSearchParameterDto.zenDataZennenCd}"
+									m:items="#{nipoRefConditionDto.zenDataZennenList}"
+									m:itemValue="code"
+									m:itemLabel="name"/></div></div>
+				</td>
+			</tr>
+			</table>
+		</td>
+	</tr>
+	</table>
+</form>
+<!-- 条件部(オーナー用) -->
+<form m:id="nipoRefOnerCondition" onkeydown="setDefaultSubmitButton('nipoRefOnerCondition', 'btnExecute');">
+	<input type="hidden" m:id="viewId" m:value="#{viewIdValue}" />
+	<input type="hidden" m:id="initMenuId" m:value="#{menuAction.initMenuId}"/>
+	<input type="hidden" m:id="initSubMenuId" m:value="#{menuAction.initSubMenuId}"/>
+	<input type="hidden" m:id="windowId" m:value="#{nipoRefSearchParameterDto.windowId}"/>
+	<input type="hidden" m:id="typeCd" m:value="#{nipoRefSearchParameterDto.birdUserInfo.mstUser.userTypeCd}"/>
+	<a id="callSvForm" m:action="#{takuhaiNipoRefConditionAction.callSvForm}"/>
+	<table m:rendered="#{birdUserInfo.mstUser.userTypeCd == '02'}"
+	       cellspacing="0" cellpadding="0">
+		<tr>
+		<td>
+			<table class="body_table">
+			<tr>
+				<th>会社</th>
+				<td>
+					<div class="hideArea">
+						<select m:value="#{nipoRefSearchParameterDto.companyCd}"
+								m:items="#{nipoRefConditionDto.companyList}"
+								m:itemValue="code"
+								m:itemLabel="name"/></div>
+				</td>
+				<th >前年データ種別</th>
+				<td>
+					<div class="hideArea">
+						<select m:value="#{nipoRefSearchParameterDto.zenDataZennenOthCd}"
+								m:items="#{nipoRefConditionDto.zenDataZennenOthList}"
+								m:itemValue="code"
+								m:itemLabel="name"/></div>
+				</td>
+				<th>対象期間</th>
+				<td>
+					<div class="hideArea">
+						<select m:value="#{nipoRefSearchParameterDto.taishoKikanCd}"
+								m:items="#{nipoRefConditionDto.taishoKikanList}"
+								m:itemValue="code"
+								m:itemLabel="name"
+								m:id="kikanTaishoOner"
+								m:onchange="switchDisplayKikanOner();"/></div>
+				</td>
+				<th>期間指定</th>
+				<td>
+					<div class="hideArea">
+						<div id="div_kibetsushiteinipo_oner" class="div_kibetsushiteinipo_oner">
+							<select m:value="#{nipoRefSearchParameterDto.kikanNipo}"
+									m:items="#{nipoRefConditionDto.kikanFromList}"
+									m:itemValue="code"
+									m:itemLabel="name"/></div>
+						<div id="div_tougetsugepo_oner" class="div_tougetsugepo_oner" style="display:none;">
+							<input type="hidden" m:id="tougetsugepo_oner" m:value="#{nipoRefSearchParameterDto.kikanCurrMonth}"/></div>
+						<div id="div_tsukibetsugepo_oner" class="div_tsukibetsugepo_oner" style="display:none;">
+							<select m:value="#{nipoRefSearchParameterDto.kikanYM}"
+									m:items="#{nipoRefConditionDto.kikanYMList}"
+									m:itemValue="code"
+									m:itemLabel="name"/></div>
+						<div id="div_kikanshitei_oner" class="div_kikanshitei_oner" style="display:none;">
+							<table style="border-width:0px;padding:0px;border-collapse:collapse;">
+								<tr><td style="border-width:0px;padding:0px;">
+							<select m:value="#{nipoRefSearchParameterDto.kikanFrom}"
+										m:items="#{nipoRefConditionDto.kikanFromList}"
+										m:itemValue="code"
+										m:itemLabel="name"/></td>
+							<td style="border-width:0px;padding:0px;">～</td>
+							<td style="border-width:0px;padding:0px;"><select m:value="#{nipoRefSearchParameterDto.kikanTo}"
+										m:items="#{nipoRefConditionDto.kikanToList}"
+										m:itemValue="code"
+										m:itemLabel="name"/></td>
+							</tr></table></div></div>
+				</td>
+				<td valign="bottom">
+					<input type="submit" m:action="#{takuhaiNipoRefConditionAction.execution}" value="実行"/>
+				</td>
+			</tr>
+			</table>
+		</td>
+		<td valign="bottom">
+		<input type="button" m:id="btnExecute" style="margin:2px;"
+		       m:action="#{takuhaiNipoRefConditionAction.execution}" style="margin:2px;" value="実行"/>
+		</td>
+		</tr>
+	</table>
+	<input type="text" m:id="dummyText" m:style="display:none;"/>
+</form>
+</div>
+</body>
+</html>

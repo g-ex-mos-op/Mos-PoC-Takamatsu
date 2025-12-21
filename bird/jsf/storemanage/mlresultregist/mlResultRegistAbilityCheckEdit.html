@@ -1,0 +1,189 @@
+<html xmlns:m="http://www.seasar.org/maya" m:action="#{mlResultRegistAbilityCheckEditAction.initialize}" m:extends="/jsf/layout/layoutNoNavi.html">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Windows-31j"/>
+<meta http-equiv="Content-Style-Type" content="text/css"/>
+<title>マスターライセンス結果登録</title>
+</head>
+<body>
+<span m:inject="f:param" m:name="layoutTitle" m:value="マスターライセンス結果登録"/>
+<span m:inject="s:insert" m:name="bodyTitleName">■マスターライセンス結果登録</span>
+  <span m:inject="f:param" m:name="onLoadName" m:value="load()"/>
+<span m:inject="f:param" m:name="onLoadName" m:value="bodyLoad();"/>
+<span m:inject="f:param" m:name="viewIdValue" m:value="BSM008V03"/>
+<div m:inject="s:insert" m:name="body">
+<script language="JavaScript">
+<!--
+
+function load() {
+
+loadScroll("mlscroll", 315);
+
+}
+function bodyLoad() {
+}
+-->
+</script>
+<style type="text/css">
+<!--
+/* テーブルヘッダデフォルト設定 パターン２*/
+/* テーブルヘッダのセンタリング用 */
+table.body_table2 tr th{
+  text-align                  : center;
+  border-style                : solid;
+  border-color                : #808080;
+}
+
+-->
+</style>
+
+<form m:id="mlResultRegistAbilityCheckEdit">
+	<input type="hidden" m:id="initMenuId" m:value="#{menuAction.initMenuId}"/>
+	<input type="hidden" m:id="initSubMenuId" m:value="#{menuAction.initSubMenuId}"/>
+<input type="hidden" m:id="viewId" m:value="#{viewIdValue}" />
+<input type="hidden" m:id="selectedTabIndex" m:value="#{mlResultRegistDto.selectedTabIndex}" />
+
+<input type="submit" value="戻る" m:action="#{mlResultRegistAbilityCheckEditAction.back}"/>
+<input type="submit" value="確認" m:action="#{mlResultRegistAbilityCheckEditAction.confirm}"/>
+
+<div style="width:100%;">
+<div style="float:left; width:28%;">
+<table class="body_table2" style="margin-top:4px;">
+    <caption class="body_caption" style="text-align:left; padding:2px 0px;">能力チェック 受験者情報</caption>
+    <col style="width:100px; text-align:center;"/>
+    <col style="width:140px;"/>
+    <tr>
+        <th>受験番号</th>
+        <td><span m:value="#{mlResultRegistDto.selectAbilityCechkStaffEntryStatus.examNo}"/></td>
+    </tr>
+    <tr>
+        <th>受験者</th>
+        <td>
+          <span m:converter="#{characterEncodingConverter}" m:value="#{mlResultRegistDto.selectAbilityCechkStaffEntryStatus.staffLNameKj}"/>　
+          <span m:converter="#{characterEncodingConverter}" m:value="#{mlResultRegistDto.selectAbilityCechkStaffEntryStatus.staffFNameKj}"/>
+        </td>
+    </tr>
+    <tr>
+        <th>アセッサー</th>
+        <td><input type="text" m:id="assesser" m:value="#{mlResultRegistDto.trnAbilityCheckCategoryResult.assesser}" maxlength="40"/></td>
+    </tr>
+</table>
+</div>
+<div style="float:left; width:72%;">
+<table class="body_table2" style="margin-top:4px;">
+    <caption class="body_caption" style="text-align:left; padding:2px 0px;">能力チェック 結果</caption>
+
+    <tr>
+        <th style="width:40px;"></th>
+		<div m:inject="s:forEach" m:items="#{mlResultRegistDto.abilityCheckCategoryInfoList}" m:var="e" m:varindex="i">
+			<th span="7" style="width:70px; text-align:center;"><span m:converter="#{characterEncodingConverter}" m:value="#{e.categoryNameRyk}"/></th>
+		</div>
+    </tr>
+    <tr>
+        <td>前回</td>
+		<div m:inject="s:forEach" m:items="#{mlResultRegistDto.abilityCheckCategoryInfoList}" m:var="e" m:varindex="i">
+	        <td style="text-align:center;">
+			<div class="check_height">
+				<span m:value="#{mlResultRegistDto.trnAbilityCheckLastCategoryResult.sub1Chk1Result}" m:converter="#{mlrrGohiConverter}" m:rendered="#{e.categoryCd == '01'}"/>
+				<span m:value="#{mlResultRegistDto.trnAbilityCheckLastCategoryResult.sub1Chk2Result}" m:converter="#{mlrrGohiConverter}" m:rendered="#{e.categoryCd == '02'}"/>
+				<span m:value="#{mlResultRegistDto.trnAbilityCheckLastCategoryResult.sub1Chk3Result}" m:converter="#{mlrrGohiConverter}" m:rendered="#{e.categoryCd == '03'}"/>
+				<span m:value="#{mlResultRegistDto.trnAbilityCheckLastCategoryResult.sub1Chk4Result}" m:converter="#{mlrrGohiConverter}" m:rendered="#{e.categoryCd == '04'}"/>
+				<span m:value="#{mlResultRegistDto.trnAbilityCheckLastCategoryResult.sub1Chk5Result}" m:converter="#{mlrrGohiConverter}" m:rendered="#{e.categoryCd == '05'}"/>
+				<span m:value="#{mlResultRegistDto.trnAbilityCheckLastCategoryResult.sub1Chk6Result}" m:converter="#{mlrrGohiConverter}" m:rendered="#{e.categoryCd == '06'}"/>
+				<span m:value="#{mlResultRegistDto.trnAbilityCheckLastCategoryResult.sub1Chk7Result}" m:converter="#{mlrrGohiConverter}" m:rendered="#{e.categoryCd == '07'}"/>
+				<span m:value="#{mlResultRegistDto.trnAbilityCheckLastCategoryResult.sub1Chk8Result}" m:converter="#{mlrrGohiConverter}" m:rendered="#{e.categoryCd == '08'}"/>
+				<span m:value="#{mlResultRegistDto.trnAbilityCheckLastCategoryResult.sub1Chk9Result}" m:converter="#{mlrrGohiConverter}" m:rendered="#{e.categoryCd == '09'}"/>
+				<span m:value="#{mlResultRegistDto.trnAbilityCheckLastCategoryResult.sub1Chk10Result}" m:converter="#{mlrrGohiConverter}" m:rendered="#{e.categoryCd == '10'}"/>
+			</div>
+	        </td>
+		</div>
+    </tr>
+    <tr>
+        <td>今回</td>
+		<div m:inject="s:forEach" m:items="#{mlResultRegistDto.abilityCheckCategoryInfoList}" m:var="e" m:varindex="i">
+	        <td style="text-align:center;">
+			<div class="check_height">
+				<span m:value="#{mlResultRegistDto.trnAbilityCheckViewCategoryResult.sub1Chk1Result}" m:converter="#{mlrrGohiConverter}" m:rendered="#{e.categoryCd == '01'}"/>
+				<span m:value="#{mlResultRegistDto.trnAbilityCheckViewCategoryResult.sub1Chk2Result}" m:converter="#{mlrrGohiConverter}" m:rendered="#{e.categoryCd == '02'}"/>
+				<span m:value="#{mlResultRegistDto.trnAbilityCheckViewCategoryResult.sub1Chk3Result}" m:converter="#{mlrrGohiConverter}" m:rendered="#{e.categoryCd == '03'}"/>
+				<span m:value="#{mlResultRegistDto.trnAbilityCheckViewCategoryResult.sub1Chk4Result}" m:converter="#{mlrrGohiConverter}" m:rendered="#{e.categoryCd == '04'}"/>
+				<span m:value="#{mlResultRegistDto.trnAbilityCheckViewCategoryResult.sub1Chk5Result}" m:converter="#{mlrrGohiConverter}" m:rendered="#{e.categoryCd == '05'}"/>
+				<span m:value="#{mlResultRegistDto.trnAbilityCheckViewCategoryResult.sub1Chk6Result}" m:converter="#{mlrrGohiConverter}" m:rendered="#{e.categoryCd == '06'}"/>
+				<span m:value="#{mlResultRegistDto.trnAbilityCheckViewCategoryResult.sub1Chk7Result}" m:converter="#{mlrrGohiConverter}" m:rendered="#{e.categoryCd == '07'}"/>
+				<span m:value="#{mlResultRegistDto.trnAbilityCheckViewCategoryResult.sub1Chk8Result}" m:converter="#{mlrrGohiConverter}" m:rendered="#{e.categoryCd == '08'}"/>
+				<span m:value="#{mlResultRegistDto.trnAbilityCheckViewCategoryResult.sub1Chk9Result}" m:converter="#{mlrrGohiConverter}" m:rendered="#{e.categoryCd == '09'}"/>
+				<span m:value="#{mlResultRegistDto.trnAbilityCheckViewCategoryResult.sub1Chk10Result}" m:converter="#{mlrrGohiConverter}" m:rendered="#{e.categoryCd == '10'}"/>
+	        </div>
+	        </td>
+        </div>
+    </tr>
+</table>
+</div>
+</div>
+<div style="clear:both;"></div>
+<div class="scroll_padding_head">
+<div class="scroll_hidden margin_bottom_hidden">
+<table style="width:98%; margin-top:4px; border-collapse:collapse;">
+  <tr>
+	<div m:inject="s:forEach" m:items="#{mlResultRegistDto.abilityCheckCategoryInfoList}" m:var="e" m:varindex="i">
+    <td class="tab_change_area_#{i} body_#{i==0?'':'non_'}active_cell element_browser" style="width:80px;"
+        onClick="changeTabArea('#{i}');"
+		onMouseOver="this.style.cursor='pointer';">
+      <span m:converter="#{characterEncodingConverter}"  m:value="#{e.categoryNameRyk}"/>
+    </td>
+    </div>
+    <td/>
+  </tr>
+  <tr class="body_caption" style="height:4px;"><td colspan="8"/></tr>
+</table>
+
+<table class="body_table2 element_browser" width="98%">
+     <tr>
+        <th style="width:140px;">項目</th>
+        <th style="width:60px;">クリア</th>
+        <th style="width:*px;">基準</th>
+    </tr>
+</table>
+</div>
+</div>
+
+<div class="scroll_padding_data">
+<div id="mlscroll" class="scroll_hidden">
+  <div m:inject="s:forEach" m:items="#{mlResultRegistDto.abilityCheckCategoryInfoList}" m:var="e" m:varindex="i">
+	<div m:class="tab_change_area_#{i} #{(i == 0) ? 'visible_tab' : 'invisible_tab'}">
+	  <!--印刷用設定ここから-->
+	    <div m:class="element_print" style="#{(i == 0) ? '' : 'margin-top:10px;'}">
+	      【<span m:converter="#{characterEncodingConverter}" m:value="#{e.categoryNameRyk}"/>タブ 】
+	    </div>
+        <table class="element_print body_table2" width="98%">
+          <tr>
+            <th style="width:140px;">項目</th>
+            <th style="width:60px;">クリア</th>
+            <th style="width:*px;">基準</th>
+          </tr>
+        </table>
+       <!--印刷用設定ここまで-->
+       <table style="border-top-width:0px"class="body_table2" width="98%">
+	     <div m:inject="s:forEach" m:items="#{mlResultRegistDto.abilityCheckDetailResultList}" m:var="f" m:varindex="j">
+		   <tr class="non_top_border font_size_14" m:rendered="#{e.categoryCd == f.categoryCd}">
+		     <td style="width:140px;" ><span m:converter="#{characterEncodingConverter}" m:value="#{f.koumokuName}"/></td>
+			 <td style="width:60px; text-align:center;"><input type="checkbox" m:value="#{f.koumokuResultFlag}"/></td>
+			  <td style="width:*px;"><span m:converter="#{characterEncodingConverter}" m:value="#{f.koumokuContents}"/></td>
+		   </tr>
+	     </div>
+	   </table>
+    </div>
+  </div>
+</div>
+</div>
+
+	<input type="text" m:id="dummyEnter" style="display:none"/>
+</form>
+<script type="text/javascript">
+<!--
+	focusElement("mlResultRegistAbilityCheckEdit");
+-->
+</script>
+
+</div>
+</body>
+</html>

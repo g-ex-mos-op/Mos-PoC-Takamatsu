@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE components PUBLIC "-//SEASAR//DTD S2Container 2.3//EN"
+	"http://www.seasar.org/dtd/components23.dtd">
+<components namespace="svTantouSibu">
+	<include path="dao.dicon"/>
+	<include path="jp/co/isid/mos/bird/common/dicon/birdCommon.dicon"/>
+	<include path="jp/co/isid/mos/bird/framework/dicon/birdInterceptor.dicon"/>
+	
+	<!-- インターセプターを自動登録 -->
+	<component class="org.seasar.framework.container.autoregister.AspectAutoRegister">
+	    <property name="interceptor">birdInterceptor.actionInterceptorChain</property>
+	    <initMethod name="addClassPattern">
+	        <arg>"jp.co.isid.mos.bird"</arg>
+	        <arg>".*ActionImpl"</arg>
+	    </initMethod>
+	    <initMethod name="registerAll"/>
+	</component> 
+	<component class="org.seasar.framework.container.autoregister.AspectAutoRegister">
+	    <property name="interceptor">birdInterceptor.logicInterceptorChain</property>
+	    <initMethod name="addClassPattern">
+	        <arg>"jp.co.isid.mos.bird"</arg>
+	        <arg>".*LogicImpl"</arg>
+	    </initMethod>
+	    <initMethod name="registerAll"/>  
+	</component>
+
+	<!-- DTO -->
+	<component name="pullDownMenuDto" class="jp.co.isid.mos.bird.framework.dto.PullDownMenuDto" autoBinding="none" instance="session"/>
+	<component name="svTantouSibuDto" class="jp.co.isid.mos.bird.bizadmin.svtantousibu.dto.SvTantouSibuDto" instance="session">
+		<property name="listDbData">null</property>
+		<property name="listEditData">null</property>
+		<property name="listSibu">null</property>
+		<property name="listUploadData">null</property>
+		<property name="listUploadErrorData">null</property>
+		<property name="uploadedFile">null</property>
+	</component>
+	<component name="userSearchDto" class="jp.co.isid.mos.bird.commonform.usersearch.dto.UserSearchDto" instance="session">
+		<property name="RCompanyCdList">null</property>
+	</component>
+
+	<!-- DAO -->
+	<component name="svTantouSibuMstUserDao" class="jp.co.isid.mos.bird.framework.dao.MstUserDao">
+		<aspect>dao.interceptor</aspect>
+	</component>
+	<component name="svTantouSibuMstTantouMiseDao" class="jp.co.isid.mos.bird.bizadmin.svtantousibu.dao.MstTantouMiseDao">
+		<aspect>dao.interceptor</aspect>
+	</component>
+	<component name="svTantouSibuMstTantouSibuDao" class="jp.co.isid.mos.bird.bizadmin.svtantousibu.dao.MstTantouSibuDao">
+		<aspect>dao.interceptor</aspect>
+	</component>
+	<component name="svTantouSibuUIMstMiseDao" class="jp.co.isid.mos.bird.bizadmin.svtantousibu.dao.UIMstMiseDao">
+		<aspect>dao.interceptor</aspect>
+	</component>
+
+	<!-- LOGIC -->
+	<component name="svTantouSibuRemoteSibuLogic" class="jp.co.isid.mos.bird.bizadmin.svtantousibu.logic.impl.RemoteSibuLogicImpl"/>
+	<component name="svTantouSibuTantouoCsvDataLogic" class="jp.co.isid.mos.bird.bizadmin.svtantousibu.logic.impl.TantouCsvDataLogicImpl"/>
+	<component name="svTantouSibuTantouUploadLogic" class="jp.co.isid.mos.bird.bizadmin.svtantousibu.logic.impl.TantouUploadLogicImpl"/>
+	<component name="svTantouSibuRegistTantouSibuLogic" class="jp.co.isid.mos.bird.bizadmin.svtantousibu.logic.impl.RegistTantouSibuLogicImpl">
+		<aspect>j2ee.requiresNewTx</aspect>
+	</component>
+	<component name="svTantouSibuRegistTantouMiseLogic" class="jp.co.isid.mos.bird.bizadmin.svtantousibu.logic.impl.RegistTantouMiseLogicImpl">
+		<aspect>j2ee.requiresNewTx</aspect>
+	</component>
+	<component name="tantouUploadErrorCsvLogic" class="jp.co.isid.mos.bird.bizadmin.svtantousibu.logic.impl.TantouUploadErrorCsvLogicImpl"/>
+
+	<!-- ACTION -->
+	<component name="svTantouSibuCondAction" class="jp.co.isid.mos.bird.bizadmin.svtantousibu.action.impl.SvTantouSibuCondActionImpl" instance="request">
+		<property name="svTantouSibuErrorCsvAction">svTantouSibuErrorCsvAction</property>
+	</component>
+	<component name="svTantouSibuRemoteSibuEditAction" class="jp.co.isid.mos.bird.bizadmin.svtantousibu.action.impl.SvTantouSibuRemoteSibuEditActionImpl" instance="request"/>
+	<component name="svTantouSibuRemoteSibuConfirmAction" class="jp.co.isid.mos.bird.bizadmin.svtantousibu.action.impl.SvTantouSibuRemoteSibuConfirmActionImpl" instance="request"/>
+	<component name="svTantouSibuTantouMiseConfirmAction" class="jp.co.isid.mos.bird.bizadmin.svtantousibu.action.impl.SvTantouSibuTantouMiseConfirmActionImpl" instance="request"/>
+	<component name="svTantouSibuCsvAction" class="jp.co.isid.mos.bird.framework.action.impl.CsvDownloadActionImpl" instance="request">
+		<property name="csvOutputDto">svTantouSibuDto</property>
+		<property name="csvOutputLogic">svTantouSibuTantouoCsvDataLogic</property>
+		<property name="initLogic">null</property>
+		<property name="finalLogic">null</property>
+	</component>
+	<component name="svTantouSibuErrorCsvAction" class="jp.co.isid.mos.bird.framework.action.impl.CsvDownloadActionImpl" instance="request">
+		<property name="csvOutputDto">svTantouSibuDto</property>
+		<property name="csvOutputLogic">tantouUploadErrorCsvLogic</property>
+		<property name="initLogic">null</property>
+		<property name="finalLogic">null</property>
+	</component>
+
+	<!-- CONVERTER -->
+	<component name="dateConverter" class="jp.co.isid.mos.bird.framework.text.converter.DateConverter" instance="request">
+		<arg>@jp.co.isid.mos.bird.framework.util.formatter.DateFormatter@DATE_TYPE_YMD</arg>
+		<arg>@jp.co.isid.mos.bird.framework.util.formatter.DateFormatter@PATTERN_SLASH</arg>
+	</component>
+	<component name="dateConverterWeek" class="jp.co.isid.mos.bird.framework.text.converter.DateConverter" instance="request">
+		<arg>@jp.co.isid.mos.bird.framework.util.formatter.DateFormatter@DATE_TYPE_YMD</arg>
+		<arg>"yyyy/MM/dd(E)"</arg>
+	</component>
+</components>

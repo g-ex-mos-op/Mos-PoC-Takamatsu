@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="Shift_JIS"?>
+<!DOCTYPE components PUBLIC "-//SEASAR2.1//DTD S2Container//EN"
+	"http://www.seasar.org/dtd/components21.dtd">
+<components namespace="userRegist">
+    <include path="dao.dicon"/>
+    <include path="jp/co/isid/mos/bird/common/dicon/birdCommon.dicon"/>
+	<include path="jp/co/isid/mos/bird/framework/dicon/birdInterceptor.dicon"/>
+	<component class="org.seasar.framework.container.autoregister.AspectAutoRegister">
+	    <property name="interceptor">birdInterceptor.actionInterceptorChain</property>
+	    <initMethod name="addClassPattern">
+	        <arg>"jp.co.isid.mos.bird"</arg>
+	        <arg>".*ActionImpl"</arg>
+	    </initMethod>
+	    <initMethod name="registerAll"/>
+	</component> 
+	<component class="org.seasar.framework.container.autoregister.AspectAutoRegister">
+	    <property name="interceptor">birdInterceptor.logicInterceptorChain</property>
+	    <initMethod name="addClassPattern">
+	        <arg>"jp.co.isid.mos.bird"</arg>
+	        <arg>".*LogicImpl"</arg>
+	    </initMethod>
+	    <initMethod name="registerAll"/>  
+	</component>
+	
+	<!-- bizadmin共通DAO -->
+	<component name="bizadminMstUserCompanyDao" class="jp.co.isid.mos.bird.bizadmin.common.dao.MstUserCompanyDao" >
+	    <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="bizadminMstUserGyotaiDao" class="jp.co.isid.mos.bird.bizadmin.common.dao.MstUserGyotaiDao" >
+	    <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="bizadminMstUserOnerDao" class="jp.co.isid.mos.bird.bizadmin.common.dao.MstUserOnerDao" >
+	    <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="bizadminMstUserMiseDao" class="jp.co.isid.mos.bird.bizadmin.common.dao.MstUserMiseDao" >
+	    <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="bizadminMstUserShozokuDao" class="jp.co.isid.mos.bird.bizadmin.common.dao.MstUserShozokuDao" >
+	    <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="bizadminUIGyotaiCompanyDao" class="jp.co.isid.mos.bird.bizadmin.common.dao.UIGyotaiCompanyDao" >
+	    <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="bizadminUITogoOwnerDao" class="jp.co.isid.mos.bird.bizadmin.common.dao.UITogoOwnerDao" >
+	    <aspect>dao.interceptor</aspect>
+	</component>	
+	<component name="bizadminUIGroupTogoMiseDao" class="jp.co.isid.mos.bird.bizadmin.common.dao.UIGroupTogoMiseDao" >
+	    <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="bizadminUIUserDao" class="jp.co.isid.mos.bird.bizadmin.common.dao.UIUserDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="bizadminCodCompanyDao" class="jp.co.isid.mos.bird.bizadmin.common.dao.CodCompanyDao" >
+	    <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="bizadminUIUserCompanyDao" class="jp.co.isid.mos.bird.bizadmin.common.dao.UIUserCompanyDao" >
+	    <aspect>dao.interceptor</aspect>
+	</component>	 
+	<component name="bizadminUIUserGyotaiDao" class="jp.co.isid.mos.bird.bizadmin.common.dao.UIUserGyotaiDao">
+	    <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="bizadminUIUserOnerDao" class="jp.co.isid.mos.bird.bizadmin.common.dao.UIUserOnerDao">
+	    <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="bizadminUIUserMiseDao" class="jp.co.isid.mos.bird.bizadmin.common.dao.UIUserMiseDao">
+	    <aspect>dao.interceptor</aspect>
+	</component>
+	<!-- DAO -->
+	<component name="userRegistCodBumonDao" class="jp.co.isid.mos.bird.sysadmin.userregist.dao.CodBumonDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="userRegistCtlUserRenkeiDao" class="jp.co.isid.mos.bird.sysadmin.userregist.dao.CtlUserRenkeiDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="userRegistCtlUserRoleDao" class="jp.co.isid.mos.bird.sysadmin.userregist.dao.CtlUserRoleDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	
+	<!-- 2007/01/31 add start xamaruyama -->
+	<component name="userRegistCodKeiyakuTypeDao" class="jp.co.isid.mos.bird.sysadmin.userregist.dao.CodKeiyakuTypeDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="userRegistCodRoleTypeDao" class="jp.co.isid.mos.bird.sysadmin.userregist.dao.CodRoleTypeDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<!-- 2007/01/31 add end xamaruyama -->
+
+	<!-- LOGIC -->
+	<component name="userRegistGetBumonLogicImpl"   class="jp.co.isid.mos.bird.sysadmin.userregist.logic.impl.GetBumonLogicImpl"/>
+	<component name="userRegistCheckUserLogic"   class="jp.co.isid.mos.bird.sysadmin.userregist.logic.impl.CheckUserLogicImpl">
+		<property name="validatePasswordLogic">validatePasswordLogic</property>
+	</component>
+	<component name="userRegistLogic"   class="jp.co.isid.mos.bird.sysadmin.userregist.logic.impl.UpdateUserLogicImpl">
+		<aspect>j2ee.requiredTx</aspect>
+		<property name="updatePasswordLogic">updatePasswordLogic</property>
+	</component>
+	<!-- 2007/01/31 add start xamaruyama -->
+	<component name="userRegistGetUserRoleLogic"   class="jp.co.isid.mos.bird.sysadmin.userregist.logic.impl.GetUserRoleLogicImpl"/>
+	<!-- 2007/01/31 add end xamaruyama -->
+		
+	<component name="userRegistSettingDataLogic"   class="jp.co.isid.mos.bird.sysadmin.userregist.logic.impl.SettingDataLogicImpl"/>
+	<component name="userRegistGetUserShozokuKbnLogic"   class="jp.co.isid.mos.bird.sysadmin.userregist.logic.impl.GetUserShozokuKbnLogicImpl">
+		<property name="mstHanshaOnerDao">mstHanshaOnerDao</property>
+	</component>
+	<!-- 共通DTO -->
+	<component name="pullDownMenuDto" class="jp.co.isid.mos.bird.framework.dto.PullDownMenuDto" autoBinding="none" instance="session"/>
+	<!-- 共通選択画面DTO -->
+	<component name="ownerSearchDto" class="jp.co.isid.mos.bird.commonform.ownersearch.dto.OwnerSearchDto" autoBinding="none" instance="session"/>
+	<component name="businessSearchDto" class="jp.co.isid.mos.bird.commonform.businesssearch.dto.BusinessSearchDto" autoBinding="none" instance="session"/>
+	<component name="miseSearchDto" class="jp.co.isid.mos.bird.commonform.misesearch.dto.MiseSearchDto" autoBinding="none" instance="session"/>
+	<component name="userSearchDto" class="jp.co.isid.mos.bird.commonform.usersearch.dto.UserSearchDto" instance="session">
+		<property name="RCompanyCdList">null</property>
+	</component>
+	<!-- 外部DTO -->
+	<component name="userRoleRegistDto" class="jp.co.isid.mos.bird.sysadmin.userroleregist.dto.UserRoleRegistDto" instance="session"/>
+	<component name="roleUserInfoDto" class="jp.co.isid.mos.bird.sysadmin.userroleregist.dto.RoleUserInfoDto" autoBinding="none" instance="session"/>
+	<component name="seteiKubunDto" class="jp.co.isid.mos.bird.sysadmin.userroleregist.dto.SeteiKubunDto" instance="session"/>
+	<!-- DTO -->
+	<component name="userRegistDto" class="jp.co.isid.mos.bird.sysadmin.userregist.dto.UserRegistDto" autoBinding="none" instance="session"/>	
+
+	<!-- ENTITY -->
+	<!-- OTHER -->
+	<component class="jp.co.isid.mos.bird.framework.control.BirdUserInfo" instance="session"/>
+	<component class="jp.co.isid.mos.bird.framework.control.BirdDateInfo" instance="session"/>
+
+	<!-- 外部ACTION -->
+	<component name="getBirdUserAction" class="jp.co.isid.mos.bird.sysadmin.userroleregist.action.impl.GetBirdUserActionImpl" instance="request"/>
+	<!-- ACTION -->
+	<component name="userRegistSelectUserTypeAction" class="jp.co.isid.mos.bird.sysadmin.userregist.action.impl.UserRegistSelectUserTypeActionImpl" instance="request"/>
+	<component name="userRegistEditHonbuAction" class="jp.co.isid.mos.bird.sysadmin.userregist.action.impl.UserRegistEditHonbuActionImpl" instance="request"/>
+	<component name="userRegistEditOwnerAction" class="jp.co.isid.mos.bird.sysadmin.userregist.action.impl.UserRegistEditOwnerActionImpl" instance="request"/>
+	<component name="userRegistEditStoreAction" class="jp.co.isid.mos.bird.sysadmin.userregist.action.impl.UserRegistEditStoreActionImpl" instance="request"/>
+	<component name="userRegistConfirmHonbuAction" class="jp.co.isid.mos.bird.sysadmin.userregist.action.impl.UserRegistConfirmHonbuActionImpl" instance="request"/>
+	<component name="userRegistConfirmOwnerAction" class="jp.co.isid.mos.bird.sysadmin.userregist.action.impl.UserRegistConfirmOwnerActionImpl" instance="request"/>
+	<component name="userRegistConfirmStoreAction" class="jp.co.isid.mos.bird.sysadmin.userregist.action.impl.UserRegistConfirmStoreActionImpl" instance="request">
+		<!-- 2007/02/06 add start xamaruyama -->
+			<property name="keiyakuTenpo">"03"</property>
+		<!-- 2007/02/06 add end xamaruyama -->
+	</component>
+
+	<!-- CONVERTER -->
+	<component name="userRegistBigoConverter" class="jp.co.isid.mos.bird.framework.text.converter.CodeConverter" instance="request">
+		<arg>3</arg>
+		<arg>"000"</arg>
+	</component>
+	<component name="userRegistEmosCdConverter" class="jp.co.isid.mos.bird.framework.text.converter.CodeConverter" instance="request">
+	</component>
+	
+	<component name="userRegistCodeConverter" class="jp.co.isid.mos.bird.framework.text.converter.CodeConverter" instance="request">
+	</component>
+	
+</components>

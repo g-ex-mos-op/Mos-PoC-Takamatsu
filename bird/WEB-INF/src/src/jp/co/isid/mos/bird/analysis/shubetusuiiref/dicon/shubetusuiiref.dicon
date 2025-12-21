@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="Shift_JIS"?>
+<!DOCTYPE components PUBLIC "-//SEASAR//DTD S2Container 2.3//EN"
+    "http://www.seasar.org/dtd/components23.dtd">
+<components namespace="shubetusuiiref">
+    <include path="dao.dicon"/>
+    <include path="jp/co/isid/mos/bird/common/dicon/birdCommon.dicon"/>
+	<include path="jp/co/isid/mos/bird/framework/dicon/birdInterceptor.dicon"/>
+
+	<component
+	  class="org.seasar.framework.container.autoregister.AspectAutoRegister">
+	    <property name="interceptor">birdInterceptor.actionInterceptorChain</property>
+	    <initMethod name="addClassPattern">
+	        <arg>"jp.co.isid.mos.bird"</arg>
+	        <arg>".*ActionImpl"</arg>
+	    </initMethod>
+	    <initMethod name="registerAll"/>
+	</component> 
+	<component
+	  class="org.seasar.framework.container.autoregister.AspectAutoRegister">
+	    <property name="interceptor">birdInterceptor.logicInterceptorChain</property>
+	    <initMethod name="addClassPattern">
+	        <arg>"jp.co.isid.mos.bird"</arg>
+	        <arg>".*LogicImpl"</arg>
+	    </initMethod>
+	    <initMethod name="registerAll"/>
+	</component>
+
+	<!-- DAO -->
+	<component name="shubetuSuiiRefDao" class="jp.co.isid.mos.bird.analysis.shubetusuiiref.dao.UIShubetuSuiiDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<!-- LOGIC -->
+	<component name="shubetuSuiiRefConditionLogic" class="jp.co.isid.mos.bird.analysis.shubetusuiiref.logic.impl.ConditionInfoLogicImpl"/>
+	<component name="shubetuSuiiRefSearchNipoLogic" class="jp.co.isid.mos.bird.analysis.shubetusuiiref.logic.impl.SearchNipoLogicImpl"/>
+	<component name="shubetuSuiiRefSearchGepoLogic" class="jp.co.isid.mos.bird.analysis.shubetusuiiref.logic.impl.SearchGepoLogicImpl"/>
+	<component name="shubetuSuiiRefDayCsvLogic" class="jp.co.isid.mos.bird.analysis.shubetusuiiref.logic.impl.ShubetuSuiiRefDayCsvOutputLogicImpl"/>
+	<component name="shubetuSuiiRefGepoCsvLogic" class="jp.co.isid.mos.bird.analysis.shubetusuiiref.logic.impl.ShubetuSuiiRefGepoCsvOutputLogicImpl"/>
+	
+	<!-- DTO -->
+	<component name="shubetuSuiiRefDto" class="jp.co.isid.mos.bird.analysis.shubetusuiiref.dto.ShubetuSuiiRefDto" autoBinding="none" instance="session"/>
+	<component name="shubetuSuiiRefReqDto" class="jp.co.isid.mos.bird.analysis.shubetusuiiref.dto.ShubetuSuiiRefReqDto" autoBinding="none" instance="request">
+		<property name="companyCd">'00'</property>
+	</component>
+	<component name="shubetuSuiiRefReqViewDto" class="jp.co.isid.mos.bird.analysis.shubetusuiiref.dto.ShubetuSuiiRefReqDto" autoBinding="none" instance="request"/>
+	<component name="miseSearchDto" class="jp.co.isid.mos.bird.commonform.misesearch.dto.MiseSearchDto" instance="session">
+		<property name="RCompanyCdList">null</property>
+	</component>
+
+	<!-- ACTION -->
+	<component name="shubetusuiirefAction" class="jp.co.isid.mos.bird.analysis.shubetusuiiref.action.impl.ShubetuSuiiRefActionImpl" instance="request"/>
+	<component name="shubetusuiirefCsvAction" class="jp.co.isid.mos.bird.framework.action.impl.CsvOutput2ActionImpl" instance="request">
+		<property name="csvOutputLogic">shubetuSuiiRefDayCsvLogic</property>
+		<property name="csvOutputDto">shubetuSuiiRefReqDto</property>
+	</component>
+	<component name="shubetusuiirefGepoCsvAction" class="jp.co.isid.mos.bird.framework.action.impl.CsvOutput2ActionImpl" instance="request">
+		<property name="csvOutputLogic">shubetuSuiiRefGepoCsvLogic</property>
+		<property name="csvOutputDto">shubetuSuiiRefReqDto</property>
+	</component>
+	
+	<!-- Formatter -->
+
+	<!-- Converter -->
+	<component name="shubetusuiirefDateConvDE" class="jp.co.isid.mos.bird.framework.text.converter.DateConverter" instance="request">
+		<arg>@jp.co.isid.mos.bird.framework.util.formatter.DateFormatter@DATE_TYPE_YMD</arg>
+		<arg>"dd'日（'E'）'"</arg>
+	</component>
+	<component name="shubetusuiirefDigit0Con" class="jp.co.isid.mos.bird.framework.text.converter.NumericConverter" instance="request">
+		<arg>0</arg>
+	</component>
+	<component name="shubetusuiirefDigit2Con" class="jp.co.isid.mos.bird.framework.text.converter.NumericConverter" instance="request">
+		<arg>2</arg>
+	</component>
+	<component name="shubetusuiirefCodeConv" class="jp.co.isid.mos.bird.framework.text.converter.CodeConverter" instance="request"/>
+	
+</components>

@@ -1,0 +1,113 @@
+<html xmlns:m="http://www.seasar.org/maya" m:action="#{projectPlanOfferIninAction.initialize}" m:extends="/jsf/layout/layoutNoNavi.html">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Windows-31j"/>
+<meta http-equiv="Content-Style-Type" content="text/css"/>
+<link href="./css/main.css" rel="stylesheet" type="text/css"/>
+<link href="./css/header.css" rel="stylesheet" type="text/css"/>
+<link href="./css/navi.css" rel="stylesheet" type="text/css"/>
+<link href="./css/body.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="./js/bird.js"></script>
+</head>
+<body>
+  <span m:inject="f:param" m:name="layoutTitle" m:value="事業方針説明会申込　委任状画面"/>
+  <span m:inject="s:insert" m:name="bodyTitleName">■共栄会定時総会　委任状申込</span>
+  <span m:inject="f:param" m:name="viewIdValue" m:value="BEN011V02"/>
+  <span m:inject="s:insert" m:name="body">
+  <STYLE type="text/css" media="screen">
+<!--
+/* 入力フィールドの右詰入力へ指定するためのスタイルシート */
+.ratio_style {
+  text-align       : right;
+  background-color : #FFFFFF;
+  color            : black;
+  ime-mode    : disabled;
+}
+//-->
+</STYLE>
+
+  <script type="text/javascript">
+  <!--
+	function backMove(){
+		var f=document.forms['projectplanoffer'];
+		f.elements['projectplanoffer:__link_clicked__'].value='projectplanoffer:backMove';
+		f.submit();
+		return false;
+	}
+    	function execRegist(){
+		var f=document.forms['projectplanoffer'];
+		f.elements['projectplanoffer:__link_clicked__'].value='projectplanoffer:registOfferAction';
+		f.submit();
+		return false;
+	}
+  //-->
+  </script>
+  <form m:id="projectplanoffer">
+	<input type="hidden" m:id="viewId" m:value="#{viewIdValue}"/>
+	<input type="hidden" m:id="initMenuId" m:value="#{menuAction.initMenuId}"/>
+	<input type="hidden" m:id="initSubMenuId" m:value="#{menuAction.initSubMenuId}"/>
+	<input type="hidden" m:id="windowId" m:value="#{projectPlanOfferDto.windowId}"/>
+	<input type="hidden" m:id="prmIninKbn" m:value="#{projectPlanOfferDto.prmIninKbn}"/>
+	<input type="hidden" m:id="prmTabNo" m:value="#{projectPlanOfferDto.prmTabNo}"/>
+	<a m:id="backMove" m:action="#{projectPlanOfferIninAction.backMove}"/>
+	<a m:id="registOfferAction" m:action="#{projectPlanOfferIninAction.registOffer}"/>
+    <table width="820" cellspacing="0" cellpadding="0">
+	    <tr>
+	      <td width="50"><input type="button" value="戻る" class="operation_button" m:onclick="backMove();"  onDblClick="return false"/></td>
+	      <td width="90"><input type="button" value="登録・終了" class="operation_button" m:onclick="execRegist()"  onDblClick="return false"/></td>
+	      <td>&nbsp;</td>
+	    </tr>
+	</table>
+	<Br>
+	<!-- 委任状 -->
+	<table width="820" cellspacing="0" cellpadding="0" class="body_table2">
+      <tr>
+	    <td>
+	      <div align="center"><font size="4"><b>委任状</b></font><br><br>
+	      <span m:converter="#{characterEncodingConverter}" m:value="#{projectPlanOfferDto.ininNoteTxt}"/>
+	      </div>
+	    </td>
+      </tr>
+   </table>
+	<table width="820" cellspacing="0" cellpadding="0">
+      <tr>
+        <td><font color="red">*</font>は必須項目です。</td>
+      </tr>
+   </table>
+   <table width="820" cellspacing="0" cellpadding="0" class="body_table2">
+      <tr>
+        <th width="100">店舗<font color="red">*</font></th>
+	    <td colspan="4">
+	      <div m:rendered="#{projectPlanOfferDto.miseListSize > 0}">
+		    <div class="hideArea">
+                <select m:id="prmIninMiseCd"
+	                  m:value="#{projectPlanOfferDto.prmIninMiseCd}"
+	                  m:items="#{projectPlanOfferDto.condListMise}"
+	                  m:itemValue="miseCd"
+	                  m:itemlabel="miseNameKj">
+	            </select>
+		    </div>
+		  </div>
+	    </td>
+      </tr>
+	  <tr>
+	    <th width="170">氏名<font color="red">*</font></th>
+	    <td><input m:id="prmIninFName" class="imeon width_136" type="text" m:maxlength="20" size="25" m:value="#{projectPlanOfferDto.prmIninFName}"/>(氏)</td>
+		<td><input m:id="prmIninLName" class="imeon width_136" type="text" m:maxlength="20" size="25" m:value="#{projectPlanOfferDto.prmIninLName}"/>(名)</td>
+        <th width="170">店舗数（所有店舗数）<font color="red">*</font></th>
+	    <td width="100"><input m:id="prmIninMiseTotal" type="text" m:maxlength="5" size="10" m:value="#{projectPlanOfferDto.prmIninMiseTotal}"  m:converter="#{numericConverter}" m:class="ratio_style width_62"/></td>
+      </tr>
+    </table>
+    <B>※店舗は１号店店舗を選択してください。</B>
+    <br></br>
+    <br></br>
+    <table width="820" cellspacing="0" cellpadding="0" class="body_table2">
+	    <tr>
+	      <td width="98%">
+	        <pre style="margin-top:12px;margin-bottom:10px"><span m:converter="#{characterEncodingConverter}" m:value="#{projectPlanOfferDto.noticeTxt}"/></pre>
+          </td>
+	    </tr>
+    </table>
+  </form>
+  </span>
+</body>
+</html>

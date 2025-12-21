@@ -1,0 +1,20 @@
+select
+    BR20.ENTRY_CD,
+    BR20.ENTRY_YEAR,
+    BR20.ENTRY_KAI,
+    BR20.ENTRY_PLACE_CD,
+    rtrim(BR20.ENTRY_PLACE_NAME) as ENTRY_PLACE_NAME,
+    BR20.FIRST_USER,
+    BR20.FIRST_PGM,
+    BR20.FIRST_TMSP,
+    BR20.LAST_USER,
+    BR20.LAST_PGM,
+    BR20.LAST_TMSP
+from
+    BR20MLPL as BR20
+where
+    BR20.ENTRY_CD = /*entryCd*/'10' and
+    BR20.ENTRY_YEAR = /*entryYear*/'2006' and
+    BR20.ENTRY_KAI = /*entryKai*/'004'
+order by
+    BR20.ENTRY_PLACE_CD

@@ -1,0 +1,338 @@
+<html xmlns:m="http://www.seasar.org/maya" m:action="#{mosChickenStateConfirmEditAction.initialize}" m:extends="/jsf/layout/layoutNoNavi.html">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Windows-31j" />
+<title>ﾋﾟｰｽ・ﾏﾈｰｼﾞｬｰ予約・在庫状況一覧</title>
+<span m:inject="f:param" m:name="layoutTitle" m:value="ﾋﾟｰｽ・ﾏﾈｰｼﾞｬｰ予約・在庫状況一覧"/>
+<span m:inject="s:insert" m:name="bodyTitleName">■ﾋﾟｰｽ・ﾏﾈｰｼﾞｬｰ予約・在庫状況一覧</span>
+<span m:inject="f:param" m:name="viewIdValue" m:value="BBS018V02"/>
+<span m:inject="f:param" m:name="onLoadName" m:value="load()"/>
+</head>
+<body>
+<span m:inject="s:insert" m:name="body" >
+<STYLE type="text/css">
+<!--
+/* 入力フィールドの右詰入力へ指定するためのスタイルシート */
+.ratio_style {
+  text-align       : right;
+  background-color : #FFFFFF;
+  color            : black;
+}
+/* 表：当日・翌日販売可能数項目表示 */
+table.body_table2 tr td.hanbaikanoCnt_red{
+  background-color      : #C0FFC0;
+  color                 : red;
+}
+table.body_table2 tr td.hanbaikanoCnt{
+  background-color      : #C0FFC0;
+}
+/* 表：比率項目表示 */
+table.body_table2 tr td.etcCnt_red{
+  color                 : red;
+}
+
+//-->
+</STYLE>
+<script type="text/javascript">
+<!--
+var userTypeHONBU = "01";
+var userTypeONER = "02";
+var userTypeMISE = "03";
+
+function load(){
+	loadScroll("stateConfirm",370);
+	document.conditionForm.elements['conditionForm:loadingFlg'].value = "";
+	var elementName = document.focusElementForm.elements["FOCUS_ELEMENT"].value;
+	if(elementName == "") {
+	}
+	focusElement("conditionForm");
+}
+/**
+ * ウィンドウロードステータス取得処理
+ *
+ */
+function returnLoadingStatus(){
+	if(isLoadingFlgOFF()) {
+		setLoadingFlg();
+		return true;
+	}
+	return false;
+}
+/**
+ * ウィンドウロードステータス取得処理
+ *
+ */
+function isLoadingFlgOFF(){
+	return (document.conditionForm.elements['conditionForm:loadingFlg'].value != "ON");
+}
+/**
+ * タイトルプルダウンリスト変更時処理
+ *
+ * タイトルプルダウンの値毎に
+ * 対象条件プルダウンの内容を変更し、
+ * 対象条件プルダウンが変更されることにより表示対象オブジェクトも変更される。
+ */
+function changeTitle(){
+	if(returnLoadingStatus()){
+		setJokenData();
+		document.conditionForm.target ="_self";
+		document.conditionForm.elements['conditionForm:__link_clicked__'].value='conditionForm:changeTitle';
+		document.conditionForm.submit();
+	}
+}
+/**
+ * 検索ボタン押下時処理
+ *
+ */
+function search(){
+	if(returnLoadingStatus()){
+		setJokenData();
+		document.conditionForm.elements['conditionForm:__link_clicked__'].value='conditionForm:search';
+		document.conditionForm.submit();
+	}
+}
+/**
+ * 検索ボタン押下時処理
+ *
+ */
+function result(){
+	if(returnLoadingStatus()){
+		setJokenData();
+		document.conditionForm.elements['conditionForm:__link_clicked__'].value='conditionForm:result';
+		document.conditionForm.submit();
+	}
+}
+/**
+ * 戻るボタン押下時処理
+ * 本部ユーザーのみ使用
+ *
+ */
+function back(){
+	document.conditionForm.elements['conditionForm:__link_clicked__'].value='conditionForm:back';
+	document.conditionForm.submit();
+}
+/**
+ * ウィンドウロードフラグ設定処理
+ *
+ *
+ */
+function setLoadingFlg() {
+	document.conditionForm.elements['conditionForm:loadingFlg'].value = "ON";
+}
+function setJokenData(){
+	//対象管理番号を設定
+	var elementCkanriNo = document.conditionForm.elements['conditionForm:ckanriNo'];
+	if(elementCkanriNo != null){
+		var cKanriNo = elementCkanriNo.value
+		document.conditionForm.elements['conditionForm:targetCkanriNo'].value   =cKanriNo;
+	}
+	//対象店舗コードを設定
+	var elementMise = document.conditionForm.elements['conditionForm:miseCd'];
+	if(elementMise != null){
+		var miseCd = elementMise.value
+		document.conditionForm.elements['conditionForm:targetMiseCd'].value   =miseCd;
+	}
+	//対象日付を設定
+	var elementDate = document.conditionForm.elements['conditionForm:taishoDate'];
+	if(elementDate != null){
+		var taishoDate = elementDate.value;
+		document.conditionForm.elements['conditionForm:targetDate'].value   =taishoDate;
+	}
+}
+/**
+ * ユーザータイプコード判断処理
+ */
+function isUserType(code){
+	var userType = document.conditionForm.elements['conditionForm:usertypeCd'].value;
+	return (code == userType);
+}
+
+//-->
+</script>
+
+<form m:id="conditionForm" onKeyDown="return setDefaultSubmitButton('conditionForm','executeBt');">
+    <input type="hidden" m:id="viewId" m:value="#{viewIdValue}" />
+	<input type="hidden" m:id="initMenuId" m:value="#{menuAction.initMenuId}"/>
+	<input type="hidden" m:id="initSubMenuId" m:value="#{menuAction.initSubMenuId}"/>
+	<input type="hidden" m:id="usertypeCd" m:value="#{userTypeCd}"/>
+	<input type="hidden" m:id="targetCkanriNo" m:value="#{mosChickenStateConfirmDto.targetCkanriNo}"/>
+	<input type="hidden" m:id="targetCompanyCd" m:value="#{mosChickenStateConfirmDto.targetCompanyCd}"/>
+	<input type="hidden" m:id="targetOnerCd" m:value="#{mosChickenStateConfirmDto.targetOnerCd}"/>
+	<input type="hidden" m:id="targetMiseCd" m:value="#{mosChickenStateConfirmDto.targetMiseCd}"/>
+	<input type="hidden" m:id="targetDate" m:value="#{mosChickenStateConfirmDto.targetDate}"/>
+	<input type="hidden" m:id="targetShokuCd" m:value="#{mosChickenStateConfirmDto.targetShokuCd}"/>
+	<input type="hidden" m:id="windowId" m:value="#{mosChickenStateConfirmDto.windowId}"/>
+	<input type="hidden" id="loadingFlg" value=""/>
+	<div class="search_condition">
+		<a id="changeTitle" m:action="#{mosChickenStateConfirmEditAction.changeTitle}"/>
+		<a id="search" m:action="#{mosChickenStateConfirmEditAction.search}"/>
+		<a id="result" m:action="#{mosChickenStateConfirmEditAction.regist}"/>
+		<a id="back" m:action="#{mosChickenStateConfirmEditAction.back}"/>
+		<div m:rendered="#{mosChickenStateConfirmDto.userTypeCd == '01'}">
+			<input type="button" class="operation_button" value="戻る" onClick="back();" onDblClick="return false" />
+		</div>
+		<table class="hiddenBody">
+			<tr>
+				<td>
+				<table class="body_table" style="margin-top:4px;">
+					<tr>
+						<th nowrap=" nowrap">タイトル</th>
+						<td nowrap=" nowrap">
+							<span m:rendered="#{mosChickenStateConfirmDto.title1CntFlg == false}">
+							<div class="hideArea">
+							<select class="condition_field"
+									m:id="ckanriNo"
+									m:value="#{mosChickenStateConfirmDto.targetCkanriNo}"
+									m:items="#{mosChickenStateConfirmDto.listTitle}"
+									m:itemValue="ckanriNo"
+									m:itemLabel="title"
+									m:onchange="changeTitle()"
+									>
+									<option value="999999">タイトル</option>
+								</select>
+							</div>
+							</span>
+							<span m:rendered="#{mosChickenStateConfirmDto.title1CntFlg == true}">
+								&nbsp;<span m:converter="#{characterEncodingConverter}" m:value="#{mosChickenStateConfirmDto.targetTitle}"/>&nbsp;
+							</span>
+						</td>
+						<th nowrap="nowrap" class="body_headeer4">対象店舗</th>
+						<td>
+							<span m:rendered="#{mosChickenStateConfirmDto.onerMise1CntFlg == false}">
+							<div class="hideArea">
+							<select class="condition_field"
+									m:id="miseCd"
+									m:value="#{mosChickenStateConfirmDto.targetMiseCd}"
+									m:items="#{mosChickenStateConfirmDto.listOnerMise}"
+									m:itemValue="miseCd"
+									m:itemLabel="miseNameKj"
+									>
+									<option value="99999">店舗名称</option>
+								</select>
+							</div>
+							</span>
+							<span m:rendered="#{mosChickenStateConfirmDto.onerMise1CntFlg == true}">
+								&nbsp;<span m:converter="#{characterEncodingConverter}" m:value="#{mosChickenStateConfirmDto.targetMiseNameKj}"/>&nbsp;
+							</span>
+						</td>
+						<th nowrap=" nowrap" class="body_headeer4">対象日付</th>
+						<td>
+							<span m:rendered="#{mosChickenStateConfirmDto.date1CntFlg == false}">
+							<div class="hideArea">
+							<select class="condition_field"
+									m:id="taishoDate"
+									m:value="#{mosChickenStateConfirmDto.targetDate}"
+									m:items="#{mosChickenStateConfirmDto.listDate}"
+									m:itemValue="code"
+									m:itemLabel="name"
+									>
+									<option value="20061020">2006/10/20</option>
+								</select>
+							</div>
+							</span>
+							<span m:rendered="#{mosChickenStateConfirmDto.date1CntFlg == true}">
+								&nbsp;<span m:value="#{mosChickenStateConfirmDto.targetDate}" m:converter="#{dateConverter}"/>&nbsp;
+							</span>
+						</td>
+						<th nowrap=" nowrap" class="body_headeer4">対象食包材</th>
+						<td>
+							<span m:rendered="#{mosChickenStateConfirmDto.shokuhouCntFlg == false}">
+							<div class="hideArea">
+							<select class="condition_field"
+									m:id="shokuCd"
+									m:value="#{mosChickenStateConfirmDto.targetShokuCd}"
+									m:items="#{mosChickenStateConfirmDto.listShokuhou}"
+									m:itemValue="shokuCd"
+									m:itemLabel="shokuNameKna"
+									>
+									<option value="999">食包材名称</option>
+								</select>
+							</div>
+							</span>
+							<span m:rendered="#{mosChickenStateConfirmDto.shokuhouCntFlg == true}">
+								&nbsp;<span m:converter="#{characterEncodingConverter}" m:value="#{mosChickenStateConfirmDto.targetShokuNameKna}"/>&nbsp;
+							</span>
+						</td>
+					</tr>
+				</table>
+				</td>
+				<td valign="bottom">
+					<span m:rendered="#{mosChickenStateConfirmDto.execDisabledFlg == false}">
+						<input type="button" class="operation_button" value="再検索" onClick="search(); return false;" onDblClick="return false" style="float:left;margin:2px;"/>
+					</span>
+					<span m:rendered="#{mosChickenStateConfirmDto.execDisabledFlg == true}">
+						<input type="button" class="operation_button" value="再検索" disabled="disabled"/>
+					</span>
+				</td>
+			</tr>
+		</table>
+	</div>
+	<span m:rendered="#{mosChickenStateConfirmDto.listSearchData != null}">
+	<input type="hidden" m:id="regTargetTitle" m:value="#{mosChickenStateConfirmDto.regTargetCkanriNo}"/>
+	<input type="hidden" m:id="regTargetMiseCd" m:value="#{mosChickenStateConfirmDto.regTargetMiseCd}"/>
+	<input type="hidden" m:id="regTargetDate" m:value="#{mosChickenStateConfirmDto.regTargetDate}"/>
+	<input type="hidden" m:id="regTargetshokuCd" m:value="#{mosChickenStateConfirmDto.regTargetshokuCd}"/>
+	<div class="scroll_padding_head">
+	<div class="scroll_hidden" style=" margin-top: 2px;">
+		<table cellpadding="0" cellspacing="0" style="width:98%;">
+		<tr style="line-height:22px;">
+			<td style="font-weight:bold;">※当日入荷から翌日予約まではバラ数量です。</td>
+			<td align="right">
+				<input type="button" name="conditionForm:executeBt" value="計算"
+				       onClick="result(); return false;" onDblClick="return false"
+				       disabled="#{mosChickenStateConfirmDto.listSearchData == null}"/></td>
+		</tr>
+	</table>
+	</div>
+	</div>
+	<div class="scroll_padding_head">
+	<div class="scroll_hidden margin_bottom_hidden">
+		<table class="body_table2" width="98%">
+			<tr class="header_row">
+				<th width="*" class="body_header_center">対象食包材</th>
+				<th width="71px" class="body_header_center">前日在庫<br/>(C/S)</th>
+				<th width="73px" class="body_header_center">前日在庫<br/>(バラ)</th>
+				<th width="73px" class="body_header_center">当日貸借<br/>(バラ)</th>
+				<th width="65px" class="body_header_center">当日<br/>入荷</th>
+				<th width="65px" class="body_header_center">当日<br/>予約</th>
+				<th width="94px" class="body_header_center">当日・翌日<br/>販売可能数</th>
+				<th width="65px" class="body_header_center">当日<br/>在庫残</th>
+				<th width="65px" class="body_header_center">翌日<br/>入荷</th>
+				<th width="65px" class="body_header_center">翌日<br/>予約</th>
+				<th width="65px" class="body_header_center">翌日<br/>在庫残</th>
+			</tr>
+		</table>
+	</div>
+	</div>
+
+	<div class="scroll_padding_data">
+	<div id="stateConfirm" class="scroll_hidden">
+		<table style="border-top-width:0px" class="body_table2" width="98%">
+			<span m:inject="s:forEach" m:items="#{mosChickenStateConfirmDto.listSearchData}"
+			      m:var="e" m:varindex="i">
+				<tr class="non_top_border" style="line-height:20px;">
+					<td width="*"><b><span m:converter="#{characterEncodingConverter}" m:value="#{e.shoCdDai}"/>&nbsp;&nbsp;<span m:converter="#{characterEncodingConverter}" m:value="#{e.shokuNameKna}"/></b></td>
+					<td width="71px" align="center"><input type="text" m:class="ratio_style width_50" m:id="strAmtCase" m:value="#{e.strAmtCase}" maxlength="6" size="9" style="ime-mode:disabled" m:converter="#{numConverter}"/></td>
+					<td width="73px" align="center"><input type="text" m:class="ratio_style width_50" m:id="strAmtBara" m:value="#{e.strAmtBara}" maxlength="6" size="9" style="ime-mode:disabled" m:converter="#{numConverter}"/></td>
+					<td width="73px" align="center"><input type="text" m:class="ratio_style width_50" m:id="strAmtBl" m:value="#{e.strAmtBl}" maxlength="6" size="9" style="ime-mode:disabled" m:converter="#{numConverter}"/></td>
+					<td width="65px" align="right"><span m:value="#{e.shoAmtBara}" m:converter="#{numConverter}"/></td>
+					<td width="65px" align="right"><span m:value="#{e.reserveConvAmt}" m:converter="#{numConverter}"/></td>
+					<td m:rendered="#{e.kanouAmt >= 0}" width="94px" align="right" class="hanbaikanoCnt"><span m:value="#{e.kanouAmt}" m:converter="#{numConverter}"/></td>
+					<td m:rendered="#{e.kanouAmt < 0}" width="94px" align="right" class="hanbaikanoCnt_red"><span m:value="#{e.kanouAmt}" m:converter="#{numConverter}"/></td>
+					<td m:rendered="#{e.tojitsuZz >= 0}" width="65px" align="right"><span m:value="#{e.tojitsuZz}" m:converter="#{numConverter}"/></td>
+					<td m:rendered="#{e.tojitsuZz < 0}" width="65px" align="right" class="etcCnt_red"><span m:value="#{e.tojitsuZz}" m:converter="#{numConverter}"/></td>
+					<td m:rendered="#{e.yokujitsuShoAmtBara >= 0}" width="65px" align="right"><span m:value="#{e.yokujitsuShoAmtBara}" m:converter="#{numConverter}"/></td>
+					<td m:rendered="#{e.yokujitsuShoAmtBara < 0}" width="65px" align="right" class="etcCnt_red"><span m:value="#{e.yokujitsuShoAmtBara}" m:converter="#{numConverter}"/></td>
+					<td m:rendered="#{e.yokujitsuReserveConvAmt >= 0}" width="65px" align="right"><span m:value="#{e.yokujitsuReserveConvAmt}" m:converter="#{numConverter}"/></td>
+					<td m:rendered="#{e.yokujitsuReserveConvAmt < 0}" width="65px" align="right" class="etcCnt_red"><span m:value="#{e.yokujitsuReserveConvAmt}" m:converter="#{numConverter}"/></td>
+					<td m:rendered="#{e.yokujitsuZz >= 0}" width="65px" align="right"><span m:value="#{e.yokujitsuZz}" m:converter="#{numConverter}"/></td>
+					<td m:rendered="#{e.yokujitsuZz < 0}" width="65px" align="right" class="etcCnt_red"><span m:value="#{e.yokujitsuZz}" m:converter="#{numConverter}"/></td>
+				</tr>
+			</span>
+		</table>
+	</div>
+	</div>
+	</span>
+</form>
+</span>
+</body>
+</html>

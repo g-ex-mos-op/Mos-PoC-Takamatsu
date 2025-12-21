@@ -1,0 +1,50 @@
+package jp.co.isid.mos.bird.bizsupport.moschickenstateconfirm.action;
+
+/**
+ * 予約・在庫状況確認(モスチキン用画面）
+ * 確認画面用アクションインターフェース
+ * 
+ * @author xkinu
+ *
+ */
+public interface EditAction {
+    /**
+     * 初期処理 アクション
+     * 
+     * @return null 画面ID
+     */
+    public String initialize();
+    /**
+     * 戻る アクション
+     * 
+     * @return 初期画面ID
+     */
+    public String back();
+    /**
+     * オーナー検索ボタン アクション
+     * 
+     * 本部用のアクションです。
+     * 対象オーナーを選択した時に呼ばれるアクションです。
+     * 
+     * @return 編集画面ID
+     */
+    public String callOnerForm();
+    /**
+     * タイトル変更 アクション
+     * 
+     * @return null 画面ID
+     */
+    public String changeTitle();
+    /**
+     * 再検索 アクション
+     * 
+     * @return null 画面ID
+     */
+    public String search();
+    /**
+     * 再計算 アクション
+     * 
+     * @return メニュー追加画面ID
+     */
+    public String regist();
+}

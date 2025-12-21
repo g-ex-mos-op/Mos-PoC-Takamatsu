@@ -1,0 +1,81 @@
+SELECT DISTINCT
+       BR02.MENU_ID
+,      BR02.MENU_NAME
+,      BR02.SUB_MENU_ID 
+,      BR02.SUB_MENU_NAME 
+,      BR02.VIEW_ID  
+,      BR02.INIT_VIEW_ID
+,      BR02.PARAM 
+,      BR02.SORT_SEQ
+,      BR02.MENU_DISP_KBN
+FROM (
+		(
+			SELECT DISTINCT
+			       BR02.MENU_ID
+			,      BR02.MENU_NAME
+			,      BR02.SUB_MENU_ID 
+			,      BR02.SUB_MENU_NAME 
+			,      BR02.VIEW_ID  
+			,      BR02.INIT_VIEW_ID
+			,      BR02.PARAM 
+			,      BR02.SORT_SEQ
+			,      BR02.MENU_DISP_KBN
+			
+			FROM BR05ACTR BR05
+			,    BR04USRL BR04
+			,    BR02BMNU BR02
+			,    BR54USAC BR54
+			WHERE BR05.EXTRA_FLG  = '1'
+			AND   BR05.ENABLE_FLG  = '0'
+			AND   BR02.MENU_DISP_KBN IN ('1','2')
+			AND   BR02.MENU_ID  != '00'
+			AND   BR54.USER_ID = /*userId*/'99990001'
+			AND   BR54.CUSTOMIZE_FLG = '1'
+			AND   BR02.MENU_ID     = BR54.MENU_ID 
+			AND   BR02.SUB_MENU_ID = BR54.SUB_MENU_ID 
+			AND   BR05.MENU_ID     = BR02.MENU_ID 
+			AND   BR05.SUB_MENU_ID = BR02.SUB_MENU_ID 
+			AND   BR04.ROLE_CD     = BR05.ROLE_CD
+			AND   BR04.USER_ID     = BR54.USER_ID
+		) 
+	UNION ALL
+		(
+			SELECT DISTINCT
+			       BR02.MENU_ID
+			,      BR02.MENU_NAME
+			,      BR02.SUB_MENU_ID 
+			,      BR02.SUB_MENU_NAME 
+			,      BR02.VIEW_ID  
+			,      BR02.INIT_VIEW_ID
+			,      BR02.PARAM 
+			,      BR02.SORT_SEQ
+			,      BR02.MENU_DISP_KBN
+			
+			FROM BR05ACTR BR05
+			,    BR04USRL BR04
+			,    BR02BMNU BR02
+			LEFT JOIN (
+			          SELECT USER_ID 
+			          ,      MENU_ID
+			          ,      SUB_MENU_ID
+			          FROM BR54USAC 
+			          WHERE USER_ID = /*userId*/'99990001'
+			          AND   CUSTOMIZE_FLG='9') BR54
+			    ON (BR02.MENU_ID = BR54.MENU_ID AND BR02.SUB_MENU_ID = BR54.SUB_MENU_ID)
+			
+			WHERE BR05.EXTRA_FLG  = '1'
+			AND   BR05.ENABLE_FLG  = '1'
+			AND   BR02.MENU_DISP_KBN IN ('1','2')
+			AND   BR02.MENU_ID  != '00'
+			AND   BR04.USER_ID = /*userId*/'99990001'
+			AND   BR54.SUB_MENU_ID IS NULL
+			AND   BR05.MENU_ID     = BR02.MENU_ID 
+			AND   BR05.SUB_MENU_ID = BR02.SUB_MENU_ID 
+			AND   BR04.ROLE_CD     = BR05.ROLE_CD
+		)
+	) BR02	
+WHERE   (BR02.MENU_NAME  like /*searchWord*/'%è∆âÔ%' 
+       OR BR02.SUB_MENU_NAME  like /*searchWord*/'%è∆âÔ%' )   
+
+ORDER BY BR02.MENU_ID
+,        BR02.SORT_SEQ

@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE components PUBLIC "-//SEASAR2.1//DTD S2Container//EN"
+	"http://www.seasar.org/dtd/components21.dtd">
+<components namespace="mlresultstatusref">
+	<include path="dao.dicon"/>
+    <include path="jp/co/isid/mos/bird/common/dicon/birdCommon.dicon"/>	
+	<include path="jp/co/isid/mos/bird/framework/dicon/birdInterceptor.dicon"/>
+	
+	<component class="jp.co.isid.mos.bird.framework.control.BirdUserInfo" instance="session"/>
+		
+<!-- Action -->
+	<component name="mlResultStatusRefAction" class="jp.co.isid.mos.bird.storemanage.mlresultstatusref.action.impl.MlResultStatusRefActionImpl" instance="request">
+		<aspect>birdInterceptor.actionInterceptorChain</aspect>
+		<property name="csvOutputDto">mlResultStatusRefDto</property>
+		<property name="csvOutputLogic">mlResultCsvOutputLogic</property>
+	</component>
+	<component name="mlResultStatusRefConditionAction" class="jp.co.isid.mos.bird.storemanage.mlresultstatusref.action.impl.MlResultStatusRefConditionActionImpl" instance="request">
+		<aspect>birdInterceptor.actionInterceptorChain</aspect>
+		<property name="csvOutputDto">mlResultStatusRefDto</property>
+		<property name="csvOutputLogic">mlResultCsvOutputLogic</property>
+	</component>
+<!-- Entity -->
+	<component name="uIMLResultNum" class="jp.co.isid.mos.bird.storemanage.mlresultstatusref.entity.UIMLResultNum" instance="request"/>	
+	<component name="uIMLResultStatus" class="jp.co.isid.mos.bird.storemanage.mlresultstatusref.entity.UIMLResultStatus" instance="request"/>	
+	<component name="uITaishoKenshuInfo" class="jp.co.isid.mos.bird.storemanage.mlresultstatusref.entity.UITaishoKenshuInfo" instance="request"/>	
+<!-- Dao -->
+	<component name="uIMLResultNumDao" class="jp.co.isid.mos.bird.storemanage.mlresultstatusref.dao.UIMLResultNumDao" >
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="uIMLResultStatusDao" class="jp.co.isid.mos.bird.storemanage.mlresultstatusref.dao.UIMLResultStatusDao" >
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="uITaishoKenshuInfoDao" class="jp.co.isid.mos.bird.storemanage.mlresultstatusref.dao.UITaishoKenshuInfoDao" >
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="mlresultstatusrefCodCompanyDao" class="jp.co.isid.mos.bird.storemanage.mlresultstatusref.dao.CodCompanyDao" >
+        <aspect>dao.interceptor</aspect>
+	</component>
+<!-- Dto -->
+	<component name="mlResultStatusRefDto" class="jp.co.isid.mos.bird.storemanage.mlresultstatusref.dto.MlResultStatusRefDto" instance="session" />
+	<component name="YearListDto" class="jp.co.isid.mos.bird.storemanage.mlresultstatusref.dto.YearListDto" instance="session" />
+	<component name="EntryYearInfoDto" class="jp.co.isid.mos.bird.storemanage.mlresultstatusref.dto.EntryYearInfoDto" instance="session" />
+	<component name="pullDownMenuDto" class="jp.co.isid.mos.bird.framework.dto.PullDownMenuDto" autoBinding="none" instance="session"/>
+	<component name="mlresultstatusrefRequestDto" class="jp.co.isid.mos.bird.storemanage.mlresultstatusref.dto.RequestDto" instance="request"/>
+	
+<!-- Logic -->	
+	<component name="getConditionLogic" class="jp.co.isid.mos.bird.storemanage.mlresultstatusref.logic.impl.GetConditionLogicImpl">
+		<aspect>birdInterceptor.logicInterceptorChain</aspect>
+	</component>
+	<component name="getResultLogic" class="jp.co.isid.mos.bird.storemanage.mlresultstatusref.logic.impl.GetResultLogicImpl">
+		<aspect>birdInterceptor.logicInterceptorChain</aspect>
+	</component>
+	<component name="mlResultCsvOutputLogic" class="jp.co.isid.mos.bird.storemanage.mlresultstatusref.logic.impl.MlResultCsvOutputLogicImpl">
+		<aspect>birdInterceptor.logicInterceptorChain</aspect>
+	</component>	
+
+<!-- Converter -->
+	<component name="mlresultStatusRefMiseConverter" class="jp.co.isid.mos.bird.framework.text.converter.CodeConverter" instance="request">
+		<property name="formatPattern">"00000"</property>
+	</component>
+
+<!-- 以外 -->
+	<component name="miseSearchDto" class="jp.co.isid.mos.bird.commonform.misesearch.dto.MiseSearchDto" instance="session"/>
+	<component name="ownerSearchDto" class="jp.co.isid.mos.bird.commonform.ownersearch.dto.OwnerSearchDto" autoBinding="none" instance="session"/>
+</components>

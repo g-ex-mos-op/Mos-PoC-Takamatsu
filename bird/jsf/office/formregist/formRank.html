@@ -1,0 +1,130 @@
+<html xmlns:m="http://www.seasar.org/maya" m:action="#{formRegistRankAction.initialize}" m:extends="/jsf/layout/layoutNoNavi.html">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Windows-31j" />
+<title>情報共有（フォーム登録）順位設定</title>
+</head>
+<body>
+<span m:inject="f:param" m:name="layoutTitle" m:value="情報共有（フォーム登録）順位設定"/>
+<span m:inject="f:param" m:name="onLoadName" m:value="load();"/>
+<span m:inject="s:insert" m:name="bodyTitleName">■情報共有（フォーム登録）順位設定</span>
+<span m:inject="f:param" m:name="viewIdValue" m:value="BOF001V04"/>
+
+<span m:inject="s:insert" m:name="body">
+<script type="text/javascript">
+<!--
+function load(){
+	loadScroll("formScroll", 430);
+}
+function downLoad(index) {
+	document.formRank.elements["formRank:downloadIndex"].value=index;
+}
+//-->
+</script>
+<STYLE type="text/css">
+<!--
+/** 幅 */
+.col_sortSeq {
+	width				: 48px;
+	text-align			: center;
+}
+.col_subCateId {
+	width				: 110px;
+}
+/** タイトル幅 */
+.col_title {
+	width				: *;
+}
+/** 発信元幅 */
+.col_puborgname {
+	width				: 170px;
+}
+/** 掲載期間幅 */
+.col_pubdate {
+	width				: 120px;
+}
+table.body_table2{
+  width				: 98%;
+}
+.scroll_area {
+	height				: 445px;
+	width				: 100%;
+}
+@media print {
+.scroll_area {
+}
+    -->
+</STYLE>
+
+<form m:id="formRank" onKeyDown="return setDefaultSubmitButton('formRank','dummyEnter');">
+	<input type="hidden" m:id="initMenuId" m:value="#{menuAction.initMenuId}"/>
+	<input type="hidden" m:id="initSubMenuId" m:value="#{menuAction.initSubMenuId}"/>
+	<input type="hidden" m:id="viewId" m:value="#{viewIdValue}"/>
+	<input type="hidden" m:id="downloadIndex" m:value="#{formRegistRankDto.downloadIndex}"/>
+	<input type="button" value="戻る" class="operation_button" m:action="#{formRegistRankAction.cancel}"/>&nbsp;
+	<input type="button" value="登録" class="operation_button" m:action="#{formRegistRankAction.regist}"/>
+<div style="line-height:5px;">&nbsp;</div>
+<!-- フォーム一覧 -->
+<div class="scroll_padding_head">
+<div class="scroll_hidden">
+<table class="body_table2">
+	<colgroup>
+		<col class="col_sortSeq"/>
+		<col class="#{birdUserInfo.browserType =='safari'?'width_115_s':'col_subCateId'}"/>
+		<col class="col_title"/>
+		<col class="col_puborgname"/>
+		<col class="col_pubdate"/>
+		<col class="col_pubdate"/>
+	</colgroup>
+	<tr class="header_row">
+		<th>順序</th>
+		<th>サブカテゴリー</th>
+		<th>タイトル</th>
+		<th>発信元</th>
+		<th>掲載期間FROM</th>
+		<th>掲載期間TO</th>
+	</tr>
+</table>
+</div>
+</div>
+<div class="scroll_padding_data">
+<div class="scroll_standby" id="formScroll">
+<table class="body_table2" style="border-top-width:0px;">
+		<colgroup>
+		<col class="col_sortSeq"/>
+		<col class="#{birdUserInfo.browserType =='safari'?'width_115_s':'col_subCateId'}"/>
+		<col class="col_title"/>
+		<col class="col_puborgname"/>
+		<col class="col_pubdate"/>
+		<col class="col_pubdate"/>
+		</colgroup>
+	<div class="search_result" m:rendered="#{formRegistRankDto.listFormSize != 0}">
+		<div m:inject="s:forEach" m:items="#{formRegistRankDto.listForm}" m:var="e" m:varindex="i">
+		<tr class="non_top_border" style="line-height:22px;">
+			<td><input type="text" class="imenotuse width_35" m:value="#{e.sortSeq}" m:size="5" m:maxlength="4"/></td>
+			<td><span m:converter="#{characterEncodingConverter}" m:value="#{e.subCateName}"/></td>
+			<td><a style="letter-spacing:-1px" m:action="#{downloadFormRegistActionRank.download}" title="#{e.fileName}" onClick="downLoad(#{i})">
+					<span m:converter="#{characterEncodingConverter}" m:inject="f:param" m:name="downloadFileIndex" m:value="#{i}"/>
+					<span m:converter="#{characterEncodingConverter}" m:value="#{e.title}"/>
+				</a>
+			</td>
+			<td><span m:converter="#{characterEncodingConverter}" m:value="#{e.pubOrgName}"/></td>
+			<td align="center"><span m:value="#{e.pubDateFrom}" m:converter="#{formRegistDateConverter}"/></td>
+			<td align="center"><span m:value="#{e.pubDateTo}"  m:converter="#{formRegistDateConverter}"/></td>
+		</tr>
+		</div>
+	</div>
+</table>
+</div>
+</div>
+<script type="text/javascript">
+<!--
+	focusElement("formRank");
+-->
+</script>
+
+<input type="text" m:id="dummyEnter" style="display:none"/>
+
+</form>
+</span>
+</body>
+</html>

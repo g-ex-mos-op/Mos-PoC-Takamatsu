@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="Shift_JIS"?>
+<!DOCTYPE components PUBLIC "-//SEASAR//DTD S2Container 2.3//EN"
+    "http://www.seasar.org/dtd/components23.dtd">
+<components namespace="summenuregist">
+    <include path="dao.dicon"/>
+    <include path="jp/co/isid/mos/bird/common/dicon/birdCommon.dicon"/>
+    <include path="jp/co/isid/mos/bird/framework/dicon/commonDto.dicon"/>
+	<include path="jp/co/isid/mos/bird/framework/dicon/birdInterceptor.dicon"/>
+
+	<component
+	  class="org.seasar.framework.container.autoregister.AspectAutoRegister">
+	    <property name="interceptor">birdInterceptor.actionInterceptorChain</property>
+	    <initMethod name="addClassPattern">
+	        <arg>"jp.co.isid.mos.bird"</arg>
+	        <arg>".*ActionImpl"</arg>
+	    </initMethod>
+	    <initMethod name="registerAll"/>
+	</component> 
+	<component
+	  class="org.seasar.framework.container.autoregister.AspectAutoRegister">
+	    <property name="interceptor">birdInterceptor.logicInterceptorChain</property>
+	    <initMethod name="addClassPattern">
+	        <arg>"jp.co.isid.mos.bird"</arg>
+	        <arg>".*LogicImpl"</arg>
+	    </initMethod>
+	    <initMethod name="registerAll"/>
+	</component>
+
+	<component class="jp.co.isid.mos.bird.framework.control.BirdUserInfo" instance="session"/>
+	<component class="jp.co.isid.mos.bird.framework.control.BirdDateInfo" instance="session"/>
+
+
+	<!-- DAO -->
+	<component name="sumMenuRegistMstSumMenuDao" class="jp.co.isid.mos.bird.config.summenuregist.dao.MstSumMenuDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+
+	<!-- LOGIC -->
+	<component name="sumMenuRegistGetSumMenuLogic" class="jp.co.isid.mos.bird.config.summenuregist.logic.impl.GetSumMenuListImpl"/>
+	<component name="sumMenuRegistGetKoMenuLogic" class="jp.co.isid.mos.bird.config.summenuregist.logic.impl.GetKoMenuListImpl">
+		<property name="mstShanaiMenuDao">mstShanaiMenuDao</property>
+	</component>
+	<component name="sumMenuRegistCheckExistDataLogic" class="jp.co.isid.mos.bird.config.summenuregist.logic.impl.CheckExistDataLogicImpl">
+		<property name="mstShanaiMenuDao">mstShanaiMenuDao</property>
+	</component>
+	<component name="sumMenuRegistCheckRegistLogic" class="jp.co.isid.mos.bird.config.summenuregist.logic.impl.CheckRegistLogicImpl"/>
+	<component name="sumMenuRegistRegistLogic" class="jp.co.isid.mos.bird.config.summenuregist.logic.impl.RegistLogicImpl">
+		<aspect>j2ee.requiresNewTx</aspect>
+	</component>
+	<component name="sumMenuRegistCsvLogic" class="jp.co.isid.mos.bird.config.summenuregist.logic.impl.SumMenuListCsvLogicImpl"/>	
+	<!-- DTO -->
+	<component name="sumMenuRegistReqDto" class="jp.co.isid.mos.bird.config.summenuregist.dto.SumMenuRegistRequestDto" autoBinding="none" instance="request"/>
+	<component name="sumMenuRegistDto" class="jp.co.isid.mos.bird.config.summenuregist.dto.SumMenuRegistDto" autoBinding="none" instance="session"/>
+	<component name="pullDownMenuDto" class="jp.co.isid.mos.bird.framework.dto.PullDownMenuDto" autoBinding="none" instance="session"/>
+	<component name="menuSearchDto" class="jp.co.isid.mos.bird.commonform.menusearch.dto.MenuSearchDto" instance="request">
+		<property name="listSelectMenu">null</property>
+	</component>
+	<!-- ACTION -->
+	<component name="sumMenuRegistCondAction" class="jp.co.isid.mos.bird.config.summenuregist.action.impl.SumMenuRegistCondActionImpl" instance="request">
+		<property name="sumMenuRegistGetSumMenuLogic">sumMenuRegistGetSumMenuLogic</property>
+		<property name="sumMenuRegistGetKoMenuLogic">sumMenuRegistGetKoMenuLogic</property>
+	</component>
+	<component name="sumMenuRegistEditAction" class="jp.co.isid.mos.bird.config.summenuregist.action.impl.SumMenuRegistEditActionImpl" instance="request">
+		<property name="sumMenuRegistCheckExistDataLogic">sumMenuRegistCheckExistDataLogic</property>
+		<property name="sumMenuRegistCheckRegistLogic">sumMenuRegistCheckRegistLogic</property>
+		<property name="sumMenuRegistRegistLogic">sumMenuRegistRegistLogic</property>
+	</component>
+	<component name="sumMenuRegistConfirmAction" class="jp.co.isid.mos.bird.config.summenuregist.action.impl.SumMenuRegistConfirmActionImpl" instance="request">
+		<property name="sumMenuRegistRegistLogic">sumMenuRegistRegistLogic</property>
+	</component>
+	<component name="sumMenuRegistCsvAction" class="jp.co.isid.mos.bird.framework.action.impl.CsvOutput2ActionImpl" instance="request">
+		<property name="csvOutputLogic">sumMenuRegistCsvLogic</property>
+		<property name="csvOutputDto">null</property>
+	</component>
+	<!-- Formatter -->
+
+	<!-- Converter -->
+	<component name="sumMenuRegistCodeConverter" class="jp.co.isid.mos.bird.framework.text.converter.CodeConverter" instance="request">
+		<arg>6</arg>
+		<arg>"000000"</arg>
+	</component>
+	<!-- Verifier -->
+</components>

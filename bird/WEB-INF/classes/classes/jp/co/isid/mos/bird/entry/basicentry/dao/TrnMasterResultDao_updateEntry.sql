@@ -1,0 +1,8 @@
+update BT24MLKJ
+set
+	COURSE_STATUS = '',
+	COMPLE_COURSE_DT = '',
+	COMPLE_COURSE_CD = '',
+	COMPLE_COURSE_NAME = ''
+where
+	STAFF_ID = /*staffId*/

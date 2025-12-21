@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="Shift_JIS"?>
+<!DOCTYPE components PUBLIC "-//SEASAR//DTD S2Container 2.3//EN"
+    "http://www.seasar.org/dtd/components23.dtd">
+<components namespace="pmosViewList">
+	<component name="mapPmosViewId" class="java.util.HashMap">
+		<initMethod name="put"><arg>"BCM002V01"</arg><arg>"お知らせ照会"</arg></initMethod>
+		<initMethod name="put"><arg>"BPO004V01"</arg><arg>"メニュー"</arg></initMethod>
+	</component>
+</components>

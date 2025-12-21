@@ -1,0 +1,109 @@
+<html xmlns:m="http://www.seasar.org/maya" m:action="#{basicRegistConfirmAction.initialize}" m:extends="/jsf/layout/layoutNoNavi.html">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Windows-31j"/>
+<meta http-equiv="Content-Style-Type" content="text/css"/>
+<title>ベーシック研修マスタ登録</title>
+</head>
+<body>
+<span m:inject="f:param" m:name="layoutTitle" m:value="ベーシック研修マスタ登録"/>
+<span m:inject="s:insert" m:name="bodyTitleName">■ベーシック研修マスタ登録</span>
+<span m:inject="f:param" m:name="onLoadName" m:value=""/>
+<span m:inject="f:param" m:name="viewIdValue" m:value="BEN001V03"/>
+<div m:inject="s:insert" m:name="body">
+<style type="text/css">
+<!--
+-->
+</style>
+
+<form m:id="basicRegistConfirm">
+<input type="hidden" m:id="viewId" m:value="#{viewIdValue}" />
+<input type="hidden" m:id="initMenuId" m:value="#{menuAction.initMenuId}"/>
+<input type="hidden" m:id="initSubMenuId" m:value="#{menuAction.initSubMenuId}"/>
+
+<input type="submit" value="戻る" m:action="#{basicRegistConfirmAction.back}"/>&nbsp;&nbsp;
+<input type="submit" value="終了" m:action="#{basicRegistConfirmAction.regist}"/>
+
+<table class="body_table2" style="margin-top:4px;">
+	<col style="width:160px;"/>
+	<col style="width:240px;"/>
+	<col style="width:160px;"/>
+	<col style="width:240px;"/>
+	<tr>
+		<th>対象処理</th>
+		<td colspan="3">
+			<span m:rendered="#{basicRegistDto.editMode == 1}">新規登録</span>
+			<span m:rendered="#{basicRegistDto.editMode == 2}">修正</span>
+			<span m:rendered="#{basicRegistDto.editMode == 3}">削除</span>
+		</td>
+	</tr>
+	<tr>
+		<th>タイトル</th>
+		<td colspan="3"><span m:converter="#{characterEncodingConverter}" m:value="#{basicRegistDto.uiEntryMst.entryTitle}"/></td>
+	</tr>
+	<tr>
+		<th>ベーシック研修</th>
+		<td colspan="3">
+			<span m:value="#{basicRegistDto.uiEntryDateBasic.fromDt}" m:converter="#{basicRegistDateConverter1}"/>
+			～
+			<span m:value="#{basicRegistDto.uiEntryDateBasic.toDt}" m:converter="#{basicRegistDateConverter1}"/>
+		</td>
+	</tr>
+	<tr>
+		<th>臨店実習コース</th>
+		<td colspan="3">
+			<span m:value="#{basicRegistDto.uiEntryDateVisit.fromDt}" m:converter="#{basicRegistDateConverter1}"/>
+			～
+			<span m:value="#{basicRegistDto.uiEntryDateVisit.toDt}" m:converter="#{basicRegistDateConverter1}"/>
+		</td>
+	</tr>
+	<tr>
+		<th>コース</th>
+		<td colspan="3">
+            <span m:converter="#{characterEncodingConverter}" m:value="#{basicRegistDto.uiEntryCourse.courseName}"/>
+		</td>
+	</tr>
+	<tr>
+		<th>オーナー：表示開始</th>
+		<td><span m:value="#{basicRegistDto.uiEntryDateDisplayOner.fromDt}" m:converter="#{basicRegistDateConverter1}"/></td>
+		<th>本部：表示開始</th>
+		<td><span m:value="#{basicRegistDto.uiEntryDateDisplayHead.fromDt}" m:converter="#{basicRegistDateConverter1}"/></td>
+	</tr>
+	<tr>
+		<th>オーナー：申込開始</th>
+		<td><span m:value="#{basicRegistDto.uiEntryDateApplyOner.fromDt}" m:converter="#{basicRegistDateConverter1}"/></td>
+		<th>本部：申込開始</th>
+		<td><span m:value="#{basicRegistDto.uiEntryDateApplyHead.fromDt}" m:converter="#{basicRegistDateConverter1}"/></td>
+	</tr>
+	<tr>
+		<th>オーナー：申込終了</th>
+		<td><span m:value="#{basicRegistDto.uiEntryDateApplyOner.toDt}" m:converter="#{basicRegistDateConverter1}"/></td>
+		<th>本部：申込終了</th>
+		<td><span m:value="#{basicRegistDto.uiEntryDateApplyHead.toDt}" m:converter="#{basicRegistDateConverter1}"/></td>
+	</tr>
+	<tr>
+		<th>オーナー：表示終了</th>
+		<td><span m:value="#{basicRegistDto.uiEntryDateDisplayOner.toDt}" m:converter="#{basicRegistDateConverter1}"/></td>
+		<th>本部：表示終了</th>
+		<td><span m:value="#{basicRegistDto.uiEntryDateDisplayHead.toDt}" m:converter="#{basicRegistDateConverter1}"/></td>
+	</tr>
+	<tr>
+		<th>結果開始</th>
+		<td><span m:value="#{basicRegistDto.uiEntryDateResult.fromDt}" m:converter="#{basicRegistDateConverter1}"/></td>
+		<th>結果終了</th>
+		<td><span m:value="#{basicRegistDto.uiEntryDateResult.toDt}" m:converter="#{basicRegistDateConverter1}"/></td>
+	</tr>
+	<tr>
+		<th>定員</th>
+		<td colspan="3"><span m:value="#{basicRegistDto.uiEntryMst.numberLimit}" m:converter="#{numericConverter}"/>人</td>
+	</tr>
+	<tr>
+		<th>備考</th>
+		<td colspan="3"><span m:converter="#{characterEncodingConverter}" m:value="#{basicRegistDto.uiEntryMst.note}"/></td>
+	</tr>
+</table>
+
+</form>
+
+</div>
+</body>
+</html>

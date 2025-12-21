@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="Shift_JIS"?>
+<!DOCTYPE components PUBLIC "-//SEASAR//DTD S2Container 2.3//EN"
+    "http://www.seasar.org/dtd/components23.dtd">
+<components namespace="birdCommon">
+    <include path="dao.dicon"/>
+    <include path="jp/co/isid/mos/bird/common/dicon/birdPasswordPolicy.dicon"/>
+    <include path="jp/co/isid/mos/bird/common/dicon/birdPortal.dicon"/>
+
+	<!-- DAO -->
+	<component name="mstCategoryInfoDao" class="jp.co.isid.mos.bird.common.dao.MstCategoryInfoDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="trnControlCompanyDao" class="jp.co.isid.mos.bird.common.dao.TrnControlCompanyDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="trnControlShozokuDao" class="jp.co.isid.mos.bird.common.dao.TrnControlShozokuDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="trnControlGyotaiDao" class="jp.co.isid.mos.bird.common.dao.TrnControlGyotaiDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="trnControlGyotaiKobetuDao" class="jp.co.isid.mos.bird.common.dao.TrnControlGyotaiKobetuDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="trnControlGyotaiTenpoDao" class="jp.co.isid.mos.bird.common.dao.TrnControlGyotaiTenpoDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="uIKanrenBunshoInfoDao" class="jp.co.isid.mos.bird.common.dao.UIKanrenBunshoInfoDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="mstSibuDao" class="jp.co.isid.mos.bird.common.dao.MstSibuDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="mstOnerDao" class="jp.co.isid.mos.bird.common.dao.MstOnerDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="mstMiseDao" class="jp.co.isid.mos.bird.common.dao.MstMiseDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="mstUserCompanyDao" class="jp.co.isid.mos.bird.common.dao.MstUserCompanyDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="ctlHolidayInfoDao" class="jp.co.isid.mos.bird.common.dao.CtlHolidayInfoDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="uIMiseListDao" class="jp.co.isid.mos.bird.common.dao.UIMiseListDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="publicTargetKobetuMiseDao" class="jp.co.isid.mos.bird.common.dao.PublicTargetKobetuMiseDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="trnDocAccessDao" class="jp.co.isid.mos.bird.common.dao.TrnDocAccessDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="uIViewTenpoInfoDao" class="jp.co.isid.mos.bird.common.dao.UIViewTenpoInfoDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="codCompanyDao" class="jp.co.isid.mos.bird.common.dao.CodCompanyDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="codBlockDao" class="jp.co.isid.mos.bird.common.dao.CodBlockDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="codHyojiTaishoDao" class="jp.co.isid.mos.bird.common.dao.CodHyojiTaishoDao">
+		<aspect>dao.interceptor</aspect>
+	</component>
+	<component name="mstShanaiMenuDao" class="jp.co.isid.mos.bird.common.dao.MstShanaiMenuDao">
+		<aspect>dao.interceptor</aspect>
+	</component>
+	<component name="ctlTogoUserRirekiDao" class="jp.co.isid.mos.bird.common.dao.CtlTogoUserRirekiDao">
+		<aspect>dao.interceptor</aspect>
+	</component>
+	<component name="ctlUserKakoPWDao" class="jp.co.isid.mos.bird.common.dao.CtlUserKakoPWDao">
+		<aspect>dao.interceptor</aspect>
+	</component>
+	<component name="ctlBirdUserDao" class="jp.co.isid.mos.bird.common.dao.CtlBirdUserDao">
+		<aspect>dao.interceptor</aspect>
+	</component>
+	<component name="mstUserShozokuDao" class="jp.co.isid.mos.bird.common.dao.MstUserShozokuDao">
+		<aspect>dao.interceptor</aspect>
+	</component>
+	<component name="ctlConvShozokuCompDao" class="jp.co.isid.mos.bird.common.dao.CtlConvShozokuCompDao">
+		<aspect>dao.interceptor</aspect>
+	</component>
+	<component name="mstHanshaOnerDao" class="jp.co.isid.mos.bird.common.dao.MstHanshaOnerDao">
+		<aspect>dao.interceptor</aspect>
+	</component>
+	<component name="uIviewKanrenBunshoDao" class="jp.co.isid.mos.bird.common.dao.UIViewKanrenBunshoDao">
+		<aspect>dao.interceptor</aspect>
+	</component>
+	<!--会計区分系Dao-->
+	<component name="ctlSyukeiKbnDao" class="jp.co.isid.mos.bird.common.kaikei.dao.CtlSyukeiKbnDao">
+		<aspect>dao.interceptor</aspect>
+	</component>
+	<component name="ctlKaikeiKbnInfoDao" class="jp.co.isid.mos.bird.common.kaikei.dao.CtlKaikeiKbnInfoDao">
+		<aspect>dao.interceptor</aspect>
+	</component>
+
+	<!-- OTHER -->
+	<component class="jp.co.isid.mos.bird.framework.control.BirdUserInfo" instance="session"/>
+	<component class="jp.co.isid.mos.bird.framework.control.BirdDateInfo" instance="session"/>
+
+
+	<!-- DTO -->
+
+	<!-- LOGIC -->
+	<component name="gamenRoleLogic" class="jp.co.isid.mos.bird.framework.logic.impl.GetGamenRoleLogicImpl"/>
+	<component name="getCategoryLogic" class="jp.co.isid.mos.bird.common.logic.impl.GetCategoryLogicImpl"/>
+	<component name="getKoukaiTaishoLogic" class="jp.co.isid.mos.bird.common.logic.impl.GetKoukaiTaishoLogicImpl"/>
+	<component name="regKoukaiTaishoLogic" class="jp.co.isid.mos.bird.common.logic.impl.RegKoukaiTaishoLogicImpl">
+		<aspect>j2ee.requiredTx</aspect>
+	</component>
+	<component name="getKanrenBunshoInfoLogic" class="jp.co.isid.mos.bird.common.logic.impl.GetKanrenBunshoInfoLogicImpl"/>
+	<component name="regKanrenBunshoLogic" class="jp.co.isid.mos.bird.common.logic.impl.RegKanrenBunshoLogicImpl">
+		<aspect>j2ee.requiredTx</aspect>
+	</component>
+	<component name="getInfoAccessControlLogicImpl" class="jp.co.isid.mos.bird.common.logic.impl.GetInfoAccessControlLogicImpl"/>
+	<component name="getSibuLogic" class="jp.co.isid.mos.bird.common.logic.impl.GetSibuLogicImpl"/>
+	<component name="getKanrenSakiBunshoInfoLogic" class="jp.co.isid.mos.bird.common.logic.impl.GetKanrenSakiBunshoInfoLogicImpl"/>
+	<component name="deleteKanrenSakiBunshoLogic" class="jp.co.isid.mos.bird.common.logic.impl.DeleteKanrenSakiBunshoLogicImpl">
+			<aspect>j2ee.requiredTx</aspect>
+	</component>
+	<component name="getOnerLogic" class="jp.co.isid.mos.bird.common.logic.impl.GetOnerLogicImpl"/>
+	<component name="getMiseLogic" class="jp.co.isid.mos.bird.common.logic.impl.GetMiseLogicImpl"/>
+	<component name="sibuTorikomiLogic" class="jp.co.isid.mos.bird.common.logic.impl.GetSibuTorikomiLogicImpl"/>
+	<component name="sibuHoyuTenpoLogic" class="jp.co.isid.mos.bird.common.logic.impl.GetSibuHoyuTenpoLogicImpl"/>
+	<component name="getUserCompanyLogic" class="jp.co.isid.mos.bird.common.logic.impl.GetUserCompanyLogicImpl"/>
+	<component name="getTaishoTenpoLogic" class="jp.co.isid.mos.bird.common.logic.impl.GetTaishoTenpoLogicImpl"/>
+	<component name="publicTargetMiseCsvOutputLogic" class="jp.co.isid.mos.bird.common.logic.impl.PublicTargetMiseCsvOutputLogicImpl"/>
+	<component name="getHyojiTaishoLogic" class="jp.co.isid.mos.bird.common.logic.impl.GetHyojiTaishoLogicImpl"/>
+	<component name="validatePasswordLogic" class="jp.co.isid.mos.bird.common.logic.impl.ValidatePasswordLogicImpl"/>
+	<component name="updatePasswordLogic" class="jp.co.isid.mos.bird.common.logic.impl.UpdatePasswordLogicImpl">
+			<aspect>j2ee.requiredTx</aspect>
+	</component>
+	<component name="dateInfoSetupLogic" class="jp.co.isid.mos.bird.framework.logic.impl.DateInfoSetupLogicImpl"/>
+
+	<!-- CONVERTER -->
+	<component name="dateConverterYM" class="jp.co.isid.mos.bird.framework.text.converter.DateConverter" instance="request">
+		<arg>@jp.co.isid.mos.bird.framework.util.formatter.DateFormatter@DATE_TYPE_YM</arg>
+		<arg>@jp.co.isid.mos.bird.framework.util.formatter.DateFormatter@PATTERN_MONTH_SLASH</arg>
+	</component>
+	<component name="dateConverterYMD" class="jp.co.isid.mos.bird.framework.text.converter.DateConverter" instance="request">
+		<arg>@jp.co.isid.mos.bird.framework.util.formatter.DateFormatter@DATE_TYPE_YMD</arg>
+		<arg>@jp.co.isid.mos.bird.framework.util.formatter.DateFormatter@PATTERN_SLASH</arg>
+	</component>
+	<component name="dateCnvtSlashYMDW" class="jp.co.isid.mos.bird.framework.text.converter.DateConverter" instance="request">
+		<arg>@jp.co.isid.mos.bird.framework.util.formatter.DateFormatter@DATE_TYPE_YMD</arg>
+		<arg>@jp.co.isid.mos.bird.framework.util.formatter.DateFormatter@PATTERN_SLASH_WEEK</arg>
+	</component>
+	<component name="codeCvtMenu" class="jp.co.isid.mos.bird.framework.text.converter.CodeConverter">
+		<property name="formatPattern">"000000"</property>
+	</component>
+	<component name="characterEncodingConverter" class="jp.co.isid.mos.bird.framework.text.converter.CharacterEncodingConverter"/>
+
+</components>

@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="Shift_JIS"?>
+<!DOCTYPE components PUBLIC "-//SEASAR//DTD S2Container 2.3//EN"
+    "http://www.seasar.org/dtd/components23.dtd">
+<components namespace="eventList">
+    <include path="dao.dicon"/>
+	<include path="jp/co/isid/mos/bird/framework/dicon/birdInterceptor.dicon"/>
+    <include path="jp/co/isid/mos/bird/common/dicon/birdCommon.dicon"/>
+
+	<component
+	  class="org.seasar.framework.container.autoregister.AspectAutoRegister">
+	    <property name="interceptor">birdInterceptor.actionInterceptorChain</property>
+	    <initMethod name="addClassPattern">
+	        <arg>"jp.co.isid.mos.bird"</arg>
+	        <arg>".*ActionImpl"</arg>
+	    </initMethod>
+	    <initMethod name="registerAll"/>
+	</component> 
+	<component
+	  class="org.seasar.framework.container.autoregister.AspectAutoRegister">
+	    <property name="interceptor">birdInterceptor.logicInterceptorChain</property>
+	    <initMethod name="addClassPattern">
+	        <arg>"jp.co.isid.mos.bird"</arg>
+	        <arg>".*LogicImpl"</arg>
+	    </initMethod>
+	    <initMethod name="registerAll"/>
+	</component>
+
+	<component class="jp.co.isid.mos.bird.framework.control.BirdUserInfo" instance="session"/>
+	<component class="jp.co.isid.mos.bird.framework.control.BirdDateInfo" instance="session"/>
+
+	<!-- 対象エントリーコードリスト -->
+	<component name="entryCdList" class="java.util.ArrayList">
+		<initMethod name="add"><arg>"15"</arg></initMethod>
+		<initMethod name="add"><arg>"20"</arg></initMethod>
+		<initMethod name="add"><arg>"25"</arg></initMethod>
+		<initMethod name="add"><arg>"35"</arg></initMethod>
+		<initMethod name="add"><arg>"50"</arg></initMethod>
+	</component>
+
+	<!-- DAO -->
+	<component name="ctlEntryMasterDao" class="jp.co.isid.mos.bird.entry.eventlist.dao.CtlEntryMasterDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+
+	<!-- Logic -->
+	<component name="getEntryMasterListLogic" class="jp.co.isid.mos.bird.entry.eventlist.logic.impl.GetEntryMasterListLogicImpl"/>
+
+	<!-- DTO -->
+	<component name="eventListDto" class="jp.co.isid.mos.bird.entry.eventlist.dto.EventListDto" instance="session"/>
+	<component name="eventListConditionDto" class="jp.co.isid.mos.bird.entry.eventlist.dto.EventListConditionDto" instance="session">
+		<property name="entryCdList">entryCdList</property>
+	</component>
+	<component name="eventListResultDto" class="jp.co.isid.mos.bird.entry.eventlist.dto.EventListResultDto" instance="request">
+		<property name="eventList">null</property>
+	</component>
+	<component name="pullDownMenuDto" class="jp.co.isid.mos.bird.framework.dto.PullDownMenuDto" autoBinding="none" instance="session"/>
+	<component name="ownerSearchDto" class="jp.co.isid.mos.bird.commonform.ownersearch.dto.OwnerSearchDto" autoBinding="none" instance="session"/>
+
+	<!-- Action -->
+	<component name="eventListEntryAction" class="jp.co.isid.mos.bird.entry.eventlist.action.impl.EventListEntryActionImpl" instance="request">
+		<property name="bunrui">"02"</property>
+		<property name="getOnerLogic">birdCommon.getOnerLogic</property>
+	</component>
+	<component name="eventListRefAction" class="jp.co.isid.mos.bird.entry.eventlist.action.impl.EventListRefActionImpl" instance="request">
+		<property name="bunrui">"03"</property>
+	</component>
+
+	<!-- Converter -->
+	<component name="eventListDateConverter1" class="jp.co.isid.mos.bird.framework.text.converter.DateConverter">
+		<arg>@jp.co.isid.mos.bird.framework.util.formatter.DateFormatter@DATE_TYPE_YMD</arg>
+		<arg>"yyyy/MM/dd(E)"</arg>
+	</component>
+	<component name="eventListDateConverter2" class="jp.co.isid.mos.bird.framework.text.converter.DateConverter">
+		<arg>@jp.co.isid.mos.bird.framework.util.formatter.DateFormatter@DATE_TYPE_YMD</arg>
+		<arg>@jp.co.isid.mos.bird.framework.util.formatter.DateFormatter@PATTERN_SLASH</arg>
+	</component>
+
+	<!-- Formatter -->
+
+	<!-- Verifier -->
+
+</components>

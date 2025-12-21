@@ -1,0 +1,53 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns:m="http://www.seasar.org/maya">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=Windows-31j" />
+	<meta http-equiv="Content-Style-Type" content="text/css">
+	<title m:value="#{layoutTitle}"/>
+	<link rel="stylesheet" type="text/css" href="#{request.contextPath}/css/#{birdUserInfo.browserType}/main.css?#{headerDto.loginTime}"/>
+	<link rel="stylesheet" type="text/css" href="#{request.contextPath}/css/#{birdUserInfo.browserType}//header.css?#{headerDto.loginTime}"/>
+	<link rel="stylesheet" type="text/css" href="#{request.contextPath}/css/#{birdUserInfo.browserType}/header_#{birdUserInfo.emosslesAppId}.css?#{headerDto.loginTime}"/>
+	<link rel="stylesheet" type="text/css" href="#{request.contextPath}/css/#{birdUserInfo.browserType}/body.css?#{headerDto.loginTime}"/>
+	<link rel="stylesheet" type="text/css" href="#{request.contextPath}/css/#{birdUserInfo.browserType}/body_#{birdUserInfo.emosslesAppId}.css?#{headerDto.loginTime}"/>
+	<link rel="stylesheet" type="text/css" href="#{request.contextPath}/css/#{birdUserInfo.browserType}/print.css?#{headerDto.loginTime}" media="print"/>
+	<script type="text/javascript" src="#{request.contextPath}/js/bird.js?#{headerDto.loginTime}"></script>
+</head>
+<body onLoad="#{onLoadName}">
+<form name="focusElementForm" m:passthrough="true">
+	<input type="hidden" name="FOCUS_ELEMENT" value="#{errHtmlElementDto.htmlElementName}" m:passthrough="true"/>
+	<input type="hidden" name="FOCUS_ELEMENT_INDEX" value="#{errHtmlElementDto.htmlElementIndex}" m:passthrough="true"/>
+</form>
+<table cellpadding="0" cellspacing="0" border="0" width="100%">
+<!--レイアウト補正用エレメント↓-->
+<tr><td><div style="margin:-2px;line-height:0px; width:980px; visibility: hidden"/></td></tr>
+<tr><td>
+<!--メニューバー部の設定-->
+<span m:inject="s:insert" m:src="/jsf/layout/menubar.html"/>
+<!--ヘッダー部の設定-->
+<span m:inject="s:insert" m:src="/jsf/layout/headerNoNavi.html"/>
+<div style="clear:both;line-height:5px;"><br/></div>
+<table class="layout">
+  <tr>
+    <td width="4px"></td>
+    <td class="bodyarea">
+      <table class="body_base_layout" cellspacing="0" cellpadding="0">
+        <tr>
+          <td>
+            <span class="body_error_massage" style="clear:both;">
+              <span id="errMsg" m:inject="h:messages" m:globalOnly="false" m:showDetail="false"/>
+            </span>
+            <!--各画面表示部の設定-->
+            <span m:inject="s:insert" m:name="body"/>
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+</table>
+</td></tr></table>
+<span m:rendered="#{birdUserInfo.pmossles==false}">
+<!--サブメニュープルダウン部の設定-->
+<span m:inject="s:insert" m:src="/jsf/layout/pulldown.html"/>
+</span>
+</body>
+</html>

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE components PUBLIC
+    "-//SEASAR//DTD S2Container 2.3//EN"
+    "http://www.seasar.org/dtd/components23.dtd">
+<components namespace="storemangeMssErr">
+	<component name="storemangeMssErrList" class="java.util.ArrayList">
+		<initMethod name="add" >
+			<arg>
+				<component class="jp.co.isid.mos.bird.storemanage.msssurveydataref.dto.MssBatchErrDto" >
+					<property name="errCd">"E0029"</property>
+					<property name="BErrCd">"E0607"</property>
+					<property name="title">"ファイル取込エラー"</property>
+					<property name="errMsg1">"項目マスタファイルのフォーマットが不正"</property>
+					<property name="errMsg2">"各項目の位置、桁数などを確認してください。"</property>
+				</component>
+			</arg>
+		</initMethod>
+		<initMethod name="add" >
+			<arg>
+				<component class="jp.co.isid.mos.bird.storemanage.msssurveydataref.dto.MssBatchErrDto" >
+					<property name="errCd">"E0030"</property>
+					<property name="BErrCd">"E0607"</property>
+					<property name="title">"ファイル取込エラー"</property>
+					<property name="errMsg1">"評価マスタファイルのフォーマットが不正"</property>
+					<property name="errMsg2">"各項目の位置、桁数などを確認してください。"</property>
+				</component>
+			</arg>
+		</initMethod>
+		<initMethod name="add" >
+			<arg>
+				<component class="jp.co.isid.mos.bird.storemanage.msssurveydataref.dto.MssBatchErrDto" >
+					<property name="errCd">"E0032"</property>
+					<property name="BErrCd">"E0607"</property>
+					<property name="title">"ファイル取込エラー"</property>
+					<property name="errMsg1">"調査データファイルのフォーマットが不正"</property>
+					<property name="errMsg2">"各項目の位置、桁数などを確認してください。"</property>
+				</component>
+			</arg>
+		</initMethod>
+		<initMethod name="add" >
+			<arg>
+				<component class="jp.co.isid.mos.bird.storemanage.msssurveydataref.dto.MssBatchErrDto" >
+					<property name="errCd">"E0033"</property>
+					<property name="BErrCd">"I0208"</property>
+					<property name="title">"ファイル取込エラー"</property>
+					<property name="errMsg1">"予期しないエラーが発生"</property>
+					<property name="errMsg2">"ファイル形式と内容を確認してください。繰り返しエラーが発生する場合はシステム管理者にご連絡ください。"</property>
+				</component>
+			</arg>
+		</initMethod>
+	</component>
+</components>

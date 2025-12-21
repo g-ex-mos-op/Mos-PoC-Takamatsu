@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="Shift_JIS"?>
+<!DOCTYPE components PUBLIC "-//SEASAR//DTD S2Container 2.3//EN"
+    "http://www.seasar.org/dtd/components23.dtd">
+<components namespace="nationalEntry">
+    <include path="dao.dicon"/>
+    <include path="jp/co/isid/mos/bird/common/dicon/birdCommon.dicon"/>
+	<include path="jp/co/isid/mos/bird/framework/dicon/birdInterceptor.dicon"/>
+
+	<component class="org.seasar.framework.container.autoregister.AspectAutoRegister">
+	    <property name="interceptor">birdInterceptor.actionInterceptorChain</property>
+	    <initMethod name="addClassPattern">
+	        <arg>"jp.co.isid.mos.bird"</arg>
+	        <arg>".*ActionImpl"</arg>
+	    </initMethod>
+	    <initMethod name="registerAll"/>
+	</component> 
+	<component 
+	  class="org.seasar.framework.container.autoregister.AspectAutoRegister">
+	    <property name="interceptor">birdInterceptor.logicInterceptorChain</property>
+	    <initMethod name="addClassPattern">
+	        <arg>"jp.co.isid.mos.bird"</arg>
+	        <arg>".*LogicImpl"</arg>
+	    </initMethod>
+	    <initMethod name="registerAll"/>  
+	</component>
+	
+	<!-- OTHER -->
+	<component class="jp.co.isid.mos.bird.framework.control.BirdUserInfo" instance="session"/>
+	<component class="jp.co.isid.mos.bird.framework.control.BirdDateInfo" instance="session"/>
+
+	<!-- DAO -->
+	<component name="uiNatiEntryOnerInfoDao" class="jp.co.isid.mos.bird.entry.nationalentry.dao.UINatiEntryOnerInfoDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="uiNatiEntryDutyInfoDao" class="jp.co.isid.mos.bird.entry.nationalentry.dao.UINatiEntryDutyInfoDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="uiNatiEntryJoinInfoDao" class="jp.co.isid.mos.bird.entry.nationalentry.dao.UINatiEntryJoinInfoDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="uiNatiEntrySelectInfoDao" class="jp.co.isid.mos.bird.entry.nationalentry.dao.UINatiEntrySelectInfoDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="uiNatiEntryStateDao" class="jp.co.isid.mos.bird.entry.nationalentry.dao.UINatiEntryStateDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="uiNatiLongServiceInfoDao" class="jp.co.isid.mos.bird.entry.nationalentry.dao.UINatiLongServiceInfoDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="mstEntryMiseInfoDao" class="jp.co.isid.mos.bird.entry.common.dao.MstEntryMiseInfoDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="uiNatiEntrySyokuiInfoDao" class="jp.co.isid.mos.bird.entry.nationalentry.dao.UINatiEntrySyokuiInfoDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+
+	<!-- LOGIC -->
+	<component name="getNatiEntryMiseInfoLogic" class="jp.co.isid.mos.bird.entry.nationalentry.logic.impl.GetNatiEntryMiseInfoLogicImpl"/>
+	<component name="getNatiEntryInfoLogic" class="jp.co.isid.mos.bird.entry.nationalentry.logic.impl.GetNatiEntryInfoLogicImpl"/>
+	<component name="execNatiEntryRegistLogic" class="jp.co.isid.mos.bird.entry.nationalentry.logic.impl.ExecNatiEntryRegistLogicImpl">
+		<aspect>j2ee.requiresNewTx</aspect>
+	</component>
+	<component name="longServiceInfoLogic" class="jp.co.isid.mos.bird.entry.nationalentry.logic.impl.LongServiceInfoLogicImpl"/>
+	<component name="getNatiEntrySyokuiInfoLogic" class="jp.co.isid.mos.bird.entry.nationalentry.logic.impl.GetNatiEntrySyokuiInfoLogicImpl"/>
+	
+
+	<!-- DTO -->
+	<component name="pullDownMenuDto" class="jp.co.isid.mos.bird.framework.dto.PullDownMenuDto" autoBinding="none" instance="session"/>
+	<component name="eventListDto" class="jp.co.isid.mos.bird.entry.eventlist.dto.EventListDto" autoBinding="none" instance="session"/>
+	<component name="entryStaffSearchDto" class="jp.co.isid.mos.bird.entry.commonform.entrystaffsearch.dto.EntryStaffSearchDto" autoBinding="none" instance="session"/>
+	<component name="nationalEntryDto" class="jp.co.isid.mos.bird.entry.nationalentry.dto.NationalEntryDto" autoBinding="none" instance="session"/>	
+	
+	<!-- ACTION -->
+	<component name="natiEntryEditAction" class="jp.co.isid.mos.bird.entry.nationalentry.action.impl.NatiEntryEditActionImpl" instance="request">
+		<property name="nationalEntryDto">nationalEntryDto</property>
+	</component>
+	<component name="natiEntryConfirmAction" class="jp.co.isid.mos.bird.entry.nationalentry.action.impl.NatiEntryConfirmActionImpl" instance="request">
+		<property name="nationalEntryDto">nationalEntryDto</property>
+	</component>
+
+	<!-- CONVERTER -->
+	<component name="numericConverter" class="jp.co.isid.mos.bird.framework.text.converter.NumericConverter" instance="request"/>
+	<component name="nationalEntryCharacterEncodingConverter" class="jp.co.isid.mos.bird.framework.text.converter.CharacterEncodingConverter" instance="request"/>
+	<component name="nationalEntryZipConverter" class="jp.co.isid.mos.bird.framework.text.converter.MaskConverter" instance="request">
+		<arg>"###-####"</arg>
+	</component>
+	<component name="changeLineEditConverter" class="jp.co.isid.mos.bird.framework.text.converter.ChangeLineEditConverter" instance="request"/>
+	<component name="changeLineRefConverter" class="jp.co.isid.mos.bird.framework.text.converter.ChangeLineRefConverter" instance="request"/>
+</components>

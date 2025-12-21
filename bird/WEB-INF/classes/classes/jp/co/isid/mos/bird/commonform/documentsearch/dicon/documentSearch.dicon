@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="Shift_JIS"?>
+<!DOCTYPE components PUBLIC "-//SEASAR2.1//DTD S2Container//EN"
+	"http://www.seasar.org/dtd/components21.dtd">
+<components namespace="functionSearch">
+    <include path="dao.dicon"/>
+    <include path="jp/co/isid/mos/bird/framework/dicon/birdInterceptor.dicon"/>
+   	<include path="jp/co/isid/mos/bird/common/dicon/birdCommon.dicon"/>
+
+	<!-- DAO -->
+	<component name="uIDocSearchDao" class="jp.co.isid.mos.bird.commonform.documentsearch.dao.UIDocSearchDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="mstCategoryInfoDao" class="jp.co.isid.mos.bird.common.dao.MstCategoryInfoDao">
+		<aspect>dao.interceptor</aspect>
+	</component>
+	<component name="mstSubCategoryInfoDao" class="jp.co.isid.mos.bird.common.dao.MstSubCategoryInfoDao">
+		<aspect>dao.interceptor</aspect>
+	</component>
+
+	<!-- LOGIC -->
+	<component name="getCategoryLogic" class="jp.co.isid.mos.bird.common.logic.impl.GetCategoryLogicImpl"/>
+	<component name="getSubCategoryLogic" class="jp.co.isid.mos.bird.common.logic.impl.GetSubCategoryLogicImpl"/>
+	<component name="searchDocLogic" class="jp.co.isid.mos.bird.commonform.documentsearch.logic.impl.SearchDocLogicImpl"/>
+	<component name="downloadLogic" class="jp.co.isid.mos.bird.commonform.documentsearch.logic.impl.DownloadLogicImpl"/>
+	
+	<!-- DTO -->
+	<component name="documentSearchConditionDto" class="jp.co.isid.mos.bird.commonform.documentsearch.dto.DocumentSearchConditionDto" instance="session"/>
+	<component name="documentSearchDto" class="jp.co.isid.mos.bird.commonform.documentsearch.dto.DocumentSearchDto" instance="session"/>
+
+	<!-- アクション -->
+	<component name="documentSearchAction" class="jp.co.isid.mos.bird.commonform.documentsearch.action.impl.DocSearchActionImpl" instance="request">
+		<aspect>actionInterceptorChain</aspect>
+	</component>
+	<component name="downloadAction" class="jp.co.isid.mos.bird.framework.action.impl.FileDownloadActionImpl" instance="request">
+		<aspect pointcut="init">initActionInterceptorChain</aspect>
+		<aspect>actionInterceptorChain</aspect>
+		<property name="downloadDto">documentSearchConditionDto</property>
+		<property name="downloadLogic">downloadLogic</property>
+	</component>
+
+
+	<component name="docmentList" class="java.util.ArrayList" instance="session"/>
+	
+	<!-- コンバーター -->
+	<component name="documentsearchDateConverterYYYYMM" class="jp.co.isid.mos.bird.framework.text.converter.DateConverter" instance="request">
+		<arg>@jp.co.isid.mos.bird.framework.util.formatter.DateFormatter@DATE_TYPE_YM</arg>
+		<arg>@jp.co.isid.mos.bird.framework.util.formatter.DateFormatter@PATTERN_MONTH_SLASH</arg>
+	</component>
+
+</components>

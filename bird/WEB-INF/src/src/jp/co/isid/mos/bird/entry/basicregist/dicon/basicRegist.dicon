@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="Shift_JIS"?>
+<!DOCTYPE components PUBLIC "-//SEASAR//DTD S2Container 2.3//EN"
+    "http://www.seasar.org/dtd/components23.dtd">
+<components namespace="basicRegist">
+    <include path="dao.dicon"/>
+	<include path="jp/co/isid/mos/bird/framework/dicon/birdInterceptor.dicon"/>
+	<include path="jp/co/isid/mos/bird/entry/common/dicon/entryCommon.dicon"/>
+
+	<!-- AutoRegister -->
+	<component
+	  class="org.seasar.framework.container.autoregister.AspectAutoRegister">
+	    <property name="interceptor">birdInterceptor.actionInterceptorChain</property>
+	    <initMethod name="addClassPattern">
+	        <arg>"jp.co.isid.mos.bird"</arg>
+	        <arg>".*ActionImpl"</arg>
+	    </initMethod>
+	    <initMethod name="registerAll"/>
+	</component> 
+	<component
+	  class="org.seasar.framework.container.autoregister.AspectAutoRegister">
+	    <property name="interceptor">birdInterceptor.logicInterceptorChain</property>
+	    <initMethod name="addClassPattern">
+	        <arg>"jp.co.isid.mos.bird"</arg>
+	        <arg>".*LogicImpl"</arg>
+	    </initMethod>
+	    <initMethod name="registerAll"/>
+	</component>
+
+	<component class="jp.co.isid.mos.bird.framework.control.BirdUserInfo" instance="session"/>
+	<component class="jp.co.isid.mos.bird.framework.control.BirdDateInfo" instance="session"/>
+
+	<!-- DAO -->
+	<component name="uiEntryMstDao" class="jp.co.isid.mos.bird.entry.basicregist.dao.UIEntryMstDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="uiEntryDateDao" class="jp.co.isid.mos.bird.entry.basicregist.dao.UIEntryDateDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+
+	<!-- Logic -->
+	<component name="searchEntryLogic" class="jp.co.isid.mos.bird.entry.basicregist.logic.impl.SearchEntryLogicImpl"/>
+	<component name="searchEntryListLogic" class="jp.co.isid.mos.bird.entry.basicregist.logic.impl.SearchEntryListLogicImpl"/>
+	<component name="CheckEntryLogic" class="jp.co.isid.mos.bird.entry.basicregist.logic.impl.CheckEntryLogicImpl"/>
+	<component name="updateEntryLogic" class="jp.co.isid.mos.bird.entry.basicregist.logic.impl.UpdateEntryLogicImpl">
+		<aspect>j2ee.requiresNewTx</aspect>
+	</component>
+
+	<!-- DTO -->
+	<component name="basicRegistDto" class="jp.co.isid.mos.bird.entry.basicregist.dto.BasicRegistDto" instance="session">
+		<property name="basicEntryList">null</property>
+		<property name="courseList">null</property>
+	</component>
+	<component name="pullDownMenuDto" class="jp.co.isid.mos.bird.framework.dto.PullDownMenuDto" autoBinding="none" instance="session"/>
+
+	<!-- Action -->
+	<component name="basicRegistSelectAction" class="jp.co.isid.mos.bird.entry.basicregist.action.impl.BasicRegistSelectActionImpl" instance="request"/>
+	<component name="basicRegistEditAction" class="jp.co.isid.mos.bird.entry.basicregist.action.impl.BasicRegistEditActionImpl" instance="request"/>
+	<component name="basicRegistConfirmAction" class="jp.co.isid.mos.bird.entry.basicregist.action.impl.BasicRegistConfirmActionImpl" instance="request"/>
+
+	<!-- Converter -->
+	<component name="basicRegistDateConverter1" class="jp.co.isid.mos.bird.framework.text.converter.DateConverter">
+		<arg>@jp.co.isid.mos.bird.framework.util.formatter.DateFormatter@DATE_TYPE_YMD</arg>
+		<arg>@jp.co.isid.mos.bird.framework.util.formatter.DateFormatter@PATTERN_SLASH</arg>
+	</component>
+	<component name="basicRegistDateConverter2" class="jp.co.isid.mos.bird.framework.text.converter.DateConverter">
+		<arg>@jp.co.isid.mos.bird.framework.util.formatter.DateFormatter@DATE_TYPE_YMD</arg>
+		<arg>@jp.co.isid.mos.bird.framework.util.formatter.DateFormatter@PATTERN_DAY_OF_WEEK</arg>
+	</component>
+
+	<!-- Formatter -->
+	<!-- Verifier -->
+
+</components>

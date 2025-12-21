@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="Shift_JIS"?>
+<!DOCTYPE components PUBLIC "-//SEASAR2.1//DTD S2Container//EN"
+	"http://www.seasar.org/dtd/components21.dtd">
+<components namespace="accountedit">
+	<include path="dao.dicon"/>
+    <include path="jp/co/isid/mos/bird/common/dicon/birdCommon.dicon"/>
+	<include path="jp/co/isid/mos/bird/framework/dicon/birdInterceptor.dicon"/>
+
+	<!-- インターセプターを自動登録 -->
+	<component class="org.seasar.framework.container.autoregister.AspectAutoRegister">
+	    <property name="interceptor">birdInterceptor.actionInterceptorChain</property>
+	    <initMethod name="addClassPattern">
+	        <arg>"jp.co.isid.mos.bird"</arg>
+	        <arg>".*ActionImpl"</arg>
+	    </initMethod>
+	    <initMethod name="registerAll"/>
+	</component>
+	<component class="org.seasar.framework.container.autoregister.AspectAutoRegister">
+	    <property name="interceptor">birdInterceptor.logicInterceptorChain</property>
+	    <initMethod name="addClassPattern">
+	        <arg>"jp.co.isid.mos.bird"</arg>
+	        <arg>".*LogicImpl"</arg>
+	    </initMethod>
+	    <initMethod name="registerAll"/>
+	</component>
+
+	<component class="jp.co.isid.mos.bird.framework.control.BirdUserInfo" instance="session"/>
+	<component class="jp.co.isid.mos.bird.framework.control.BirdDateInfo" instance="session"/>
+
+	<!-- frameworkDAO -->
+	<component name="ctlLoginFailKaisuDao" class="jp.co.isid.mos.bird.framework.dao.CtlLoginFailKaisuDao">
+		<aspect>dao.interceptor</aspect>
+	</component>
+	<!-- bizadmin共通DAO -->
+	<component name="bizadminMstUserCompanyDao" class="jp.co.isid.mos.bird.bizadmin.common.dao.MstUserCompanyDao" >
+	    <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="bizadminMstUserShozokuDao" class="jp.co.isid.mos.bird.bizadmin.common.dao.MstUserShozokuDao" >
+	    <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="bizadminMstUserGyotaiDao" class="jp.co.isid.mos.bird.bizadmin.common.dao.MstUserGyotaiDao" >
+	    <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="bizadminMstUserOnerDao" class="jp.co.isid.mos.bird.bizadmin.common.dao.MstUserOnerDao" >
+	    <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="bizadminMstUserMiseDao" class="jp.co.isid.mos.bird.bizadmin.common.dao.MstUserMiseDao" >
+	    <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="bizadminCodCompanyDao" class="jp.co.isid.mos.bird.bizadmin.common.dao.CodCompanyDao" >
+	    <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="bizadminUIGyotaiCompanyDao" class="jp.co.isid.mos.bird.bizadmin.common.dao.UIGyotaiCompanyDao" >
+	    <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="bizadminUITogoOwnerDao" class="jp.co.isid.mos.bird.bizadmin.common.dao.UITogoOwnerDao" >
+	    <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="bizadminUIGroupTogoMiseDao" class="jp.co.isid.mos.bird.bizadmin.common.dao.UIGroupTogoMiseDao" >
+	    <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="bizadminUIUserDao" class="jp.co.isid.mos.bird.bizadmin.common.dao.UIUserDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="bizadminUIUserCompanyDao" class="jp.co.isid.mos.bird.bizadmin.common.dao.UIUserCompanyDao" >
+	    <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="bizadminUIUserGyotaiDao" class="jp.co.isid.mos.bird.bizadmin.common.dao.UIUserGyotaiDao">
+	    <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="bizadminUIUserOnerDao" class="jp.co.isid.mos.bird.bizadmin.common.dao.UIUserOnerDao">
+	    <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="bizadminUIUserMiseDao" class="jp.co.isid.mos.bird.bizadmin.common.dao.UIUserMiseDao">
+	    <aspect>dao.interceptor</aspect>
+	</component>
+	<!-- DAO -->
+	<component name="accounteditKeiyakuTypeDao" class="jp.co.isid.mos.bird.bizadmin.accountedit.dao.UIKeiyakuTypeDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="accounteditCtlMatrixRirekiDao" class="jp.co.isid.mos.bird.bizadmin.accountedit.dao.CtlMatrixRirekiDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="accounteditUIUserMatrixInfoDao" class="jp.co.isid.mos.bird.bizadmin.accountedit.dao.UIUserMatrixInfoDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+
+	<!-- DTO -->
+	<component name="accounteditDto" class="jp.co.isid.mos.bird.bizadmin.accountedit.dto.AccounteditDto" instance="session">
+		<property name="companyList">null</property>
+		<property name="userGyotaiList">null</property>
+		<property name="userCompanyList">null</property>
+		<property name="userOnerList">null</property>
+	</component>
+	<component name="accounteditReqDto" class="jp.co.isid.mos.bird.bizadmin.accountedit.dto.AccountEditRequestDto" instance="request" />
+	<!-- 外部　DTO -->
+	<component name="miseSearchDto" class="jp.co.isid.mos.bird.commonform.misesearch.dto.MiseSearchDto" instance="session">
+		<property name="RCompanyCdList">null</property>
+	</component>
+	<component name="gamenRoleDto" class="jp.co.isid.mos.bird.framework.dto.GamenRoleDto" instance="session"/>
+	<component name="birdUserListDto" class="jp.co.isid.mos.bird.framework.dto.BirdUserListDto" instance="session">
+		<property name="userList">null</property>
+	</component>
+	<component name="userSearchDto" class="jp.co.isid.mos.bird.commonform.usersearch.dto.UserSearchDto" autoBinding="none" instance="session"/>
+	<component name="ownerSearchDto" class="jp.co.isid.mos.bird.commonform.ownersearch.dto.OwnerSearchDto" autoBinding="none" instance="session"/>
+	<component name="businessSearchDto" class="jp.co.isid.mos.bird.commonform.businesssearch.dto.BusinessSearchDto" autoBinding="none" instance="session"/>
+
+	<!-- Logic -->
+	<component name="bizadminGetBirdUserSelfLogic" class="jp.co.isid.mos.bird.bizadmin.common.logic.impl.GetBirdUserSelfLogicImpl"/>
+	<component name="accounteditGetRevisionLogic" class="jp.co.isid.mos.bird.bizadmin.accountedit.logic.impl.GetRevisionDataLogicImpl"/>
+	<component name="accounteditCheckLogic" class="jp.co.isid.mos.bird.bizadmin.accountedit.logic.impl.AccountCheckLogicImpl">
+		<property name="mstHanshaOnerDao">mstHanshaOnerDao</property>
+		<property name="validatePasswordLogic">validatePasswordLogic</property>
+	</component>
+	<component name="accounteditGetLoginFailInfoLogic" class="jp.co.isid.mos.bird.bizadmin.accountedit.logic.impl.GetLoginFailInfoLogicImpl"/>
+	<component name="accounteditGetCtlPasswordPolicyLogic" class="jp.co.isid.mos.bird.bizadmin.accountedit.logic.impl.GetCtlPasswordPolicyLogicImpl">
+		<property name="birdPasswordPolicy">birdPasswordPolicy</property>
+		<property name="mstUserShozokuDao">mstUserShozokuDao</property>
+	</component>
+	<component name="accounteditRenewEditAccountLogic" class="jp.co.isid.mos.bird.bizadmin.accountedit.logic.impl.RenewEditAccountLogicImpl">
+		<aspect>j2ee.requiresNewTx</aspect>
+		<property name="updatePasswordLogic">updatePasswordLogic</property>
+		<property name="mstHanshaOnerDao">mstHanshaOnerDao</property>
+	</component>
+
+	<!-- Action -->
+	<component name="accounteditGetUserAction" class="jp.co.isid.mos.bird.bizadmin.accountedit.action.impl.GetUserActionImpl" instance="request">
+		<property name="gamenRoleLogic">gamenRoleLogic</property>
+	</component>
+	<component name="accounteditRenewAction" class="jp.co.isid.mos.bird.bizadmin.accountedit.action.impl.RenewAccountActionImpl" instance="request"/>
+	<component name="accounteditCheckAction" class="jp.co.isid.mos.bird.bizadmin.accountedit.action.impl.AccountCheckActionImpl" instance="request"/>
+
+
+	<component name="accounteditBigoConverter" class="jp.co.isid.mos.bird.framework.text.converter.CodeConverter" instance="request">
+		<arg>3</arg>
+		<arg>"000"</arg>
+	</component>
+	<component name="accounteditEmosCdConverter" class="jp.co.isid.mos.bird.framework.text.converter.CodeConverter" instance="request">
+	</component>
+
+	<component name="accounteditCodeConverter" class="jp.co.isid.mos.bird.framework.text.converter.CodeConverter" instance="request">
+	</component>
+
+</components>

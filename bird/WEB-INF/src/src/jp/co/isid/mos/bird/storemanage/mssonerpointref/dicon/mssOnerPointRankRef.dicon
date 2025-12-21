@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="Shift_JIS"?>
+<!DOCTYPE components PUBLIC "-//SEASAR//DTD S2Container 2.3//EN" "http://www.seasar.org/dtd/components23.dtd">
+<components namespace="mssOnerPointRankRef">
+	<include path="dao.dicon"/>
+	<include path="jp/co/isid/mos/bird/common/dicon/birdCommon.dicon"/>
+	<include path="jp/co/isid/mos/bird/framework/dicon/birdInterceptor.dicon"/>
+	
+	<!-- インターセプターを自動登録 -->
+	<component class="org.seasar.framework.container.autoregister.AspectAutoRegister">
+	    <property name="interceptor">birdInterceptor.actionInterceptorChain</property>
+	    <initMethod name="addClassPattern">
+	        <arg>"jp.co.isid.mos.bird"</arg>
+	        <arg>".*ActionImpl"</arg>
+	    </initMethod>
+	    <initMethod name="registerAll"/>
+	</component> 
+	<component class="org.seasar.framework.container.autoregister.AspectAutoRegister">
+	    <property name="interceptor">birdInterceptor.logicInterceptorChain</property>
+	    <initMethod name="addClassPattern">
+	        <arg>"jp.co.isid.mos.bird"</arg>
+	        <arg>".*LogicImpl"</arg>
+	    </initMethod>
+	    <initMethod name="registerAll"/>  
+	</component>
+
+	<!-- DTO -->
+	<component name="mssOnerPointRankCsvDto" class="jp.co.isid.mos.bird.storemanage.mssonerpointref.dto.MssOnerPointRankCsvDto" instance="session" />
+	<component name="miseSearchDto" class="jp.co.isid.mos.bird.commonform.misesearch.dto.MiseSearchDto" instance="session"/>
+	<component name="ownerSearchDto" class="jp.co.isid.mos.bird.commonform.ownersearch.dto.OwnerSearchDto" instance="session"/>
+	<component name="newSvSearchDto" class="jp.co.isid.mos.bird.commonform.svsearchnew.dto.SvSearchDto" instance="session"/>
+
+	<!-- DAO -->
+	<component name="mssOnerPointRankCodCompanyDao" class="jp.co.isid.mos.bird.storemanage.mssonerpointref.dao.CodCompanyDao">
+		<aspect>dao.interceptor</aspect>
+	</component>
+	<component name="mssOnerPointRankCodSibuDao" class="jp.co.isid.mos.bird.storemanage.mssonerpointref.dao.CodSibuDao">
+		<aspect>dao.interceptor</aspect>
+	</component>
+	<component name="mssOnerPointRankCodNendoDao" class="jp.co.isid.mos.bird.storemanage.mssonerpointref.dao.CodNendoDao">
+		<aspect>dao.interceptor</aspect>
+	</component>
+	<component name="mssOnerPointRankCodKaiDao" class="jp.co.isid.mos.bird.storemanage.mssonerpointref.dao.CodKaiDao">
+		<aspect>dao.interceptor</aspect>
+	</component>
+	<component name="mssOnerPointRankSibuInfoDao" class="jp.co.isid.mos.bird.storemanage.mssonerpointref.dao.SibuInfoDao">
+		<aspect>dao.interceptor</aspect>
+	</component>
+	<component name="mssOnerPointRankMiseInfoDao" class="jp.co.isid.mos.bird.storemanage.mssonerpointref.dao.MiseInfoDao">
+		<aspect>dao.interceptor</aspect>
+	</component>
+	<component name="mssOnerPointRankUiOnerMiseCntDao" class="jp.co.isid.mos.bird.storemanage.mssonerpointref.dao.UIOnerMiseCntDao">
+		<aspect>dao.interceptor</aspect>
+	</component>
+	<component name="mssOnerPointRankUiPointDao" class="jp.co.isid.mos.bird.storemanage.mssonerpointref.dao.UIPointDao">
+		<aspect>dao.interceptor</aspect>
+	</component>
+	<component name="mssOnerPointRankUiTotalPointDao" class="jp.co.isid.mos.bird.storemanage.mssonerpointref.dao.UITotalPointDao">
+		<aspect>dao.interceptor</aspect>
+	</component>
+	<component name="mssOnerPointRankUiSubTotalPointDao" class="jp.co.isid.mos.bird.storemanage.mssonerpointref.dao.UISubTotalPointDao">
+		<aspect>dao.interceptor</aspect>
+	</component>
+
+
+	<!-- LOGIC -->
+	<component name="mssOnerPointRankConditionLogic" class="jp.co.isid.mos.bird.storemanage.mssonerpointref.logic.impl.ConditionLogicImpl"/>
+	<component name="mssOnerPointRankChangeCompayLogic" class="jp.co.isid.mos.bird.storemanage.mssonerpointref.logic.impl.ChangeCompanyLogicImpl"/>
+	<component name="mssOnerPointRankCsvDownLoadLogic" class="jp.co.isid.mos.bird.storemanage.mssonerpointref.logic.impl.CsvOutputLogicImpl"/>
+	<component name="mssOnerPointRankCsvDataConstructionLogic" class="jp.co.isid.mos.bird.storemanage.mssonerpointref.logic.impl.CsvDataConstructionLogicImpl"/>
+	<component name="mssOnerPointRankSearchLogic" class="jp.co.isid.mos.bird.storemanage.mssonerpointref.logic.impl.SearchLogicImpl"/>
+
+	<!-- ACTION -->
+	<component name="mssOnerPointRankAction" class="jp.co.isid.mos.bird.storemanage.mssonerpointref.action.impl.MssOnerPointRankRefActionImpl" instance="request">
+		<property name="mssOnerPointRankCsvDto">mssOnerPointRankCsvDto</property>
+	</component>
+	<component name="mssOnerPointRankCsvDownloadAction" class="jp.co.isid.mos.bird.framework.action.impl.CsvOutputActionImpl" instance="request">
+		<property name="csvOutputDto">mssOnerPointRankCsvDto</property>
+		<property name="csvOutputLogic">mssOnerPointRankCsvDownLoadLogic</property>
+	</component>
+
+</components>

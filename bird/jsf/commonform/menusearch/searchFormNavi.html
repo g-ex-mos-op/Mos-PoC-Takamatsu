@@ -1,0 +1,98 @@
+<html xmlns:m="http://www.seasar.org/maya">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Windows-31j" />
+<title>S2JSFExample</title>
+</head>
+<body>
+<span m:inject="s:insert">
+<SCRIPT LANGUAGE="javascript">
+<!--
+function setKey(key){
+    //キー設定
+	document.menuSearch50.elements['menuSearch50:search50Key'].value=key;
+}
+function changeTab(tabType) {
+	changeTabArea(tabType, 'tab_change_area_', 'table', 'td','navi_active_cell','navi_non_active_cell');
+	document.menuSearch50.elements['menuSearch50:search50TabType'].value=tabType;
+}
+-->
+</SCRIPT>
+<form m:id="menuSearch50">
+<input type="hidden" m:id="viewId" m:value="#{viewIdValue}" />
+<input type="hidden" m:id="initMenuId" m:value="#{menuAction.initMenuId}"/>
+<input type="hidden" m:id="initSubMenuId" m:value="#{menuAction.initSubMenuId}"/>
+<input type="hidden" m:value="#{menuSearchReqDto.windowId}"/>
+<input type="hidden" m:id="search50Key" m:value="#{menuSearchReqDto.search50Key}"/>
+<input type="hidden" m:id="search50TabType" m:value="#{menuSearchReqDto.search50TabType}"/>
+<input type="hidden" m:value="#{menuSearchReqDto.menuNameKj}"/>
+<input type="hidden" m:value="#{menuSearchReqDto.menuCdFrom}"/>
+<input type="hidden" m:value="#{menuSearchReqDto.menuCdTo}"/>
+<input type="hidden" m:value="#{menuSearchReqDto.menuBunrui}"/>
+<input type="hidden" m:value="#{menuSearchReqDto.sortType}"/>
+<input type="hidden" m:value="#{menuSearchReqDto.hanbaiEndIn}"/>
+<div style="width:150px;">
+<div class="navi_caption">メニュー５０音検索</div>
+<table cellspacing="0" cellpadding="0" style="margin-top:5px;">
+  <tr>
+    <td class="navi_#{menuSearchReqDto.search50TabType=='0'? '':'non_'}active_cell tab_change_area_0"
+        width="75px" onMouseOver="this.style.cursor='pointer';"
+        onClick="javascript:changeTab('0');">カナ</td>
+    <td class="navi_#{menuSearchReqDto.search50TabType=='1'? '':'non_'}active_cell tab_change_area_1"
+        width="75px" onMouseOver="this.style.cursor='pointer';"
+        onClick="javascript:changeTab('1');">英数字</td>
+  </tr>
+  <tr style="height:5px" class="navi_caption"><td colspan="2"/></tr>
+</table>
+<div align="center">
+<table cellspacing="0" cellpadding="0" width="150px" class="#{menuSearchReqDto.search50TabType=='0'? '':'in'}visible_tab tab_change_area_0 body_navi_table">
+  <span m:inject="s:forEach" m:items="#{menuSearchReqDto.listKana}" m:var="listRow" m:varindex="i">
+  <tr>
+  	<span  m:inject="s:forEach" m:items="#{listRow}" m:var="str" m:varindex="r">
+    <td>
+      <a m:action="#{menuSearchAction.search50}" onClick="setKey('#{str[0]}');"><span m:converter="#{characterEncodingConverter}" m:value="#{str[1]}"/></a>
+    </td>
+    </span>
+  </tr>
+  </span>
+</table>
+
+<table cellspacing="0" cellpadding="0" width="150px" class="#{menuSearchReqDto.search50TabType=='1'? '':'in'}visible_tab tab_change_area_1 body_navi_table">
+  <span m:inject="s:forEach" m:items="#{menuSearchReqDto.listRoma}" m:var="listRow" m:varindex="i">
+  <tr>
+  	<span  m:inject="s:forEach" m:items="#{listRow}" m:var="str" m:varindex="r">
+    <td>
+      <a m:action="#{menuSearchAction.search50}" onClick="setKey('#{str[0]}');"><span m:converter="#{characterEncodingConverter}" m:value="#{str[1]}"/></a>
+    </td>
+    </span>
+  </tr>
+  </span>
+  <tr style="height:5px;"><td></td></tr>
+  <span m:inject="s:forEach" m:items="#{menuSearchReqDto.listKigo}" m:var="listRow" m:varindex="i">
+  <tr>
+  	<span  m:inject="s:forEach" m:items="#{listRow}" m:var="str" m:varindex="r">
+    <td>
+      <a m:action="#{menuSearchAction.search50}" onClick="setKey('#{str[0]}');"><span m:converter="#{characterEncodingConverter}" m:value="#{str[1]}"/></a>
+    </td>
+    </span>
+  </tr>
+  </span>
+  <tr style="height:5px;"><td></td></tr>
+  <span m:inject="s:forEach" m:items="#{menuSearchReqDto.listNum}" m:var="listRow" m:varindex="i">
+  <tr>
+  	<span  m:inject="s:forEach" m:items="#{listRow}" m:var="str" m:varindex="r">
+    <td>
+      <a m:action="#{menuSearchAction.search50}" onClick="setKey('#{str[0]}');"><span m:converter="#{characterEncodingConverter}" m:value="#{str[1]}"/></a>
+    </td>
+    </span>
+  </tr>
+  </span>
+</table>
+</div>
+<br/>
+<br/>
+</div>
+<div align="left">文字を選択すると該当<br/>メニューが表示されます</div>
+</form>
+</span>
+</body>
+</html>

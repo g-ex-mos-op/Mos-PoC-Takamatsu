@@ -1,0 +1,11 @@
+select distinct
+    BM03USCP.R_COMPANY_CD AS COMPANY_CD
+,   BC02COMP.COMPANY_NAME
+from 
+    BM03USCP 
+    inner join BC02COMP on BM03USCP.R_COMPANY_CD = BC02COMP.R_COMPANY_CD
+where
+    BM03USCP.R_COMPANY_CD in /*companyCdList*/('00', '70') 
+and BC02COMP.MISE_FLG ='1'
+order by
+    BM03USCP.R_COMPANY_CD

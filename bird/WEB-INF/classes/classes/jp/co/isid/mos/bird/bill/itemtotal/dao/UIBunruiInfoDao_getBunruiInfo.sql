@@ -1,0 +1,7 @@
+select
+    TC26.SEIKYU_BNRUI,
+    TC26.SE_BNR_NAME,
+    '' as SEIKYU_BUNRUI_KIGOU,
+    '' as SEIKYU_BUNRUI_SEQ    
+from
+    TC26SEIK as TC26

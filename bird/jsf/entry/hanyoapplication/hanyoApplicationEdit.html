@@ -1,0 +1,490 @@
+<html xmlns:m="http://www.seasar.org/maya" m:action="#{hanyoApplicationEditAction.initialize}" m:extends="/jsf/layout/layoutNoNavi.html">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Windows-31j" />
+<title></title>
+</head>
+<body>
+<span m:inject="f:param" m:name="layoutTitle" m:value="研修参加申込"/>
+<span m:inject="s:insert" m:name="bodyTitleName">■研修参加申込</span>
+<span m:inject="f:param" m:name="onLoadName" m:value="onLoadFunction()"/>
+<span m:inject="f:param" m:name="viewIdValue" m:value="BEN005V02"/>
+<span m:inject="s:insert" m:name="body">
+<style type="text/css">
+<!--
+    /**
+     * スクロール
+     * 作成日：2010/10/28
+     */
+	.scroll_area {
+		width:	  820px;
+		height:	  410px;
+
+	}
+-->
+</style>
+<SCRIPT LANGUAGE="javascript">
+<!--
+function onLoadFunction() {
+ if (document.focusElementForm.elements["FOCUS_ELEMENT"].value != "") {
+   focusElement("hanyoApplicationEdit");
+ } else {
+   focusPosition();
+ }
+}
+
+function doSubmit() {
+  var targetForm = document.forms['hanyoApplicationEdit'];
+  var i=0;
+  for (i=0; i<targetForm.elements.length; i++) {
+    type = targetForm.elements[i].type;
+    //チェック対象エレメント名称
+    var targetName =targetForm.elements[i].name;
+    if ((targetName.lastIndexOf("sex") > 0 || targetName.lastIndexOf("sex") > 0)
+          && type == "radio")
+    {
+	  targetForm.elements[i].disabled = false;
+	  targetForm.elements[i].disabled = false;
+    }
+  }//end of for
+
+  return true;
+}
+function doAction() {
+	var f=document.forms['hanyoApplicationEdit'];
+	f.target='';
+	f.elements['hanyoApplicationEdit:__link_clicked__'].value='hanyoApplicationEdit:dummyAction';
+	f.submit();
+	return false;
+}
+
+function setIndex(index) {
+    var f = document.forms['hanyoApplicationEdit'];
+    f.elements['hanyoApplicationEdit:addStaffIndex'].value = index;
+}
+
+function staffChange(index) {
+  var f = document.forms['hanyoApplicationEdit'];
+  //選択されたスタッフID
+  var staffId = "";
+  var staffInfoBaseName = "";
+  for (i = 0; i < f.elements.length; i++) {
+    type = f.elements[i].type;
+    if ('select-one' == type) {
+      var nameLength = f.elements[i].name.length;
+      if (f.elements[i].name.lastIndexOf(index + ':staffId') > 0) {
+        staffInfoBaseName = f.elements[i].name.substring(0, nameLength - 7);
+        staffId = f.elements[i].value;
+        break;
+      }
+    }
+  }
+  //選択されたスタッフのフリガナ、性別をセット
+  var type;
+  for (i = 0; i < f.elements.length; i++) {
+    type = f.elements[i].type;
+    if ('hidden' == type) {
+      var nameLength = f.elements[i].name.length;
+      if (f.elements[i].name.substring(nameLength - 9, nameLength) == "h_staffId" &&
+          f.elements[i].value == staffId)
+      {
+        if (staffId != "") {
+          var lName = f.elements[f.elements[i].name.substring(0, nameLength - 9)+"h_staffLNameKna"].value;
+          var fName = f.elements[f.elements[i].name.substring(0, nameLength - 9)+"h_staffFNameKna"].value;
+          f.elements[staffInfoBaseName + 'nameKnaInput'].value = lName + '  ' + fName;
+          f.elements[staffInfoBaseName + 'staffSelectName'].value = f.elements[f.elements[i].name.substring(0, nameLength - 9)+"h_staffSelect"].value
+
+        }
+        else {
+          f.elements[staffInfoBaseName + 'nameKnaInput'].value = "";
+        }
+        var sex = f.elements[f.elements[i].name.substring(0, nameLength - 9)+"h_sex"].value;
+        f.elements[staffInfoBaseName + 'sex_radio1'].disabled = false;
+        f.elements[staffInfoBaseName + 'sex_radio2'].disabled = false;
+        if ('0' == sex) {
+          f.elements[staffInfoBaseName + 'sex_radio1'].click();
+        }
+        else if ('1' == sex) {
+          f.elements[staffInfoBaseName + 'sex_radio2'].click();
+        }
+        else {
+          f.elements[staffInfoBaseName + 'sex_radio1'].click();
+        }
+        f.elements[staffInfoBaseName + 'sex_radio1'].disabled = true;
+        f.elements[staffInfoBaseName + 'sex_radio2'].disabled = true;
+        return true;
+      }
+    }
+  }
+}
+
+function sofuChange(index) {
+  var f = document.forms['hanyoApplicationEdit'];
+  //選択送付先区分
+  var guideKbn = "";
+  var guideKbnBaseName = "";
+  for (i = 0; i < f.elements.length; i++) {
+    type = f.elements[i].type;
+    if ('select-one' == type) {
+      var nameLength = f.elements[i].name.length;
+      if (f.elements[i].name.lastIndexOf(index + ':guideKbn') > 0) {
+        guideKbnBaseName = f.elements[i].name.substring(0, nameLength - 8);
+        guideKbn = f.elements[i].value;
+        break;
+      }
+    }
+  }
+  //選択された送付先の情報をセット
+  var type;
+  if ("KEKKA" == guideKbn) {
+    //結果報告先
+    f.elements[guideKbnBaseName + 'guideName'].setAttribute('readOnly', true);
+    f.elements[guideKbnBaseName + 'guideZip'].setAttribute('readOnly', true);
+    f.elements[guideKbnBaseName + 'guideAdrs1'].setAttribute('readOnly', true);
+    f.elements[guideKbnBaseName + 'guideAdrs2'].setAttribute('readOnly', true);
+    f.elements[guideKbnBaseName + 'guideAdrs3'].setAttribute('readOnly', true);
+    f.elements[guideKbnBaseName + 'guideName'].value = "";
+    f.elements[guideKbnBaseName + 'guideZip'].value
+        = f.elements['hanyoApplicationEdit:MosikomiSekininKekkaHokokuZip'].value;
+    f.elements[guideKbnBaseName + 'guideAdrs1'].value
+        = f.elements['hanyoApplicationEdit:MosikomiSekininKekkaHokokuAddress1'].value;
+    f.elements[guideKbnBaseName + 'guideAdrs2'].value
+        = f.elements['hanyoApplicationEdit:MosikomiSekininKekkaHokokuAddress2'].value;
+    f.elements[guideKbnBaseName + 'guideAdrs3'].value
+        = f.elements['hanyoApplicationEdit:MosikomiSekininKekkaHokokuAddress3'].value;
+  }
+  else if ("OTHER" == guideKbn) {
+    // その他
+    f.elements[guideKbnBaseName + 'guideName'].removeAttribute('readOnly');
+    f.elements[guideKbnBaseName + 'guideZip'].removeAttribute('readOnly');
+    f.elements[guideKbnBaseName + 'guideAdrs1'].removeAttribute('readOnly');
+    f.elements[guideKbnBaseName + 'guideAdrs2'].removeAttribute('readOnly');
+    f.elements[guideKbnBaseName + 'guideAdrs3'].removeAttribute('readOnly');
+    f.elements[guideKbnBaseName + 'guideName'].value = "";
+    f.elements[guideKbnBaseName + 'guideZip'].value = "";
+    f.elements[guideKbnBaseName + 'guideAdrs1'].value = "";
+    f.elements[guideKbnBaseName + 'guideAdrs2'].value = "";
+    f.elements[guideKbnBaseName + 'guideAdrs3'].value = "";
+  }
+  else {
+    for (i = 0; i < f.elements.length; i++) {
+      type = f.elements[i].type;
+      if ('hidden' == type) {
+        var nameLength = f.elements[i].name.length;
+        if (guideKbn != "" &&
+            f.elements[i].name.substring(nameLength - 8, nameLength) == "h_miseCd" &&
+            f.elements[i].value == guideKbn)
+        {
+          var misePostNo = f.elements[f.elements[i].name.substring(0, nameLength - 8)+"h_misePostNo"].value;
+          var miseAdrs1 = f.elements[f.elements[i].name.substring(0, nameLength - 8)+"h_miseAdrs1"].value;
+          var miseAdrs2 = f.elements[f.elements[i].name.substring(0, nameLength - 8)+"h_miseAdrs2"].value;
+          var miseAdrs3 = f.elements[f.elements[i].name.substring(0, nameLength - 8)+"h_miseAdrs3"].value;
+          f.elements[guideKbnBaseName + 'guideName'].value = "";
+          if (misePostNo.length > 3) {
+            misePostNo = misePostNo.substring(0, 3) + "-" + misePostNo.substring(3);
+          }
+          f.elements[guideKbnBaseName + 'guideZip'].value = misePostNo;
+          f.elements[guideKbnBaseName + 'guideAdrs1'].value = miseAdrs1;
+          f.elements[guideKbnBaseName + 'guideAdrs2'].value = miseAdrs2;
+          f.elements[guideKbnBaseName + 'guideAdrs3'].value = miseAdrs3;
+          f.elements[guideKbnBaseName + 'guideName'].setAttribute('readOnly', true);
+          f.elements[guideKbnBaseName + 'guideZip'].setAttribute('readOnly', true);
+          f.elements[guideKbnBaseName + 'guideAdrs1'].setAttribute('readOnly', true);
+          f.elements[guideKbnBaseName + 'guideAdrs2'].setAttribute('readOnly', true);
+          f.elements[guideKbnBaseName + 'guideAdrs3'].setAttribute('readOnly', true);
+          return true;
+        }
+      }
+    }
+  }
+}
+
+function torikesi(index) {
+  var f = document.forms['hanyoApplicationEdit'];
+
+  var objBaseName = "";
+  for (i = 0; i < f.elements.length; i++) {
+    type = f.elements[i].type;
+    var nameLength = f.elements[i].name.length;
+    if (f.elements[i].name.lastIndexOf(index + ':staffId') > 0) {
+      objBaseName = f.elements[i].name.substring(0, nameLength - 7);
+      break;
+    }
+  }
+  // ラジオボタンを初期化
+  document.getElementById(objBaseName + "sex_radio1").disabled = false;
+  document.getElementById(objBaseName + "sex_radio2").disabled = false;
+  document.getElementById(objBaseName + "sex_radio1").click();
+  document.getElementById(objBaseName + "sex_radio1").disabled = true;
+  document.getElementById(objBaseName + "sex_radio2").disabled = true;
+  f.elements[objBaseName + 'staffId'].selectedIndex = 0;
+  staffChange(index);
+  f.elements[objBaseName + 'nameKnaInput'].value = "";
+  f.elements[objBaseName + 'job'].value = "";
+  f.elements[objBaseName + 'empExpYear'].value = "";
+  f.elements[objBaseName + 'empExpMonth'].value = "";
+  f.elements[objBaseName + 'paExpYear'].value = "";
+  f.elements[objBaseName + 'paExpMonth'].value = "";
+  if (f.elements['hanyoApplicationEdit:entryCd'].value == "05") {
+    f.elements[objBaseName + 'guideKbn'].selectedIndex = 0;
+    sofuChange(index);
+  }
+
+}
+
+function focusPosition() {
+  var f = document.forms['hanyoApplicationEdit'];
+  f.elements['hanyoApplicationEdit:MosikomiSekininName'].focus();
+
+  if (f.elements['hanyoApplicationEdit:entryAfterCount'].value != 0 &&
+      f.elements['hanyoApplicationEdit:entryAfterCount'].value !=
+          f.elements['hanyoApplicationEdit:listEntryCount'].value) {
+       //申請者件数取得
+       var entrycount = f.elements['hanyoApplicationEdit:listEntryCount'].value - 1;
+
+       var tagetStaffId = targetElementName('hanyoApplicationEdit','staffId',entrycount);
+       var freamHeight  = document.getElementById("hanyoApplicationEdit:fream");
+       freamHeight.scrollTop = freamHeight.scrollHeight;
+
+       document.hanyoApplicationEdit.elements[tagetStaffId].focus();
+   }
+   if (f.elements['hanyoApplicationEdit:entryAfterCount'].value == 0) {
+      if (f.elements['hanyoApplicationEdit:staffBottonIndex'].value != 0 ){
+          //何番目のスタッフ追加が押されたか取得
+          var staffBottonSelectIndex = f.elements['hanyoApplicationEdit:staffBottonIndex'].value -1;
+          var tagetStaffId = targetElementName('hanyoApplicationEdit','staffId',staffBottonSelectIndex);
+
+          document.hanyoApplicationEdit.elements[tagetStaffId].focus();
+
+      }
+
+   }
+   f.elements['hanyoApplicationEdit:staffBottonIndex'].value = 0;
+   f.elements['hanyoApplicationEdit:entryAfterCount'].value = 0;
+
+}
+
+function setStaffBottonIndex(nanber) {
+   var f = document.forms['hanyoApplicationEdit'];
+   var nanberFormat = nanber + 1;
+   f.elements['hanyoApplicationEdit:staffBottonIndex'].value = nanberFormat;
+}
+
+function setNowEntryCount() {
+   var f = document.forms['hanyoApplicationEdit'];
+   var nowCount = f.elements['hanyoApplicationEdit:listEntryCount'].value;
+   f.elements['hanyoApplicationEdit:entryAfterCount'].value = nowCount;
+}
+//-->
+</SCRIPT>
+<form m:id="hanyoApplicationEdit" m:onkeydown="return setDefaultSubmitButton('hanyoApplicationEdit','btnExecute');">
+	<input type="hidden" m:id="viewId" m:value="#{viewIdValue}"/>
+	<input type="hidden" m:id="initMenuId" m:value="#{menuAction.initMenuId}"/>
+	<input type="hidden" m:id="initSubMenuId" m:value="#{menuAction.initSubMenuId}"/>
+	<input type="hidden" m:id="addStaffIndex" m:value="#{hanyoApplicationDto.addStaffIndex}"/>
+	<input type="hidden" m:id="staffBottonIndex" m:value="#{hanyoApplicationDto.staffBottonIndex}"/>
+	<input type="hidden" m:id="listEntryCount" m:value="#{hanyoApplicationDto.listEntryCount}"/>
+	<input type="hidden" m:id="entryAfterCount" m:value="#{hanyoApplicationDto.entryAfterCount}"/>
+	<!--input type="hidden" m:id="limitAlertMsg" m:value="#{hanyoApplicationDto.editAlertMsg}"/-->
+	<input type="hidden" m:id="entryCd" m:value="#{hanyoApplicationDto.entryCd}"/>
+	<table m:rendered="#{hanyoApplicationDto.entryCd != '30' && hanyoApplicationDto.notice != null && hanyoApplicationDto.notice != ''}"
+	       class="hiddenBody" style="margin-bottom:10px;">
+	 <tr>
+	  <th style="text-align:left;color:red">
+	  	<span m:value="#{hanyoApplicationDto.notice}" m:converter="#{changeLineRefConverter}" m:escape="false"/></th>
+	 </tr>
+	</table>
+	 <div>
+	  <input type="button" value="戻る" m:onclick="return doSubmit();" m:action="#{hanyoApplicationEditAction.cancel}"/>
+	  <input type="button" value="入力欄追加" m:onclick="setNowEntryCount(); return doSubmit();" m:action="#{hanyoApplicationEditAction.addRow}"/>
+	  <input type="button" value="登録・終了" m:id="btnExecute" m:onclick="return doSubmit();" m:action="#{hanyoApplicationEditAction.regist}"/>
+	 </div>
+	<table class="body_table2" style="margin-top:4px;margin-bottom:6px;">
+	  <tr class="header_row">
+	    <th class="width_206_s" width="190">開催日</th>
+	    <th width="350">開催名</th>
+	    <th width="100px">申込日</th>
+	  </tr>
+	  <tr>
+	    <td><span m:value="#{hanyoApplicationDto.selectEntryMst.kaisaiFrom}"
+	            m:converter="#{hanyoApplicationDateConverter3}"/>～
+	        <span m:value="#{hanyoApplicationDto.selectEntryMst.kaisaiTo}"
+	            m:converter="#{hanyoApplicationDateConverter3}"/></td>
+	    <td><span m:converter="#{characterEncodingConverter}" m:value="#{hanyoApplicationDto.selectEntryMst.entryTitle}"
+	            m:converter="#{hanyoApplicationCharacterEncodingConverter}"/></td>
+	    <td><span m:value="#{hanyoApplicationDto.sysDate}"
+	            m:converter="#{hanyoApplicationDateConverter4}"/></td>
+	  </tr>
+	</table>
+	<!--スクロール開始-->
+	<div class="scroll_area" m:id="fream">
+		<!--申込責任者-->
+		<table class="body_table2" style="#{hanyoApplicationDto.entryCd != '30'?'border-bottom:0px;':''}">
+		  <th class="body_header4" style="text-align:left;" colspan="4">■申込責任者</th>
+		  <tr>
+		    <th width="142px">会社名</th>
+		    <td colspan="3"><span m:value="#{hanyoApplicationDto.uiEntryOwnerMosikomiSekinin.onerNameKj}" m:converter="#{hanyoApplicationCharacterEncodingConverter}"/></td>
+		  </tr>
+		  <tr class="non_top_border">
+		    <th width="142px">申込責任者</th>
+		    <td width="280px"><input type="text" class="imeon width_255" m:id="MosikomiSekininName" m:size="45" m:maxlength="40" m:value="#{hanyoApplicationDto.uiEntryOwnerMosikomiSekinin.name}" m:converter="#{hanyoApplicationCharacterEncodingConverter}"/></td>
+		    <th width="50px">職位</th>
+		    <td width="314"><input type="text" class="imeon" m:id="MosikomiSekininJobType" m:size="30" m:maxlength="20" m:value="#{hanyoApplicationDto.uiEntryOwnerMosikomiSekinin.jobType}" m:converter="#{hanyoApplicationCharacterEncodingConverter}"/></td>
+		  </tr>
+		</table>
+		<table m:rendered="#{hanyoApplicationDto.entryCd != '30'}"
+		       class="body_table2" style="border-top-width:0px;">
+		  <tr class="non_top_border">
+		    <th rowspan="4" width="90">結果送付先</th>
+		    <th width="49px">氏名</th>
+		    <td width="650px" colspan="2"><input type="text" m:id="MosikomiSekininKekkaHokokuName" class="width_285" m:size="50" m:maxlength="40" m:value="#{hanyoApplicationDto.uiEntryOwnerMosikomiSekinin.soufuName}" m:converter="#{hanyoApplicationCharacterEncodingConverter}"/></td>
+		  </tr>
+		  <tr>
+		    <th width="49px" rowspan="3">住所</th>
+		    <td width="90">〒<input type="text" class="imenotuse width_62" m:size="10" m:maxlength="8" m:id="MosikomiSekininKekkaHokokuZip" m:value="#{hanyoApplicationDto.uiEntryOwnerMosikomiSekinin.zip}" m:converter="#{hanyoApplicationZipConverter}"/></td>
+		    <td width="557px">
+		      <input type="text" class="imeon width_480" m:size="80" m:maxlength="15"
+		             m:id="MosikomiSekininKekkaHokokuAddress1"
+		             m:value="#{hanyoApplicationDto.uiEntryOwnerMosikomiSekinin.address1}"
+		             m:converter="#{hanyoApplicationCharacterEncodingConverter}"/></td>
+		  </tr>
+		  <tr>
+		    <td></td>
+		    <td><input type="text" class="width_480" m:size="80" m:maxlength="15"
+		               m:id="MosikomiSekininKekkaHokokuAddress2"
+		               m:value="#{hanyoApplicationDto.uiEntryOwnerMosikomiSekinin.address2}"
+		               m:converter="#{hanyoApplicationCharacterEncodingConverter}"/></td>
+		  </tr>
+		  <tr>
+		    <td></td>
+		    <td>
+		      <input type="text" class="width_480" m:size="80" m:maxlength="15"
+		             m:id="MosikomiSekininKekkaHokokuAddress3"
+		             m:value="#{hanyoApplicationDto.uiEntryOwnerMosikomiSekinin.address3}"
+		             m:converter="#{hanyoApplicationCharacterEncodingConverter}"/></td>
+		  </tr>
+		</table>
+		<!--申込者-->
+		<div m:inject="s:forEach" m:items="#{hanyoApplicationDto.listEntryState}" m:var="e" m:varIndex="i">
+		  <table class="body_table2" style="width:800px;margin-top:4px;border-bottm-wigth:0px;">
+		    <tr>
+		    	<th class="body_header4" style="width:100px;border-width:0px;"/>
+		    	<th class="body_header4" style="width:*;border-width:0px;"><span m:converter="#{characterEncodingConverter}" m:value="#{i + 1}" style="display:inline;"/></th>
+		        <th style="width:100px;border-width:0px;text-align:right;" class="body_header4"><input type="button" m:id="staffCancel" m:value="申込取消" m:onclick="torikesi(#{i})"/></th>
+		    </tr>
+		    </table>
+		  <table class="body_table2" style="width:800px;border-top-width:0px;">
+		    <tr class="non_top_border">
+		      <th width="142px">氏名</th>
+		      <td width="649px" colspan="5">
+		        <div class="hideArea">
+		        <select m:id="staffId" m:value="#{e.staffId}"
+		                m:items="#{hanyoApplicationDto.listStaff}"
+		                m:itemValue="staffId"
+		                m:itemLabel="staffSelect"
+		                m:onchange="staffChange(#{i})">
+		            <option value="">研修生を選択して下さい。</option>
+		            <option value="11111111">海　太郎（海岸通り店）</option>
+		            <option value="22222222">山　次郎（山麓店）</option>
+		        </select>
+		        <input type="button" m:value="新規スタッフ追加" m:action="#{hanyoApplicationEditAction.addStaff}" m:onclick="setIndex(#{i});setStaffBottonIndex(#{i});doSubmit();"/>
+		        <input type="button" m:value="スタッフ編集" m:action="#{hanyoApplicationEditAction.editStaff}" m:onclick="setIndex(#{i});setStaffBottonIndex(#{i});doSubmit();"/>
+				<input type="hidden" m:id="staffSelectName" m:value="#{e.staffSelect}"/>
+				</div>
+		      </td>
+		    </tr>
+		    <tr>
+		      <th>フリガナ</th>
+		      <td width="280px"><input type="text" class="width_245" m:id="nameKnaInput" m:size="45" m:maxlength="42" m:value="#{e.nameKnaInput}" m:readonly="true"/></td>
+		      <th>性別</th>
+		      <td>
+		        <span m:converter="#{characterEncodingConverter}" m:inject="s:selectOneRadio2" m:id="sex" m:value="#{e.sex}" m:required="true">
+		          <input type="radio" m:id="sex_radio1" m:value="0" m:disabled="true"/>男　
+		          <input type="radio" m:id="sex_radio2" m:value="1" m:disabled="true"/>女
+		        </span>
+		      </td>
+		      <th>職位</th>
+		      <td><input type="text" class="imeon width_180" m:id="job"
+		                 m:size="30" m:maxlength="20" m:value="#{e.job}"/></td>
+		    </tr>
+		    <tr>
+		      <th>店舗経験</th>
+		      <td colspan="5">
+		        社員歴：<input type="text" class="imenotuse width_35"  m:id="empExpYear" m:size="5" m:maxlength="2" m:style="text-align:right;" m:value="#{e.empExpYear}"/>年
+		        <input type="text" class="imenotuse width_35"  m:id="empExpMonth" m:size="5" m:maxlength="2" m:style="text-align:right;" m:value="#{e.empExpMonth}"/>月
+		        　&nbsp;&nbsp;
+		        パート・アルバイト歴：<input type="text" class="imenotuse width_35"  m:id="paExpYear" m:size="5" m:maxlength="2" m:style="text-align:right;" m:value="#{e.paExpYear}"/>年
+		        <input type="text" class="imenotuse width_35"  m:id="paExpMonth" m:size="5" m:maxlength="2" m:style="text-align:right;" m:value="#{e.paExpMonth}"/>月
+		      </td>
+		    </tr>
+		    <tr m:rendered="#{hanyoApplicationDto.entryCd != '30'}">
+		      <th width="142px">受講案内<br/>送付先</th>
+		      <td class="putInnerTable" colspan="5">
+		      		<table class="body_table2 body_table2_hosoku">
+		      			<tr>
+		      		      <td>
+				        <div class="hideArea">
+				        <select m:id="guideKbn" m:value="#{e.guideKbn}"
+				                m:items="#{hanyoApplicationDto.listSofusakiPulldown}"
+				                m:itemValue="value"
+				                m:itemLabel="label"
+				                m:onchange="sofuChange(#{i})">
+				            <option value="KEKKA">結果報告先</option>
+				            <option value="01776">01776（王子店）</option>
+				            <option value="0XXXX">0XXXX（梶原店）</option>
+				            <option value="OHTER">その他</option>
+				        </select>
+				        </div>
+				        </td>
+				        <td class="putInnerTable1">
+				        その他の送付先：<input type="text" class="imeon width_230" m:id="guideName" m:size="40" m:maxlength="40" m:value="#{e.guideNameInput}" m:readonly="#{e.readOnlyFlg}" m:converter="#{hanyoApplicationCharacterEncodingConverter}"/>
+				      </td>
+				    </tr>
+				    </table>
+				    <table class="body_table2 body_table2_hosoku">
+				    <tr>
+				      <td width="90">
+				        〒<input type="text" m:id="guideZip" class="imenotuse width_62" m:size="10" m:maxlength="8" m:value="#{e.guideZip}" m:readonly="#{e.readOnlyFlg}" m:converter="#{hanyoApplicationZipConverter}"/>
+				      </td>
+				      <td width="557" class="putInnerTable1">
+				        <input type="text" m:id="guideAdrs1" class="imeon width_480" m:size="80" m:maxlength="15" m:value="#{e.guideAdrs1}" m:readonly="#{e.readOnlyFlg}" m:converter="#{hanyoApplicationCharacterEncodingConverter}"/>
+				      </td>
+				    </tr>
+				    <tr>
+				      <td></td>
+				      <td class="putInnerTable1">
+				        <input type="text" m:id="guideAdrs2" class="imeon width_480" m:size="80" m:maxlength="15" m:value="#{e.guideAdrs2}" m:readonly="#{e.readOnlyFlg}" m:converter="#{hanyoApplicationCharacterEncodingConverter}"/>
+				      </td>
+				    </tr>
+				    <tr >
+				      <td></td>
+				      <td class="putInnerTable1">
+				        <input type="text" m:id="guideAdrs3" class="imeon width_480" m:size="80" m:maxlength="15" m:value="#{e.guideAdrs3}" m:readonly="#{e.readOnlyFlg}" m:converter="#{hanyoApplicationCharacterEncodingConverter}"/>
+				      </td>
+				    </tr>
+				  </table>
+		      </td>
+		    </tr>
+		</table>
+		</div>
+	</div>
+	<!--スクロール終了-->
+	<div m:inject="s:forEach" m:items="#{hanyoApplicationDto.listStaff}" m:var="e">
+		  <input type="hidden" m:id="h_staffId" m:value="#{e.staffId}"/>
+		  <input type="hidden" m:id="h_staffSelect" m:value="#{e.staffSelect}" m:converter="#{hanyoApplicationCharacterEncodingConverter}"/>
+		  <input type="hidden" m:id="h_staffLNameKna" m:value="#{e.staffLNameKna}" m:converter="#{hanyoApplicationCharacterEncodingConverter}"/>
+		  <input type="hidden" m:id="h_staffFNameKna" m:value="#{e.staffFNameKna}" m:converter="#{hanyoApplicationCharacterEncodingConverter}"/>
+		  <input type="hidden" m:id="h_sex" m:value="#{e.sex}"/>
+		</div>
+	<div m:inject="s:forEach" m:items="#{hanyoApplicationDto.listMstMise}" m:var="e">
+		  <input type="hidden" m:id="h_miseCd" m:value="#{e.miseCd}"/>
+		  <input type="hidden" m:id="h_miseNameKj" m:value="#{e.miseNameKj}" m:converter="#{hanyoApplicationCharacterEncodingConverter}"/>
+		  <input type="hidden" m:id="h_misePostNo" m:value="#{e.misePostNo}"/>
+		  <input type="hidden" m:id="h_miseAdrs1" m:value="#{e.miseAdrs1}" m:converter="#{hanyoApplicationCharacterEncodingConverter}"/>
+		  <input type="hidden" m:id="h_miseAdrs2" m:value="#{e.miseAdrs2}" m:converter="#{hanyoApplicationCharacterEncodingConverter}"/>
+		  <input type="hidden" m:id="h_miseAdrs3" m:value="#{e.miseAdrs3}" m:converter="#{hanyoApplicationCharacterEncodingConverter}"/>
+		</div>
+	<input type="text" m:id="dummyEnter" style="display:none"/>
+</form>
+</span>
+</body>
+</html>

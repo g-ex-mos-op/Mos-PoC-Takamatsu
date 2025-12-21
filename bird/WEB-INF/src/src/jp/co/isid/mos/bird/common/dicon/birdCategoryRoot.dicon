@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="Shift_JIS"?>
+<!DOCTYPE components PUBLIC "-//SEASAR//DTD S2Container//EN"
+	"http://www.seasar.org/dtd/components.dtd">
+<components namespace="birdCategoryRoot">
+
+		<include path="jp/co/isid/mos/bird/commonform/common/dicon/commonForm.dicon"/>
+		<include path="jp/co/isid/mos/bird/communication/dicon/communication.dicon"/>
+		<include path="jp/co/isid/mos/bird/portal/dicon/portal.dicon"/>
+        <include path="jp/co/isid/mos/bird/bizreport/dicon/bizreport.dicon"/>
+		<include path="jp/co/isid/mos/bird/config/dicon/config.dicon"/>
+		<include path="jp/co/isid/mos/bird/storeinfo/dicon/storeinfo.dicon"/>
+		<include path="jp/co/isid/mos/bird/storemanage/dicon/storemanage.dicon"/>
+		<include path="jp/co/isid/mos/bird/entry/dicon/entry.dicon"/>
+		<include path="jp/co/isid/mos/bird/bizsupport/dicon/bizsupport.dicon"/>
+		<include path="jp/co/isid/mos/bird/inforegist/dicon/inforegist.dicon"/>
+		<include path="jp/co/isid/mos/bird/office/dicon/office.dicon"/>
+		<include path="jp/co/isid/mos/bird/analysis/dicon/analysis.dicon"/>
+		<include path="jp/co/isid/mos/bird/sysadmin/dicon/sysadmin.dicon"/>
+		<include path="jp/co/isid/mos/bird/bizadmin/dicon/bizadmin.dicon"/>
+		<include path="jp/co/isid/mos/bird/bill/dicon/bill.dicon"/>
+		<include path="jp/co/isid/mos/bird/togouser/dicon/togouser.dicon"/>
+		<include path="jp/co/isid/mos/bird/pmossles/dicon/pmossles.dicon"/>
+		<include path="jp/co/isid/mos/bird/minisite/dicon/minisite.dicon"/>
+</components>

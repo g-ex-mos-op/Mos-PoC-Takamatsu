@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="Shift_JIS"?>
+<!DOCTYPE components PUBLIC "-//SEASAR//DTD S2Container 2.3//EN"
+    "http://www.seasar.org/dtd/components23.dtd">
+<components namespace="campsuiiref">
+    <include path="dao.dicon"/>
+    <include path="jp/co/isid/mos/bird/common/dicon/birdCommon.dicon"/>
+	<include path="jp/co/isid/mos/bird/framework/dicon/birdInterceptor.dicon"/>
+	<include path="jp/co/isid/mos/bird/bizreport/common/camp/dicon/commonCampaign.dicon"/>
+
+	<component
+	  class="org.seasar.framework.container.autoregister.AspectAutoRegister">
+	    <property name="interceptor">birdInterceptor.actionInterceptorChain</property>
+	    <initMethod name="addClassPattern">
+	        <arg>"jp.co.isid.mos.bird"</arg>
+	        <arg>".*ActionImpl"</arg>
+	    </initMethod>
+	    <initMethod name="registerAll"/>
+	</component> 
+	<component
+	  class="org.seasar.framework.container.autoregister.AspectAutoRegister">
+	    <property name="interceptor">birdInterceptor.logicInterceptorChain</property>
+	    <initMethod name="addClassPattern">
+	        <arg>"jp.co.isid.mos.bird"</arg>
+	        <arg>".*LogicImpl"</arg>
+	    </initMethod>
+	    <initMethod name="registerAll"/>
+	</component>
+
+	<!-- DAO -->
+	<component name="campsuiirefUISuiiDao" class="jp.co.isid.mos.bird.bizreport.campsuiiref.dao.UISuiiDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<!-- LOGIC -->
+	<component name="campsuiirefGetCampMenuInfoLogic" class="jp.co.isid.mos.bird.bizreport.campsuiiref.logic.impl.GetCampMenuInfoLogicImpl"/>
+	<component name="campsuiirefChangeCampLogic" class="jp.co.isid.mos.bird.bizreport.campsuiiref.logic.impl.ChangeCampLogicImpl"/>
+	<component name="campsuiirefConditionLogic" class="jp.co.isid.mos.bird.bizreport.campsuiiref.logic.impl.ConditionLogicImpl"/>
+	<component name="campsuiirefSearchLogic" class="jp.co.isid.mos.bird.bizreport.campsuiiref.logic.impl.SearchLogicImpl"/>
+	<component name="campsuiirefCsvOutputLogic" class="jp.co.isid.mos.bird.bizreport.campsuiiref.logic.impl.CampSuiiCsvOutputLogicImpl"/>
+	<!-- DTO -->
+	<component name="campsuiirefRequestSuiiDto" class="jp.co.isid.mos.bird.bizreport.common.camp.dto.RequestSuiiDto" autoBinding="none" instance="request">
+		<property name="companyCd">'00'</property>
+	</component>
+	<component name="campsuiirefViewRequestSuiiDto" class="jp.co.isid.mos.bird.bizreport.common.camp.dto.RequestSuiiDto" autoBinding="none" instance="request">
+		<property name="companyCd">'00'</property>
+	</component>
+	<component name="campsuiirefSessionSuiiDto" class="jp.co.isid.mos.bird.bizreport.common.camp.dto.SessionSuiiDto" autoBinding="none" instance="session">
+		<property name="maxSize">5</property>
+	</component>
+	<component name="miseSearchDto" class="jp.co.isid.mos.bird.commonform.misesearch.dto.MiseSearchDto" instance="session">
+		<property name="RCompanyCdList">null</property>
+	</component>
+	<component name="pullDownMenuDto" class="jp.co.isid.mos.bird.framework.dto.PullDownMenuDto" autoBinding="none" instance="session"/>
+
+	<!-- ACTION -->
+	<component name="campsuiirefCampSuiiRefAction" class="jp.co.isid.mos.bird.bizreport.campsuiiref.action.impl.CampSuiiRefActionImpl" instance="request"/>
+	<component name="campsuiirefCsvAction" class="jp.co.isid.mos.bird.bizreport.campsuiiref.action.impl.CsvSuiiActionImpl" instance="request">
+		<property name="csvOutputLogic">campsuiirefCsvOutputLogic</property>
+		<property name="csvOutputDto">campsuiirefRequestSuiiDto</property>
+	</component>
+	
+	<!-- Formatter -->
+
+	<!-- Converter -->
+	<component name="bizreportNumericCnvt" class="jp.co.isid.mos.bird.framework.text.converter.NumericConverter" instance="request">
+		<arg>"#,##0"</arg><arg>true</arg>
+	</component>
+	<component name="campsuiirefDateConverter" class="jp.co.isid.mos.bird.framework.text.converter.DateConverter" instance="request">
+		<arg>@jp.co.isid.mos.bird.framework.util.formatter.DateFormatter@DATE_TYPE_YMD</arg>
+		<arg>@jp.co.isid.mos.bird.framework.util.formatter.DateFormatter@PATTERN_SLASH</arg>
+	</component>
+	<component name="campsuiirefDateConverterMD" class="jp.co.isid.mos.bird.framework.text.converter.DateConverter" instance="request">
+		<arg>@jp.co.isid.mos.bird.framework.util.formatter.DateFormatter@DATE_TYPE_YMD</arg>
+		<arg>@jp.co.isid.mos.bird.framework.util.formatter.DateFormatter@PATTERN_DAY_KANJI</arg>
+	</component>
+	<component name="campsuiirefDigit0Converter" class="jp.co.isid.mos.bird.framework.text.converter.NumericConverter" instance="request">
+		<arg>0</arg>
+	</component>
+	<component name="campsuiirefDigit2Converter" class="jp.co.isid.mos.bird.framework.text.converter.NumericConverter" instance="request">
+		<arg>2</arg>
+	</component>
+	
+</components>

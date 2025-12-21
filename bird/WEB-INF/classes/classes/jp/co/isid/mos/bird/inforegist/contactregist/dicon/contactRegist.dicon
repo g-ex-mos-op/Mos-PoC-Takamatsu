@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="Shift_JIS"?>
+<!DOCTYPE components PUBLIC "-//SEASAR//DTD S2Container 2.3//EN"
+    "http://www.seasar.org/dtd/components23.dtd">
+<components namespace="contactregist">
+    <include path="dao.dicon"/>
+    <include path="jp/co/isid/mos/bird/common/dicon/birdCommon.dicon"/>
+	<include path="jp/co/isid/mos/bird/framework/dicon/birdInterceptor.dicon"/>
+
+	<component
+	  class="org.seasar.framework.container.autoregister.AspectAutoRegister">
+	    <property name="interceptor">birdInterceptor.actionInterceptorChain</property>
+	    <initMethod name="addClassPattern">
+	        <arg>"jp.co.isid.mos.bird"</arg>
+	        <arg>".*ActionImpl"</arg>
+	    </initMethod>
+	    <initMethod name="registerAll"/>
+	</component> 
+	<component
+	  class="org.seasar.framework.container.autoregister.AspectAutoRegister">
+	    <property name="interceptor">birdInterceptor.logicInterceptorChain</property>
+	    <initMethod name="addClassPattern">
+	        <arg>"jp.co.isid.mos.bird"</arg>
+	        <arg>".*LogicImpl"</arg>
+	    </initMethod>
+	    <initMethod name="registerAll"/>
+	</component>
+
+	<component class="jp.co.isid.mos.bird.framework.control.BirdUserInfo" instance="session"/>
+	<component class="jp.co.isid.mos.bird.framework.control.BirdDateInfo" instance="session"/>
+
+	<component name="uiRenrakuInfoDao" class="jp.co.isid.mos.bird.inforegist.contactregist.dao.UIRenrakuInfoDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+
+	<component name="codeFormatter" class="jp.co.isid.mos.bird.framework.util.formatter.CodeFormatter">
+		<arg>4</arg>
+		<property name="formatPattern">"0000"</property>
+	</component>
+	
+	<!--ロジック-->
+	<component name="getRenrakuLogic" class="jp.co.isid.mos.bird.inforegist.contactregist.logic.impl.GetRenrakuLogicImpl"/>
+	<component name="getRenrakuCountLogic" class="jp.co.isid.mos.bird.inforegist.contactregist.logic.impl.GetRenrakuCountLogicImpl"/>
+	<component name="checkRenrakuLogic" class="jp.co.isid.mos.bird.inforegist.contactregist.logic.impl.CheckRenrakuLogicImpl">
+		<property name="dateVerifier">contactRegistDateVerifier</property>
+	</component>
+	<component name="renewalRenrakuLogic" class="jp.co.isid.mos.bird.inforegist.contactregist.logic.impl.RenewalRenrakuLogicImpl">
+		<property name="formatter">codeFormatter</property>
+	</component>
+	<component name="contactRegistUploadLogicImpl" class="jp.co.isid.mos.bird.inforegist.contactregist.logic.impl.ContactRegistUploadLogicImpl"/>
+	<component name="contactRegistFileDeleteLogic" class="jp.co.isid.mos.bird.inforegist.contactregist.logic.impl.ContactRegistFileDeleteLogicImpl"/>
+	<component name="checkRenrakuKanrenBunshoLogic" class="jp.co.isid.mos.bird.inforegist.contactregist.logic.impl.CheckRenrakuKanrenBunshoLogicImpl"/>
+	<component name="contactRegistDownloadKanrenLogic" class="jp.co.isid.mos.bird.inforegist.contactregist.logic.impl.ContactRegistDownloadKanrenLogicImpl"/>
+	<component name="contactRegistDownloadTenpuLogic" class="jp.co.isid.mos.bird.inforegist.contactregist.logic.impl.ContactRegistDownloadTenpuLogicImpl"/>
+
+
+	<component name="deleteFileNameList" class="java.util.ArrayList" instance="session"/>
+	<component name="contactRegistDto" class="jp.co.isid.mos.bird.inforegist.contactregist.dto.ContactRegistDto" instance="session">
+		<property name="categoryList">null</property>
+		<property name="targetDateList">null</property>
+		<property name="listKokaiKaisi">null</property>
+		<property name="listKanrenBunsho">null</property>
+		<property name="deleteFileNameList">deleteFileNameList</property>
+		<property name="uploadedFile">null</property>
+	</component>
+	<component name="contactList" class="java.util.ArrayList" instance="session"/>
+	<component name="contactRegistListDto" class="jp.co.isid.mos.bird.inforegist.contactregist.dto.ContactRegistListDto" instance="session">
+		<property name="contactList">contactList</property>
+	</component>
+	<component name="listTrnControlShozoku" class="java.util.ArrayList" instance="session"/>
+	<component name="listTrnControlCompany" class="java.util.ArrayList" instance="session"/>
+	<component name="listTrnControlGyotai" class="java.util.ArrayList" instance="session"/>
+	<component name="listTrnControlGyotaiKobetu" class="java.util.ArrayList" instance="session"/>
+	<component name="listTrnControlGyotaiTenpo" class="java.util.ArrayList" instance="session"/>
+	<component name="contactRegistPublicTargetDto" class="jp.co.isid.mos.bird.common.dto.PublicTargetDto" instance="session">
+		<property name="listTrnControlShozoku">listTrnControlShozoku</property>
+		<property name="listTrnControlCompany">listTrnControlCompany</property>
+		<property name="listTrnControlGyotai">listTrnControlGyotai</property>
+		<property name="listTrnControlGyotaiKobetu">listTrnControlGyotaiKobetu</property>
+		<property name="listTrnControlGyotaiTenpo">listTrnControlGyotaiTenpo</property>
+	</component>
+	<component name="publicTargetSearchListTrnControlShozoku" class="java.util.ArrayList" instance="session"/>
+	<component name="publicTargetSearchListTrnControlCompany" class="java.util.ArrayList" instance="session"/>
+	<component name="publicTargetSearchListTrnControlGyotai" class="java.util.ArrayList" instance="session"/>
+	<component name="publicTargetSearchListTrnControlGyotaiKobetu" class="java.util.ArrayList" instance="session"/>
+	<component name="publicTargetSearchListTrnControlGyotaiTenpo" class="java.util.ArrayList" instance="session"/>
+	<component name="contactRegistPublicTargetSearchDto" class="jp.co.isid.mos.bird.commonform.publictargetsearch.dto.PublicTargetSearchDto" autoBinding="none" instance="session">
+		<property name="listTrnControlShozoku">publicTargetSearchListTrnControlShozoku</property>
+		<property name="listTrnControlCompany">publicTargetSearchListTrnControlCompany</property>
+		<property name="listTrnControlGyotai">publicTargetSearchListTrnControlGyotai</property>
+		<property name="listTrnControlGyotaiKobetu">publicTargetSearchListTrnControlGyotaiKobetu</property>
+		<property name="listTrnControlGyotaiTenpo">publicTargetSearchListTrnControlGyotaiTenpo</property>
+	</component>
+
+	<component name="pullDownMenuDto" class="jp.co.isid.mos.bird.framework.dto.PullDownMenuDto" autoBinding="none" instance="session"/>
+	<component name="documentSearchDto" class="jp.co.isid.mos.bird.commonform.documentsearch.dto.DocumentSearchDto" autoBinding="none" instance="session"/>
+
+	<!--アクション-->
+	<component name="contactRegistSearchAction" class="jp.co.isid.mos.bird.inforegist.contactregist.action.impl.ContactRegistSearchActionImpl" instance="request">
+		<property name="targetDateMonths">36</property>
+		<property name="maxPageCount">30</property>
+	</component>
+	<component name="contactRegistEditAction" class="jp.co.isid.mos.bird.inforegist.contactregist.action.impl.ContactRegistEditActionImpl" instance="request">
+		<property name="publicTargetDto">contactRegistPublicTargetDto</property>
+		<property name="publicTargetSearchDto">contactRegistPublicTargetSearchDto</property>
+	</component>
+	<component name="contactRegistConfirmAction" class="jp.co.isid.mos.bird.inforegist.contactregist.action.impl.ContactRegistConfirmActionImpl" instance="request">
+		<property name="publicTargetDto">contactRegistPublicTargetDto</property>
+		<property name="publicTargetSearchDto">contactRegistPublicTargetSearchDto</property>
+	</component>
+	<component name="fileUploadAction" class="jp.co.isid.mos.bird.framework.action.impl.FileUploadActionImpl" instance="request"/>
+	<component name="contactRegistDownloadKanrenAction" class="jp.co.isid.mos.bird.framework.action.impl.FileDownloadActionImpl" instance="request">
+		<property name="downloadDto">contactRegistDto</property>
+		<property name="downloadLogic">contactRegistDownloadKanrenLogic</property>
+	</component>	
+	<component name="contactRegistDownloadTenpuAction" class="jp.co.isid.mos.bird.framework.action.impl.FileDownloadActionImpl" instance="request">
+		<property name="downloadDto">contactRegistListDto</property>
+		<property name="downloadLogic">contactRegistDownloadTenpuLogic</property>
+	</component>	
+	<component name="contactregistCsvAction" class="jp.co.isid.mos.bird.framework.action.impl.CsvDownloadActionImpl" instance="request">
+		<property name="csvOutputDto">contactRegistPublicTargetDto</property>
+		<property name="csvOutputLogic">publicTargetMiseCsvOutputLogic</property>
+		<property name="initLogic">null</property>
+		<property name="finalLogic">null</property>
+	</component>
+
+	
+	<!-- コンバーター -->
+	<component name="contactRegistdateConverter" class="jp.co.isid.mos.bird.framework.text.converter.DateConverter">
+		<arg>@jp.co.isid.mos.bird.framework.util.formatter.DateFormatter@DATE_TYPE_YMD</arg>
+		<arg>@jp.co.isid.mos.bird.framework.util.formatter.DateFormatter@PATTERN_SLASH</arg>
+	</component>
+	<component name="changeLineEditConverter" class="jp.co.isid.mos.bird.framework.text.converter.ChangeLineEditConverter" instance="request"/>
+	<component name="changeLineRefConverter" class="jp.co.isid.mos.bird.framework.text.converter.ChangeLineRefConverter" instance="request"/>
+
+    <component name="contactRegistDateVerifier" class="jp.co.isid.mos.bird.framework.util.verifier.DateVerifier"/>
+	
+	
+</components>

@@ -1,0 +1,14 @@
+SELECT DISTINCT ROLE_CD
+,      MENU_ID
+,      SUB_MENU_ID
+,      ENABLE_FLG
+,      EXTRA_FLG
+,      FIRST_USER
+,      FIRST_TMSP
+,      FIRST_PGM
+,      LAST_USER
+,      LAST_TMSP
+,      LAST_PGM
+
+FROM   BR05ACTR
+WHERE  MENU_ID = '00'

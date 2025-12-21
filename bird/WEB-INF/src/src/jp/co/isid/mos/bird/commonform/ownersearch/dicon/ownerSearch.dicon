@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="Shift_JIS"?>
+<!DOCTYPE components PUBLIC "-//SEASAR2.1//DTD S2Container//EN"
+	"http://www.seasar.org/dtd/components21.dtd">
+<components namespace="onerSearch">
+    <include path="dao.dicon"/>
+    <include path="jp/co/isid/mos/bird/common/dicon/birdCommon.dicon"/>
+    <include path="jp/co/isid/mos/bird/framework/dicon/birdInterceptor.dicon"/>
+
+	<component class="org.seasar.framework.container.autoregister.AspectAutoRegister">
+	    <property name="interceptor">birdInterceptor.actionInterceptorChain</property>
+	    <initMethod name="addClassPattern">
+	        <arg>"jp.co.isid.mos.bird"</arg>
+	        <arg>".*ActionImpl"</arg>
+	    </initMethod>
+	    <initMethod name="registerAll"/>
+	</component> 
+	<component class="org.seasar.framework.container.autoregister.AspectAutoRegister">
+	    <property name="interceptor">birdInterceptor.logicInterceptorChain</property>
+	    <initMethod name="addClassPattern">
+	        <arg>"jp.co.isid.mos.bird"</arg>
+	        <arg>".*LogicImpl"</arg>
+	    </initMethod>
+	    <initMethod name="registerAll"/>  
+	</component>
+
+	<!-- DAO -->
+	<component name="uIGroupTogoOwnerDao" class="jp.co.isid.mos.bird.commonform.ownersearch.dao.UIGroupTogoOwnerDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="codCompanyDao" class="jp.co.isid.mos.bird.commonform.ownersearch.dao.CodCompanyDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="codSibuDao" class="jp.co.isid.mos.bird.commonform.common.dao.CodSibuDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+
+	<!-- LOGIC -->
+	<component name="searchOwnerLogic" class="jp.co.isid.mos.bird.commonform.ownersearch.logic.impl.SearchOwnerLogicImpl"/>
+	<component name="getCompanyLogic" class="jp.co.isid.mos.bird.commonform.ownersearch.logic.impl.GetCompanyLogicImpl"/>
+	<component name="getCompanyNameLogic" class="jp.co.isid.mos.bird.commonform.ownersearch.logic.impl.GetCompanyNameLogicImpl"/>
+	<component name="getSibuLogic" class="jp.co.isid.mos.bird.commonform.common.logic.impl.GetSibuLogicImpl"/>
+
+	<!-- DTO -->
+	<component name="ownerSearchConditionDto" class="jp.co.isid.mos.bird.commonform.ownersearch.dto.OwnerSearchConditionDto" autoBinding="none" instance="session">
+		<property name="maxSize">5</property>
+	</component>
+	<component name="recentConditionDto" class="jp.co.isid.mos.bird.commonform.ownersearch.dto.OwnerSearchConditionDto" autoBinding="none" instance="session"/>
+	<component name="ownerSearchDto" class="jp.co.isid.mos.bird.commonform.ownersearch.dto.OwnerSearchDto" instance="session">
+		<property name="RCompanyCdList">null</property>
+	</component>
+
+	<!-- ACTION -->
+	<component name="ownerSearchAction" class="jp.co.isid.mos.bird.commonform.ownersearch.action.impl.OwnerSearchActionImpl" instance="request"/>
+
+	<!-- ENTITY -->
+	<!-- OTHER -->
+	<component class="jp.co.isid.mos.bird.framework.control.BirdUserInfo" instance="session"/>
+
+	<!-- CONVERTER -->
+	<component name="codeConverterOwner" class="jp.co.isid.mos.bird.framework.text.converter.CodeConverter" instance="request">
+		<property name="formatPattern">"00000"</property>
+	</component>
+	<component name="codeConverterMise" class="jp.co.isid.mos.bird.framework.text.converter.CodeConverter" instance="request">
+		<property name="formatPattern">"00000"</property>
+	</component>
+	<component name="codeConverterSv" class="jp.co.isid.mos.bird.framework.text.converter.CodeConverter" instance="request">
+		<arg>8</arg>
+		<arg>"00000000"</arg>
+	</component>
+	<component name="documentsearchDateConverter" class="jp.co.isid.mos.bird.framework.text.converter.DateConverter" instance="request">
+		<arg>@jp.co.isid.mos.bird.framework.util.formatter.DateFormatter@DATE_TYPE_YMD</arg>
+		<arg>@jp.co.isid.mos.bird.framework.util.formatter.DateFormatter@PATTERN_SLASH</arg>
+	</component>
+	
+</components>

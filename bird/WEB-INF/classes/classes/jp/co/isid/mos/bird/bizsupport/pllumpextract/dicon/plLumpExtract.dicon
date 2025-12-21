@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="Shift_JIS"?>
+<!DOCTYPE components PUBLIC
+    "-//SEASAR//DTD S2Container 2.3//EN"
+    "http://www.seasar.org/dtd/components23.dtd">
+<components namespace="plLumpExtract">
+    <include path="dao.dicon"/>
+	<include path="jp/co/isid/mos/bird/framework/dicon/birdInterceptor.dicon"/>
+
+	<component
+	  class="org.seasar.framework.container.autoregister.AspectAutoRegister">
+	    <property name="interceptor">birdInterceptor.actionInterceptorChain</property>
+	    <initMethod name="addClassPattern">
+	        <arg>"jp.co.isid.mos.bird"</arg>
+	        <arg>".*ActionImpl"</arg>
+	    </initMethod>
+	    <initMethod name="registerAll"/>
+	</component> 
+	<component
+	  class="org.seasar.framework.container.autoregister.AspectAutoRegister">
+	    <property name="interceptor">birdInterceptor.logicInterceptorChain</property>
+	    <initMethod name="addClassPattern">
+	        <arg>"jp.co.isid.mos.bird"</arg>
+	        <arg>".*LogicImpl"</arg>
+	    </initMethod>
+	    <initMethod name="registerAll"/>
+	</component>
+
+	<component class="jp.co.isid.mos.bird.framework.control.BirdUserInfo" instance="session"/>
+	<component class="jp.co.isid.mos.bird.framework.control.BirdDateInfo" instance="session"/>
+
+	<!-- DAO -->
+	<component name="codCompanyInfo" class="jp.co.isid.mos.bird.bizsupport.pllumpextract.dao.CodCompanyInfoDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="codMiseInfoDao" class="jp.co.isid.mos.bird.bizsupport.pllumpextract.dao.CodMiseInfoDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="mstSibuInfoDao" class="jp.co.isid.mos.bird.bizsupport.pllumpextract.dao.MstSibuInfoDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="mstSvOnerInfoDao" class="jp.co.isid.mos.bird.bizsupport.pllumpextract.dao.MstSvOnerInfoDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="uIOnerInfoDao" class="jp.co.isid.mos.bird.bizsupport.pllumpextract.dao.UIOnerInfoDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="uIPlFCDataInfo" class="jp.co.isid.mos.bird.bizsupport.pllumpextract.dao.UIPlFCDataInfoDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="uIPlRCDataInfoDao" class="jp.co.isid.mos.bird.bizsupport.pllumpextract.dao.UIPlRCDataInfoDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+	<component name="uIPlMaxMonthDao" class="jp.co.isid.mos.bird.bizsupport.pllumpextract.dao.UIPlMaxMonthDao">
+        <aspect>dao.interceptor</aspect>
+	</component>
+
+
+	<!-- Logic -->
+	<component name="getRcSibuInfoLogic" class="jp.co.isid.mos.bird.bizsupport.pllumpextract.logic.impl.GetRCSibuInfoLogicImpl"/>
+	<component name="getOnerInfoLogic" class="jp.co.isid.mos.bird.bizsupport.pllumpextract.logic.impl.GetOnerInfoLogicImpl"/>
+	<component name="getCompanyInfoLogic" class="jp.co.isid.mos.bird.bizsupport.pllumpextract.logic.impl.GetCompanyInfoLogicImpl"/>	
+	<component name="plLumpExtractCsvOutputLogicImpl" class="jp.co.isid.mos.bird.bizsupport.pllumpextract.logic.impl.PlLumpExtractCsvOutputLogicImpl"/>
+	<component name="getPlMaxMonthLogic" class="jp.co.isid.mos.bird.bizsupport.pllumpextract.logic.impl.GetPlMaxMonthLogicImpl"/>
+
+	<!-- DTO -->
+	<component name="plLumpExtractConditionDto" class="jp.co.isid.mos.bird.bizsupport.pllumpextract.dto.PlLumpExtractConditionDto" instance="session"/>
+	<component name="pullDownMenuDto" class="jp.co.isid.mos.bird.framework.dto.PullDownMenuDto" autoBinding="none" instance="session"/>
+	<component name="ownerSearchConditionDto" class="jp.co.isid.mos.bird.commonform.ownersearch.dto.OwnerSearchConditionDto" instance="session"/>
+	<component name="ownerSearchDto" class="jp.co.isid.mos.bird.commonform.ownersearch.dto.OwnerSearchDto" instance="session"/>
+
+	<!-- Action -->
+	<component name="plLumpExtractConditionAction" class="jp.co.isid.mos.bird.bizsupport.pllumpextract.action.impl.PlLumpExtractConditionActioinImpl" instance="request">
+		<aspect>actionInterceptorChain</aspect>
+	</component>
+	
+	<component name="plLumpExtractCsvOutputAction" class="jp.co.isid.mos.bird.framework.action.impl.CsvOutputActionImpl" instance="request">
+		<property name="csvOutputLogic">plLumpExtractCsvOutputLogicImpl</property>
+		<property name="csvOutputDto">plLumpExtractConditionDto</property>
+		<aspect>actionInterceptorChain</aspect>
+	</component>
+
+</components>
