@@ -1,0 +1,186 @@
+<html xmlns:m="http://www.seasar.org/maya" m:action="#{buyingListViewAction.initialize}" m:extends="/jsf/layout/layoutNoNavi.html">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=Windows-31j" />
+	<meta http-equiv="Content-Style-Type" content="text/css"/>
+	<script type="text/javascript" src="./js/bird.js"></script>
+</head>
+<body>
+	<span m:inject="f:param" m:name="layoutTitle" m:value="お買上明細照会"/>
+	<span m:inject="f:param" m:name="onLoadName" m:value="bodyLoad();"/>
+	<span m:inject="s:insert" m:name="bodyTitleName">■お買上明細照会</span>
+	<span m:inject="f:param" m:name="viewIdValue" m:value="BBS012V01"/>
+	<span m:inject="s:insert" m:name="body">
+	<script type="text/javascript">
+	<!--
+		function downLoad(index) {
+			document.buyinglistview.elements["buyinglistview:downloadIndex"].value=index;
+		}
+		function downloadCsv(urikakeCd, seikyushoId, seikyuDt, index) {
+		  if (eval(document.buyinglistview.elements['buyinglistview:tenpoCnt'].value)
+		          > eval(document.buyinglistview.elements['buyinglistview:limitCnt'].value)) {
+	          document.getElementById("pane_result").style.display = "none";
+			  document.getElementById("pane_waitmsg").style.display = "inline";
+		  }
+        document.buyinglistview.elements['buyinglistview:urikakeCd'].value = urikakeCd;
+        document.buyinglistview.elements['buyinglistview:seikyushoId'].value = seikyushoId;
+        document.buyinglistview.elements['buyinglistview:seikyuDt'].value = seikyuDt;
+        document.buyinglistview.elements["buyinglistview:downloadIndex"].value = index;
+      }
+	    function bodyLoad() {
+	      if(document.buyinglistview.elements['buyinglistview:condOnerCd'] != null) {
+	        document.buyinglistview.elements['buyinglistview:condOnerCd'].focus();
+	      }
+	    }
+	    function viewResult() {
+        document.getElementById("buyinglistview:pane_result").style.display = "inline";
+		  document.getElementById("buyinglistview:pane_waitmsg").style.display = "none";
+	    }
+	-->
+	</script>
+	<style type="text/css">
+	<!--
+	    .scroll_area {
+	        width:790px;
+	        height:385px;
+	    }
+	    .table_width {
+	        width:770px;
+	    }
+	    .nengetu {
+	        width:110px;
+	    }
+	    .seikyusaki {
+	        width:*;
+	    }
+	    .hakkodt {
+	        width:100px;
+	    }
+	    .meisai {
+	        width:200px;
+	    }
+	-->
+	</style>
+	<form m:id="buyinglistview" onKeyDown="return setDefaultSubmitButton('buyinglistview','btnExecute')";>
+	<input type="hidden" m:id="viewId" m:value="#{viewIdValue}"/>
+	<input type="hidden" m:id="initMenuId" m:value="#{menuAction.initMenuId}"/>
+	<input type="hidden" m:id="initSubMenuId" m:value="#{menuAction.initSubMenuId}"/>
+	<input type="hidden" m:id="downloadIndex" m:value="#{buyingListViewDto.downloadIndex}"/>
+	<input type="hidden" m:id="urikakeCd" m:value="#{buyingListViewDto.urikakeCd}"/>
+	<input type="hidden" m:id="seikyushoId" m:value="#{buyingListViewDto.seikyushoId}"/>
+	<input type="hidden" m:id="seikyuDt" m:value="#{buyingListViewDto.seikyuDt}"/>
+	<input type="hidden" m:id="tenpoCnt" m:value="#{buyingListViewDto.onerMiseCnt}"/>
+	<input type="hidden" m:id="limitCnt" m:value="#{buyingListViewDto.limitCnt}"/>
+		<table class="hiddenBody">
+			<tr>
+			<td>
+			<table class="body_table">
+			    <tr>
+					<!--　本部のみ表示 START -->
+			        <div m:rendered="#{buyingListViewDto.userTypeCd == '01'}">
+			    	<th width="160"><div m:id="dispTargetTitleMise">オーナーコード
+			          	<input type="button" value="検索" m:action="#{buyingListViewAction.callOnerForm}" />
+		          		</div>
+    				</th>
+			        <td>
+			          <input m:id="condOnerCd" m:name="CondOnerCd" type="text" value="#{buyingListViewDto.condOnerCd}"
+			                 maxlength="5" size="10"/>
+			        </td>
+			        </div>
+					<!--　本部のみ表示 END -->
+					<th>対象期間</th>
+			        <td>
+			            <div class="hideArea">
+				        <select m:id="condTaishoKikanCd"
+			                  m:value="#{buyingListViewDto.condTaishoKikanCd}"
+			                  m:items="#{buyingListViewDto.listCondTaishoKikan}"
+			                  m:itemValue="value"
+			                  m:itemlabel="label">
+			            </select>
+			            </div>
+			        </td>
+		    	</tr>
+			</table>
+			</td>
+		    <td style="padding-left:3px;">
+			   <input type="button" value="実行" m:id="btnExecute" class="operation_button" m:action="#{buyingListViewAction.execute}"/>
+			</td>
+			</tr>
+		</table>
+		<div m:rendered="#{buyingListViewDto.buyingDataListSize > 0}" id="pane_result">
+			<table class="hiddenBody">
+			<tr><td>
+				<table class="body_table" style="margin-top:4px;margin-bottom:4px;">
+			    <tr>
+			        <th width="60">並び順</th>
+			        <td width="280">
+						<span m:converter="#{characterEncodingConverter}" m:inject="s:selectOneRadio2" m:name="condKbn" m:value="#{buyingListViewDto.condKbn}">
+						  <input type="radio" m:id="condKbn1" m:value="1"/> 納品日・伝票番号順&nbsp;&nbsp;&nbsp;
+						  &nbsp;
+						  <input type="radio" m:id="condKbn2" m:value="2"/> 納品書順
+						</span>
+			        </td>
+			    </tr>
+			</table>
+			</td>
+				<td style="text-align:right;padding-right:6px;">
+  				<a href="http://www.adobe.co.jp/products/acrobat/readstep2.html" target="_blank">
+  				 	<img src="/bird/images/banner_adobe.gif" alt="Get Adobe Reader" width="88" height="31" border="0"></a>
+			</td></tr>
+			<tr>
+				<td colspan="2">※ご請求先をクリックするとPDFファイルをダウンロードします。ご覧頂くには、プラグイン <a href="http://www.adobe.co.jp/products/acrobat/readstep2.html" target="_blank">Adobe Reader</a> が必要です。</td>
+			</tr>
+			</table>
+
+            <span>
+			</span>
+
+			<!-- loop -->
+			<table class="body_table2 table_width">
+			    <col class="nengetu"/>
+			    <col class="seikyusaki"/>
+			    <col class="hakkodt"/>
+			    <col class="meisai"/>
+				<TR class="header_row">
+					<TH>年月</TH>
+					<TH>ご請求先</TH>
+					<TH>発行日</TH>
+					<TH>お買上明細</TH>
+				</TR>
+			</table>
+			<div class="scroll_area">
+				<table class="body_table2 table_width" style="border-top-width:0px;">
+				    <col class="nengetu"/>
+				    <col class="seikyusaki"/>
+				    <col class="hakkodt"/>
+				    <col class="meisai"/>
+					<div m:inject="s:forEach" m:items="#{buyingListViewDto.buyingDataList}" m:var="e" m:varindex="i">
+					<tr class="non_top_border">
+						<td><span m:value="#{e.seikyuDt}" m:converter="#{buyingDateConverterYMKANJI}"/>度</td>
+						<td>
+						    <a m:action="#{pdfDownlodAction.download}" title="#{e.pdfName}" onClick="downLoad(#{i})">
+								<span m:converter="#{characterEncodingConverter}" m:value="#{e.onerNameKj}"/>&nbsp;殿</a>
+						</td>
+						<td><span m:value="#{e.hakkoDt}" m:converter="#{buyingDateConverterYM}"/></td>
+					    <td align="center">
+					      <input type="button" value="お買上明細ダウンロード" m:id="btnExecute"
+					      m:onclick="downloadCsv('#{e.urikakeCd}', '#{e.seikyushoId}', '#{e.seikyuDt}', '#{i}');"
+					      m:action="#{buyingListDownloadCsvOutputAction.downloadCsv}" class="operation_button" />
+					    </td>
+					</tr>
+					</div>
+				</table>
+			</div>
+		</div>
+		<!-- loop -->
+		<div m:id="pane_waitmsg" style="font-weight:bold;display:none;">
+			<p/>
+				対象の店舗数が多い為、ダウンロードデータの準備に２～３分程かかる場合がございます。<br/>
+				そのまましばらくお待ち下さい。<br/>
+				ダウンロード完了後、下記のボタンを押して下さい。<p/>
+				<input type="button" onclick="return viewResult();" value="戻る"/>
+		</div>
+	<input type="text" m:id="dummyEnter" style="display:none"/>
+	</form>
+	</span>
+</body>
+</html>

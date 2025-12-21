@@ -1,0 +1,9 @@
+computeSourcePath=true
+contextsDir=D\:\\deve\\trunk\\brd\\apache-tomcat-8.0.23\\conf\\Catalina\\localhost
+eclipse.preferences.version=1
+jvmParameters=-XX%3APermSize%3D512M;-Xms512m+-Xmx512m;-XX%3AMaxPermSize%3D512M;
+managerUrl=http\://localhost\:8080/manager
+tomcatConfigFile=D\:\\deve\\trunk\\brd\\apache-tomcat-8.0.23\\conf\\server.xml
+tomcatDir=D\:\\deve\\trunk\\brd\\apache-tomcat-8.0.23
+tomcatJRE=1466422552248
+tomcatVersion=tomcatV7

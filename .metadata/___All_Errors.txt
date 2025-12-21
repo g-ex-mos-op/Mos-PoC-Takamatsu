@@ -1,0 +1,13 @@
+CorrelationId: 230f359f-c798-49a5-9ca0-b9675652be11
+UTC DateTime: 12/15/2025 02:59:57
+
+The following files/folders have not been downloaded
+0. .metadata/.plugins/org.eclipse.epp.logging.aeri.ui/history/_0.frq
+1. .metadata/.plugins/org.eclipse.epp.logging.aeri.ui/remote-index/_0.frq
+2. .metadata/.plugins/org.eclipse.m2e.core/nexus/05b0fe8524860bd73cbb07ef30fb34cc/write.lock
+3. .metadata/.plugins/org.eclipse.m2e.core/nexus/830bc118332e77292949ed1e6d2fabe0/write.lock
+4. .metadata/.plugins/org.eclipse.m2e.core/nexus/cd9dcbf0a5367b30220c3a2e20c50602/write.lock
+5. .metadata/.plugins/org.eclipse.rse.core/.log
+6. .metadata/.plugins/org.eclipse.rse.core/initializerMarks/org.eclipse.rse.internal.core.RSELocalConnectionInitializer.mark
+7. .metadata/.plugins/org.eclipse.rse.ui/.log
+8. .metadata/.copied.metadata.default
