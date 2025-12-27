@@ -575,6 +575,111 @@ Mermaid変換が困難な場合、または変換に失敗した場合は、画�
 - **埋め込み画像**：openpyxlの`_images`属性から取得
 - **図形のスクリーンショット**：DrawingMLから画像として抽出できない場合は、Excelファイルを開いて該当シートのスクリーンショットを取得
 
+#### 画像の種類判定と説明文の生成
+
+抽出した画像は、その位置と内容に基づいて種類を判定し、適切な説明文を生成する：
+
+##### 画像の種類判定
+
+1. **ヘッダーロゴ/装飾画像**：
+   - 判定条件：画像の位置が行0〜2、列20以降（右上隅）にある小さな画像
+   - 処理：マークダウンへの出力をスキップする（ドキュメントの本質的な内容ではないため）
+
+2. **画面キャプチャ（スクリーンショット）**：
+   - 判定条件：「画面レイアウト」「画面設計」などのシート名、または画像の前後に画面に関する説明文がある
+   - 説明文の形式：`![画面キャプチャN: [説明]]`
+   - 例：`![画面キャプチャ1: 対象期間＝「対象年月」の場合の画面表示](./images/画面レイアウト_1.png)`
+
+3. **図表・ダイアグラム**：
+   - 判定条件：「構成図」「フロー」「遷移図」などのシート名、または図形を含む画像
+   - 説明文の形式：`![図N: [説明]]`
+   - 例：`![図1: コンポーネント構成図](./images/画面構成.png)`
+
+4. **その他の画像**：
+   - 判定条件：上記に該当しない画像
+   - 説明文の形式：`![図N: [シート名]の図](./images/{シート名}.png)`
+
+##### 複数画像の番号付けルール
+
+シート内に複数の画像がある場合、以下のルールで番号を付ける：
+
+1. **番号付けの形式**：
+   - 画面キャプチャの場合：`画面キャプチャ1`、`画面キャプチャ2`、...
+   - 図表の場合：`図1`、`図2`、...
+   - ヘッダーロゴはカウントから除外する
+
+2. **マークダウンでの参照形式**：
+   ```markdown
+   ![画面キャプチャ1: 対象期間＝「対象年月」の場合の画面表示](./images/画面レイアウト_1.png)
+   
+   ![画面キャプチャ2: 対象期間＝「期間指定」の場合の画面表示](./images/画面レイアウト_2.png)
+   
+   ![画面キャプチャ3: ダウンロード待ち画面](./images/画面レイアウト_3.png)
+   ```
+
+##### 説明文の抽出方法
+
+画像の説明文は、以下の優先順位で抽出する：
+
+1. **画像の直前の行のテキスト**：
+   - 画像のアンカー位置（開始行）の1〜3行前にあるテキストを確認
+   - 説明的なテキスト（例：「対象期間＝「対象年月」の場合」）があれば、それを説明文として使用
+
+2. **シート名からの推測**：
+   - シート名に含まれるキーワードから画像の種類を推測
+   - 例：「画面レイアウト」→ 画面キャプチャ、「画面構成」→ 構成図
+
+3. **デフォルトの説明文**：
+   - 上記で説明文が取得できない場合は、シート名をそのまま使用
+   - 例：`![図: 機能概要](./images/機能概要.png)`
+
+##### 画像説明文抽出のPythonコード例
+
+```python
+def get_image_description(sheet, image, image_index, total_images):
+    """画像の説明文を生成する"""
+    anchor = image.anchor
+    start_row = anchor._from.row if hasattr(anchor, '_from') else 0
+    start_col = anchor._from.col if hasattr(anchor, '_from') else 0
+    
+    # ヘッダーロゴの判定（右上隅の小さな画像）
+    if start_row <= 2 and start_col >= 20:
+        return None  # スキップ
+    
+    # 画像の種類を判定
+    sheet_name = sheet.title
+    is_screen_capture = any(kw in sheet_name for kw in ['画面レイアウト', '画面設計', 'レイアウト'])
+    
+    # 直前の行からテキストを抽出
+    description = None
+    for r in range(max(0, start_row - 3), start_row):
+        for c in range(0, 25):
+            cell = sheet.cell(row=r + 1, column=c + 1)
+            if cell.value and isinstance(cell.value, str) and len(cell.value) > 3:
+                description = cell.value.strip()
+                break
+        if description:
+            break
+    
+    # 番号付け
+    if total_images > 1:
+        if is_screen_capture:
+            prefix = f"画面キャプチャ{image_index}"
+        else:
+            prefix = f"図{image_index}"
+    else:
+        if is_screen_capture:
+            prefix = "画面キャプチャ"
+        else:
+            prefix = "図"
+    
+    # 説明文の生成
+    if description:
+        return f"{prefix}: {description}"
+    else:
+        return f"{prefix}: {sheet_name}"
+```
+
 **優先順位3: 図の解析ができなかった場合（マークダウンへの埋め込み指示）**
 
 画像抽出自体ができない場合、または図の内容を解析できない場合は、以下の対応を行う：
